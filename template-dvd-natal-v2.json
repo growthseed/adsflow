@@ -1,0 +1,335 @@
+{
+  "name": "DVD de Natal 2024 - v2",
+  "description": "Template com BrandNodes reais: 4 canais orgânicos + Meta Ads (3 conjuntos com 5 anúncios cada) + YouTube",
+  "metadata": {
+    "created": "2024-12-23",
+    "launchDate": "23/12/2024",
+    "budget": "R$ 500",
+    "trueplayEnabled": true,
+    "version": "2.0"
+  },
+  "nodes": [
+    {
+      "id": "whatsapp-organic",
+      "type": "brand",
+      "position": { "x": 100, "y": 100 },
+      "data": {
+        "brand": "whatsapp",
+        "label": "WhatsApp",
+        "subtitle": "Canal Orgânico",
+        "description": "Grupos e listas de transmissão",
+        "status": "Ativo",
+        "isActive": true
+      }
+    },
+    {
+      "id": "instagram-organic",
+      "type": "brand",
+      "position": { "x": 100, "y": 250 },
+      "data": {
+        "brand": "instagram",
+        "label": "Instagram",
+        "subtitle": "Stories e Feed",
+        "description": "Divulgação orgânica",
+        "status": "Ativo",
+        "isActive": true
+      }
+    },
+    {
+      "id": "facebook-organic",
+      "type": "brand",
+      "position": { "x": 100, "y": 400 },
+      "data": {
+        "brand": "facebook",
+        "label": "Facebook",
+        "subtitle": "Posts e Grupos",
+        "description": "Engajamento orgânico",
+        "status": "Ativo",
+        "isActive": true
+      }
+    },
+    {
+      "id": "email-organic",
+      "type": "brand",
+      "position": { "x": 100, "y": 550 },
+      "data": {
+        "brand": "email",
+        "label": "Email",
+        "subtitle": "Newsletter",
+        "description": "Lista de inscritos",
+        "status": "Ativo",
+        "isActive": true
+      }
+    },
+    {
+      "id": "meta-campaign",
+      "type": "brand",
+      "position": { "x": 500, "y": 250 },
+      "data": {
+        "brand": "meta",
+        "label": "Meta Ads",
+        "subtitle": "DVD de Natal 2024",
+        "description": "Objetivo: Tráfego",
+        "status": "R$ 500 Budget",
+        "isActive": true
+      }
+    },
+    {
+      "id": "adset-1",
+      "type": "adSetVisual",
+      "position": { "x": 850, "y": 100 },
+      "data": {
+        "name": "Público Geral",
+        "targeting": "18-65, Brasil",
+        "budget": "R$ 150"
+      }
+    },
+    {
+      "id": "ad-1-1",
+      "type": "adVisual",
+      "position": { "x": 1150, "y": 50 },
+      "data": {
+        "name": "Card Promocional",
+        "format": "Image"
+      }
+    },
+    {
+      "id": "ad-1-2",
+      "type": "adVisual",
+      "position": { "x": 1150, "y": 110 },
+      "data": {
+        "name": "Vídeo Testemunho",
+        "format": "Video"
+      }
+    },
+    {
+      "id": "ad-1-3",
+      "type": "adVisual",
+      "position": { "x": 1150, "y": 170 },
+      "data": {
+        "name": "Carrossel Produtos",
+        "format": "Carousel"
+      }
+    },
+    {
+      "id": "ad-1-4",
+      "type": "adVisual",
+      "position": { "x": 1150, "y": 230 },
+      "data": {
+        "name": "Stories Dinâmico",
+        "format": "Story"
+      }
+    },
+    {
+      "id": "ad-1-5",
+      "type": "adVisual",
+      "position": { "x": 1150, "y": 290 },
+      "data": {
+        "name": "Reels Promocional",
+        "format": "Reels"
+      }
+    },
+    {
+      "id": "adset-2",
+      "type": "adSetVisual",
+      "position": { "x": 850, "y": 350 },
+      "data": {
+        "name": "Remarketing",
+        "targeting": "Visitantes Site",
+        "budget": "R$ 200"
+      }
+    },
+    {
+      "id": "ad-2-1",
+      "type": "adVisual",
+      "position": { "x": 1150, "y": 350 },
+      "data": {
+        "name": "Lembrete Carrinho",
+        "format": "Image"
+      }
+    },
+    {
+      "id": "ad-2-2",
+      "type": "adVisual",
+      "position": { "x": 1150, "y": 410 },
+      "data": {
+        "name": "Oferta Especial",
+        "format": "Video"
+      }
+    },
+    {
+      "id": "ad-2-3",
+      "type": "adVisual",
+      "position": { "x": 1150, "y": 470 },
+      "data": {
+        "name": "Depoimentos",
+        "format": "Carousel"
+      }
+    },
+    {
+      "id": "ad-2-4",
+      "type": "adVisual",
+      "position": { "x": 1150, "y": 530 },
+      "data": {
+        "name": "Urgência 24h",
+        "format": "Story"
+      }
+    },
+    {
+      "id": "ad-2-5",
+      "type": "adVisual",
+      "position": { "x": 1150, "y": 590 },
+      "data": {
+        "name": "Benefícios Premium",
+        "format": "Reels"
+      }
+    },
+    {
+      "id": "adset-3",
+      "type": "adSetVisual",
+      "position": { "x": 850, "y": 650 },
+      "data": {
+        "name": "Lookalike",
+        "targeting": "Similaridade 1%",
+        "budget": "R$ 150"
+      }
+    },
+    {
+      "id": "ad-3-1",
+      "type": "adVisual",
+      "position": { "x": 1150, "y": 650 },
+      "data": {
+        "name": "Apresentação Marca",
+        "format": "Video"
+      }
+    },
+    {
+      "id": "ad-3-2",
+      "type": "adVisual",
+      "position": { "x": 1150, "y": 710 },
+      "data": {
+        "name": "Comparativo",
+        "format": "Image"
+      }
+    },
+    {
+      "id": "ad-3-3",
+      "type": "adVisual",
+      "position": { "x": 1150, "y": 770 },
+      "data": {
+        "name": "Cases de Sucesso",
+        "format": "Carousel"
+      }
+    },
+    {
+      "id": "ad-3-4",
+      "type": "adVisual",
+      "position": { "x": 1150, "y": 830 },
+      "data": {
+        "name": "Tutorial Rápido",
+        "format": "Story"
+      }
+    },
+    {
+      "id": "ad-3-5",
+      "type": "adVisual",
+      "position": { "x": 1150, "y": 890 },
+      "data": {
+        "name": "FAQ Visual",
+        "format": "Reels"
+      }
+    },
+    {
+      "id": "youtube-destination",
+      "type": "brand",
+      "position": { "x": 1500, "y": 450 },
+      "data": {
+        "brand": "youtube",
+        "label": "YouTube",
+        "subtitle": "Canal de Destino",
+        "description": "Vídeos completos do DVD",
+        "status": "Landing Page",
+        "isActive": true
+      }
+    }
+  ],
+  "connections": {
+    "whatsapp-organic": {
+      "main": {
+        "0": [{ "node": "youtube-destination", "handle": "main" }]
+      }
+    },
+    "instagram-organic": {
+      "main": {
+        "0": [{ "node": "youtube-destination", "handle": "main" }]
+      }
+    },
+    "facebook-organic": {
+      "main": {
+        "0": [{ "node": "youtube-destination", "handle": "main" }]
+      }
+    },
+    "email-organic": {
+      "main": {
+        "0": [{ "node": "youtube-destination", "handle": "main" }]
+      }
+    },
+    "meta-campaign": {
+      "main": {
+        "0": [
+          { "node": "adset-1", "handle": "main" },
+          { "node": "adset-2", "handle": "main" },
+          { "node": "adset-3", "handle": "main" }
+        ]
+      }
+    },
+    "adset-1": {
+      "main": {
+        "0": [
+          { "node": "ad-1-1", "handle": "main" },
+          { "node": "ad-1-2", "handle": "main" },
+          { "node": "ad-1-3", "handle": "main" },
+          { "node": "ad-1-4", "handle": "main" },
+          { "node": "ad-1-5", "handle": "main" }
+        ]
+      }
+    },
+    "ad-1-1": { "main": { "0": [{ "node": "youtube-destination", "handle": "main" }] } },
+    "ad-1-2": { "main": { "0": [{ "node": "youtube-destination", "handle": "main" }] } },
+    "ad-1-3": { "main": { "0": [{ "node": "youtube-destination", "handle": "main" }] } },
+    "ad-1-4": { "main": { "0": [{ "node": "youtube-destination", "handle": "main" }] } },
+    "ad-1-5": { "main": { "0": [{ "node": "youtube-destination", "handle": "main" }] } },
+    "adset-2": {
+      "main": {
+        "0": [
+          { "node": "ad-2-1", "handle": "main" },
+          { "node": "ad-2-2", "handle": "main" },
+          { "node": "ad-2-3", "handle": "main" },
+          { "node": "ad-2-4", "handle": "main" },
+          { "node": "ad-2-5", "handle": "main" }
+        ]
+      }
+    },
+    "ad-2-1": { "main": { "0": [{ "node": "youtube-destination", "handle": "main" }] } },
+    "ad-2-2": { "main": { "0": [{ "node": "youtube-destination", "handle": "main" }] } },
+    "ad-2-3": { "main": { "0": [{ "node": "youtube-destination", "handle": "main" }] } },
+    "ad-2-4": { "main": { "0": [{ "node": "youtube-destination", "handle": "main" }] } },
+    "ad-2-5": { "main": { "0": [{ "node": "youtube-destination", "handle": "main" }] } },
+    "adset-3": {
+      "main": {
+        "0": [
+          { "node": "ad-3-1", "handle": "main" },
+          { "node": "ad-3-2", "handle": "main" },
+          { "node": "ad-3-3", "handle": "main" },
+          { "node": "ad-3-4", "handle": "main" },
+          { "node": "ad-3-5", "handle": "main" }
+        ]
+      }
+    },
+    "ad-3-1": { "main": { "0": [{ "node": "youtube-destination", "handle": "main" }] } },
+    "ad-3-2": { "main": { "0": [{ "node": "youtube-destination", "handle": "main" }] } },
+    "ad-3-3": { "main": { "0": [{ "node": "youtube-destination", "handle": "main" }] } },
+    "ad-3-4": { "main": { "0": [{ "node": "youtube-destination", "handle": "main" }] } },
+    "ad-3-5": { "main": { "0": [{ "node": "youtube-destination", "handle": "main" }] } }
+  }
+}

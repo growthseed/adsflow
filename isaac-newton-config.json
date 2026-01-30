@@ -1,0 +1,484 @@
+{
+  "flow_id": "isaac-newton-meta-ads-2026",
+  "flow_name": "Isaac Newton Schools - Meta Ads Campaign Flow",
+  "client": "Isaac Newton Educational Group",
+  "created_by": "Efeito Digital",
+  "creation_date": "2026-01-29",
+  "last_updated": "2026-01-29",
+  "flow_description": "Comprehensive Meta Ads campaign structure for Isaac Newton schools across Vila, Artur Alvim, and Campinas campuses",
+  
+  "canvas_settings": {
+    "background_color": "#f8fafc",
+    "grid_enabled": true,
+    "zoom_level": 1.0,
+    "canvas_width": 1920,
+    "canvas_height": 1080
+  },
+  
+  "nodes": [
+    {
+      "id": "brand-isaac-newton",
+      "type": "BrandNode",
+      "position": { "x": 100, "y": 100 },
+      "data": {
+        "label": "Isaac Newton Schools",
+        "brand_color": "#2563eb",
+        "logo_url": "/icons/education.svg",
+        "description": "Educational Excellence Since 1990",
+        "total_budget": "R$ 84.50/day",
+        "total_accounts": 6,
+        "active_campaigns": 5
+      },
+      "style": {
+        "width": 200,
+        "height": 120,
+        "borderColor": "#2563eb",
+        "backgroundColor": "#eff6ff"
+      }
+    },
+    
+    {
+      "id": "account-vila-primary",
+      "type": "AccountNode",
+      "position": { "x": 400, "y": 50 },
+      "data": {
+        "label": "Vila Campus",
+        "account_id": "act_3482049598727995",
+        "balance": "R$ 991.22",
+        "status": "active",
+        "campaigns_count": 23,
+        "active_campaigns": 3,
+        "daily_budget": "R$ 77.50",
+        "campus_location": "Vila Matilde"
+      },
+      "style": {
+        "width": 180,
+        "height": 100,
+        "borderColor": "#059669",
+        "backgroundColor": "#ecfdf5"
+      }
+    },
+    
+    {
+      "id": "account-campinas-backup",
+      "type": "AccountNode", 
+      "position": { "x": 400, "y": 200 },
+      "data": {
+        "label": "Campinas Backup",
+        "account_id": "act_638521723655981",
+        "balance": "Active",
+        "status": "limited",
+        "campaigns_count": 7,
+        "active_campaigns": 1,
+        "daily_budget": "R$ 15.00",
+        "campus_location": "Campinas"
+      },
+      "style": {
+        "width": 180,
+        "height": 100,
+        "borderColor": "#d97706",
+        "backgroundColor": "#fef3c7"
+      }
+    },
+    
+    {
+      "id": "account-campinas-main",
+      "type": "AccountNode",
+      "position": { "x": 400, "y": 350 },
+      "data": {
+        "label": "Campinas Main", 
+        "account_id": "act_1307856586941362",
+        "balance": "Active",
+        "status": "minimal",
+        "campaigns_count": 1,
+        "active_campaigns": 1,
+        "daily_budget": "R$ 20.00",
+        "campus_location": "Campinas"
+      },
+      "style": {
+        "width": 180,
+        "height": 100,
+        "borderColor": "#7c3aed",
+        "backgroundColor": "#f3e8ff"
+      }
+    },
+    
+    {
+      "id": "campaign-vila-whats-main",
+      "type": "VisualCampaignNode",
+      "position": { "x": 700, "y": 20 },
+      "data": {
+        "label": "Vila WhatsApp Engagement",
+        "campaign_id": "120231162709150286",
+        "campaign_name": "ABO - [ENGAJAMENTO] [VILA] [WHATS] [28/07] - TOFU/MOFU",
+        "objective": "OUTCOME_ENGAGEMENT",
+        "status": "ACTIVE",
+        "daily_budget": "R$ 45.50",
+        "ad_sets_count": 3,
+        "optimization": "CONVERSATIONS",
+        "platform": "WhatsApp",
+        "funnel_stage": "TOFU/MOFU"
+      },
+      "style": {
+        "width": 220,
+        "height": 120,
+        "borderColor": "#059669",
+        "backgroundColor": "#d1fae5"
+      }
+    },
+    
+    {
+      "id": "campaign-artur-whats",
+      "type": "VisualCampaignNode", 
+      "position": { "x": 700, "y": 160 },
+      "data": {
+        "label": "Artur WhatsApp Engagement",
+        "campaign_id": "120221634747520286", 
+        "campaign_name": "ABO - [ENGAJAMENTO] [ARTUR] [WHATS] [03-04] - TOFU/MOFU",
+        "objective": "OUTCOME_ENGAGEMENT",
+        "status": "ACTIVE",
+        "daily_budget": "R$ 26.00",
+        "ad_sets_count": 2,
+        "optimization": "CONVERSATIONS",
+        "platform": "WhatsApp",
+        "funnel_stage": "TOFU/MOFU"
+      },
+      "style": {
+        "width": 220,
+        "height": 120,
+        "borderColor": "#059669", 
+        "backgroundColor": "#d1fae5"
+      }
+    },
+    
+    {
+      "id": "campaign-artur-video",
+      "type": "VisualCampaignNode",
+      "position": { "x": 700, "y": 300 },
+      "data": {
+        "label": "Artur Video Warming",
+        "campaign_id": "120221614908770286",
+        "campaign_name": "ABO - [ENGAJAMENTO] [ARTUR] [VV] [AQUECIMENTO] [03-04] - TOFU",
+        "objective": "OUTCOME_ENGAGEMENT", 
+        "status": "ACTIVE",
+        "daily_budget": "R$ 6.00",
+        "ad_sets_count": 1,
+        "optimization": "THRUPLAY",
+        "platform": "Instagram",
+        "funnel_stage": "TOFU"
+      },
+      "style": {
+        "width": 220,
+        "height": 120,
+        "borderColor": "#0891b2",
+        "backgroundColor": "#cffafe"
+      }
+    },
+    
+    {
+      "id": "campaign-kids-ig",
+      "type": "VisualCampaignNode",
+      "position": { "x": 700, "y": 440 },
+      "data": {
+        "label": "Kids Instagram Engagement",
+        "campaign_id": "120217037407030700",
+        "campaign_name": "[ED] [ENG] [IG] Isaac Kids 01",
+        "objective": "OUTCOME_ENGAGEMENT",
+        "status": "ACTIVE", 
+        "daily_budget": "R$ 15.00",
+        "ad_sets_count": 1,
+        "optimization": "POST_ENGAGEMENT",
+        "platform": "Instagram",
+        "funnel_stage": "TOFU"
+      },
+      "style": {
+        "width": 220,
+        "height": 120,
+        "borderColor": "#dc2626",
+        "backgroundColor": "#fef2f2"
+      }
+    },
+    
+    {
+      "id": "adset-vila-frio-4km",
+      "type": "VisualAudienceNode",
+      "position": { "x": 1000, "y": 20 },
+      "data": {
+        "label": "🟢 FRIO 4KM Parents",
+        "adset_id": "120234655551080286",
+        "adset_name": "🟢00 - FRIO - [RAIO4KM] [M/F] [26-45] [FB/IG] - PAIS",
+        "audience_type": "cold",
+        "targeting": {
+          "age_range": "26-45",
+          "gender": "M/F", 
+          "location": "4KM radius",
+          "interests": "Parents",
+          "platforms": "Facebook + Instagram"
+        },
+        "daily_budget": "R$ 10.00",
+        "status": "ACTIVE",
+        "optimization": "CONVERSATIONS"
+      },
+      "style": {
+        "width": 200,
+        "height": 100,
+        "borderColor": "#059669",
+        "backgroundColor": "#ecfdf5"
+      }
+    },
+    
+    {
+      "id": "adset-vila-frio-10km",
+      "type": "VisualAudienceNode",
+      "position": { "x": 1000, "y": 140 },
+      "data": {
+        "label": "🟢 FRIO 10KM Parents",
+        "adset_id": "120234654970160286",
+        "adset_name": "🟢00 - FRIO - [RAIO10KM] [M/F] [26-55] [FB/IG] - PAIS",
+        "audience_type": "cold",
+        "targeting": {
+          "age_range": "26-55",
+          "gender": "M/F",
+          "location": "10KM radius", 
+          "interests": "Parents",
+          "platforms": "Facebook + Instagram"
+        },
+        "daily_budget": "R$ 20.00",
+        "status": "ACTIVE",
+        "optimization": "CONVERSATIONS"
+      },
+      "style": {
+        "width": 200,
+        "height": 100,
+        "borderColor": "#059669",
+        "backgroundColor": "#ecfdf5"
+      }
+    },
+    
+    {
+      "id": "adset-vila-lal",
+      "type": "VisualAudienceNode",
+      "position": { "x": 1000, "y": 260 },
+      "data": {
+        "label": "🟢 LAL High Engagement", 
+        "adset_id": "120238938259650286",
+        "adset_name": "🟢02 - LAL - [RAIO10KM] [M/F] [25-50+] [FB/IG] - IG + VV95% + ENLV",
+        "audience_type": "lookalike",
+        "targeting": {
+          "age_range": "25-50+",
+          "gender": "M/F",
+          "location": "10KM radius",
+          "interests": "Instagram + 95% Video Views + High Engagement",
+          "platforms": "Facebook + Instagram"
+        },
+        "daily_budget": "R$ 15.00",
+        "status": "ACTIVE", 
+        "optimization": "CONVERSATIONS"
+      },
+      "style": {
+        "width": 200,
+        "height": 100,
+        "borderColor": "#dc2626",
+        "backgroundColor": "#fef2f2"
+      }
+    },
+    
+    {
+      "id": "creative-whatsapp",
+      "type": "VisualCreativeNode",
+      "position": { "x": 1300, "y": 80 },
+      "data": {
+        "label": "WhatsApp Conversion",
+        "creative_type": "messaging",
+        "platform": "WhatsApp",
+        "call_to_action": "Send Message",
+        "objective": "Lead Generation",
+        "content_type": "Educational Content + CTA"
+      },
+      "style": {
+        "width": 160,
+        "height": 80,
+        "borderColor": "#25d366",
+        "backgroundColor": "#dcfce7"
+      }
+    },
+    
+    {
+      "id": "creative-instagram-video",
+      "type": "VisualCreativeNode", 
+      "position": { "x": 1300, "y": 200 },
+      "data": {
+        "label": "Instagram Video",
+        "creative_type": "video",
+        "platform": "Instagram", 
+        "call_to_action": "Learn More",
+        "objective": "Engagement + Awareness",
+        "content_type": "Educational Video Content"
+      },
+      "style": {
+        "width": 160,
+        "height": 80,
+        "borderColor": "#e1306c",
+        "backgroundColor": "#fdf2f8"
+      }
+    },
+    
+    {
+      "id": "metrics-dashboard",
+      "type": "MetricsNode",
+      "position": { "x": 1300, "y": 320 },
+      "data": {
+        "label": "Performance Metrics",
+        "total_daily_spend": "R$ 84.50+",
+        "active_adsets": 7,
+        "total_campaigns": 31,
+        "active_campaigns": 5,
+        "primary_kpi": "WhatsApp Conversations",
+        "secondary_kpi": "Video Completion Rate",
+        "account_balance": "R$ 991.22"
+      },
+      "style": {
+        "width": 180,
+        "height": 120,
+        "borderColor": "#6366f1",
+        "backgroundColor": "#eef2ff"
+      }
+    }
+  ],
+  
+  "edges": [
+    {
+      "id": "brand-to-vila",
+      "source": "brand-isaac-newton",
+      "target": "account-vila-primary", 
+      "type": "smoothstep",
+      "style": { "stroke": "#059669", "strokeWidth": 3 },
+      "data": { "label": "Primary Account" }
+    },
+    {
+      "id": "brand-to-campinas-backup",
+      "source": "brand-isaac-newton",
+      "target": "account-campinas-backup",
+      "type": "smoothstep", 
+      "style": { "stroke": "#d97706", "strokeWidth": 2 },
+      "data": { "label": "Secondary Account" }
+    },
+    {
+      "id": "brand-to-campinas-main", 
+      "source": "brand-isaac-newton",
+      "target": "account-campinas-main",
+      "type": "smoothstep",
+      "style": { "stroke": "#7c3aed", "strokeWidth": 2 },
+      "data": { "label": "Tertiary Account" }
+    },
+    {
+      "id": "vila-to-whats-campaign",
+      "source": "account-vila-primary",
+      "target": "campaign-vila-whats-main",
+      "type": "smoothstep",
+      "style": { "stroke": "#059669", "strokeWidth": 3 },
+      "data": { "label": "R$ 45.50/day" }
+    },
+    {
+      "id": "vila-to-artur-whats",
+      "source": "account-vila-primary", 
+      "target": "campaign-artur-whats",
+      "type": "smoothstep",
+      "style": { "stroke": "#059669", "strokeWidth": 2 },
+      "data": { "label": "Cross-Campus: R$ 26.00/day" }
+    },
+    {
+      "id": "vila-to-artur-video",
+      "source": "account-vila-primary",
+      "target": "campaign-artur-video", 
+      "type": "smoothstep",
+      "style": { "stroke": "#0891b2", "strokeWidth": 2 },
+      "data": { "label": "Video Warming: R$ 6.00/day" }
+    },
+    {
+      "id": "campinas-backup-to-kids",
+      "source": "account-campinas-backup",
+      "target": "campaign-kids-ig",
+      "type": "smoothstep",
+      "style": { "stroke": "#dc2626", "strokeWidth": 2 },
+      "data": { "label": "Kids Program: R$ 15.00/day" }
+    },
+    {
+      "id": "whats-campaign-to-frio-4km",
+      "source": "campaign-vila-whats-main",
+      "target": "adset-vila-frio-4km",
+      "type": "smoothstep",
+      "style": { "stroke": "#059669", "strokeWidth": 2 },
+      "data": { "label": "Cold Audience" }
+    },
+    {
+      "id": "whats-campaign-to-frio-10km",
+      "source": "campaign-vila-whats-main", 
+      "target": "adset-vila-frio-10km",
+      "type": "smoothstep",
+      "style": { "stroke": "#059669", "strokeWidth": 2 },
+      "data": { "label": "Broader Cold" }
+    },
+    {
+      "id": "whats-campaign-to-lal",
+      "source": "campaign-vila-whats-main",
+      "target": "adset-vila-lal", 
+      "type": "smoothstep",
+      "style": { "stroke": "#dc2626", "strokeWidth": 3 },
+      "data": { "label": "Hot Audience" }
+    },
+    {
+      "id": "adsets-to-whatsapp-creative",
+      "source": "adset-vila-frio-4km",
+      "target": "creative-whatsapp",
+      "type": "smoothstep",
+      "style": { "stroke": "#25d366", "strokeWidth": 2 },
+      "data": { "label": "WhatsApp CTA" }
+    },
+    {
+      "id": "video-campaign-to-ig-creative",
+      "source": "campaign-artur-video",
+      "target": "creative-instagram-video",
+      "type": "smoothstep", 
+      "style": { "stroke": "#e1306c", "strokeWidth": 2 },
+      "data": { "label": "Video Content" }
+    },
+    {
+      "id": "all-to-metrics",
+      "source": "creative-whatsapp",
+      "target": "metrics-dashboard",
+      "type": "smoothstep",
+      "style": { "stroke": "#6366f1", "strokeWidth": 1, "strokeDasharray": "5,5" },
+      "data": { "label": "Performance Tracking" }
+    }
+  ],
+  
+  "flow_metadata": {
+    "total_accounts": 6,
+    "active_accounts": 3, 
+    "total_campaigns": 31,
+    "active_campaigns": 5,
+    "total_adsets": "20+",
+    "active_adsets": 7,
+    "daily_budget_total": "R$ 84.50+",
+    "account_balance_total": "R$ 991.22+",
+    "primary_objectives": ["OUTCOME_ENGAGEMENT", "CONVERSATIONS"], 
+    "primary_platforms": ["WhatsApp", "Instagram", "Facebook"],
+    "geographic_focus": ["Vila Matilde", "Artur Alvim", "Campinas"],
+    "audience_strategy": ["Cold Parents", "Warm Retargeting", "Lookalike High-Intent"],
+    "content_strategy": ["Educational Content", "Video Warming", "WhatsApp Conversion"],
+    "optimization_goals": ["CONVERSATIONS", "THRUPLAY", "POST_ENGAGEMENT"]
+  },
+  
+  "notes": [
+    "Vila account (act_3482049598727995) is the primary active account managing campaigns for multiple campuses",
+    "Cross-campus management: Artur Alvim campaigns are managed through Vila account",
+    "Strong focus on WhatsApp conversion optimization with hyperlocal geographic targeting",
+    "Audience temperature strategy: Cold (FRIO) → Warm (QUENTE) → Hot (LAL) progression",
+    "Budget distribution favors WhatsApp engagement over video warming campaigns",
+    "Historical pattern shows major spending during matriculation seasons (Q4/Q1)",
+    "Kids programs run separately through Campinas backup account",
+    "Three accounts are dormant with no active campaigns",
+    "Emoji-based status management system: 🟢 (active), 🔴 (paused), ⚪ (off)"
+  ]
+}
