@@ -2,6 +2,9 @@ import { Component, type ReactNode } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider, useAuth } from './contexts/AuthContext'
 
+// Layout
+import AppLayout from './components/Layout/AppLayout'
+
 // Pages
 import LandingPage from './pages/LandingPage'
 import LoginPage from './pages/LoginPage'
@@ -95,6 +98,20 @@ const PublicRoute = ({ children }: { children: React.ReactNode }) => {
   return user ? <Navigate to="/dashboard" replace /> : <>{children}</>
 }
 
+// Placeholder Page Component
+const PlaceholderPage = ({ title, description }: { title: string; description: string }) => (
+  <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
+    <div className="w-20 h-20 bg-slate-100 rounded-2xl flex items-center justify-center mb-6">
+      <svg className="w-10 h-10 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+      </svg>
+    </div>
+    <h1 className="text-2xl font-bold text-slate-900 mb-2">{title}</h1>
+    <p className="text-slate-500 max-w-md">{description}</p>
+    <span className="mt-4 px-3 py-1 bg-amber-100 text-amber-700 text-xs font-medium rounded-full">Em desenvolvimento</span>
+  </div>
+)
+
 // App Principal
 function App() {
   return (
@@ -102,61 +119,159 @@ function App() {
       <AuthProvider>
         <BrowserRouter>
           <Routes>
-          {/* Public Routes */}
-          <Route
-            path="/"
-            element={
-              <PublicRoute>
-                <LandingPage />
-              </PublicRoute>
-            }
-          />
-          <Route
-            path="/login"
-            element={
-              <PublicRoute>
-                <LoginPage />
-              </PublicRoute>
-            }
-          />
+            {/* Public Routes */}
+            <Route
+              path="/"
+              element={
+                <PublicRoute>
+                  <LandingPage />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="/login"
+              element={
+                <PublicRoute>
+                  <LoginPage />
+                </PublicRoute>
+              }
+            />
 
-          {/* Protected Routes */}
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute>
-                <DashboardPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/editor"
-            element={
-              <ProtectedRoute>
-                <FlowEditorPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/editor/:id"
-            element={
-              <ProtectedRoute>
-                <FlowEditorPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/bi"
-            element={
-              <ProtectedRoute>
-                <BIDashboardPage />
-              </ProtectedRoute>
-            }
-          />
+            {/* Protected Routes - wrapped with AppLayout */}
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute>
+                  <AppLayout>
+                    <DashboardPage />
+                  </AppLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/editor"
+              element={
+                <ProtectedRoute>
+                  <AppLayout>
+                    <FlowEditorPage />
+                  </AppLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/editor/:id"
+              element={
+                <ProtectedRoute>
+                  <AppLayout>
+                    <FlowEditorPage />
+                  </AppLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/bi"
+              element={
+                <ProtectedRoute>
+                  <AppLayout>
+                    <BIDashboardPage />
+                  </AppLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/campaigns"
+              element={
+                <ProtectedRoute>
+                  <AppLayout>
+                    <PlaceholderPage title="Campanhas" description="Gerencie suas campanhas de Meta Ads e Google Ads em um só lugar." />
+                  </AppLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/funnels"
+              element={
+                <ProtectedRoute>
+                  <AppLayout>
+                    <PlaceholderPage title="Funis" description="Visualize e edite seus funis de conversão com o editor visual." />
+                  </AppLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/integrations"
+              element={
+                <ProtectedRoute>
+                  <AppLayout>
+                    <PlaceholderPage title="Integrações" description="Conecte suas plataformas de ads, CRM e analytics." />
+                  </AppLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/reports"
+              element={
+                <ProtectedRoute>
+                  <AppLayout>
+                    <PlaceholderPage title="Relatórios" description="Gere relatórios detalhados de performance das suas campanhas." />
+                  </AppLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/clients"
+              element={
+                <ProtectedRoute>
+                  <AppLayout>
+                    <PlaceholderPage title="Clientes" description="Gerencie seus clientes e suas respectivas contas." />
+                  </AppLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/team"
+              element={
+                <ProtectedRoute>
+                  <AppLayout>
+                    <PlaceholderPage title="Equipe" description="Gerencie membros da equipe, papéis e permissões." />
+                  </AppLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/billing"
+              element={
+                <ProtectedRoute>
+                  <AppLayout>
+                    <PlaceholderPage title="Faturamento" description="Gerencie seu plano, faturas e métodos de pagamento." />
+                  </AppLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/settings"
+              element={
+                <ProtectedRoute>
+                  <AppLayout>
+                    <PlaceholderPage title="Configurações" description="Configure preferências da conta e do sistema." />
+                  </AppLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute>
+                  <AppLayout>
+                    <PlaceholderPage title="Administração" description="Painel administrativo do sistema — apenas super admins." />
+                  </AppLayout>
+                </ProtectedRoute>
+              }
+            />
 
-          {/* Catch all - redirect to home */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
+            {/* Catch all - redirect to home */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
         </BrowserRouter>
       </AuthProvider>
     </ErrorBoundary>
