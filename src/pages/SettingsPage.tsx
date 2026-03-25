@@ -78,16 +78,26 @@ function ProfileSection({ userId }: { userId: string }) {
   }, [userId])
 
   const handleSave = async () => {
+    if (!name.trim()) {
+      toast.error('Nome não pode ficar vazio')
+      return
+    }
     setSaving(true)
     try {
       await profileService.update(userId, {
         name: name.trim(),
         phone: phone.trim() || null,
       })
-      await refreshSession()
-      toast.success('Perfil atualizado com sucesso!')
+      // Refresh session to update user name in context
+      try {
+        await refreshSession()
+      } catch {
+        // Session refresh may fail but profile was saved
+      }
+      toast.success('Perfil atualizado!')
     } catch (err: any) {
-      toast.error(err.message || 'Erro ao salvar perfil')
+      console.error('Erro ao salvar perfil:', err)
+      toast.error(err.message || 'Erro ao salvar perfil. Verifique sua conexão.')
     } finally {
       setSaving(false)
     }
