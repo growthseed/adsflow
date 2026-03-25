@@ -10,7 +10,7 @@
 import { createContext, useContext, useEffect, useState, useMemo, useCallback } from 'react';
 import type { ReactNode } from 'react';
 import type { User, AuthError } from '@supabase/supabase-js';
-import supabase from '../lib/supabase';
+import supabase, { isSupabaseConfigured } from '../lib/supabase';
 
 // ========== TYPES ==========
 
@@ -26,6 +26,7 @@ export interface UserProfile {
   role: GlobalRole;
   is_active: boolean;
   last_login_at: string | null;
+  created_at: string | null;
 }
 
 export interface ClientMembership {
@@ -208,11 +209,28 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // ---- Auth state listener ----
   useEffect(() => {
+    // Short-circuit: se Supabase não está configurado, não tenta autenticar
+    if (!isSupabaseConfigured) {
+      console.warn('⚠️ Supabase não configurado. Pulando autenticação.');
+      setLoading(false);
+      return;
+    }
+
     let mounted = true;
+
+    // Safety timeout: force loading=false after 5s to prevent infinite spinner
+    const timeout = setTimeout(() => {
+      if (mounted) {
+        console.warn('⚠️ Auth timeout (5s). Forçando loading=false.');
+        setLoading(false);
+      }
+    }, 5000);
 
     const initSession = async () => {
       try {
+        console.log('🔐 [Auth] Iniciando getSession...');
         const { data: { session } } = await supabase.auth.getSession();
+        console.log('🔐 [Auth] getSession OK, user:', session?.user?.email ?? 'nenhum');
         if (!mounted) return;
 
         const currentUser = session?.user ?? null;
@@ -224,6 +242,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       } catch (error) {
         console.warn('Erro ao verificar sessao:', error);
       } finally {
+        clearTimeout(timeout);
         if (mounted) setLoading(false);
       }
     };
@@ -251,6 +270,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     return () => {
       mounted = false;
+      clearTimeout(timeout);
       subscription.unsubscribe();
     };
   }, [fetchUserData]);

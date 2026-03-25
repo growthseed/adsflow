@@ -1,10 +1,12 @@
 import { memo } from 'react'
-import { Handle, Position } from 'reactflow'
+import { Handle, Position, NodeResizer } from 'reactflow'
 import type { NodeProps } from 'reactflow'
 import { Megaphone } from 'lucide-react'
 
-const VisualCampaignNode = memo(({ }: NodeProps) => {
+const VisualCampaignNode = memo(({ selected }: NodeProps) => {
   return (
+    <>
+    <NodeResizer isVisible={selected} minWidth={150} minHeight={100} />
     <div className="relative">
       <Handle
         type="target"
@@ -27,6 +29,7 @@ const VisualCampaignNode = memo(({ }: NodeProps) => {
         className="w-3 h-3 !bg-blue-500 border-2 border-white"
       />
     </div>
+    </>
   )
 })
 

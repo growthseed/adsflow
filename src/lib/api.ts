@@ -333,11 +333,13 @@ export const flowsAPI = {
 // ============================================
 // META ADS SYNC (N8N Webhooks)
 // ============================================
+// Service layer completo em: src/services/metaAdsService.ts
+// (adAccountsService, syncService, insightsService, syncLogsService)
 
 export const metaAPI = {
   /**
    * POST /adsflow/meta-sync
-   * Sincroniza dados do Meta Ads para um flow via N8N
+   * Sincroniza dados do Meta Ads para um flow via N8N (legacy)
    */
   sync: async (input: MetaSyncInput): Promise<MetaSyncResponse> => {
     try {
@@ -372,6 +374,9 @@ export const metaAPI = {
     }
   },
 }
+
+// Re-export service layer for convenience
+export { adAccountsService, syncService, insightsService, syncLogsService } from '@/services/metaAdsService'
 
 // ============================================
 // HEALTH CHECK (PostgreSQL)

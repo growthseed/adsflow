@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Handle, Position } from 'reactflow';
+import { Handle, Position, NodeResizer } from 'reactflow';
 import type { NodeProps } from 'reactflow';
 import { generatePresetThumbnail, generateFreshThumbnailUrl, extractDomain } from '@/lib/cloudinary';
 import { ExternalLink, RefreshCw, Globe } from 'lucide-react';
@@ -11,7 +11,7 @@ export interface LandingPageData {
   onEdit?: (data: LandingPageData) => void;
 }
 
-export default function LandingPageNode({ data, id }: NodeProps<LandingPageData>) {
+export default function LandingPageNode({ data, id, selected }: NodeProps<LandingPageData>) {
   const [isLoading, setIsLoading] = useState(false);
   const [imageError, setImageError] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -57,6 +57,8 @@ export default function LandingPageNode({ data, id }: NodeProps<LandingPageData>
   };
 
   return (
+    <>
+    <NodeResizer isVisible={selected} minWidth={200} minHeight={120} />
     <div className="bg-white rounded-lg shadow-lg border-2 border-blue-500 overflow-hidden w-[380px]">
       <Handle type="target" position={Position.Left} className="w-3 h-3 bg-blue-500 border-2 border-white" />
       <Handle type="source" position={Position.Right} className="w-3 h-3 bg-blue-500 border-2 border-white" />
@@ -125,5 +127,6 @@ export default function LandingPageNode({ data, id }: NodeProps<LandingPageData>
         </div>
       )}
     </div>
+    </>
   );
 }

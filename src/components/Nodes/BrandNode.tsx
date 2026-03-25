@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import { Handle, Position } from 'reactflow'
+import { Handle, Position, NodeResizer } from 'reactflow'
 import type { NodeProps } from 'reactflow'
 import BrandIcon from '../BrandIcon'
 
@@ -230,11 +230,13 @@ const brandColors: Record<string, {
   }
 }
 
-const BrandNode = memo(({ data }: NodeProps<BrandNodeData>) => {
+const BrandNode = memo(({ data, selected }: NodeProps<BrandNodeData>) => {
   const brandConfig = brandColors[data.brand] || brandColors.whatsapp
   const isActive = data.isActive !== false
 
   return (
+    <>
+    <NodeResizer isVisible={selected} minWidth={80} minHeight={80} />
     <div className="relative group">
       <Handle
         type="target"
@@ -319,6 +321,7 @@ const BrandNode = memo(({ data }: NodeProps<BrandNodeData>) => {
         className="w-3 h-3 !bg-blue-500 border-2 border-white"
       />
     </div>
+    </>
   )
 })
 

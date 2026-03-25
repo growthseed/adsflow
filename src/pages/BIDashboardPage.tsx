@@ -1,4 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
+import {
+  AreaChart,
+  Area,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Cell,
+} from 'recharts';
 import { Link } from 'react-router-dom';
 import {
   BarChart3,
@@ -9,7 +21,11 @@ import {
   RefreshCw,
   Filter,
   Download,
+  ShoppingCart,
 } from 'lucide-react';
+
+// Auth
+import { useAuth } from '@/contexts/AuthContext';
 
 // Components
 import { KPICard, FunnelChart, LeadsLineChart, ResponsavelTable, PerdasChart } from '@/components/BI';
@@ -29,17 +45,194 @@ import {
 
 // Types
 import type { BIPageType } from '@/types/bi';
+import { downloadCSV } from '@/lib/csv';
+
+// =====================================================
+// E-COMMERCE VIEW (demo data — conectar com API real)
+// =====================================================
+
+const ECOMMERCE_REVENUE = [
+  { month: 'Set', receita: 18400, pedidos: 124 },
+  { month: 'Out', receita: 22800, pedidos: 156 },
+  { month: 'Nov', receita: 31200, pedidos: 203 },
+  { month: 'Dez', receita: 45600, pedidos: 312 },
+  { month: 'Jan', receita: 28900, pedidos: 188 },
+  { month: 'Fev', receita: 34100, pedidos: 221 },
+];
+
+const ECOMMERCE_SOURCES = [
+  { source: 'Meta Ads', receita: 48200, pedidos: 312, roas: 4.2 },
+  { source: 'Google Ads', receita: 32100, pedidos: 198, roas: 3.1 },
+  { source: 'Orgânico', receita: 24600, pedidos: 167, roas: 0 },
+  { source: 'Email Mkt', receita: 18300, pedidos: 124, roas: 8.7 },
+  { source: 'Direto', receita: 12800, pedidos: 89, roas: 0 },
+];
+
+const ECOMMERCE_PRODUCTS = [
+  { name: 'Curso Completo Marketing', vendas: 189, receita: 56700, ticket: 300 },
+  { name: 'Mentoria Individual', vendas: 42, receita: 41580, ticket: 990 },
+  { name: 'Pack Templates', vendas: 312, receita: 15288, ticket: 49 },
+  { name: 'Assinatura Premium', vendas: 156, receita: 14040, ticket: 90 },
+  { name: 'E-book Estratégias', vendas: 421, receita: 8420, ticket: 20 },
+];
+
+const SOURCE_COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#6b7280'];
+
+function EcommerceView() {
+  const totals = useMemo(() => {
+    const receita = ECOMMERCE_REVENUE.reduce((s, r) => s + r.receita, 0);
+    const pedidos = ECOMMERCE_REVENUE.reduce((s, r) => s + r.pedidos, 0);
+    return {
+      receita,
+      pedidos,
+      ticketMedio: pedidos > 0 ? receita / pedidos : 0,
+      taxaConversao: 3.2,
+    };
+  }, []);
+
+  const fmtBRL = (v: number | undefined) => (v ?? 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+  return (
+    <div className="space-y-6">
+      {/* Demo data banner */}
+      <div className="flex items-center gap-3 p-3 bg-amber-50 border border-amber-200 rounded-lg">
+        <ShoppingCart className="w-5 h-5 text-amber-600 flex-shrink-0" />
+        <p className="text-sm text-amber-700">
+          <span className="font-medium">Dados demonstrativos.</span> Conecte sua plataforma de e-commerce nas Integrações para ver dados reais.
+        </p>
+      </div>
+
+      {/* KPIs */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <KPICard data={{ title: 'Receita Total', value: totals.receita, format: 'currency', color: 'green' }} />
+        <KPICard data={{ title: 'Pedidos', value: totals.pedidos, format: 'number', color: 'blue' }} />
+        <KPICard data={{ title: 'Ticket Médio', value: totals.ticketMedio, format: 'currency', color: 'purple' }} />
+        <KPICard data={{ title: 'Taxa de Conversão', value: totals.taxaConversao, format: 'percentage', color: 'yellow' }} />
+      </div>
+
+      {/* Revenue Chart + Source ROAS */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Revenue over time */}
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">Receita Mensal</h3>
+          <ResponsiveContainer width="100%" height={280}>
+            <AreaChart data={ECOMMERCE_REVENUE}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+              <XAxis dataKey="month" tick={{ fill: '#64748b', fontSize: 12 }} />
+              <YAxis tickFormatter={(v) => `R$${(v / 1000).toFixed(0)}k`} tick={{ fill: '#64748b', fontSize: 12 }} />
+              <Tooltip formatter={(v) => fmtBRL(v as number)} />
+              <Area type="monotone" dataKey="receita" stroke="#10b981" fill="#10b981" fillOpacity={0.15} strokeWidth={2} />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Revenue by source */}
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">Receita por Fonte</h3>
+          <ResponsiveContainer width="100%" height={280}>
+            <BarChart data={ECOMMERCE_SOURCES} layout="vertical">
+              <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+              <XAxis type="number" tickFormatter={(v) => `R$${(v / 1000).toFixed(0)}k`} tick={{ fill: '#64748b', fontSize: 12 }} />
+              <YAxis type="category" dataKey="source" width={90} tick={{ fill: '#64748b', fontSize: 12 }} />
+              <Tooltip formatter={(v) => fmtBRL(v as number)} />
+              <Bar dataKey="receita" radius={[0, 4, 4, 0]}>
+                {ECOMMERCE_SOURCES.map((_, i) => (
+                  <Cell key={i} fill={SOURCE_COLORS[i % SOURCE_COLORS.length]} />
+                ))}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+
+      {/* Source ROAS Table */}
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+        <div className="px-6 py-4 border-b border-gray-200">
+          <h3 className="text-lg font-semibold text-gray-900">ROAS por Canal</h3>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr className="bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3">Fonte</th>
+                <th className="px-6 py-3 text-right">Receita</th>
+                <th className="px-6 py-3 text-right">Pedidos</th>
+                <th className="px-6 py-3 text-right">ROAS</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-200">
+              {ECOMMERCE_SOURCES.map((s, i) => (
+                <tr key={s.source} className="hover:bg-gray-50">
+                  <td className="px-6 py-3">
+                    <div className="flex items-center gap-2">
+                      <div className="w-3 h-3 rounded-full" style={{ backgroundColor: SOURCE_COLORS[i] }} />
+                      <span className="text-sm font-medium text-gray-900">{s.source}</span>
+                    </div>
+                  </td>
+                  <td className="px-6 py-3 text-right text-sm text-gray-700">{fmtBRL(s.receita)}</td>
+                  <td className="px-6 py-3 text-right text-sm text-gray-700">{s.pedidos}</td>
+                  <td className="px-6 py-3 text-right">
+                    {s.roas > 0 ? (
+                      <span className={`text-sm font-semibold ${s.roas >= 3 ? 'text-green-600' : s.roas >= 2 ? 'text-yellow-600' : 'text-red-600'}`}>
+                        {s.roas.toFixed(1)}x
+                      </span>
+                    ) : (
+                      <span className="text-sm text-gray-400">—</span>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Top Products Table */}
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+        <div className="px-6 py-4 border-b border-gray-200">
+          <h3 className="text-lg font-semibold text-gray-900">Top Produtos</h3>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr className="bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3">#</th>
+                <th className="px-6 py-3">Produto</th>
+                <th className="px-6 py-3 text-right">Vendas</th>
+                <th className="px-6 py-3 text-right">Receita</th>
+                <th className="px-6 py-3 text-right">Ticket</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-200">
+              {ECOMMERCE_PRODUCTS.map((p, i) => (
+                <tr key={p.name} className="hover:bg-gray-50">
+                  <td className="px-6 py-3 text-sm text-gray-400 font-medium">{i + 1}</td>
+                  <td className="px-6 py-3 text-sm font-medium text-gray-900">{p.name}</td>
+                  <td className="px-6 py-3 text-right text-sm text-gray-700">{p.vendas}</td>
+                  <td className="px-6 py-3 text-right text-sm text-gray-700">{fmtBRL(p.receita)}</td>
+                  <td className="px-6 py-3 text-right text-sm font-medium text-gray-900">{fmtBRL(p.ticket)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 const BIDashboardPage: React.FC = () => {
+  const { activeClient } = useAuth();
+  const clientId = activeClient?.client_id;
   const [activePage, setActivePage] = useState<BIPageType>('funil');
 
-  // Filters
-  const { filters, updateDateRange, updateVendedor, resetFilters } = useBIFilters();
+  // Filters (scoped to active client)
+  const { filters, updateDateRange, updateVendedor, resetFilters } = useBIFilters(clientId);
 
   // Data hooks
   const { leads, isLoading: leadsLoading, refetch: refetchLeads } = useLeads(filters);
-  const { vendedores } = useVendedores();
-  const { kpis, isLoading: kpisLoading, refetch: refetchKPIs } = useKPIs(filters.dateRange);
+  const { vendedores } = useVendedores(clientId);
+  const { kpis, isLoading: kpisLoading, refetch: refetchKPIs } = useKPIs(filters.dateRange, clientId);
 
   // Derived data
   const funnelData = useFunnelData(leads);
@@ -54,12 +247,64 @@ const BIDashboardPage: React.FC = () => {
     refetchKPIs();
   };
 
+  const handleExport = useCallback(() => {
+    const today = new Date().toISOString().slice(0, 10);
+
+    if (activePage === 'ecommerce') {
+      downloadCSV(
+        ECOMMERCE_SOURCES.map((s) => ({ ...s })),
+        [
+          { key: 'source', label: 'Fonte' },
+          { key: 'receita', label: 'Receita' },
+          { key: 'pedidos', label: 'Pedidos' },
+          { key: 'roas', label: 'ROAS' },
+        ],
+        `ecommerce-roas-${today}`
+      );
+      return;
+    }
+
+    if (leads.length === 0) {
+      alert('Nenhum dado para exportar neste período.');
+      return;
+    }
+
+    downloadCSV(
+      leads.map((l) => ({
+        titulo: l.titulo,
+        contato_nome: l.contato_nome || '',
+        contato_email: l.contato_email || '',
+        contato_telefone: l.contato_telefone || '',
+        fonte: l.fonte || '',
+        status_funil: l.status_funil || '',
+        resultado: l.resultado || '',
+        valor_estimado: l.valor_estimado || 0,
+        dias_ciclo: l.dias_ciclo || 0,
+        responsavel: l.vendedor?.nome || '',
+      })),
+      [
+        { key: 'titulo', label: 'Título' },
+        { key: 'contato_nome', label: 'Nome' },
+        { key: 'contato_email', label: 'Email' },
+        { key: 'contato_telefone', label: 'Telefone' },
+        { key: 'fonte', label: 'Fonte' },
+        { key: 'status_funil', label: 'Etapa' },
+        { key: 'resultado', label: 'Resultado' },
+        { key: 'valor_estimado', label: 'Valor' },
+        { key: 'dias_ciclo', label: 'Dias no Ciclo' },
+        { key: 'responsavel', label: 'Responsável' },
+      ],
+      `bi-leads-${activePage}-${today}`
+    );
+  }, [activePage, leads]);
+
   // Navigation items
   const navItems = [
     { id: 'funil' as BIPageType, label: 'Análise de Funil', icon: BarChart3 },
     { id: 'variacoes' as BIPageType, label: 'Variações', icon: TrendingUp },
     { id: 'tempo' as BIPageType, label: 'Tempo de Fechamento', icon: Clock },
     { id: 'perdas' as BIPageType, label: 'Análise de Perdas', icon: XCircle },
+    { id: 'ecommerce' as BIPageType, label: 'E-commerce', icon: ShoppingCart },
   ];
 
   return (
@@ -125,6 +370,7 @@ const BIDashboardPage: React.FC = () => {
               </button>
 
               <button
+                onClick={handleExport}
                 className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg
                            hover:bg-blue-700 transition-colors font-medium"
               >
@@ -235,14 +481,12 @@ const BIDashboardPage: React.FC = () => {
               <KPICard
                 data={{
                   title: 'Tempo Médio de Vendas',
-                  value: leads.filter(l => l.resultado === 'vendido').length > 0
-                    ? Math.round(
-                        leads
-                          .filter(l => l.resultado === 'vendido' && l.dias_ciclo)
-                          .reduce((sum, l) => sum + (l.dias_ciclo || 0), 0) /
-                        leads.filter(l => l.resultado === 'vendido' && l.dias_ciclo).length
-                      )
-                    : 0,
+                  value: (() => {
+                    const vendidos = leads.filter(l => l.resultado === 'vendido' && l.dias_ciclo);
+                    return vendidos.length > 0
+                      ? Math.round(vendidos.reduce((sum, l) => sum + (l.dias_ciclo || 0), 0) / vendidos.length)
+                      : 0;
+                  })(),
                   format: 'days',
                   color: 'blue',
                 }}
@@ -331,14 +575,12 @@ const BIDashboardPage: React.FC = () => {
               <KPICard
                 data={{
                   title: 'Tempo M. Perdas',
-                  value: leads.filter(l => l.resultado === 'perdido').length > 0
-                    ? Math.round(
-                        leads
-                          .filter(l => l.resultado === 'perdido' && l.dias_ciclo)
-                          .reduce((sum, l) => sum + (l.dias_ciclo || 0), 0) /
-                        leads.filter(l => l.resultado === 'perdido' && l.dias_ciclo).length
-                      )
-                    : 0,
+                  value: (() => {
+                    const perdidos = leads.filter(l => l.resultado === 'perdido' && l.dias_ciclo);
+                    return perdidos.length > 0
+                      ? Math.round(perdidos.reduce((sum, l) => sum + (l.dias_ciclo || 0), 0) / perdidos.length)
+                      : 0;
+                  })(),
                   format: 'days',
                   color: 'yellow',
                 }}
@@ -358,6 +600,11 @@ const BIDashboardPage: React.FC = () => {
               title="Perdas por Responsável"
             />
           </div>
+        )}
+
+        {/* Page 5: E-commerce */}
+        {!isLoading && activePage === 'ecommerce' && (
+          <EcommerceView />
         )}
       </main>
 

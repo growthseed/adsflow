@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { Handle, Position } from 'reactflow';
+import { Handle, Position, NodeResizer } from 'reactflow';
 import type { NodeProps } from 'reactflow';
 import type { ActionNodeData } from '../../../types/funnelytics';
 import {
@@ -22,6 +22,8 @@ const ActionNode: React.FC<NodeProps<ActionNodeData>> = ({ data, selected }) => 
   };
 
   return (
+    <>
+    <NodeResizer isVisible={selected} minWidth={150} minHeight={100} />
     <div
       className={`
         relative min-w-[160px] rounded-xl shadow-lg overflow-hidden
@@ -108,6 +110,7 @@ const ActionNode: React.FC<NodeProps<ActionNodeData>> = ({ data, selected }) => 
         className="!w-3 !h-3 !bg-blue-500 !border-2 !border-white"
       />
     </div>
+    </>
   );
 };
 

@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { Handle, Position } from 'reactflow';
+import { Handle, Position, NodeResizer } from 'reactflow';
 import type { NodeProps } from 'reactflow';
 import type { SourceNodeData } from '../../../types/funnelytics';
 import {
@@ -12,6 +12,8 @@ const SourceNode: React.FC<NodeProps<SourceNodeData>> = ({ data, selected }) => 
   const config = SOURCE_CONFIG[data.source] || SOURCE_CONFIG.direct;
 
   return (
+    <>
+    <NodeResizer isVisible={selected} minWidth={150} minHeight={100} />
     <div
       className={`
         relative min-w-[180px] rounded-lg shadow-lg overflow-hidden
@@ -118,6 +120,7 @@ const SourceNode: React.FC<NodeProps<SourceNodeData>> = ({ data, selected }) => 
         className="!w-3 !h-3 !bg-blue-500 !border-2 !border-white"
       />
     </div>
+    </>
   );
 };
 

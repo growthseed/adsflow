@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Handle, Position } from 'reactflow';
+import { Handle, Position, NodeResizer } from 'reactflow';
 import type { NodeProps } from 'reactflow';
 import { Type, Bold, Italic, Underline, Square, X } from 'lucide-react';
 
@@ -31,7 +31,7 @@ const PRESET_COLORS = [
   { name: 'Cinza', value: '#6B7280' },
 ];
 
-export default function AdvancedTextNode({ data }: NodeProps<AdvancedTextData>) {
+export default function AdvancedTextNode({ data, selected }: NodeProps<AdvancedTextData>) {
   const [isEditing, setIsEditing] = useState(false);
   const [editText, setEditText] = useState(data.text || 'Digite seu texto...');
   const [fontSize, setFontSize] = useState(data.fontSize || 16);
@@ -100,6 +100,8 @@ export default function AdvancedTextNode({ data }: NodeProps<AdvancedTextData>) 
   } : {};
 
   return (
+    <>
+    <NodeResizer isVisible={selected} minWidth={200} minHeight={120} />
     <div className="relative min-w-[200px] max-w-[600px]">
       <Handle type="target" position={Position.Left} className="w-2 h-2 bg-gray-400 border border-white opacity-0 hover:opacity-100 transition-opacity" />
       <Handle type="source" position={Position.Right} className="w-2 h-2 bg-gray-400 border border-white opacity-0 hover:opacity-100 transition-opacity" />
@@ -201,5 +203,6 @@ export default function AdvancedTextNode({ data }: NodeProps<AdvancedTextData>) 
         </div>
       )}
     </div>
+    </>
   );
 }

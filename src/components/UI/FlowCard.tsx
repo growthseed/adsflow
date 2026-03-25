@@ -2,6 +2,7 @@ import type { Flow } from '@/hooks/useFlows'
 import { Calendar, Tag, MoreVertical, Copy, Trash2, Edit } from 'lucide-react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useConfirm } from '@/components/UI/ConfirmDialog'
 
 interface FlowCardProps {
   flow: Flow
@@ -12,6 +13,7 @@ interface FlowCardProps {
 export const FlowCard = ({ flow, onDuplicate, onDelete }: FlowCardProps) => {
   const [showMenu, setShowMenu] = useState(false)
   const navigate = useNavigate()
+  const confirm = useConfirm()
 
   const handleCardClick = () => {
     navigate(`/editor/${flow.id}`)
@@ -23,12 +25,16 @@ export const FlowCard = ({ flow, onDuplicate, onDelete }: FlowCardProps) => {
     onDuplicate(flow.id)
   }
 
-  const handleDelete = (e: React.MouseEvent) => {
+  const handleDelete = async (e: React.MouseEvent) => {
     e.stopPropagation()
     setShowMenu(false)
-    if (window.confirm(`Tem certeza que deseja deletar "${flow.name}"?`)) {
-      onDelete(flow.id)
-    }
+    const ok = await confirm({
+      title: 'Deletar flow',
+      message: `Tem certeza que deseja deletar "${flow.name}"?`,
+      confirmLabel: 'Deletar',
+      variant: 'danger',
+    })
+    if (ok) onDelete(flow.id)
   }
 
   const handleEdit = (e: React.MouseEvent) => {

@@ -1,5 +1,5 @@
 import type { NodeProps } from 'reactflow'
-import { Handle, Position } from 'reactflow'
+import { Handle, Position, NodeResizer } from 'reactflow'
 import { useState } from 'react'
 
 export interface ShapeData {
@@ -10,7 +10,7 @@ export interface ShapeData {
   onEdit?: (data: ShapeData) => void
 }
 
-export default function ShapeNode({ data }: NodeProps<ShapeData>) {
+export default function ShapeNode({ data, selected }: NodeProps<ShapeData>) {
   const [label, setLabel] = useState(data.label || data.shapeType === 'circle' ? 'Círculo' : 'Quadrado')
   const [isEditing, setIsEditing] = useState(false)
   
@@ -39,6 +39,8 @@ export default function ShapeNode({ data }: NodeProps<ShapeData>) {
   }
 
   return (
+    <>
+    <NodeResizer isVisible={selected} minWidth={150} minHeight={100} />
     <div className="relative">
       {/* Handles de conexão */}
       <Handle type="target" position={Position.Top} className="w-3 h-3 !bg-gray-400" />
@@ -74,5 +76,6 @@ export default function ShapeNode({ data }: NodeProps<ShapeData>) {
         )}
       </div>
     </div>
+    </>
   )
 }

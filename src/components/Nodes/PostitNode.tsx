@@ -1,5 +1,5 @@
 import type { NodeProps } from 'reactflow'
-import { Handle, Position } from 'reactflow'
+import { Handle, Position, NodeResizer } from 'reactflow'
 import { useState } from 'react'
 
 export interface PostitData {
@@ -16,7 +16,7 @@ const colorMap = {
   purple: '#e9d5ff',
 }
 
-export default function PostitNode({ data }: NodeProps<PostitData>) {
+export default function PostitNode({ data, selected }: NodeProps<PostitData>) {
   const [text, setText] = useState(data.text || 'Nota importante...')
   const [isEditing, setIsEditing] = useState(false)
   
@@ -35,6 +35,8 @@ export default function PostitNode({ data }: NodeProps<PostitData>) {
   }
 
   return (
+    <>
+    <NodeResizer isVisible={selected} minWidth={150} minHeight={100} />
     <div className="relative" style={{ transform: 'rotate(-1deg)' }}>
       {/* Handles de conexão */}
       <Handle type="target" position={Position.Top} className="w-3 h-3 !bg-gray-400" />
@@ -75,5 +77,6 @@ export default function PostitNode({ data }: NodeProps<PostitData>) {
         </div>
       </div>
     </div>
+    </>
   )
 }

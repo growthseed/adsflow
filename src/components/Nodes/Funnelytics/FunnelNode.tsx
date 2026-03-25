@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { Handle, Position } from 'reactflow';
+import { Handle, Position, NodeResizer } from 'reactflow';
 import type { NodeProps } from 'reactflow';
 import type { FunnelNodeData } from '../../../types/funnelytics';
 import { formatNumber, formatPercentage } from '../../../types/funnelytics';
@@ -22,6 +22,8 @@ const FunnelNode: React.FC<NodeProps<FunnelNodeData>> = ({ data, selected }) => 
   const maxCount = Math.max(...stages.map(s => s.count), 1);
 
   return (
+    <>
+    <NodeResizer isVisible={selected} minWidth={150} minHeight={100} />
     <div
       className={`
         relative min-w-[240px] rounded-lg shadow-lg overflow-hidden
@@ -165,6 +167,7 @@ const FunnelNode: React.FC<NodeProps<FunnelNodeData>> = ({ data, selected }) => 
         className="!w-3 !h-3 !bg-blue-500 !border-2 !border-white"
       />
     </div>
+    </>
   );
 };
 

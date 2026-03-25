@@ -86,9 +86,11 @@ const NAV_GROUPS: NavGroup[] = [
 interface SidebarProps {
   collapsed: boolean
   setCollapsed: (v: boolean) => void
+  mobileOpen?: boolean
+  onMobileClose?: () => void
 }
 
-export default function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
+export default function Sidebar({ collapsed, setCollapsed, mobileOpen = false, onMobileClose }: SidebarProps) {
   const { user, clients, activeClient, setActiveClient, hasClientRole, isSuperAdmin } = useAuth()
   const location = useLocation()
   const [clientDropdownOpen, setClientDropdownOpen] = useState(false)
@@ -123,11 +125,17 @@ export default function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
     setClientDropdownOpen(false)
   }
 
+  // Close mobile drawer on route change
+  useEffect(() => {
+    if (mobileOpen && onMobileClose) onMobileClose()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.pathname])
+
   return (
     <aside
       className={`fixed top-0 left-0 h-screen bg-slate-900 text-white flex flex-col z-40 transition-all duration-300 ${
         collapsed ? 'w-[72px]' : 'w-64'
-      }`}
+      } ${mobileOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0`}
     >
       {/* ---- Logo ---- */}
       <div className="flex items-center h-16 px-4 border-b border-slate-800 shrink-0">
@@ -283,10 +291,10 @@ export default function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
         )}
       </div>
 
-      {/* ---- Collapse Toggle ---- */}
+      {/* ---- Collapse Toggle (desktop only) ---- */}
       <button
         onClick={() => setCollapsed(!collapsed)}
-        className="absolute -right-3 top-20 w-6 h-6 bg-slate-800 border border-slate-700 rounded-full flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-700 transition-colors z-50"
+        className="absolute -right-3 top-20 w-6 h-6 bg-slate-800 border border-slate-700 rounded-full hidden md:flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-700 transition-colors z-50"
       >
         {collapsed ? (
           <ChevronRight className="w-3.5 h-3.5" />

@@ -1,16 +1,13 @@
 import { memo } from 'react'
-import { Handle, Position } from 'reactflow'
+import { Handle, Position, NodeResizer } from 'reactflow'
+import type { NodeProps } from 'reactflow'
 import { BrandIcons } from '@/components/Icons/BrandIcons'
 
-interface IconNodeData {
+export interface IconNodeData {
   label: string
   platform: 'Instagram' | 'Facebook' | 'WhatsApp' | 'LinkedIn' | 'YouTube' | 'X'
   iconType: 'social'
   onEdit?: () => void
-}
-
-interface IconNodeProps {
-  data: IconNodeData
 }
 
 // Configuração de cores e sombras por plataforma
@@ -52,11 +49,13 @@ const platformConfig = {
   },
 }
 
-function IconNode({ data }: IconNodeProps) {
+function IconNode({ data, selected }: NodeProps<IconNodeData>) {
   const config = platformConfig[data.platform] || platformConfig.Instagram
   const BrandIcon = BrandIcons[data.platform]
 
   return (
+    <>
+    <NodeResizer isVisible={selected} minWidth={80} minHeight={80} />
     <div
       className={`
         relative min-w-[160px] rounded-2xl border-3 
@@ -100,6 +99,7 @@ function IconNode({ data }: IconNodeProps) {
 
 
     </div>
+    </>
   )
 }
 

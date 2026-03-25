@@ -285,6 +285,7 @@ export interface DateRange {
 // =====================================================
 export interface BIFilterState {
   dateRange: DateRange;
+  clientId?: string;
   vendedorId?: string;
   statusFunil?: LeadStatusFunil[];
   fonte?: LeadFonte[];
@@ -298,7 +299,8 @@ export type BIPageType =
   | 'funil'
   | 'variacoes'
   | 'tempo'
-  | 'perdas';
+  | 'perdas'
+  | 'ecommerce';
 
 // =====================================================
 // HELPERS

@@ -1,5 +1,5 @@
 import type { NodeProps } from 'reactflow'
-import { Handle, Position } from 'reactflow'
+import { Handle, Position, NodeResizer } from 'reactflow'
 import { useState } from 'react'
 
 export interface TextboxData {
@@ -8,7 +8,7 @@ export interface TextboxData {
   onEdit?: (data: TextboxData) => void
 }
 
-export default function TextboxNode({ data }: NodeProps<TextboxData>) {
+export default function TextboxNode({ data, selected }: NodeProps<TextboxData>) {
   const [text, setText] = useState(data.text || 'Digite aqui...')
   const [isEditing, setIsEditing] = useState(false)
   
@@ -26,6 +26,8 @@ export default function TextboxNode({ data }: NodeProps<TextboxData>) {
   }
 
   return (
+    <>
+    <NodeResizer isVisible={selected} minWidth={150} minHeight={100} />
     <div className="relative">
       {/* Handles de conexão */}
       <Handle type="target" position={Position.Top} className="w-3 h-3 !bg-gray-400" />
@@ -62,5 +64,6 @@ export default function TextboxNode({ data }: NodeProps<TextboxData>) {
         )}
       </div>
     </div>
+    </>
   )
 }

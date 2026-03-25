@@ -1,16 +1,32 @@
-import { Component, type ReactNode } from 'react'
+import { Component, type ReactNode, lazy, Suspense } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider, useAuth } from './contexts/AuthContext'
 
-// Layout
+// Layout (not lazy — always needed for protected routes)
 import AppLayout from './components/Layout/AppLayout'
 
-// Pages
-import LandingPage from './pages/LandingPage'
-import LoginPage from './pages/LoginPage'
-import DashboardPage from './pages/DashboardPage'
-import FlowEditorPage from './pages/FlowEditorPage'
-import BIDashboardPage from './pages/BIDashboardPage'
+// UI
+import { ToastProvider } from './components/UI/Toast'
+import { ConfirmDialogProvider } from './components/UI/ConfirmDialog'
+import { CommandPaletteProvider } from './components/UI/CommandPalette'
+
+// Lazy-loaded Pages (code-splitting per route)
+const LandingPage = lazy(() => import('./pages/LandingPage'))
+const LoginPage = lazy(() => import('./pages/LoginPage'))
+const DashboardPage = lazy(() => import('./pages/DashboardPage'))
+const FlowEditorPage = lazy(() => import('./pages/FlowEditorPage'))
+const BIDashboardPage = lazy(() => import('./pages/BIDashboardPage'))
+const IntegrationsPage = lazy(() => import('./pages/IntegrationsPage'))
+const CampaignsPage = lazy(() => import('./pages/CampaignsPage'))
+const ReportsPage = lazy(() => import('./pages/ReportsPage'))
+const ClientsPage = lazy(() => import('./pages/ClientsPage'))
+const TeamPage = lazy(() => import('./pages/TeamPage'))
+const SettingsPage = lazy(() => import('./pages/SettingsPage'))
+const FunnelsPage = lazy(() => import('./pages/FunnelsPage'))
+const AdminPage = lazy(() => import('./pages/AdminPage'))
+const BillingPage = lazy(() => import('./pages/BillingPage'))
+const DashboardBuilderPage = lazy(() => import('./pages/DashboardBuilderPage'))
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage'))
 
 // Error Boundary para capturar erros de React
 interface ErrorBoundaryState {
@@ -98,17 +114,13 @@ const PublicRoute = ({ children }: { children: React.ReactNode }) => {
   return user ? <Navigate to="/dashboard" replace /> : <>{children}</>
 }
 
-// Placeholder Page Component
-const PlaceholderPage = ({ title, description }: { title: string; description: string }) => (
-  <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
-    <div className="w-20 h-20 bg-slate-100 rounded-2xl flex items-center justify-center mb-6">
-      <svg className="w-10 h-10 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
-      </svg>
+// Suspense fallback for lazy-loaded pages
+const PageLoader = () => (
+  <div className="min-h-[60vh] flex items-center justify-center">
+    <div className="text-center">
+      <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600 mx-auto mb-3"></div>
+      <p className="text-sm text-slate-500">Carregando...</p>
     </div>
-    <h1 className="text-2xl font-bold text-slate-900 mb-2">{title}</h1>
-    <p className="text-slate-500 max-w-md">{description}</p>
-    <span className="mt-4 px-3 py-1 bg-amber-100 text-amber-700 text-xs font-medium rounded-full">Em desenvolvimento</span>
   </div>
 )
 
@@ -117,7 +129,11 @@ function App() {
   return (
     <ErrorBoundary>
       <AuthProvider>
+        <ToastProvider>
+        <ConfirmDialogProvider>
         <BrowserRouter>
+          <CommandPaletteProvider>
+          <Suspense fallback={<PageLoader />}>
           <Routes>
             {/* Public Routes */}
             <Route
@@ -183,7 +199,7 @@ function App() {
               element={
                 <ProtectedRoute>
                   <AppLayout>
-                    <PlaceholderPage title="Campanhas" description="Gerencie suas campanhas de Meta Ads e Google Ads em um só lugar." />
+                    <CampaignsPage />
                   </AppLayout>
                 </ProtectedRoute>
               }
@@ -193,7 +209,7 @@ function App() {
               element={
                 <ProtectedRoute>
                   <AppLayout>
-                    <PlaceholderPage title="Funis" description="Visualize e edite seus funis de conversão com o editor visual." />
+                    <FunnelsPage />
                   </AppLayout>
                 </ProtectedRoute>
               }
@@ -203,7 +219,7 @@ function App() {
               element={
                 <ProtectedRoute>
                   <AppLayout>
-                    <PlaceholderPage title="Integrações" description="Conecte suas plataformas de ads, CRM e analytics." />
+                    <IntegrationsPage />
                   </AppLayout>
                 </ProtectedRoute>
               }
@@ -213,7 +229,7 @@ function App() {
               element={
                 <ProtectedRoute>
                   <AppLayout>
-                    <PlaceholderPage title="Relatórios" description="Gere relatórios detalhados de performance das suas campanhas." />
+                    <ReportsPage />
                   </AppLayout>
                 </ProtectedRoute>
               }
@@ -223,7 +239,7 @@ function App() {
               element={
                 <ProtectedRoute>
                   <AppLayout>
-                    <PlaceholderPage title="Clientes" description="Gerencie seus clientes e suas respectivas contas." />
+                    <ClientsPage />
                   </AppLayout>
                 </ProtectedRoute>
               }
@@ -233,7 +249,7 @@ function App() {
               element={
                 <ProtectedRoute>
                   <AppLayout>
-                    <PlaceholderPage title="Equipe" description="Gerencie membros da equipe, papéis e permissões." />
+                    <TeamPage />
                   </AppLayout>
                 </ProtectedRoute>
               }
@@ -243,7 +259,7 @@ function App() {
               element={
                 <ProtectedRoute>
                   <AppLayout>
-                    <PlaceholderPage title="Faturamento" description="Gerencie seu plano, faturas e métodos de pagamento." />
+                    <BillingPage />
                   </AppLayout>
                 </ProtectedRoute>
               }
@@ -253,7 +269,7 @@ function App() {
               element={
                 <ProtectedRoute>
                   <AppLayout>
-                    <PlaceholderPage title="Configurações" description="Configure preferências da conta e do sistema." />
+                    <SettingsPage />
                   </AppLayout>
                 </ProtectedRoute>
               }
@@ -263,16 +279,36 @@ function App() {
               element={
                 <ProtectedRoute>
                   <AppLayout>
-                    <PlaceholderPage title="Administração" description="Painel administrativo do sistema — apenas super admins." />
+                    <AdminPage />
                   </AppLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/dashboard-builder"
+              element={
+                <ProtectedRoute>
+                  <DashboardBuilderPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/dashboard-builder/:id"
+              element={
+                <ProtectedRoute>
+                  <DashboardBuilderPage />
                 </ProtectedRoute>
               }
             />
 
             {/* Catch all - redirect to home */}
-            <Route path="*" element={<Navigate to="/" replace />} />
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
+          </Suspense>
+          </CommandPaletteProvider>
         </BrowserRouter>
+        </ConfirmDialogProvider>
+        </ToastProvider>
       </AuthProvider>
     </ErrorBoundary>
   )

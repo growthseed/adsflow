@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { Handle, Position } from 'reactflow';
+import { Handle, Position, NodeResizer } from 'reactflow';
 import type { NodeProps } from 'reactflow';
 import type { UTMTrackerNodeData } from '../../../types/funnelytics';
 import {
@@ -20,6 +20,8 @@ const UTMTrackerNode: React.FC<NodeProps<UTMTrackerNodeData>> = ({ data, selecte
   };
 
   return (
+    <>
+    <NodeResizer isVisible={selected} minWidth={150} minHeight={100} />
     <div
       className={`
         relative min-w-[220px] rounded-lg shadow-lg overflow-hidden
@@ -145,6 +147,7 @@ const UTMTrackerNode: React.FC<NodeProps<UTMTrackerNodeData>> = ({ data, selecte
         className="!w-3 !h-3 !bg-blue-500 !border-2 !border-white"
       />
     </div>
+    </>
   );
 };
 

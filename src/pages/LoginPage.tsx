@@ -28,13 +28,33 @@ export default function LoginPage() {
     name: '',
     company: '',
   })
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({})
+
+  const validateField = (name: string, value: string) => {
+    if (name === 'email' && value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+      return 'Email inválido'
+    }
+    if (name === 'password' && mode === 'register' && value && value.length < 6) {
+      return 'Mínimo 6 caracteres'
+    }
+    if (name === 'name' && mode === 'register' && value !== undefined && !value.trim()) {
+      return 'Nome é obrigatório'
+    }
+    return ''
+  }
+
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    const err = validateField(name, value)
+    setFieldErrors((prev) => ({ ...prev, [name]: err }))
+  }
 
   const switchMode = (newMode: AuthMode) => {
     setMode(newMode)
     setError('')
     setSuccessMessage('')
+    setFieldErrors({})
     if (newMode === 'forgot') {
-      // Keep email if already filled
       setFormData((prev) => ({ ...prev, password: '', name: '', company: '' }))
     } else {
       setFormData({ email: '', password: '', name: '', company: '' })
@@ -176,11 +196,15 @@ export default function LoginPage() {
                         name="name"
                         value={formData.name}
                         onChange={handleChange}
+                        onBlur={handleBlur}
                         required
-                        className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                          fieldErrors.name ? 'border-red-400' : 'border-slate-300'
+                        }`}
                         placeholder="Seu nome"
                       />
                     </div>
+                    {fieldErrors.name && <p className="text-xs text-red-500 mt-1">{fieldErrors.name}</p>}
                   </div>
 
                   <div>
@@ -214,12 +238,16 @@ export default function LoginPage() {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
+                    onBlur={handleBlur}
                     required
                     autoComplete="email"
-                    className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                      fieldErrors.email ? 'border-red-400' : 'border-slate-300'
+                    }`}
                     placeholder="seu@email.com"
                   />
                 </div>
+                {fieldErrors.email && <p className="text-xs text-red-500 mt-1">{fieldErrors.email}</p>}
               </div>
 
               {/* Password — login and register only */}
@@ -246,12 +274,16 @@ export default function LoginPage() {
                       name="password"
                       value={formData.password}
                       onChange={handleChange}
+                      onBlur={handleBlur}
                       required
                       autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
-                      className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                        fieldErrors.password ? 'border-red-400' : 'border-slate-300'
+                      }`}
                       placeholder="••••••••"
                     />
                   </div>
+                  {fieldErrors.password && <p className="text-xs text-red-500 mt-1">{fieldErrors.password}</p>}
                 </div>
               )}
 

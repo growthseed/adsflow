@@ -63,6 +63,7 @@ import NodeEditForm from '@/components/Forms/NodeEditForm'
 
 // Hooks
 import { useFlows } from '@/hooks/useFlows'
+import { useConfirm } from '@/components/UI/ConfirmDialog'
 
 // Node types
 const nodeTypes = {
@@ -146,10 +147,8 @@ function FlowEditor() {
   }, [flowId])
 
   const loadFlow = async (id: string) => {
-    console.log('📂 Carregando flow:', id)
     const flow = await getFlow(id)
     if (flow) {
-      console.log('✅ Flow carregado:', { nodes: flow.nodes.length, edges: flow.edges.length })
       setNodes(flow.nodes.map((node: Node) => ({
         ...node,
         data: {
@@ -173,7 +172,6 @@ function FlowEditor() {
     setFlowName(template.name)
     setFlowDescription(template.description)
     setCurrentFlowId(null) // Novo flow
-    console.log('🏫 Template Isaac Newton carregado com', template.nodes.length, 'nós')
   }
 
   // Auto-save
@@ -200,13 +198,6 @@ function FlowEditor() {
       setIsSaving(true)
       setSaveError(null)
       
-      console.log('💾 Iniciando salvamento...')
-      console.log('📊 Dados:', {
-        nodes: nodes.length,
-        edges: edges.length,
-        flowId: currentFlowId
-      })
-
       const flowData = {
         name: flowName,
         description: flowDescription,
@@ -217,19 +208,15 @@ function FlowEditor() {
       let savedFlow
       if (currentFlowId) {
         savedFlow = await updateExistingFlow(currentFlowId, flowData)
-        console.log('✅ Flow atualizado:', currentFlowId)
       } else {
         savedFlow = await createNewFlow(flowData)
         if (savedFlow) {
           setCurrentFlowId(savedFlow.id)
           navigate(`/editor/${savedFlow.id}`, { replace: true })
-          console.log('✅ Flow criado:', savedFlow.id)
         }
       }
 
       setLastSaved(new Date())
-      console.log('💾 Salvamento concluído às', new Date().toLocaleTimeString())
-      
       return savedFlow
     } catch (error) {
       console.error('❌ Erro ao salvar:', error)
@@ -264,7 +251,6 @@ function FlowEditor() {
     setNodes(prev => [...prev.map(n => ({ ...n, selected: false })), ...newNodes])
     setSelectedNodes(newNodes.map(n => n.id))
     
-    console.log(`✅ ${newNodes.length} nó(s) duplicado(s)`)
   }, [nodes, selectedNodes])
 
   // 🆕 COPIAR NÓS (Ctrl+C)
@@ -281,7 +267,6 @@ function FlowEditor() {
       edges: connectedEdges
     })
     
-    console.log(`📋 ${nodesToCopy.length} nó(s) copiado(s), ${connectedEdges.length} conexão(ões)`)
   }, [nodes, edges, selectedNodes])
 
   // 🆕 COLAR NÓS (Ctrl+V)
@@ -326,7 +311,6 @@ function FlowEditor() {
     setEdges(prev => [...prev, ...newEdges])
     setSelectedNodes(newNodes.map(n => n.id))
     
-    console.log(`✅ ${newNodes.length} nó(s) colado(s), ${newEdges.length} conexão(ões)`)
   }, [clipboard])
 
   // 🆕 ATALHOS DE TECLADO
@@ -348,7 +332,6 @@ function FlowEditor() {
           )
         )
         setSelectedNodes([])
-        console.log('🗑️ Nós deletados')
       }
 
       // Ctrl/Cmd+D - Duplicar
@@ -486,13 +469,18 @@ function FlowEditor() {
       }
 
       setNodes((nds) => nds.concat(newNode))
-      console.log('➕ Nó adicionado:', nodeConfig.type)
     },
     [screenToFlowPosition, handleEditNode]
   )
 
+  const confirm = useConfirm()
   const handleExportPNG = async () => {
-    alert('Exportação PNG em desenvolvimento')
+    await confirm({
+      title: 'Em desenvolvimento',
+      message: 'Exportação PNG estará disponível em breve.',
+      confirmLabel: 'OK',
+      variant: 'info',
+    })
   }
 
   // ✅ TEMPLATE DVD NATAL (disponível para uso futuro)
@@ -586,7 +574,6 @@ function FlowEditor() {
     setEdges(templateEdges)
     setFlowName('🎄 DVD Natal 2024')
     setFlowDescription('Campanha de visualizações para bombar o DVD no YouTube e Instagram')
-    console.log('🎄 Template DVD Natal carregado')
   }
 
   // Prevent unused variable warning - template available for future use

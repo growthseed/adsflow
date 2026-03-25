@@ -45,6 +45,11 @@ export function useLeads(filters?: BIFilterState) {
         .select('*, vendedor:vendedores(*)')
         .order('created_at', { ascending: false });
 
+      // Multi-tenant: filter by active client
+      if (filters?.clientId) {
+        query = query.eq('client_id', filters.clientId);
+      }
+
       if (filters?.dateRange) {
         query = query
           .gte('created_at', filters.dateRange.startDate.toISOString())
@@ -142,7 +147,7 @@ export function useOportunidades(filters?: BIFilterState) {
 // =====================================================
 // HOOK: useVendedores
 // =====================================================
-export function useVendedores() {
+export function useVendedores(clientId?: string) {
   const [vendedores, setVendedores] = useState<Vendedor[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -156,11 +161,17 @@ export function useVendedores() {
 
     try {
       setIsLoading(true);
-      const { data, error: fetchError } = await supabase
+      let query = supabase
         .from('vendedores')
         .select('*')
         .eq('ativo', true)
         .order('nome');
+
+      if (clientId) {
+        query = query.eq('client_id', clientId);
+      }
+
+      const { data, error: fetchError } = await query;
 
       if (fetchError) throw fetchError;
       setVendedores(data || []);
@@ -170,7 +181,7 @@ export function useVendedores() {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [clientId]);
 
   useEffect(() => {
     fetchVendedores();
@@ -182,7 +193,7 @@ export function useVendedores() {
 // =====================================================
 // HOOK: useKPIs
 // =====================================================
-export function useKPIs(dateRange: DateRange) {
+export function useKPIs(dateRange: DateRange, clientId?: string) {
   const [kpis, setKPIs] = useState<KPICardData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -207,33 +218,30 @@ export function useKPIs(dateRange: DateRange) {
     try {
       setIsLoading(true);
 
+      // Helper: build leads query with optional client filter
+      const leadsQuery = (start: Date, end: Date) => {
+        let q = supabase.from('leads').select('*')
+          .gte('created_at', start.toISOString())
+          .lte('created_at', end.toISOString());
+        if (clientId) q = q.eq('client_id', clientId);
+        return q;
+      };
+
       // Fetch current period leads
-      const { data: currentLeads } = await supabase
-        .from('leads')
-        .select('*')
-        .gte('created_at', dateRange.startDate.toISOString())
-        .lte('created_at', dateRange.endDate.toISOString());
+      const { data: currentLeads } = await leadsQuery(dateRange.startDate, dateRange.endDate);
 
       // Fetch last month leads
-      const { data: lastMonthLeads } = await supabase
-        .from('leads')
-        .select('*')
-        .gte('created_at', lastMonthRange.startDate.toISOString())
-        .lte('created_at', lastMonthRange.endDate.toISOString());
+      const { data: lastMonthLeads } = await leadsQuery(lastMonthRange.startDate, lastMonthRange.endDate);
 
       // Fetch last year leads
-      const { data: lastYearLeads } = await supabase
-        .from('leads')
-        .select('*')
-        .gte('created_at', lastYearRange.startDate.toISOString())
-        .lte('created_at', lastYearRange.endDate.toISOString());
+      const { data: lastYearLeads } = await leadsQuery(lastYearRange.startDate, lastYearRange.endDate);
 
       // Fetch current period opportunities
-      const { data: currentOpps } = await supabase
-        .from('oportunidades')
-        .select('*')
+      let oppsQuery = supabase.from('oportunidades').select('*')
         .gte('created_at', dateRange.startDate.toISOString())
         .lte('created_at', dateRange.endDate.toISOString());
+      if (clientId) oppsQuery = oppsQuery.eq('client_id', clientId);
+      const { data: currentOpps } = await oppsQuery;
 
       // Calculate metrics
       const current = {
@@ -327,7 +335,7 @@ export function useKPIs(dateRange: DateRange) {
     } finally {
       setIsLoading(false);
     }
-  }, [dateRange, lastMonthRange, lastYearRange]);
+  }, [dateRange, lastMonthRange, lastYearRange, clientId]);
 
   useEffect(() => {
     fetchKPIs();
@@ -506,13 +514,19 @@ export function usePerdasAnalysis(leads: Lead[]) {
 // =====================================================
 // HOOK: useBIFilters
 // =====================================================
-export function useBIFilters() {
+export function useBIFilters(clientId?: string) {
   const [filters, setFilters] = useState<BIFilterState>({
     dateRange: {
       startDate: startOfMonth(new Date()),
       endDate: new Date(),
     },
+    clientId,
   });
+
+  // Keep clientId in sync with active client changes
+  useEffect(() => {
+    setFilters(prev => ({ ...prev, clientId }));
+  }, [clientId]);
 
   const updateDateRange = useCallback((range: DateRange) => {
     setFilters(prev => ({ ...prev, dateRange: range }));
