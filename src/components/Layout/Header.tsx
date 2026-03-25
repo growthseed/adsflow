@@ -84,7 +84,7 @@ export default function Header({ collapsed, onMobileMenuToggle }: HeaderProps) {
   return (
     <header
       className={`fixed top-0 right-0 left-0 h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 md:px-6 z-30 transition-all duration-300 ${
-        collapsed ? 'md:left-[72px]' : 'md:left-64'
+        collapsed ? 'md:left-[68px]' : 'md:left-60'
       }`}
     >
       {/* ---- Left: Hamburger (mobile) + Page Title + Client Badge ---- */}

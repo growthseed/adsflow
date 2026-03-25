@@ -48,7 +48,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
       {/* Main Content */}
       <main
         className={`pt-16 min-h-screen transition-all duration-300 ${
-          collapsed ? 'md:ml-[72px]' : 'md:ml-64'
+          collapsed ? 'md:ml-[68px]' : 'md:ml-60'
         }`}
       >
         <div className="p-4 md:p-6">
