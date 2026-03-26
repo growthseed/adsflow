@@ -1,5 +1,6 @@
 import { Component, type ReactNode, lazy, Suspense } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AuthProvider, useAuth } from './contexts/AuthContext'
 
 // Layout (not lazy — always needed for protected routes)
@@ -9,6 +10,16 @@ import AppLayout from './components/Layout/AppLayout'
 import { ToastProvider } from './components/UI/Toast'
 import { ConfirmDialogProvider } from './components/UI/ConfirmDialog'
 import { CommandPaletteProvider } from './components/UI/CommandPalette'
+
+// React Query client — staleTime 5min, gcTime 30min
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 60 * 1000,
+      gcTime: 30 * 60 * 1000,
+    },
+  },
+})
 
 // Lazy-loaded Pages (code-splitting per route)
 const LandingPage = lazy(() => import('./pages/LandingPage'))
@@ -26,6 +37,7 @@ const FunnelsPage = lazy(() => import('./pages/FunnelsPage'))
 const AdminPage = lazy(() => import('./pages/AdminPage'))
 const BillingPage = lazy(() => import('./pages/BillingPage'))
 const DashboardBuilderPage = lazy(() => import('./pages/DashboardBuilderPage'))
+const ConversionTruthPage = lazy(() => import('./pages/ConversionTruthPage'))
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'))
 
 // Error Boundary para capturar erros de React
@@ -128,6 +140,7 @@ const PageLoader = () => (
 function App() {
   return (
     <ErrorBoundary>
+      <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <ToastProvider>
         <ConfirmDialogProvider>
@@ -301,6 +314,17 @@ function App() {
               }
             />
 
+            <Route
+              path="/conversion-truth"
+              element={
+                <ProtectedRoute>
+                  <AppLayout>
+                    <ConversionTruthPage />
+                  </AppLayout>
+                </ProtectedRoute>
+              }
+            />
+
             {/* Catch all - redirect to home */}
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
@@ -310,6 +334,7 @@ function App() {
         </ConfirmDialogProvider>
         </ToastProvider>
       </AuthProvider>
+      </QueryClientProvider>
     </ErrorBoundary>
   )
 }

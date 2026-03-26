@@ -26,6 +26,8 @@ import {
   MousePointer,
   Eye,
   ArrowUpRight,
+  ArrowUp,
+  ArrowDown,
   Zap,
   Target,
   Building2,
@@ -73,8 +75,17 @@ function QuickAction({
 }
 
 // =====================================================
-// STAT CARD
+// STAT CARD — Power BI professional style
 // =====================================================
+
+const ACCENT_BORDERS: Record<string, string> = {
+  'bg-blue-600': 'border-l-blue-600',
+  'bg-purple-600': 'border-l-purple-600',
+  'bg-green-600': 'border-l-green-600',
+  'bg-amber-600': 'border-l-amber-600',
+  'bg-indigo-600': 'border-l-indigo-600',
+  'bg-red-600': 'border-l-red-600',
+}
 
 function StatCard({
   icon: Icon,
@@ -82,23 +93,59 @@ function StatCard({
   value,
   subtext,
   color,
+  delta,
 }: {
   icon: React.ElementType
   label: string
   value: string | number
   subtext?: string
   color: string
+  delta?: { value: number; label?: string }
 }) {
+  const borderClass = ACCENT_BORDERS[color] || 'border-l-slate-400'
+  const deltaPositive = delta && delta.value > 0
+  const deltaNegative = delta && delta.value < 0
+  const deltaZero = delta && delta.value === 0
+
   return (
-    <div className="bg-white rounded-xl border border-slate-200 p-5">
-      <div className="flex items-center justify-between mb-3">
-        <span className="text-sm font-medium text-slate-500">{label}</span>
-        <div className={`w-9 h-9 ${color} rounded-lg flex items-center justify-center`}>
-          <Icon className="w-4.5 h-4.5 text-white" />
+    <div
+      className={`bg-white rounded-xl border border-slate-200 border-l-4 ${borderClass} p-5 shadow-sm hover:shadow-md transition-shadow`}
+    >
+      <div className="flex items-center justify-between mb-1">
+        <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">{label}</span>
+        <div className={`w-8 h-8 ${color} bg-opacity-10 rounded-lg flex items-center justify-center`}>
+          <Icon className={`w-4 h-4 ${color.replace('bg-', 'text-')}`} />
         </div>
       </div>
-      <p className="text-2xl font-bold text-slate-900">{value}</p>
-      {subtext && <p className="text-xs text-slate-500 mt-1">{subtext}</p>}
+      <p className="text-3xl font-bold text-slate-900 mt-1">{value}</p>
+      <div className="flex items-center gap-3 mt-2">
+        {delta != null && !deltaZero && (
+          <span
+            className={`inline-flex items-center gap-0.5 text-xs font-semibold px-1.5 py-0.5 rounded ${
+              deltaPositive
+                ? 'bg-emerald-50 text-emerald-700'
+                : 'bg-red-50 text-red-700'
+            }`}
+          >
+            {deltaPositive ? (
+              <ArrowUp className="w-3 h-3" />
+            ) : deltaNegative ? (
+              <ArrowDown className="w-3 h-3" />
+            ) : null}
+            {delta.value > 0 ? '+' : ''}{delta.value.toFixed(1)}%
+          </span>
+        )}
+        {delta != null && deltaZero && (
+          <span className="inline-flex items-center gap-0.5 text-xs font-semibold px-1.5 py-0.5 rounded bg-slate-50 text-slate-500">
+            0.0%
+          </span>
+        )}
+        {delta?.label && (
+          <span className="text-xs text-slate-400">{delta.label}</span>
+        )}
+        {!delta && subtext && <span className="text-xs text-slate-400">{subtext}</span>}
+      </div>
+      {delta && subtext && <p className="text-xs text-slate-400 mt-1">{subtext}</p>}
     </div>
   )
 }

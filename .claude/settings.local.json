@@ -24,7 +24,15 @@
       "Bash(git init:*)",
       "Bash(git add:*)",
       "Bash(git rm:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(del \"C:\\\\Users\\\\EFEITO DIGITAL\\\\Ad Flow\\\\nul\")",
+      "mcp__firecrawl__firecrawl_scrape",
+      "mcp__meta-ads__get_capabilities",
+      "mcp__kommo-efeito__get_lead_distribution_by_user",
+      "mcp__kommo-efeito__get_unresponded_leads_analysis",
+      "mcp__kommo-efeito__get_response_time_analysis",
+      "mcp__kommo-efeito__get_leads",
+      "mcp__kommo-efeito__export_leads_for_analysis"
     ]
   }
 }

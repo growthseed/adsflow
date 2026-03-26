@@ -1,7 +1,15 @@
 export { default as KPICardWidget } from './KPICardWidget';
 export { default as LineChartWidget } from './LineChartWidget';
+export { default as AreaChartWidget } from './AreaChartWidget';
 export { default as BarChartWidget } from './BarChartWidget';
 export { default as PieChartWidget } from './PieChartWidget';
+export { default as DonutChartWidget } from './DonutChartWidget';
+export { default as FunnelChartWidget } from './FunnelChartWidget';
+export { default as WaterfallChartWidget } from './WaterfallChartWidget';
+export { default as TreemapWidget } from './TreemapWidget';
+export { default as ScatterPlotWidget } from './ScatterPlotWidget';
+export { default as HeatmapWidget } from './HeatmapWidget';
+export { default as ComparisonWidget } from './ComparisonWidget';
 export { default as TableWidget } from './TableWidget';
 export { default as GaugeWidget } from './GaugeWidget';
 export { default as TextWidget } from './TextWidget';

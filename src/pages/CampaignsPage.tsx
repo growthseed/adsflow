@@ -15,7 +15,6 @@ import {
   MousePointer,
   Target,
   Zap,
-  Loader2,
   AlertCircle,
   ChevronDown,
   ArrowUpDown,
@@ -37,6 +36,7 @@ import {
 } from '@/hooks/useMetaAdsData'
 // Date range types used via useMetaAdsDashboard
 import { downloadCSV } from '@/lib/csv'
+import { KPICardSkeleton, ChartSkeleton, TableSkeleton } from '@/components/UI/Skeleton'
 
 // =====================================================
 // FORMATTERS
@@ -441,11 +441,19 @@ export default function CampaignsPage() {
         </div>
       </div>
 
-      {/* Loading overlay */}
+      {/* Loading skeleton */}
       {loading && (
-        <div className="flex items-center justify-center py-20 text-slate-400">
-          <Loader2 className="w-6 h-6 animate-spin mr-2" />
-          Carregando dados...
+        <div className="space-y-6">
+          {/* Skeleton KPI cards */}
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <KPICardSkeleton key={i} />
+            ))}
+          </div>
+          {/* Skeleton chart */}
+          <ChartSkeleton height={300} />
+          {/* Skeleton table */}
+          <TableSkeleton rows={6} cols={8} />
         </div>
       )}
 

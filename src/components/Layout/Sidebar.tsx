@@ -30,6 +30,7 @@ import {
   PanelTop,
   LogOut,
   Sparkles,
+  ShieldCheck,
 } from 'lucide-react'
 
 // ========== NAV CONFIG ==========
@@ -62,6 +63,7 @@ const NAV_SECTIONS: NavSection[] = [
       { path: '/campaigns', label: 'Campanhas', icon: Megaphone, minRole: 'analyst' },
       { path: '/bi', label: 'Analytics', icon: BarChart3 },
       { path: '/dashboard-builder', label: 'Dashboards', icon: PanelTop, isNew: true },
+      { path: '/conversion-truth', label: 'Verdade da Conversão', icon: ShieldCheck, isNew: true },
       { path: '/reports', label: 'Relatórios', icon: FileText, minRole: 'analyst' },
     ],
   },

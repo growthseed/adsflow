@@ -29,6 +29,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { KPICard, FunnelChart, LeadsLineChart, ResponsavelTable, PerdasChart } from '@/components/BI';
 import DateRangeSelector from '@/components/UI/DateRangeSelector';
 import { useToast } from '@/components/UI/Toast';
+import { KPIRowSkeleton, ChartSkeleton, TableSkeleton } from '@/components/UI/Skeleton';
 
 // Hooks
 import {
@@ -390,18 +391,18 @@ const BIDashboardPage: React.FC = () => {
 
       {/* Main Content */}
       <div>
-        {/* Loading State */}
-        {isLoading && (
-          <div className="flex items-center justify-center py-12">
-            <div className="flex items-center gap-3 text-gray-500">
-              <RefreshCw className="w-5 h-5 animate-spin" />
-              <span>Carregando dados...</span>
+        {/* Page 1: Análise de Funil */}
+        {activePage === 'funil' && isLoading && (
+          <div className="space-y-6">
+            <KPIRowSkeleton count={5} />
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <ChartSkeleton height={300} />
+              <ChartSkeleton height={300} />
             </div>
+            <TableSkeleton rows={5} cols={6} />
           </div>
         )}
-
-        {/* Page 1: Análise de Funil */}
-        {!isLoading && activePage === 'funil' && (
+        {activePage === 'funil' && !isLoading && (
           <div className="space-y-6">
             {/* KPI Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
@@ -431,7 +432,13 @@ const BIDashboardPage: React.FC = () => {
         )}
 
         {/* Page 2: Variações */}
-        {!isLoading && activePage === 'variacoes' && (
+        {activePage === 'variacoes' && isLoading && (
+          <div className="space-y-6">
+            <KPIRowSkeleton count={5} />
+            <ChartSkeleton height={400} />
+          </div>
+        )}
+        {activePage === 'variacoes' && !isLoading && (
           <div className="space-y-6">
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">
@@ -459,7 +466,16 @@ const BIDashboardPage: React.FC = () => {
         )}
 
         {/* Page 3: Tempo de Fechamento */}
-        {!isLoading && activePage === 'tempo' && (
+        {activePage === 'tempo' && isLoading && (
+          <div className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <KPIRowSkeleton count={3} />
+            </div>
+            <ChartSkeleton height={350} />
+            <TableSkeleton rows={5} cols={6} />
+          </div>
+        )}
+        {activePage === 'tempo' && !isLoading && (
           <div className="space-y-6">
             {/* Time KPIs */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -517,7 +533,14 @@ const BIDashboardPage: React.FC = () => {
         )}
 
         {/* Page 4: Análise de Perdas */}
-        {!isLoading && activePage === 'perdas' && (
+        {activePage === 'perdas' && isLoading && (
+          <div className="space-y-6">
+            <KPIRowSkeleton count={5} />
+            <ChartSkeleton height={300} />
+            <TableSkeleton rows={5} cols={6} />
+          </div>
+        )}
+        {activePage === 'perdas' && !isLoading && (
           <div className="space-y-6">
             {/* Perdas KPIs */}
             <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
@@ -587,8 +610,8 @@ const BIDashboardPage: React.FC = () => {
           </div>
         )}
 
-        {/* Page 5: E-commerce */}
-        {!isLoading && activePage === 'ecommerce' && (
+        {/* Page 5: E-commerce — uses demo data, no loading needed */}
+        {activePage === 'ecommerce' && (
           <EcommerceView />
         )}
       </div>

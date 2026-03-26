@@ -6,8 +6,16 @@ import type { DashboardWidget } from '@/types/dashboard';
 import {
   KPICardWidget,
   LineChartWidget,
+  AreaChartWidget,
   BarChartWidget,
   PieChartWidget,
+  DonutChartWidget,
+  FunnelChartWidget,
+  WaterfallChartWidget,
+  TreemapWidget,
+  ScatterPlotWidget,
+  HeatmapWidget,
+  ComparisonWidget,
   TableWidget,
   GaugeWidget,
   TextWidget,
@@ -45,11 +53,10 @@ export default function WidgetRenderer({ widget, data, loading }: Props) {
 
     case 'area_chart':
       return (
-        <LineChartWidget
+        <AreaChartWidget
           config={config.chart}
           data={(data as Record<string, unknown>[]) || []}
           loading={loading}
-          variant="area"
         />
       );
 
@@ -74,27 +81,56 @@ export default function WidgetRenderer({ widget, data, loading }: Props) {
 
     case 'donut_chart':
       return (
-        <PieChartWidget
+        <DonutChartWidget
           config={config.chart}
           data={(data as Array<{ name: string; value: number }>) || []}
           loading={loading}
-          variant="donut"
         />
       );
 
     case 'funnel_chart':
-    case 'waterfall_chart':
-    case 'treemap':
-    case 'scatter_plot':
-    case 'heatmap':
-      // These will be implemented in Phase 4 (advanced visualizations)
       return (
-        <div className="h-full flex items-center justify-center text-sm text-slate-400">
-          <div className="text-center">
-            <p className="font-medium">{widget.title || widget.widget_type}</p>
-            <p className="text-xs mt-1">Widget avançado — em breve</p>
-          </div>
-        </div>
+        <FunnelChartWidget
+          config={config.chart}
+          data={(data as Array<{ name: string; value: number }>) || []}
+          loading={loading}
+        />
+      );
+
+    case 'waterfall_chart':
+      return (
+        <WaterfallChartWidget
+          config={config.chart}
+          data={(data as Array<{ name: string; value: number }>) || []}
+          loading={loading}
+        />
+      );
+
+    case 'treemap':
+      return (
+        <TreemapWidget
+          config={config.chart}
+          data={(data as Array<{ name: string; value: number }>) || []}
+          loading={loading}
+        />
+      );
+
+    case 'scatter_plot':
+      return (
+        <ScatterPlotWidget
+          config={config.chart}
+          data={(data as Record<string, unknown>[]) || []}
+          loading={loading}
+        />
+      );
+
+    case 'heatmap':
+      return (
+        <HeatmapWidget
+          config={config.chart}
+          data={(data as Array<{ row: string; col: string; value: number }>) || []}
+          loading={loading}
+        />
       );
 
     case 'table':
@@ -116,11 +152,12 @@ export default function WidgetRenderer({ widget, data, loading }: Props) {
       );
 
     case 'comparison':
-      // Phase 4
       return (
-        <div className="h-full flex items-center justify-center text-sm text-slate-400">
-          Comparativo — em breve
-        </div>
+        <ComparisonWidget
+          config={config.comparison}
+          data={(data as Array<{ metric: string; label: string; period1Value: number; period2Value: number; format?: 'number' | 'currency' | 'percentage' }>) || []}
+          loading={loading}
+        />
       );
 
     case 'text':

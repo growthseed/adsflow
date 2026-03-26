@@ -208,45 +208,12 @@ export const adAccountsService = {
   },
 
   /**
-   * Remove permanentemente uma conta e todos os dados associados
+   * Remove permanentemente uma conta e todos os dados associados.
+   * Relies on ON DELETE CASCADE foreign keys in the database —
+   * deleting ad_accounts cascades to campaign_insights, adset_insights,
+   * ad_insights, campaigns_cache, and sync_logs.
    */
   async delete(id: string): Promise<void> {
-    // Cascade: apagar insights, campaigns_cache, sync_logs
-    const { error: insightsErr } = await supabase
-      .from('campaign_insights')
-      .delete()
-      .eq('ad_account_id', id)
-
-    if (insightsErr) throw insightsErr
-
-    const { error: adsetErr } = await supabase
-      .from('adset_insights')
-      .delete()
-      .eq('ad_account_id', id)
-
-    if (adsetErr) throw adsetErr
-
-    const { error: adErr } = await supabase
-      .from('ad_insights')
-      .delete()
-      .eq('ad_account_id', id)
-
-    if (adErr) throw adErr
-
-    const { error: cacheErr } = await supabase
-      .from('campaigns_cache')
-      .delete()
-      .eq('ad_account_id', id)
-
-    if (cacheErr) throw cacheErr
-
-    const { error: logsErr } = await supabase
-      .from('sync_logs')
-      .delete()
-      .eq('ad_account_id', id)
-
-    if (logsErr) throw logsErr
-
     const { error } = await supabase
       .from('ad_accounts')
       .delete()
@@ -339,23 +306,26 @@ export const syncService = {
         onProgress?.(progress)
       }
 
+      // 4b. Fetch campaign ID map ONCE (used by all 3 insight upserts)
+      const campaignIdMap = await getCampaignIdMap(adAccountId)
+
       // 5. Processar campaign insights
       if (n8nResponse.campaign_insights) {
-        await this.upsertCampaignInsights(adAccountId, n8nResponse.campaign_insights)
+        await this.upsertCampaignInsights(adAccountId, n8nResponse.campaign_insights, campaignIdMap)
         progress.insightsSynced += n8nResponse.campaign_insights.length
         onProgress?.(progress)
       }
 
       // 6. Processar adset insights
       if (n8nResponse.adset_insights) {
-        await this.upsertAdsetInsights(adAccountId, n8nResponse.adset_insights)
+        await this.upsertAdsetInsights(adAccountId, n8nResponse.adset_insights, campaignIdMap)
         progress.adsetsSynced = n8nResponse.adset_insights.length
         onProgress?.(progress)
       }
 
       // 7. Processar ad insights
       if (n8nResponse.ad_insights) {
-        await this.upsertAdInsights(adAccountId, n8nResponse.ad_insights)
+        await this.upsertAdInsights(adAccountId, n8nResponse.ad_insights, campaignIdMap)
         progress.adsSynced = n8nResponse.ad_insights.length
         onProgress?.(progress)
       }
@@ -427,28 +397,28 @@ export const syncService = {
     adAccountId: string,
     campaigns: N8NCampaignData[]
   ): Promise<void> {
-    for (const c of campaigns) {
-      const { error } = await supabase
-        .from('campaigns_cache')
-        .upsert(
-          {
-            ad_account_id: adAccountId,
-            platform_campaign_id: c.platform_campaign_id,
-            name: c.name,
-            objective: c.objective,
-            status: c.status,
-            daily_budget: c.daily_budget,
-            lifetime_budget: c.lifetime_budget,
-            start_date: c.start_date,
-            end_date: c.end_date,
-            updated_at: new Date().toISOString(),
-          },
-          { onConflict: 'ad_account_id,platform_campaign_id' }
-        )
+    if (campaigns.length === 0) return
 
-      if (error) {
-        console.error('Error upserting campaign:', c.platform_campaign_id, error)
-      }
+    const now = new Date().toISOString()
+    const rows = campaigns.map((c) => ({
+      ad_account_id: adAccountId,
+      platform_campaign_id: c.platform_campaign_id,
+      name: c.name,
+      objective: c.objective,
+      status: c.status,
+      daily_budget: c.daily_budget,
+      lifetime_budget: c.lifetime_budget,
+      start_date: c.start_date,
+      end_date: c.end_date,
+      updated_at: now,
+    }))
+
+    const { error } = await supabase
+      .from('campaigns_cache')
+      .upsert(rows, { onConflict: 'ad_account_id,platform_campaign_id' })
+
+    if (error) {
+      console.error('Error upserting campaigns:', error)
     }
   },
 
@@ -457,10 +427,11 @@ export const syncService = {
    */
   async upsertCampaignInsights(
     adAccountId: string,
-    insights: N8NInsightData[]
+    insights: N8NInsightData[],
+    campaignIdMap?: Map<string, string>
   ): Promise<void> {
-    // Buscar campaign IDs do cache
-    const campaignIds = await getCampaignIdMap(adAccountId)
+    // Use pre-fetched map or fetch now
+    const campaignIds = campaignIdMap ?? await getCampaignIdMap(adAccountId)
 
     const rows = insights.map((i) => ({
       ad_account_id: adAccountId,
@@ -510,9 +481,10 @@ export const syncService = {
    */
   async upsertAdsetInsights(
     adAccountId: string,
-    insights: N8NInsightData[]
+    insights: N8NInsightData[],
+    campaignIdMap?: Map<string, string>
   ): Promise<void> {
-    const campaignIds = await getCampaignIdMap(adAccountId)
+    const campaignIds = campaignIdMap ?? await getCampaignIdMap(adAccountId)
 
     const rows = insights
       .filter((i) => i.platform_adset_id)
@@ -555,9 +527,10 @@ export const syncService = {
    */
   async upsertAdInsights(
     adAccountId: string,
-    insights: N8NInsightData[]
+    insights: N8NInsightData[],
+    campaignIdMap?: Map<string, string>
   ): Promise<void> {
-    const campaignIds = await getCampaignIdMap(adAccountId)
+    const campaignIds = campaignIdMap ?? await getCampaignIdMap(adAccountId)
 
     const rows = insights
       .filter((i) => i.platform_ad_id)
