@@ -23,11 +23,19 @@ import {
   ArrowDownRight,
   RefreshCw,
   Filter,
+  ChevronDown,
+  ChevronUp,
+  Copy,
+  Check,
+  Target,
+  BarChart3,
+  Zap,
+  FileText,
 } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 import { useToast } from '@/components/UI/Toast'
-import { aiInsightsService } from '@/services/aiInsightsService'
-import type { AIInsight, InsightFilters } from '@/services/aiInsightsService'
+import { aiInsightsService, generateReportAnalysis } from '@/services/aiInsightsService'
+import type { AIInsight, InsightFilters, ReportAnalysisResult, AggregatedMetrics } from '@/services/aiInsightsService'
 
 // =====================================================
 // CONSTANTS
@@ -61,6 +69,228 @@ const FILTER_TABS: Array<{ key: AIInsight['type'] | 'all'; label: string }> = [
   { key: 'alert', label: 'Alertas' },
   { key: 'recommendation', label: 'Recomendações' },
 ]
+
+// =====================================================
+// AI ASSISTANT DEFINITIONS
+// =====================================================
+
+interface AIAssistantDef {
+  id: string
+  title: string
+  description: string
+  icon: React.ElementType
+  color: string
+  bgColor: string
+}
+
+const AI_ASSISTANTS: AIAssistantDef[] = [
+  {
+    id: 'traffic',
+    title: 'Assistente de Tráfego Pago',
+    description: 'Analise suas campanhas Meta e Google e receba sugestões de otimização',
+    icon: Target,
+    color: 'text-blue-600',
+    bgColor: 'bg-blue-50',
+  },
+  {
+    id: 'performance',
+    title: 'Assistente de Performance',
+    description: 'Compare períodos e identifique tendências',
+    icon: BarChart3,
+    color: 'text-purple-600',
+    bgColor: 'bg-purple-50',
+  },
+  {
+    id: 'conversion',
+    title: 'Assistente de Conversão',
+    description: 'Análise da jornada do lead até a venda',
+    icon: Zap,
+    color: 'text-emerald-600',
+    bgColor: 'bg-emerald-50',
+  },
+  {
+    id: 'report',
+    title: 'Gerador de Relatório IA',
+    description: 'Gere um relatório completo com análise automática',
+    icon: FileText,
+    color: 'text-amber-600',
+    bgColor: 'bg-amber-50',
+  },
+]
+
+// =====================================================
+// AI ASSISTANT CARD COMPONENT
+// =====================================================
+
+function AIAssistantCard({ assistant }: { assistant: AIAssistantDef }) {
+  const [expanded, setExpanded] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [result, setResult] = useState<ReportAnalysisResult | null>(null)
+  const [copied, setCopied] = useState(false)
+  const Icon = assistant.icon
+
+  const handleGenerate = () => {
+    if (result) {
+      setExpanded(!expanded)
+      return
+    }
+    setLoading(true)
+    setExpanded(true)
+
+    // Simulate with sample metrics (real data will come from hooks later)
+    setTimeout(() => {
+      const sampleMetrics: AggregatedMetrics = {
+        spend: 12500,
+        impressions: 450000,
+        clicks: 8200,
+        conversions: 340,
+        ctr: 1.82,
+        cpc: 1.52,
+        cpm: 27.78,
+        roas: 3.2,
+        frequency: 2.8,
+        reach: 160000,
+        leads: 180,
+        cost_per_lead: 69.44,
+      }
+
+      const previousMetrics: AggregatedMetrics = {
+        spend: 11800,
+        impressions: 420000,
+        clicks: 7500,
+        conversions: 290,
+        ctr: 1.79,
+        cpc: 1.57,
+        cpm: 28.1,
+        roas: 2.8,
+        frequency: 2.5,
+        reach: 168000,
+        leads: 155,
+        cost_per_lead: 76.13,
+      }
+
+      const today = new Date()
+      const thirtyDaysAgo = new Date(today)
+      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
+
+      const analysis = generateReportAnalysis(
+        'demo',
+        sampleMetrics,
+        {
+          start: thirtyDaysAgo.toISOString().split('T')[0],
+          end: today.toISOString().split('T')[0],
+        },
+        previousMetrics
+      )
+      setResult(analysis)
+      setLoading(false)
+    }, 1200)
+  }
+
+  const handleCopyAll = () => {
+    if (!result) return
+    const text = [
+      result.summary,
+      '',
+      ...result.blocks.map((b) => `## ${b.section}\n${b.text}`),
+      '',
+      '## Recomendações',
+      ...result.recommendations.map((r, i) => `${i + 1}. ${r}`),
+    ].join('\n')
+    navigator.clipboard.writeText(text)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+
+  const sentimentColor = (s: string) => {
+    if (s === 'positive') return 'border-l-emerald-400 bg-emerald-50/50'
+    if (s === 'negative') return 'border-l-red-400 bg-red-50/50'
+    return 'border-l-slate-300 bg-slate-50/50'
+  }
+
+  return (
+    <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+      <div className="p-4">
+        <div className="flex items-start gap-3">
+          <div className={`w-10 h-10 ${assistant.bgColor} rounded-xl flex items-center justify-center shrink-0`}>
+            <Icon className={`w-5 h-5 ${assistant.color}`} />
+          </div>
+          <div className="flex-1 min-w-0">
+            <h3 className="font-semibold text-sm text-slate-900">{assistant.title}</h3>
+            <p className="text-xs text-slate-500 mt-0.5">{assistant.description}</p>
+          </div>
+          <button
+            onClick={handleGenerate}
+            disabled={loading}
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 text-white text-xs font-medium rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors shrink-0"
+          >
+            {loading ? (
+              <Loader2 className="w-3.5 h-3.5 animate-spin" />
+            ) : result ? (
+              expanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />
+            ) : (
+              <Sparkles className="w-3.5 h-3.5" />
+            )}
+            {loading ? 'Gerando...' : result ? (expanded ? 'Fechar' : 'Ver Insight') : 'Gerar Insight'}
+          </button>
+        </div>
+      </div>
+
+      {/* Results */}
+      {expanded && result && (
+        <div className="border-t border-slate-100 p-4 space-y-3">
+          {/* Summary */}
+          <div className="bg-blue-50 rounded-lg p-3">
+            <p className="text-sm text-blue-900 leading-relaxed">{result.summary}</p>
+          </div>
+
+          {/* Analysis blocks */}
+          {result.blocks.map((block, i) => (
+            <div key={i} className={`border-l-4 rounded-r-lg p-3 ${sentimentColor(block.sentiment)}`}>
+              <p className="text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">{block.section}</p>
+              <p className="text-sm text-slate-700 leading-relaxed">{block.text}</p>
+            </div>
+          ))}
+
+          {/* Recommendations */}
+          {result.recommendations.length > 0 && (
+            <div className="bg-amber-50 rounded-lg p-3">
+              <p className="text-xs font-semibold text-amber-800 uppercase tracking-wider mb-2">Recomendações</p>
+              <ul className="space-y-1.5">
+                {result.recommendations.map((rec, i) => (
+                  <li key={i} className="flex items-start gap-2 text-sm text-amber-900">
+                    <Lightbulb className="w-3.5 h-3.5 text-amber-500 mt-0.5 shrink-0" />
+                    {rec}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* Copy button */}
+          <div className="flex justify-end">
+            <button
+              onClick={handleCopyAll}
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
+            >
+              {copied ? (
+                <>
+                  <Check className="w-3.5 h-3.5 text-green-600" />
+                  <span className="text-green-600">Copiado!</span>
+                </>
+              ) : (
+                <>
+                  <Copy className="w-3.5 h-3.5" />
+                  Copiar análise
+                </>
+              )}
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
 
 // =====================================================
 // MAIN PAGE
@@ -186,6 +416,22 @@ export default function AIInsightsPage() {
           </button>
         </div>
       </div>
+
+      {/* AI Assistants Section */}
+      <div className="mb-8">
+        <div className="flex items-center gap-2 mb-4">
+          <Sparkles className="w-4 h-4 text-blue-600" />
+          <h2 className="font-semibold text-slate-900">Assistentes de IA</h2>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {AI_ASSISTANTS.map((assistant) => (
+            <AIAssistantCard key={assistant.id} assistant={assistant} />
+          ))}
+        </div>
+      </div>
+
+      {/* Divider */}
+      <div className="border-t border-slate-200 mb-6" />
 
       {/* Stats Row */}
       <div className="grid grid-cols-3 gap-4 mb-6">

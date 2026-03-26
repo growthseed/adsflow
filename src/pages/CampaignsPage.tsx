@@ -6,7 +6,7 @@
  * Consome dados reais via useMetaAdsDashboard.
  */
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import {
   BarChart3,
   TrendingUp,
@@ -20,16 +20,30 @@ import {
   ArrowUpDown,
   Image,
   Download,
+  Users,
+  Smartphone,
+  Monitor,
+  MapPin,
+  Clock,
+  Loader2,
 } from 'lucide-react'
 import {
   AreaChart,
   Area,
+  BarChart,
+  Bar,
+  PieChart,
+  Pie,
+  Cell,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
 } from 'recharts'
+import { demographicsService } from '@/services/demographicsService'
+import type { DemographicRow } from '@/services/demographicsService'
+import { useAuth } from '@/contexts/AuthContext'
 import {
   useMetaAdsDashboard,
   DATE_RANGES,
@@ -214,6 +228,268 @@ function CampaignTable({
 }
 
 // =====================================================
+// DEMOGRAPHICS TAB
+// =====================================================
+
+const DEMO_COLORS = ['#3b82f6', '#8b5cf6', '#ec4899', '#f59e0b', '#10b981', '#06b6d4', '#ef4444', '#6366f1']
+const GENDER_COLORS: Record<string, string> = { male: '#3b82f6', female: '#ec4899', unknown: '#94a3b8' }
+const GENDER_LABELS: Record<string, string> = { male: 'Masculino', female: 'Feminino', unknown: 'Desconhecido' }
+
+function DemographicsTab({
+  clientId,
+  adAccountId,
+  dateRange,
+}: {
+  clientId: string
+  adAccountId: string
+  dateRange: { start: string; end: string }
+}) {
+  const [ageData, setAgeData] = useState<DemographicRow[]>([])
+  const [genderData, setGenderData] = useState<DemographicRow[]>([])
+  const [deviceData, setDeviceData] = useState<DemographicRow[]>([])
+  const [placementData, setPlacementData] = useState<DemographicRow[]>([])
+  const [hourData, setHourData] = useState<DemographicRow[]>([])
+  const [regionData, setRegionData] = useState<DemographicRow[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    if (!clientId || !adAccountId) return
+    setLoading(true)
+    Promise.all([
+      demographicsService.getByAge(clientId, adAccountId, dateRange),
+      demographicsService.getByGender(clientId, adAccountId, dateRange),
+      demographicsService.getByDevice(clientId, adAccountId, dateRange),
+      demographicsService.getByPlacement(clientId, adAccountId, dateRange),
+      demographicsService.getByHour(clientId, adAccountId, dateRange),
+      demographicsService.getByRegion(clientId, adAccountId, dateRange),
+    ])
+      .then(([age, gender, device, placement, hour, region]) => {
+        setAgeData(age)
+        setGenderData(gender)
+        setDeviceData(device)
+        setPlacementData(placement)
+        setHourData(hour)
+        setRegionData(region)
+      })
+      .catch(console.error)
+      .finally(() => setLoading(false))
+  }, [clientId, adAccountId, dateRange])
+
+  if (loading) {
+    return (
+      <div className="text-center py-16">
+        <Loader2 className="w-8 h-8 animate-spin text-blue-600 mx-auto mb-3" />
+        <p className="text-sm text-slate-500">Carregando dados demográficos...</p>
+      </div>
+    )
+  }
+
+  const hasData = ageData.length > 0 || genderData.length > 0 || deviceData.length > 0
+
+  if (!hasData) {
+    return (
+      <div className="text-center py-16 bg-white rounded-xl border border-slate-200">
+        <Users className="w-10 h-10 text-slate-300 mx-auto mb-3" />
+        <h3 className="font-medium text-slate-700 mb-1">Sem dados demográficos</h3>
+        <p className="text-sm text-slate-400 max-w-md mx-auto">
+          Os dados demográficos serão exibidos quando houver breakdowns de campanhas importados.
+        </p>
+      </div>
+    )
+  }
+
+  return (
+    <div className="space-y-6">
+      {/* Row 1: Age + Gender + Device */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Age Breakdown */}
+        {ageData.length > 0 && (
+          <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5 lg:col-span-1">
+            <h3 className="font-semibold text-slate-900 mb-4 flex items-center gap-2">
+              <Users className="w-4 h-4 text-blue-600" />
+              Faixa Etária
+            </h3>
+            <ResponsiveContainer width="100%" height={220}>
+              <BarChart data={ageData} layout="vertical" margin={{ left: 10, right: 10 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                <XAxis type="number" tick={{ fontSize: 10, fill: '#94a3b8' }} tickFormatter={(v) => `R$${v}`} />
+                <YAxis dataKey="dimension_value" type="category" tick={{ fontSize: 11, fill: '#64748b' }} width={50} />
+                <Tooltip
+                  formatter={((value: number | string | undefined, name: string | undefined) => [
+                    name === 'spend' ? formatCurrency(Number(value ?? 0)) : formatNumber(Number(value ?? 0)),
+                    name === 'spend' ? 'Investimento' : 'Conversões',
+                  ]) as any}
+                  contentStyle={{ borderRadius: '8px', border: '1px solid #e2e8f0', fontSize: '12px' }}
+                />
+                <Bar dataKey="spend" fill="#3b82f6" radius={[0, 4, 4, 0]} name="spend" />
+                <Bar dataKey="conversions" fill="#10b981" radius={[0, 4, 4, 0]} name="conversions" />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        )}
+
+        {/* Gender Donut */}
+        {genderData.length > 0 && (
+          <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
+            <h3 className="font-semibold text-slate-900 mb-4 flex items-center gap-2">
+              <Users className="w-4 h-4 text-pink-600" />
+              Gênero
+            </h3>
+            <ResponsiveContainer width="100%" height={220}>
+              <PieChart>
+                <Pie
+                  data={genderData.map((d) => ({
+                    name: GENDER_LABELS[d.dimension_value] || d.dimension_value,
+                    value: d.spend,
+                  }))}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={50}
+                  outerRadius={80}
+                  dataKey="value"
+                  label={({ name, percent }: { name?: string; percent?: number }) => `${name ?? ''} ${((percent ?? 0) * 100).toFixed(0)}%`}
+                  labelLine={false}
+                >
+                  {genderData.map((d, i) => (
+                    <Cell key={i} fill={GENDER_COLORS[d.dimension_value] || DEMO_COLORS[i % DEMO_COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip
+                  formatter={((value: number | string | undefined) => [formatCurrency(Number(value ?? 0)), 'Investimento']) as any}
+                  contentStyle={{ borderRadius: '8px', border: '1px solid #e2e8f0', fontSize: '12px' }}
+                />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+        )}
+
+        {/* Device Pie */}
+        {deviceData.length > 0 && (
+          <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
+            <h3 className="font-semibold text-slate-900 mb-4 flex items-center gap-2">
+              <Smartphone className="w-4 h-4 text-indigo-600" />
+              Dispositivo
+            </h3>
+            <ResponsiveContainer width="100%" height={220}>
+              <PieChart>
+                <Pie
+                  data={deviceData.map((d) => ({
+                    name: d.dimension_value === 'mobile' ? 'Mobile' : d.dimension_value === 'desktop' ? 'Desktop' : 'Tablet',
+                    value: d.spend,
+                  }))}
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={80}
+                  dataKey="value"
+                  label={({ name, percent }: { name?: string; percent?: number }) => `${name ?? ''} ${((percent ?? 0) * 100).toFixed(0)}%`}
+                  labelLine={false}
+                >
+                  {deviceData.map((_, i) => (
+                    <Cell key={i} fill={DEMO_COLORS[i % DEMO_COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip
+                  formatter={((value: number | string | undefined) => [formatCurrency(Number(value ?? 0)), 'Investimento']) as any}
+                  contentStyle={{ borderRadius: '8px', border: '1px solid #e2e8f0', fontSize: '12px' }}
+                />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+        )}
+      </div>
+
+      {/* Row 2: Placement + Hour */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Placement */}
+        {placementData.length > 0 && (
+          <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
+            <h3 className="font-semibold text-slate-900 mb-4 flex items-center gap-2">
+              <Monitor className="w-4 h-4 text-purple-600" />
+              Posicionamento
+            </h3>
+            <ResponsiveContainer width="100%" height={200}>
+              <BarChart data={placementData} layout="vertical" margin={{ left: 20, right: 10 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                <XAxis type="number" tick={{ fontSize: 10, fill: '#94a3b8' }} tickFormatter={(v) => `R$${v}`} />
+                <YAxis dataKey="dimension_value" type="category" tick={{ fontSize: 11, fill: '#64748b' }} width={100} />
+                <Tooltip
+                  formatter={((value: number | string | undefined) => [formatCurrency(Number(value ?? 0)), 'Investimento']) as any}
+                  contentStyle={{ borderRadius: '8px', border: '1px solid #e2e8f0', fontSize: '12px' }}
+                />
+                <Bar dataKey="spend" fill="#8b5cf6" radius={[0, 4, 4, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        )}
+
+        {/* Hour of Day */}
+        {hourData.length > 0 && (
+          <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
+            <h3 className="font-semibold text-slate-900 mb-4 flex items-center gap-2">
+              <Clock className="w-4 h-4 text-amber-600" />
+              Conversões por Hora
+            </h3>
+            <ResponsiveContainer width="100%" height={200}>
+              <BarChart data={hourData} margin={{ left: 0, right: 0 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                <XAxis
+                  dataKey="dimension_value"
+                  tick={{ fontSize: 10, fill: '#94a3b8' }}
+                  tickFormatter={(v) => `${v}h`}
+                />
+                <YAxis tick={{ fontSize: 10, fill: '#94a3b8' }} />
+                <Tooltip
+                  formatter={((value: number | string | undefined) => [formatNumber(Number(value ?? 0)), 'Conversões']) as any}
+                  labelFormatter={(v) => `${v}:00`}
+                  contentStyle={{ borderRadius: '8px', border: '1px solid #e2e8f0', fontSize: '12px' }}
+                />
+                <Bar dataKey="conversions" fill="#f59e0b" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        )}
+      </div>
+
+      {/* Row 3: Region Table */}
+      {regionData.length > 0 && (
+        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+          <div className="p-4 border-b border-slate-100">
+            <h3 className="font-semibold text-slate-900 flex items-center gap-2">
+              <MapPin className="w-4 h-4 text-emerald-600" />
+              Performance por Região
+            </h3>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="bg-slate-50">
+                  <th className="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase">Região</th>
+                  <th className="px-4 py-3 text-right text-xs font-medium text-slate-500 uppercase">Investimento</th>
+                  <th className="px-4 py-3 text-right text-xs font-medium text-slate-500 uppercase">Conversões</th>
+                  <th className="px-4 py-3 text-right text-xs font-medium text-slate-500 uppercase">CPC</th>
+                  <th className="px-4 py-3 text-right text-xs font-medium text-slate-500 uppercase">CTR</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {regionData.map((row) => (
+                  <tr key={row.dimension_value} className="hover:bg-slate-50 transition-colors">
+                    <td className="px-4 py-3 text-sm text-slate-900 font-medium">{row.dimension_value}</td>
+                    <td className="px-4 py-3 text-sm text-slate-700 text-right">{formatCurrency(row.spend)}</td>
+                    <td className="px-4 py-3 text-sm text-slate-700 text-right">{formatNumber(row.conversions)}</td>
+                    <td className="px-4 py-3 text-sm text-slate-700 text-right">{formatCurrency(row.cpc)}</td>
+                    <td className="px-4 py-3 text-sm text-slate-700 text-right">{formatPercent(row.ctr)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+// =====================================================
 // CREATIVES TABLE
 // =====================================================
 
@@ -338,7 +614,9 @@ export default function CampaignsPage() {
     loading,
   } = useMetaAdsDashboard()
 
+  const { activeClient } = useAuth()
   const { dateRange: globalDateRange, setDateRange: setGlobalDateRange } = useDateRange()
+  const [activeTab, setActiveTab] = useState<'performance' | 'demographics'>('performance')
 
   // Sync global date range -> hook date range (find closest preset or use exact days)
   const handleDateRangeChange = useCallback((range: { startDate: Date; endDate: Date }) => {
@@ -442,8 +720,53 @@ export default function CampaignsPage() {
         </div>
       </div>
 
-      {/* Loading skeleton */}
-      {loading && (
+      {/* Tab Selector */}
+      <div className="flex items-center gap-1 bg-slate-100 rounded-lg p-0.5 mb-6 w-fit">
+        <button
+          onClick={() => setActiveTab('performance')}
+          className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
+            activeTab === 'performance'
+              ? 'bg-white text-slate-900 shadow-sm'
+              : 'text-slate-500 hover:text-slate-700'
+          }`}
+        >
+          Performance
+        </button>
+        <button
+          onClick={() => setActiveTab('demographics')}
+          className={`px-4 py-2 text-sm font-medium rounded-md transition-colors flex items-center gap-1.5 ${
+            activeTab === 'demographics'
+              ? 'bg-white text-slate-900 shadow-sm'
+              : 'text-slate-500 hover:text-slate-700'
+          }`}
+        >
+          <Users className="w-3.5 h-3.5" />
+          Demografia
+        </button>
+      </div>
+
+      {/* Demographics Tab */}
+      {activeTab === 'demographics' && activeClient?.client_id && selectedAccountId && (
+        <DemographicsTab
+          clientId={activeClient.client_id}
+          adAccountId={selectedAccountId}
+          dateRange={{
+            start: globalDateRange.startDate.toISOString().split('T')[0],
+            end: globalDateRange.endDate.toISOString().split('T')[0],
+          }}
+        />
+      )}
+
+      {activeTab === 'demographics' && (!activeClient?.client_id || !selectedAccountId) && (
+        <div className="text-center py-16 bg-white rounded-xl border border-slate-200">
+          <Users className="w-10 h-10 text-slate-300 mx-auto mb-3" />
+          <h3 className="font-medium text-slate-700 mb-1">Selecione uma conta</h3>
+          <p className="text-sm text-slate-400">Conecte e selecione uma conta de anúncios para ver dados demográficos.</p>
+        </div>
+      )}
+
+      {/* Performance Tab Content */}
+      {activeTab === 'performance' && loading && (
         <div className="space-y-6">
           {/* Skeleton KPI cards */}
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
@@ -458,7 +781,7 @@ export default function CampaignsPage() {
         </div>
       )}
 
-      {!loading && metrics && (
+      {activeTab === 'performance' && !loading && metrics && (
         <>
           {/* KPI Cards */}
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-6">
@@ -599,7 +922,7 @@ export default function CampaignsPage() {
       )}
 
       {/* No data state (account connected but no insights) */}
-      {!loading && metrics && metrics.spend === 0 && metrics.impressions === 0 && (
+      {activeTab === 'performance' && !loading && metrics && metrics.spend === 0 && metrics.impressions === 0 && (
         <div className="text-center py-12 bg-white rounded-xl border border-slate-200 mt-6">
           <AlertCircle className="w-10 h-10 text-slate-300 mx-auto mb-3" />
           <h3 className="font-medium text-slate-700 mb-1">Sem dados neste período</h3>

@@ -41,7 +41,10 @@ const DashboardBuilderPage = lazy(() => import('./pages/DashboardBuilderPage'))
 const ConversionTruthPage = lazy(() => import('./pages/ConversionTruthPage'))
 const AIInsightsPage = lazy(() => import('./pages/AIInsightsPage'))
 const GoogleAdsPage = lazy(() => import('./pages/GoogleAdsPage'))
+const GoalsPage = lazy(() => import('./pages/GoalsPage'))
+const OverviewPage = lazy(() => import('./pages/OverviewPage'))
 const SharedDashboardPage = lazy(() => import('./pages/SharedDashboardPage'))
+const ReportBuilderPage = lazy(() => import('./pages/ReportBuilderPage'))
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'))
 
 // Error Boundary para capturar erros de React
@@ -253,6 +256,22 @@ function App() {
               }
             />
             <Route
+              path="/report-builder"
+              element={
+                <ProtectedRoute>
+                  <ReportBuilderPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/report-builder/:id"
+              element={
+                <ProtectedRoute>
+                  <ReportBuilderPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
               path="/clients"
               element={
                 <ProtectedRoute>
@@ -345,6 +364,26 @@ function App() {
                 <ProtectedRoute>
                   <AppLayout>
                     <AIInsightsPage />
+                  </AppLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/goals"
+              element={
+                <ProtectedRoute>
+                  <AppLayout>
+                    <GoalsPage />
+                  </AppLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/overview"
+              element={
+                <ProtectedRoute>
+                  <AppLayout>
+                    <OverviewPage />
                   </AppLayout>
                 </ProtectedRoute>
               }

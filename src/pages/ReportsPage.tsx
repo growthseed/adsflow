@@ -38,6 +38,7 @@ import type { SavedReport } from '@/services/reportsService'
 import { useConfirm } from '@/components/UI/ConfirmDialog'
 import { useToast } from '@/components/UI/Toast'
 import { TableSkeleton } from '@/components/UI/Skeleton'
+import AutomationPanel from '@/components/Reports/AutomationPanel'
 import { exportReportToPDF, downloadPDF } from '@/services/pdfExportService'
 import {
   REPORT_TYPE_LABELS,
@@ -884,6 +885,13 @@ export default function ReportsPage() {
         </div>
         )
       })()}
+
+      {/* Automation Panel */}
+      {!loading && reports.length > 0 && (
+        <div className="mt-8">
+          <AutomationPanel />
+        </div>
+      )}
 
       {/* Create Modal */}
       <CreateReportModal

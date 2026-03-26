@@ -494,3 +494,170 @@ function getExpiryDate(): string {
   d.setDate(d.getDate() + 7) // insights expire after 7 days
   return d.toISOString()
 }
+
+// =====================================================
+// REPORT ANALYSIS (Template-based text generation)
+// =====================================================
+
+export interface ReportAnalysisBlock {
+  section: string
+  text: string
+  sentiment: 'positive' | 'negative' | 'neutral'
+}
+
+export interface ReportAnalysisResult {
+  summary: string
+  blocks: ReportAnalysisBlock[]
+  recommendations: string[]
+  generatedAt: string
+}
+
+export interface AggregatedMetrics {
+  spend: number
+  impressions: number
+  clicks: number
+  conversions: number
+  ctr: number
+  cpc: number
+  cpm: number
+  roas: number
+  frequency: number
+  reach: number
+  leads: number
+  cost_per_lead: number
+}
+
+/**
+ * Generate natural-language report analysis from aggregated metrics.
+ * Template-based (not LLM) — structured text blocks.
+ */
+export function generateReportAnalysis(
+  _clientId: string,
+  current: AggregatedMetrics,
+  dateRange: { start: string; end: string },
+  previous?: AggregatedMetrics
+): ReportAnalysisResult {
+  const blocks: ReportAnalysisBlock[] = []
+  const recommendations: string[] = []
+
+  const fmtCurrency = (v: number) =>
+    new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(v)
+  const fmtNumber = (v: number) => new Intl.NumberFormat('pt-BR').format(Math.round(v))
+  const fmtPct = (v: number) => `${v.toFixed(2)}%`
+
+  // ── Summary ──
+  const summary = `No período de ${dateRange.start} a ${dateRange.end}, o investimento total foi de ${fmtCurrency(current.spend)} com ${fmtNumber(current.impressions)} impressões, ${fmtNumber(current.clicks)} cliques e ${fmtNumber(current.conversions)} conversões.`
+
+  // ── Investment block ──
+  blocks.push({
+    section: 'Investimento',
+    text: `O investimento total no período foi de ${fmtCurrency(current.spend)}, gerando ${fmtNumber(current.impressions)} impressões e alcançando ${fmtNumber(current.reach)} pessoas.${
+      previous && previous.spend > 0
+        ? ` Comparado ao período anterior (${fmtCurrency(previous.spend)}), houve uma variação de ${(((current.spend - previous.spend) / previous.spend) * 100).toFixed(1)}%.`
+        : ''
+    }`,
+    sentiment: previous && previous.spend > 0
+      ? current.spend <= previous.spend ? 'positive' : 'neutral'
+      : 'neutral',
+  })
+
+  // ── CTR block ──
+  const ctrBenchmark = 1.5 // avg market CTR
+  const ctrAbove = current.ctr > ctrBenchmark
+  blocks.push({
+    section: 'Taxa de Cliques (CTR)',
+    text: `O CTR médio foi de ${fmtPct(current.ctr)}, ${
+      ctrAbove
+        ? `${((current.ctr / ctrBenchmark - 1) * 100).toFixed(0)}% acima da média de mercado (${fmtPct(ctrBenchmark)}). Isso indica boa relevância dos anúncios para o público.`
+        : `abaixo da média de mercado (${fmtPct(ctrBenchmark)}). Recomendamos revisar os criativos e a segmentação.`
+    }`,
+    sentiment: ctrAbove ? 'positive' : 'negative',
+  })
+
+  if (!ctrAbove) {
+    recommendations.push('Revisar criativos: testar novos formatos de imagem e copy')
+    recommendations.push('Refinar segmentação de público para aumentar relevância')
+  }
+
+  // ── CPC block ──
+  blocks.push({
+    section: 'Custo por Clique (CPC)',
+    text: `O CPC médio foi de ${fmtCurrency(current.cpc)}.${
+      previous && previous.cpc > 0
+        ? ` Comparado ao período anterior (${fmtCurrency(previous.cpc)}), ${
+            current.cpc > previous.cpc
+              ? `houve um aumento de ${(((current.cpc - previous.cpc) / previous.cpc) * 100).toFixed(1)}%. Isso pode indicar aumento de concorrência no leilão.`
+              : `houve uma redução de ${(((previous.cpc - current.cpc) / previous.cpc) * 100).toFixed(1)}%. Ótima otimização de custos.`
+          }`
+        : ''
+    }`,
+    sentiment: previous && previous.cpc > 0
+      ? current.cpc < previous.cpc ? 'positive' : 'negative'
+      : 'neutral',
+  })
+
+  if (previous && previous.cpc > 0 && current.cpc > previous.cpc * 1.2) {
+    recommendations.push('CPC aumentou significativamente — verificar concorrência e ajustar lances')
+  }
+
+  // ── Conversions block ──
+  blocks.push({
+    section: 'Conversões',
+    text: `Foram registradas ${fmtNumber(current.conversions)} conversões no período, com taxa de conversão de ${fmtPct(current.clicks > 0 ? (current.conversions / current.clicks) * 100 : 0)}.${
+      current.leads > 0 ? ` Total de leads gerados: ${fmtNumber(current.leads)} (CPL: ${fmtCurrency(current.cost_per_lead)}).` : ''
+    }`,
+    sentiment: current.conversions > 0 ? 'positive' : 'negative',
+  })
+
+  // ── ROAS block ──
+  if (current.roas > 0) {
+    blocks.push({
+      section: 'Retorno sobre Investimento (ROAS)',
+      text: `O ROAS do período foi de ${current.roas.toFixed(2)}x. ${
+        current.roas >= 3
+          ? 'Excelente retorno! Considere escalar o investimento nas campanhas de melhor performance.'
+          : current.roas >= 1
+          ? 'ROAS positivo, mas há espaço para otimização. Analise as campanhas individuais para identificar oportunidades.'
+          : 'ROAS abaixo de 1.0x indica prejuízo. Revise urgentemente a estratégia de campanhas.'
+      }`,
+      sentiment: current.roas >= 3 ? 'positive' : current.roas >= 1 ? 'neutral' : 'negative',
+    })
+
+    if (current.roas < 1) {
+      recommendations.push('ROAS abaixo de 1.0x — considere pausar campanhas com pior performance')
+      recommendations.push('Revisar páginas de destino e jornada de conversão')
+    }
+  }
+
+  // ── Frequency block ──
+  if (current.frequency > 0) {
+    blocks.push({
+      section: 'Frequência',
+      text: `A frequência média foi de ${current.frequency.toFixed(1)}x. ${
+        current.frequency > 4
+          ? 'Frequência elevada pode causar fadiga de anúncio. Considere renovar criativos ou expandir o público.'
+          : current.frequency > 2
+          ? 'Frequência dentro de níveis aceitáveis, mas monitore para evitar saturação.'
+          : 'Frequência saudável, indicando boa distribuição de entrega.'
+      }`,
+      sentiment: current.frequency > 4 ? 'negative' : 'positive',
+    })
+
+    if (current.frequency > 4) {
+      recommendations.push('Frequência alta — renovar criativos e expandir público-alvo')
+    }
+  }
+
+  // General recommendations
+  if (recommendations.length === 0) {
+    recommendations.push('Manter estratégia atual e monitorar métricas semanalmente')
+    recommendations.push('Testar variações de criativos para melhoria contínua')
+  }
+
+  return {
+    summary,
+    blocks,
+    recommendations,
+    generatedAt: new Date().toISOString(),
+  }
+}

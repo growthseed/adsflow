@@ -32,6 +32,7 @@ import {
   Sparkles,
   ShieldCheck,
   Brain,
+  FileEdit,
 } from 'lucide-react'
 
 // ========== NAV CONFIG ==========
@@ -55,7 +56,8 @@ const NAV_SECTIONS: NavSection[] = [
   {
     title: '',
     items: [
-      { path: '/dashboard', label: 'Visão Geral', icon: LayoutDashboard },
+      { path: '/overview', label: 'Visão Geral', icon: LayoutDashboard },
+      { path: '/dashboard', label: 'Dashboard', icon: BarChart3 },
     ],
   },
   {
@@ -67,7 +69,9 @@ const NAV_SECTIONS: NavSection[] = [
       { path: '/dashboard-builder', label: 'Dashboards', icon: PanelTop, isNew: true },
       { path: '/conversion-truth', label: 'Verdade da Conversão', icon: ShieldCheck, isNew: true },
       { path: '/insights', label: 'Insights IA', icon: Brain, isNew: true },
+      { path: '/goals', label: 'Controle de Metas', icon: Target, isNew: true },
       { path: '/reports', label: 'Relatórios', icon: FileText, minRole: 'analyst' },
+      { path: '/report-builder', label: 'Report Builder', icon: FileEdit, isNew: true },
     ],
   },
   {
