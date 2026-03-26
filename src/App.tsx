@@ -39,6 +39,7 @@ const BillingPage = lazy(() => import('./pages/BillingPage'))
 const DashboardBuilderPage = lazy(() => import('./pages/DashboardBuilderPage'))
 const ConversionTruthPage = lazy(() => import('./pages/ConversionTruthPage'))
 const AIInsightsPage = lazy(() => import('./pages/AIInsightsPage'))
+const GoogleAdsPage = lazy(() => import('./pages/GoogleAdsPage'))
 const SharedDashboardPage = lazy(() => import('./pages/SharedDashboardPage'))
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'))
 
@@ -316,6 +317,16 @@ function App() {
               }
             />
 
+            <Route
+              path="/google-ads"
+              element={
+                <ProtectedRoute>
+                  <AppLayout>
+                    <GoogleAdsPage />
+                  </AppLayout>
+                </ProtectedRoute>
+              }
+            />
             <Route
               path="/conversion-truth"
               element={

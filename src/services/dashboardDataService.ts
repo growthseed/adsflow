@@ -112,7 +112,7 @@ export async function fetchWidgetData(
       return fetchBIOportunidadesData(widgetType, from, to, globalFilters.clientId);
 
     case 'ecommerce':
-      return fetchEcommerceData(widgetType, dataSource, config);
+      return fetchEcommerceData(widgetType, dataSource, config, from, to, globalFilters.clientId);
 
     case 'manual':
       return { rows: [], totals: {} };
@@ -453,65 +453,42 @@ async function fetchBIOportunidadesData(
 }
 
 // =====================================================
-// E-COMMERCE (demo data — until real integration)
+// E-COMMERCE (real data from Supabase)
 // =====================================================
 
 async function fetchEcommerceData(
   widgetType: WidgetType,
   dataSource: DataSourceConfig,
   config: WidgetConfig,
+  dateFrom?: string,
+  dateTo?: string,
+  clientId?: string,
 ): Promise<WidgetDataResult> {
-  // Demo data — will be replaced when e-commerce platforms are connected
-  const REVENUE_DATA = [
-    { month: 'Set/25', receita: 18400, pedidos: 124 },
-    { month: 'Out/25', receita: 22800, pedidos: 156 },
-    { month: 'Nov/25', receita: 31200, pedidos: 203 },
-    { month: 'Dez/25', receita: 45600, pedidos: 312 },
-    { month: 'Jan/26', receita: 28900, pedidos: 188 },
-    { month: 'Fev/26', receita: 34100, pedidos: 221 },
-  ];
+  if (!isSupabaseConfigured || !clientId) return { rows: [], totals: {} };
 
-  const SOURCE_DATA = [
-    { source: 'Meta Ads', name: 'Meta Ads', receita: 48200, pedidos: 312, roas: 4.2 },
-    { source: 'Google Ads', name: 'Google Ads', receita: 32100, pedidos: 198, roas: 3.1 },
-    { source: 'Orgânico', name: 'Orgânico', receita: 24600, pedidos: 167, roas: 0 },
-    { source: 'Email Mkt', name: 'Email Mkt', receita: 18300, pedidos: 124, roas: 8.7 },
-    { source: 'Direto', name: 'Direto', receita: 12800, pedidos: 89, roas: 0 },
-  ];
+  const dateRange = dateFrom && dateTo ? { from: dateFrom, to: dateTo } : undefined;
 
-  const PRODUCT_DATA = [
-    { product_name: 'Curso Completo Marketing', vendas: 189, receita: 56700, ticket: 300, curva: 'A' },
-    { product_name: 'Mentoria Individual', vendas: 42, receita: 41580, ticket: 990, curva: 'A' },
-    { product_name: 'Pack Templates', vendas: 312, receita: 15288, ticket: 49, curva: 'B' },
-    { product_name: 'Assinatura Premium', vendas: 156, receita: 14040, ticket: 90, curva: 'B' },
-    { product_name: 'E-book Estratégias', vendas: 421, receita: 8420, ticket: 20, curva: 'C' },
-  ];
+  // Fetch revenue summary
+  const { getRevenueSummary, getProductABC, getGeographicDistribution, getEcommerceTotals } = await import('./ecommerceService');
 
-  const STATE_DATA = [
-    { estado: 'SP', name: 'SP', pedidos: 312, receita: 56200, value: 56200 },
-    { estado: 'RJ', name: 'RJ', pedidos: 198, receita: 34100, value: 34100 },
-    { estado: 'MG', name: 'MG', pedidos: 145, receita: 22800, value: 22800 },
-    { estado: 'RS', name: 'RS', pedidos: 98, receita: 15600, value: 15600 },
-    { estado: 'PR', name: 'PR', pedidos: 87, receita: 13400, value: 13400 },
-    { estado: 'BA', name: 'BA', pedidos: 65, receita: 9800, value: 9800 },
-  ];
-
-  const totalReceita = REVENUE_DATA.reduce((s, r) => s + r.receita, 0);
-  const totalPedidos = REVENUE_DATA.reduce((s, r) => s + r.pedidos, 0);
+  const [revenueSummary, ecommTotals] = await Promise.all([
+    getRevenueSummary(clientId, dateRange),
+    getEcommerceTotals(clientId, dateRange),
+  ]);
 
   const totals: Record<string, number> = {
-    receita: totalReceita,
-    pedidos: totalPedidos,
-    ticket_medio: totalPedidos > 0 ? totalReceita / totalPedidos : 0,
-    taxa_conversao: 3.2,
-    cac: 42.50,
-    taxa_recompra: 18.5,
+    receita: ecommTotals.revenue,
+    pedidos: ecommTotals.orders,
+    ticket_medio: ecommTotals.avg_ticket,
+    novos_clientes: ecommTotals.new_customers,
+    cac: ecommTotals.cac,
+    ltv: ecommTotals.ltv,
   };
 
   // KPI
   if (widgetType === 'kpi_card' && config.type === 'kpi_card') {
     const value = totals[config.kpi.metric] ?? 0;
-    return { rows: [], totals, value, previousValue: value * 0.85 };
+    return { rows: [], totals, value };
   }
 
   // Gauge
@@ -521,36 +498,47 @@ async function fetchEcommerceData(
 
   // By month
   if (dataSource.groupBy === 'month') {
-    return { rows: REVENUE_DATA.map((r) => ({ ...r, date: r.month })), totals };
-  }
-
-  // By fonte/source
-  if (dataSource.groupBy === 'fonte') {
-    return { rows: SOURCE_DATA, totals };
+    const rows = revenueSummary.map((r) => ({
+      month: r.month,
+      date: r.month,
+      receita: r.revenue,
+      pedidos: r.approved_orders,
+    }));
+    return { rows, totals };
   }
 
   // By product
   if (dataSource.groupBy === 'product') {
-    return { rows: PRODUCT_DATA, totals };
+    const products = await getProductABC(clientId);
+    const rows = products.map((p) => ({
+      product_name: p.product_name,
+      name: p.product_name,
+      vendas: p.total_units,
+      receita: p.total_revenue,
+      curva: p.abc_class,
+    }));
+    return { rows, totals };
   }
 
   // By estado
   if (dataSource.groupBy === 'estado') {
-    return { rows: STATE_DATA, totals };
+    const geo = await getGeographicDistribution(clientId);
+    const rows = geo.map((g) => ({
+      estado: g.shipping_state,
+      name: g.shipping_state,
+      pedidos: g.orders,
+      receita: g.revenue,
+      value: g.revenue,
+    }));
+    return { rows, totals };
   }
 
-  // By cupom (demo)
-  if (dataSource.groupBy === 'cupom') {
-    return {
-      rows: [
-        { cupom: 'PROMO10', pedidos: 89, receita: 12400, desconto: 1240 },
-        { cupom: 'BLACK50', pedidos: 156, receita: 28800, desconto: 14400 },
-        { cupom: 'WELCOME', pedidos: 45, receita: 5400, desconto: 540 },
-      ],
-      totals,
-    };
-  }
-
-  // Default
-  return { rows: REVENUE_DATA, totals };
+  // Default: revenue summary
+  const rows = revenueSummary.map((r) => ({
+    month: r.month,
+    date: r.month,
+    receita: r.revenue,
+    pedidos: r.approved_orders,
+  }));
+  return { rows, totals };
 }

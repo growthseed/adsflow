@@ -56,6 +56,12 @@ import {
   type MetaInstagramAccount,
   type MetaConnectedAssets,
 } from '@/lib/facebook-sdk'
+import {
+  googleAuthService,
+  googleAccountsService,
+  type GoogleAccount,
+  type GooglePlatform,
+} from '@/services/googleAuthService'
 
 // =====================================================
 // META OAUTH CONNECT MODAL
@@ -1030,6 +1036,79 @@ export default function IntegrationsPage() {
 
   const hasFbApp = isFacebookConfigured()
 
+  // Google accounts state
+  const [googleConnectedAccounts, setGoogleConnectedAccounts] = useState<GoogleAccount[]>([])
+  const googleAdsConnected = googleConnectedAccounts.filter((a) => a.platform === 'google_ads').length
+  const ga4Connected = googleConnectedAccounts.filter((a) => a.platform === 'ga4').length
+  const scConnected = googleConnectedAccounts.filter((a) => a.platform === 'search_console').length
+
+  // Google OAuth connect handler
+  const handleGoogleConnect = (platforms: GooglePlatform[]) => {
+    const authUrl = googleAuthService.getAuthUrl(platforms, activeClient?.client_id || undefined)
+    window.location.href = authUrl
+  }
+
+  // Fetch Google accounts
+  const fetchGoogleAccounts = useCallback(async () => {
+    if (!user) return
+    try {
+      const data = activeClient?.client_id
+        ? await googleAccountsService.getConnectedAccounts(activeClient.client_id)
+        : await googleAccountsService.listByUser(user.id)
+      setGoogleConnectedAccounts(data)
+    } catch (err) {
+      console.error('Error fetching Google accounts:', err)
+    }
+  }, [user, activeClient?.client_id])
+
+  useEffect(() => {
+    fetchGoogleAccounts()
+  }, [fetchGoogleAccounts])
+
+  // Handle Google OAuth callback (check URL for code param)
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const code = params.get('code')
+    const stateParam = params.get('state')
+
+    if (!code || !stateParam || !user) return
+
+    // Clear the URL params
+    window.history.replaceState({}, '', window.location.pathname)
+
+    const handleCallback = async () => {
+      try {
+        const state = JSON.parse(atob(stateParam))
+        const tokens = await googleAuthService.exchangeCodeForTokens(code)
+
+        // For each platform in state, we need to discover accounts
+        // For now, create a placeholder account that will be populated on first sync
+        for (const platform of (state.platforms as GooglePlatform[])) {
+          const accountName = platform === 'google_ads' ? 'Google Ads'
+            : platform === 'ga4' ? 'Google Analytics 4'
+            : 'Search Console'
+
+          await googleAccountsService.connectAccount(
+            user.id,
+            state.clientId || activeClient?.client_id || null,
+            platform,
+            `pending_${platform}_${Date.now()}`,
+            `${accountName} (adsefeito@gmail.com)`,
+            tokens,
+          )
+        }
+
+        toast.success('Google conectado com sucesso! Configure a conta na seção abaixo.')
+        await fetchGoogleAccounts()
+      } catch (err) {
+        console.error('Google OAuth callback error:', err)
+        toast.error('Erro ao conectar com Google. Tente novamente.')
+      }
+    }
+
+    handleCallback()
+  }, [user])
+
   // Fetch accounts (filtered by active client when available)
   const fetchAccounts = useCallback(async () => {
     if (!user) return
@@ -1217,20 +1296,6 @@ export default function IntegrationsPage() {
       note: 'Conectado via Meta OAuth',
     },
     {
-      key: 'google_analytics',
-      name: 'Google Analytics',
-      desc: 'GA4 — Tráfego & Conversões',
-      color: 'bg-[#E37400]',
-      hoverColor: 'hover:bg-[#D16A00]',
-      borderColor: 'border-orange-200',
-      bgLight: 'bg-orange-50',
-      icon: BarChart3,
-      connected: 0,
-      available: false,
-      onConnect: () => {},
-      features: ['Sessões', 'Conversões', 'Origens', 'Eventos'],
-    },
-    {
       key: 'google_ads',
       name: 'Google Ads',
       desc: 'Search, Display & YouTube',
@@ -1239,10 +1304,38 @@ export default function IntegrationsPage() {
       borderColor: 'border-blue-200',
       bgLight: 'bg-blue-50',
       icon: Globe,
-      connected: googleAccounts.length,
+      connected: googleAccounts.length + googleAdsConnected,
       available: true,
-      onConnect: () => setShowManualModal(true),
+      onConnect: () => handleGoogleConnect(['google_ads']),
       features: ['Campanhas', 'Keywords', 'Display', 'YouTube'],
+    },
+    {
+      key: 'google_analytics',
+      name: 'Google Analytics 4',
+      desc: 'GA4 — Tráfego & Conversões',
+      color: 'bg-[#E37400]',
+      hoverColor: 'hover:bg-[#D16A00]',
+      borderColor: 'border-orange-200',
+      bgLight: 'bg-orange-50',
+      icon: BarChart3,
+      connected: ga4Connected,
+      available: true,
+      onConnect: () => handleGoogleConnect(['ga4']),
+      features: ['Sessões', 'Conversões', 'Origens', 'Eventos'],
+    },
+    {
+      key: 'search_console',
+      name: 'Search Console',
+      desc: 'SEO — Queries & Rankings',
+      color: 'bg-[#4285F4]',
+      hoverColor: 'hover:bg-[#3B78E7]',
+      borderColor: 'border-indigo-200',
+      bgLight: 'bg-indigo-50',
+      icon: Globe,
+      connected: scConnected,
+      available: true,
+      onConnect: () => handleGoogleConnect(['search_console']),
+      features: ['Queries', 'Páginas', 'CTR', 'Posição'],
     },
     {
       key: 'tiktok_ads',

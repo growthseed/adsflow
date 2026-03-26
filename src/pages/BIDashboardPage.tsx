@@ -1,15 +1,18 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import {
   AreaChart,
   Area,
   BarChart,
   Bar,
+  PieChart,
+  Pie,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
   Cell,
+  Legend,
 } from 'recharts';
 import {
   BarChart3,
@@ -20,6 +23,7 @@ import {
   Filter,
   Download,
   ShoppingCart,
+  Package,
 } from 'lucide-react';
 
 // Auth
@@ -30,6 +34,24 @@ import { KPICard, FunnelChart, LeadsLineChart, ResponsavelTable, PerdasChart } f
 import DateRangeSelector from '@/components/UI/DateRangeSelector';
 import { useToast } from '@/components/UI/Toast';
 import { KPIRowSkeleton, ChartSkeleton, TableSkeleton } from '@/components/UI/Skeleton';
+
+// E-commerce service
+import {
+  getRevenueSummary,
+  getProductABC,
+  getGeographicDistribution,
+  getCustomerRFM,
+  getRecentOrders,
+  getEcommerceTotals,
+} from '@/services/ecommerceService';
+import type {
+  RevenueSummary,
+  ProductABC,
+  GeoDistribution,
+  RFMDistribution,
+  RecentOrder,
+  EcommerceTotals,
+} from '@/services/ecommerceService';
 
 // Hooks
 import {
@@ -48,174 +70,323 @@ import type { BIPageType } from '@/types/bi';
 import { downloadCSV } from '@/lib/csv';
 
 // =====================================================
-// E-COMMERCE VIEW (demo data — conectar com API real)
+// E-COMMERCE VIEW (real data from Supabase)
 // =====================================================
 
-const ECOMMERCE_REVENUE = [
-  { month: 'Set', receita: 18400, pedidos: 124 },
-  { month: 'Out', receita: 22800, pedidos: 156 },
-  { month: 'Nov', receita: 31200, pedidos: 203 },
-  { month: 'Dez', receita: 45600, pedidos: 312 },
-  { month: 'Jan', receita: 28900, pedidos: 188 },
-  { month: 'Fev', receita: 34100, pedidos: 221 },
-];
-
-const ECOMMERCE_SOURCES = [
-  { source: 'Meta Ads', receita: 48200, pedidos: 312, roas: 4.2 },
-  { source: 'Google Ads', receita: 32100, pedidos: 198, roas: 3.1 },
-  { source: 'Orgânico', receita: 24600, pedidos: 167, roas: 0 },
-  { source: 'Email Mkt', receita: 18300, pedidos: 124, roas: 8.7 },
-  { source: 'Direto', receita: 12800, pedidos: 89, roas: 0 },
-];
-
-const ECOMMERCE_PRODUCTS = [
-  { name: 'Curso Completo Marketing', vendas: 189, receita: 56700, ticket: 300 },
-  { name: 'Mentoria Individual', vendas: 42, receita: 41580, ticket: 990 },
-  { name: 'Pack Templates', vendas: 312, receita: 15288, ticket: 49 },
-  { name: 'Assinatura Premium', vendas: 156, receita: 14040, ticket: 90 },
-  { name: 'E-book Estratégias', vendas: 421, receita: 8420, ticket: 20 },
-];
-
-const SOURCE_COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#6b7280'];
+const ABC_COLORS: Record<string, string> = { A: '#10b981', B: '#f59e0b', C: '#ef4444' };
+const RFM_COLORS: Record<string, string> = {
+  champions: '#10b981',
+  loyal: '#3b82f6',
+  potential: '#8b5cf6',
+  new: '#06b6d4',
+  at_risk: '#f59e0b',
+  lost: '#ef4444',
+};
+const RFM_LABELS: Record<string, string> = {
+  champions: 'Campeões',
+  loyal: 'Fiéis',
+  potential: 'Potenciais',
+  new: 'Novos',
+  at_risk: 'Em risco',
+  lost: 'Perdidos',
+};
+const STATUS_LABELS: Record<string, string> = {
+  pending: 'Pendente',
+  approved: 'Aprovado',
+  shipped: 'Enviado',
+  delivered: 'Entregue',
+  cancelled: 'Cancelado',
+  refunded: 'Reembolsado',
+};
+const STATUS_COLORS: Record<string, string> = {
+  pending: 'bg-yellow-100 text-yellow-800',
+  approved: 'bg-blue-100 text-blue-800',
+  shipped: 'bg-indigo-100 text-indigo-800',
+  delivered: 'bg-green-100 text-green-800',
+  cancelled: 'bg-red-100 text-red-800',
+  refunded: 'bg-gray-100 text-gray-800',
+};
 
 function EcommerceView() {
-  const totals = useMemo(() => {
-    const receita = ECOMMERCE_REVENUE.reduce((s, r) => s + r.receita, 0);
-    const pedidos = ECOMMERCE_REVENUE.reduce((s, r) => s + r.pedidos, 0);
-    return {
-      receita,
-      pedidos,
-      ticketMedio: pedidos > 0 ? receita / pedidos : 0,
-      taxaConversao: 3.2,
-    };
-  }, []);
+  const { activeClient } = useAuth();
+  const clientId = activeClient?.client_id;
 
-  const fmtBRL = (v: number | undefined) => (v ?? 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  const [loading, setLoading] = useState(true);
+  const [totals, setTotals] = useState<EcommerceTotals | null>(null);
+  const [revenueTrend, setRevenueTrend] = useState<RevenueSummary[]>([]);
+  const [products, setProducts] = useState<ProductABC[]>([]);
+  const [rfmData, setRfmData] = useState<RFMDistribution[]>([]);
+  const [geoData, setGeoData] = useState<GeoDistribution[]>([]);
+  const [recentOrdersList, setRecentOrdersList] = useState<RecentOrder[]>([]);
+
+  const hasData = totals != null && totals.orders > 0;
+
+  useEffect(() => {
+    if (!clientId) {
+      setLoading(false);
+      return;
+    }
+    let cancelled = false;
+
+    async function load() {
+      setLoading(true);
+      try {
+        const [t, rev, abc, rfm, geo, orders] = await Promise.all([
+          getEcommerceTotals(clientId!),
+          getRevenueSummary(clientId!),
+          getProductABC(clientId!),
+          getCustomerRFM(clientId!),
+          getGeographicDistribution(clientId!),
+          getRecentOrders(clientId!, 15),
+        ]);
+        if (cancelled) return;
+        setTotals(t);
+        setRevenueTrend(rev);
+        setProducts(abc);
+        setRfmData(rfm);
+        setGeoData(geo);
+        setRecentOrdersList(orders);
+      } catch (err) {
+        console.error('[EcommerceView] load error:', err);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+
+    load();
+    return () => { cancelled = true; };
+  }, [clientId]);
+
+  const fmtBRL = (v: number | undefined) =>
+    (v ?? 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+  const fmtMonth = (iso: string) => {
+    try {
+      const d = new Date(iso);
+      return d.toLocaleDateString('pt-BR', { month: 'short', year: '2-digit' });
+    } catch { return iso; }
+  };
+
+  // Loading state
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <KPIRowSkeleton count={6} />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <ChartSkeleton height={280} />
+          <ChartSkeleton height={280} />
+        </div>
+        <TableSkeleton rows={5} cols={5} />
+      </div>
+    );
+  }
+
+  // Empty state
+  if (!hasData) {
+    return (
+      <div className="flex flex-col items-center justify-center py-20">
+        <div className="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mb-6">
+          <Package className="w-10 h-10 text-slate-400" />
+        </div>
+        <h3 className="text-xl font-semibold text-slate-900 mb-2">Nenhum dado de e-commerce</h3>
+        <p className="text-slate-500 text-center max-w-md mb-6">
+          Conecte sua plataforma de e-commerce (Shopify, VTEX, WooCommerce, Tray) ou importe pedidos manualmente para ver analytics completos.
+        </p>
+        <button className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium">
+          Conecte sua plataforma de e-commerce
+        </button>
+      </div>
+    );
+  }
+
+  // Chart data
+  const revenueChartData = revenueTrend.map((r) => ({
+    month: fmtMonth(r.month),
+    receita: r.revenue,
+    pedidos: r.approved_orders,
+  }));
+
+  const abcChartData = products.slice(0, 15).map((p) => ({
+    name: p.product_name.length > 25 ? p.product_name.slice(0, 22) + '...' : p.product_name,
+    receita: p.total_revenue,
+    abc_class: p.abc_class,
+  }));
+
+  const rfmChartData = rfmData.map((r) => ({
+    name: RFM_LABELS[r.segment] || r.segment,
+    value: r.count,
+    segment: r.segment,
+  }));
 
   return (
     <div className="space-y-6">
-      {/* Demo data banner */}
-      <div className="flex items-center gap-3 p-3 bg-amber-50 border border-amber-200 rounded-lg">
-        <ShoppingCart className="w-5 h-5 text-amber-600 flex-shrink-0" />
-        <p className="text-sm text-amber-700">
-          <span className="font-medium">Dados demonstrativos.</span> Conecte sua plataforma de e-commerce nas Integrações para ver dados reais.
-        </p>
+      {/* KPI Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
+        <KPICard data={{ title: 'Faturamento', value: totals!.revenue, format: 'currency', color: 'green' }} />
+        <KPICard data={{ title: 'Pedidos', value: totals!.orders, format: 'number', color: 'blue' }} />
+        <KPICard data={{ title: 'Ticket Médio', value: totals!.avg_ticket, format: 'currency', color: 'purple' }} />
+        <KPICard data={{ title: 'Novos Clientes', value: totals!.new_customers, format: 'number', color: 'blue' }} />
+        <KPICard data={{ title: 'CAC', value: totals!.cac, format: 'currency', color: 'yellow' }} />
+        <KPICard data={{ title: 'LTV', value: totals!.ltv, format: 'currency', color: 'green' }} />
       </div>
 
-      {/* KPIs */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <KPICard data={{ title: 'Receita Total', value: totals.receita, format: 'currency', color: 'green' }} />
-        <KPICard data={{ title: 'Pedidos', value: totals.pedidos, format: 'number', color: 'blue' }} />
-        <KPICard data={{ title: 'Ticket Médio', value: totals.ticketMedio, format: 'currency', color: 'purple' }} />
-        <KPICard data={{ title: 'Taxa de Conversão', value: totals.taxaConversao, format: 'percentage', color: 'yellow' }} />
-      </div>
-
-      {/* Revenue Chart + Source ROAS */}
+      {/* Revenue Trend + ABC Curve */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Revenue over time */}
+        {/* Revenue trend */}
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">Receita Mensal</h3>
-          <ResponsiveContainer width="100%" height={280}>
-            <AreaChart data={ECOMMERCE_REVENUE}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-              <XAxis dataKey="month" tick={{ fill: '#64748b', fontSize: 12 }} />
-              <YAxis tickFormatter={(v) => `R$${(v / 1000).toFixed(0)}k`} tick={{ fill: '#64748b', fontSize: 12 }} />
-              <Tooltip formatter={(v) => fmtBRL(v as number)} />
-              <Area type="monotone" dataKey="receita" stroke="#10b981" fill="#10b981" fillOpacity={0.15} strokeWidth={2} />
-            </AreaChart>
-          </ResponsiveContainer>
+          {revenueChartData.length > 0 ? (
+            <ResponsiveContainer width="100%" height={280}>
+              <AreaChart data={revenueChartData}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+                <XAxis dataKey="month" tick={{ fill: '#64748b', fontSize: 12 }} />
+                <YAxis tickFormatter={(v) => `R$${(v / 1000).toFixed(0)}k`} tick={{ fill: '#64748b', fontSize: 12 }} />
+                <Tooltip formatter={(v) => fmtBRL(v as number)} />
+                <Area type="monotone" dataKey="receita" name="Receita" stroke="#10b981" fill="#10b981" fillOpacity={0.15} strokeWidth={2} />
+              </AreaChart>
+            </ResponsiveContainer>
+          ) : (
+            <p className="text-gray-400 text-center py-12">Sem dados de receita</p>
+          )}
         </div>
 
-        {/* Revenue by source */}
+        {/* ABC curve */}
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Receita por Fonte</h3>
-          <ResponsiveContainer width="100%" height={280}>
-            <BarChart data={ECOMMERCE_SOURCES} layout="vertical">
-              <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-              <XAxis type="number" tickFormatter={(v) => `R$${(v / 1000).toFixed(0)}k`} tick={{ fill: '#64748b', fontSize: 12 }} />
-              <YAxis type="category" dataKey="source" width={90} tick={{ fill: '#64748b', fontSize: 12 }} />
-              <Tooltip formatter={(v) => fmtBRL(v as number)} />
-              <Bar dataKey="receita" radius={[0, 4, 4, 0]}>
-                {ECOMMERCE_SOURCES.map((_, i) => (
-                  <Cell key={i} fill={SOURCE_COLORS[i % SOURCE_COLORS.length]} />
-                ))}
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">Curva ABC de Produtos</h3>
+          {abcChartData.length > 0 ? (
+            <ResponsiveContainer width="100%" height={280}>
+              <BarChart data={abcChartData} layout="vertical">
+                <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+                <XAxis type="number" tickFormatter={(v) => `R$${(v / 1000).toFixed(0)}k`} tick={{ fill: '#64748b', fontSize: 12 }} />
+                <YAxis type="category" dataKey="name" width={130} tick={{ fill: '#64748b', fontSize: 11 }} />
+                <Tooltip formatter={(v) => fmtBRL(v as number)} />
+                <Bar dataKey="receita" name="Receita" radius={[0, 4, 4, 0]}>
+                  {abcChartData.map((item, i) => (
+                    <Cell key={i} fill={ABC_COLORS[item.abc_class] || '#6b7280'} />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          ) : (
+            <p className="text-gray-400 text-center py-12">Sem dados de produtos</p>
+          )}
+          {abcChartData.length > 0 && (
+            <div className="flex items-center gap-4 mt-3 justify-center">
+              <span className="flex items-center gap-1 text-xs text-gray-500"><span className="w-3 h-3 rounded-sm bg-emerald-500 inline-block" /> A (80%)</span>
+              <span className="flex items-center gap-1 text-xs text-gray-500"><span className="w-3 h-3 rounded-sm bg-amber-500 inline-block" /> B (15%)</span>
+              <span className="flex items-center gap-1 text-xs text-gray-500"><span className="w-3 h-3 rounded-sm bg-red-500 inline-block" /> C (5%)</span>
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Source ROAS Table */}
+      {/* RFM Distribution + Geographic */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* RFM donut */}
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">Segmentação RFM de Clientes</h3>
+          {rfmChartData.length > 0 ? (
+            <ResponsiveContainer width="100%" height={280}>
+              <PieChart>
+                <Pie
+                  data={rfmChartData}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={60}
+                  outerRadius={100}
+                  paddingAngle={3}
+                  dataKey="value"
+                  nameKey="name"
+                  label={({ name, percent }) => `${name} ${((percent ?? 0) * 100).toFixed(0)}%`}
+                >
+                  {rfmChartData.map((entry, i) => (
+                    <Cell key={i} fill={RFM_COLORS[entry.segment] || '#6b7280'} />
+                  ))}
+                </Pie>
+                <Tooltip />
+                <Legend />
+              </PieChart>
+            </ResponsiveContainer>
+          ) : (
+            <p className="text-gray-400 text-center py-12">Sem dados RFM (execute o cálculo primeiro)</p>
+          )}
+        </div>
+
+        {/* Geographic table */}
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+          <div className="px-6 py-4 border-b border-gray-200">
+            <h3 className="text-lg font-semibold text-gray-900">Distribuição Geográfica</h3>
+          </div>
+          {geoData.length > 0 ? (
+            <div className="overflow-x-auto max-h-[320px] overflow-y-auto">
+              <table className="w-full">
+                <thead className="sticky top-0">
+                  <tr className="bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3">Estado</th>
+                    <th className="px-6 py-3 text-right">Pedidos</th>
+                    <th className="px-6 py-3 text-right">Receita</th>
+                    <th className="px-6 py-3 text-right">Ticket Médio</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-200">
+                  {geoData.map((g) => (
+                    <tr key={g.shipping_state} className="hover:bg-gray-50">
+                      <td className="px-6 py-3 text-sm font-medium text-gray-900">{g.shipping_state}</td>
+                      <td className="px-6 py-3 text-right text-sm text-gray-700">{g.orders}</td>
+                      <td className="px-6 py-3 text-right text-sm text-gray-700">{fmtBRL(g.revenue)}</td>
+                      <td className="px-6 py-3 text-right text-sm text-gray-700">{fmtBRL(g.avg_ticket)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <p className="text-gray-400 text-center py-12">Sem dados geográficos</p>
+          )}
+        </div>
+      </div>
+
+      {/* Recent Orders */}
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
         <div className="px-6 py-4 border-b border-gray-200">
-          <h3 className="text-lg font-semibold text-gray-900">ROAS por Canal</h3>
+          <h3 className="text-lg font-semibold text-gray-900">Pedidos Recentes</h3>
         </div>
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                <th className="px-6 py-3">Fonte</th>
-                <th className="px-6 py-3 text-right">Receita</th>
-                <th className="px-6 py-3 text-right">Pedidos</th>
-                <th className="px-6 py-3 text-right">ROAS</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200">
-              {ECOMMERCE_SOURCES.map((s, i) => (
-                <tr key={s.source} className="hover:bg-gray-50">
-                  <td className="px-6 py-3">
-                    <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 rounded-full" style={{ backgroundColor: SOURCE_COLORS[i] }} />
-                      <span className="text-sm font-medium text-gray-900">{s.source}</span>
-                    </div>
-                  </td>
-                  <td className="px-6 py-3 text-right text-sm text-gray-700">{fmtBRL(s.receita)}</td>
-                  <td className="px-6 py-3 text-right text-sm text-gray-700">{s.pedidos}</td>
-                  <td className="px-6 py-3 text-right">
-                    {s.roas > 0 ? (
-                      <span className={`text-sm font-semibold ${s.roas >= 3 ? 'text-green-600' : s.roas >= 2 ? 'text-yellow-600' : 'text-red-600'}`}>
-                        {s.roas.toFixed(1)}x
+        {recentOrdersList.length > 0 ? (
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3">Pedido</th>
+                  <th className="px-6 py-3">Cliente</th>
+                  <th className="px-6 py-3">Status</th>
+                  <th className="px-6 py-3">Data</th>
+                  <th className="px-6 py-3">UF</th>
+                  <th className="px-6 py-3 text-right">Total</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-200">
+                {recentOrdersList.map((o) => (
+                  <tr key={o.id} className="hover:bg-gray-50">
+                    <td className="px-6 py-3 text-sm font-medium text-gray-900">#{o.order_id}</td>
+                    <td className="px-6 py-3 text-sm text-gray-700">{o.customer_name || o.customer_email || '—'}</td>
+                    <td className="px-6 py-3">
+                      <span className={`inline-flex px-2 py-0.5 text-xs font-medium rounded-full ${STATUS_COLORS[o.status] || 'bg-gray-100 text-gray-800'}`}>
+                        {STATUS_LABELS[o.status] || o.status}
                       </span>
-                    ) : (
-                      <span className="text-sm text-gray-400">—</span>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      {/* Top Products Table */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-        <div className="px-6 py-4 border-b border-gray-200">
-          <h3 className="text-lg font-semibold text-gray-900">Top Produtos</h3>
-        </div>
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                <th className="px-6 py-3">#</th>
-                <th className="px-6 py-3">Produto</th>
-                <th className="px-6 py-3 text-right">Vendas</th>
-                <th className="px-6 py-3 text-right">Receita</th>
-                <th className="px-6 py-3 text-right">Ticket</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200">
-              {ECOMMERCE_PRODUCTS.map((p, i) => (
-                <tr key={p.name} className="hover:bg-gray-50">
-                  <td className="px-6 py-3 text-sm text-gray-400 font-medium">{i + 1}</td>
-                  <td className="px-6 py-3 text-sm font-medium text-gray-900">{p.name}</td>
-                  <td className="px-6 py-3 text-right text-sm text-gray-700">{p.vendas}</td>
-                  <td className="px-6 py-3 text-right text-sm text-gray-700">{fmtBRL(p.receita)}</td>
-                  <td className="px-6 py-3 text-right text-sm font-medium text-gray-900">{fmtBRL(p.ticket)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+                    </td>
+                    <td className="px-6 py-3 text-sm text-gray-700">
+                      {new Date(o.order_date).toLocaleDateString('pt-BR')}
+                    </td>
+                    <td className="px-6 py-3 text-sm text-gray-700">{o.shipping_state || '—'}</td>
+                    <td className="px-6 py-3 text-right text-sm font-medium text-gray-900">{fmtBRL(o.total)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <p className="text-gray-400 text-center py-12">Nenhum pedido encontrado</p>
+        )}
       </div>
     </div>
   );
@@ -252,16 +423,7 @@ const BIDashboardPage: React.FC = () => {
     const today = new Date().toISOString().slice(0, 10);
 
     if (activePage === 'ecommerce') {
-      downloadCSV(
-        ECOMMERCE_SOURCES.map((s) => ({ ...s })),
-        [
-          { key: 'source', label: 'Fonte' },
-          { key: 'receita', label: 'Receita' },
-          { key: 'pedidos', label: 'Pedidos' },
-          { key: 'roas', label: 'ROAS' },
-        ],
-        `ecommerce-roas-${today}`
-      );
+      toast.warning('Use os relatórios do e-commerce para exportar dados.');
       return;
     }
 

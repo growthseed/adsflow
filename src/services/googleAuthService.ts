@@ -1,0 +1,360 @@
+/**
+ * ============================================
+ * GOOGLE AUTH SERVICE — OAuth 2.0
+ * ============================================
+ * Manages Google OAuth flow for Google Ads, GA4, Search Console.
+ * Token exchange and refresh go through N8N proxy (client_secret never in frontend).
+ *
+ * Scopes:
+ * - Google Ads: https://www.googleapis.com/auth/adwords
+ * - GA4: https://www.googleapis.com/auth/analytics.readonly
+ * - Search Console: https://www.googleapis.com/auth/webmasters.readonly
+ */
+
+import supabase, { isSupabaseConfigured } from '@/lib/supabase'
+
+// =====================================================
+// CONFIG
+// =====================================================
+
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || ''
+const GOOGLE_REDIRECT_URI = import.meta.env.VITE_GOOGLE_REDIRECT_URI || `${window.location.origin}/auth/google/callback`
+const N8N_BASE_URL = import.meta.env.VITE_N8N_WEBHOOK_URL || 'https://ia-kommo-n8n.xl78rn.easypanel.host/webhook'
+
+// =====================================================
+// TYPES
+// =====================================================
+
+export type GooglePlatform = 'google_ads' | 'ga4' | 'search_console'
+
+export interface GoogleAccount {
+  id: string
+  client_id: string | null
+  user_id: string
+  platform: GooglePlatform
+  account_id: string
+  account_name: string
+  access_token: string | null
+  refresh_token: string | null
+  token_expires_at: string | null
+  scopes: string[]
+  status: 'active' | 'paused' | 'disconnected' | 'error'
+  last_sync_at: string | null
+  sync_error: string | null
+  created_at: string
+  updated_at: string
+}
+
+export interface GoogleTokenResponse {
+  access_token: string
+  refresh_token?: string
+  expires_in: number
+  token_type: string
+  scope: string
+}
+
+// =====================================================
+// SCOPE DEFINITIONS
+// =====================================================
+
+export const GOOGLE_SCOPES: Record<GooglePlatform, string[]> = {
+  google_ads: [
+    'https://www.googleapis.com/auth/adwords',
+  ],
+  ga4: [
+    'https://www.googleapis.com/auth/analytics.readonly',
+  ],
+  search_console: [
+    'https://www.googleapis.com/auth/webmasters.readonly',
+  ],
+}
+
+/**
+ * Get all scopes for the given platforms
+ */
+export function getScopesForPlatforms(platforms: GooglePlatform[]): string[] {
+  const scopes = new Set<string>([
+    'openid',
+    'email',
+    'profile',
+  ])
+  for (const platform of platforms) {
+    for (const scope of GOOGLE_SCOPES[platform]) {
+      scopes.add(scope)
+    }
+  }
+  return Array.from(scopes)
+}
+
+// =====================================================
+// OAUTH FLOW
+// =====================================================
+
+export const googleAuthService = {
+  /**
+   * Build the Google OAuth2 authorization URL.
+   * Redirects user to Google consent screen.
+   */
+  getAuthUrl(
+    platforms: GooglePlatform[],
+    clientId?: string,
+  ): string {
+    const scopes = getScopesForPlatforms(platforms)
+
+    const state = JSON.stringify({
+      platforms,
+      clientId: clientId || null,
+      ts: Date.now(),
+    })
+
+    const params = new URLSearchParams({
+      client_id: GOOGLE_CLIENT_ID,
+      redirect_uri: GOOGLE_REDIRECT_URI,
+      response_type: 'code',
+      scope: scopes.join(' '),
+      access_type: 'offline',       // get refresh_token
+      prompt: 'consent',            // force consent to always get refresh_token
+      state: btoa(state),
+      include_granted_scopes: 'true',
+    })
+
+    return `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`
+  },
+
+  /**
+   * Exchange the authorization code for tokens via N8N proxy.
+   * NEVER expose client_secret in frontend.
+   */
+  async exchangeCodeForTokens(code: string): Promise<GoogleTokenResponse> {
+    const response = await fetch(`${N8N_BASE_URL}/adsflow/google-token-exchange`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        code,
+        redirect_uri: GOOGLE_REDIRECT_URI,
+      }),
+    })
+
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({}))
+      throw new Error(`Google token exchange failed: ${error.message || error.error || response.statusText}`)
+    }
+
+    return response.json()
+  },
+
+  /**
+   * Refresh an expired access token via N8N proxy.
+   */
+  async refreshAccessToken(refreshToken: string): Promise<GoogleTokenResponse> {
+    const response = await fetch(`${N8N_BASE_URL}/adsflow/google-token-refresh`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ refresh_token: refreshToken }),
+    })
+
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({}))
+      throw new Error(`Google token refresh failed: ${error.message || error.error || response.statusText}`)
+    }
+
+    return response.json()
+  },
+
+  /**
+   * Ensure we have a valid access token. Refreshes if expired.
+   */
+  async getValidToken(googleAccountId: string): Promise<string> {
+    if (!isSupabaseConfigured) throw new Error('Supabase not configured')
+
+    const { data: account } = await supabase
+      .from('google_accounts')
+      .select('access_token, refresh_token, token_expires_at')
+      .eq('id', googleAccountId)
+      .single()
+
+    if (!account?.access_token) throw new Error('No access token found')
+
+    // Check if token is still valid (with 5 min buffer)
+    const expiresAt = account.token_expires_at
+      ? new Date(account.token_expires_at).getTime()
+      : 0
+    const fiveMinFromNow = Date.now() + 5 * 60 * 1000
+
+    if (expiresAt > fiveMinFromNow) {
+      return account.access_token
+    }
+
+    // Refresh token
+    if (!account.refresh_token) {
+      throw new Error('No refresh token available. Re-authorize the account.')
+    }
+
+    try {
+      const tokens = await this.refreshAccessToken(account.refresh_token)
+      const newExpiresAt = new Date(Date.now() + tokens.expires_in * 1000).toISOString()
+
+      await supabase
+        .from('google_accounts')
+        .update({
+          access_token: tokens.access_token,
+          token_expires_at: newExpiresAt,
+          sync_error: null,
+        })
+        .eq('id', googleAccountId)
+
+      return tokens.access_token
+    } catch (err) {
+      await supabase
+        .from('google_accounts')
+        .update({
+          sync_error: 'Token refresh failed',
+          status: 'error',
+        })
+        .eq('id', googleAccountId)
+      throw err
+    }
+  },
+}
+
+// =====================================================
+// ACCOUNT MANAGEMENT (CRUD)
+// =====================================================
+
+export const googleAccountsService = {
+  /**
+   * List all google_accounts for a client
+   */
+  async getConnectedAccounts(clientId: string): Promise<GoogleAccount[]> {
+    if (!isSupabaseConfigured) return []
+
+    const { data, error } = await supabase
+      .from('google_accounts')
+      .select('*')
+      .eq('client_id', clientId)
+      .order('created_at', { ascending: false })
+
+    if (error) throw error
+    return (data || []) as GoogleAccount[]
+  },
+
+  /**
+   * List accounts by user
+   */
+  async listByUser(userId: string): Promise<GoogleAccount[]> {
+    if (!isSupabaseConfigured) return []
+
+    const { data, error } = await supabase
+      .from('google_accounts')
+      .select('*')
+      .eq('user_id', userId)
+      .order('created_at', { ascending: false })
+
+    if (error) throw error
+    return (data || []) as GoogleAccount[]
+  },
+
+  /**
+   * List accounts by platform
+   */
+  async listByPlatform(userId: string, platform: GooglePlatform): Promise<GoogleAccount[]> {
+    if (!isSupabaseConfigured) return []
+
+    const { data, error } = await supabase
+      .from('google_accounts')
+      .select('*')
+      .eq('user_id', userId)
+      .eq('platform', platform)
+      .order('created_at', { ascending: false })
+
+    if (error) throw error
+    return (data || []) as GoogleAccount[]
+  },
+
+  /**
+   * Connect a new Google account
+   */
+  async connectAccount(
+    userId: string,
+    clientId: string | null,
+    platform: GooglePlatform,
+    accountId: string,
+    accountName: string,
+    tokens: GoogleTokenResponse,
+  ): Promise<GoogleAccount> {
+    if (!isSupabaseConfigured) throw new Error('Supabase not configured')
+
+    const expiresAt = new Date(Date.now() + tokens.expires_in * 1000).toISOString()
+    const scopes = tokens.scope ? tokens.scope.split(' ') : []
+
+    const { data, error } = await supabase
+      .from('google_accounts')
+      .upsert({
+        user_id: userId,
+        client_id: clientId,
+        platform,
+        account_id: accountId,
+        account_name: accountName,
+        access_token: tokens.access_token,
+        refresh_token: tokens.refresh_token || null,
+        token_expires_at: expiresAt,
+        scopes,
+        status: 'active',
+        sync_error: null,
+      }, {
+        onConflict: 'user_id,platform,account_id',
+      })
+      .select()
+      .single()
+
+    if (error) throw error
+    return data as GoogleAccount
+  },
+
+  /**
+   * Disconnect (soft delete) — clears tokens, sets status
+   */
+  async disconnectAccount(id: string): Promise<void> {
+    if (!isSupabaseConfigured) return
+
+    const { error } = await supabase
+      .from('google_accounts')
+      .update({
+        status: 'disconnected',
+        access_token: null,
+        refresh_token: null,
+        sync_error: null,
+      })
+      .eq('id', id)
+
+    if (error) throw error
+  },
+
+  /**
+   * Delete permanently (cascades to all data)
+   */
+  async deleteAccount(id: string): Promise<void> {
+    if (!isSupabaseConfigured) return
+
+    const { error } = await supabase
+      .from('google_accounts')
+      .delete()
+      .eq('id', id)
+
+    if (error) throw error
+  },
+
+  /**
+   * Update account metadata
+   */
+  async updateAccount(id: string, updates: Partial<GoogleAccount>): Promise<void> {
+    if (!isSupabaseConfigured) return
+
+    const { error } = await supabase
+      .from('google_accounts')
+      .update(updates)
+      .eq('id', id)
+
+    if (error) throw error
+  },
+}

@@ -62,6 +62,7 @@ const NAV_SECTIONS: NavSection[] = [
     title: 'Performance',
     items: [
       { path: '/campaigns', label: 'Campanhas', icon: Megaphone, minRole: 'analyst' },
+      { path: '/google-ads', label: 'Google Ads', icon: Target, isNew: true },
       { path: '/bi', label: 'Analytics', icon: BarChart3 },
       { path: '/dashboard-builder', label: 'Dashboards', icon: PanelTop, isNew: true },
       { path: '/conversion-truth', label: 'Verdade da Conversão', icon: ShieldCheck, isNew: true },
