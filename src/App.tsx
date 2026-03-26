@@ -44,6 +44,8 @@ const GoogleAdsPage = lazy(() => import('./pages/GoogleAdsPage'))
 const GoalsPage = lazy(() => import('./pages/GoalsPage'))
 const OverviewPage = lazy(() => import('./pages/OverviewPage'))
 const SharedDashboardPage = lazy(() => import('./pages/SharedDashboardPage'))
+const PrivacyPage = lazy(() => import('./pages/PrivacyPage'))
+const TermsPage = lazy(() => import('./pages/TermsPage'))
 const ReportBuilderPage = lazy(() => import('./pages/ReportBuilderPage'))
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'))
 
@@ -389,11 +391,10 @@ function App() {
               }
             />
 
-            {/* Public shared dashboard (no auth) */}
-            <Route
-              path="/share/:token"
-              element={<SharedDashboardPage />}
-            />
+            {/* Public pages (no auth) */}
+            <Route path="/share/:token" element={<SharedDashboardPage />} />
+            <Route path="/privacy" element={<PrivacyPage />} />
+            <Route path="/terms" element={<TermsPage />} />
 
             {/* Catch all - redirect to home */}
             <Route path="*" element={<NotFoundPage />} />
