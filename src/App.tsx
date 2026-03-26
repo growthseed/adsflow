@@ -38,6 +38,8 @@ const AdminPage = lazy(() => import('./pages/AdminPage'))
 const BillingPage = lazy(() => import('./pages/BillingPage'))
 const DashboardBuilderPage = lazy(() => import('./pages/DashboardBuilderPage'))
 const ConversionTruthPage = lazy(() => import('./pages/ConversionTruthPage'))
+const AIInsightsPage = lazy(() => import('./pages/AIInsightsPage'))
+const SharedDashboardPage = lazy(() => import('./pages/SharedDashboardPage'))
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'))
 
 // Error Boundary para capturar erros de React
@@ -323,6 +325,22 @@ function App() {
                   </AppLayout>
                 </ProtectedRoute>
               }
+            />
+            <Route
+              path="/insights"
+              element={
+                <ProtectedRoute>
+                  <AppLayout>
+                    <AIInsightsPage />
+                  </AppLayout>
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Public shared dashboard (no auth) */}
+            <Route
+              path="/share/:token"
+              element={<SharedDashboardPage />}
             />
 
             {/* Catch all - redirect to home */}

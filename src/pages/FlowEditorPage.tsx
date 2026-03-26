@@ -17,7 +17,9 @@ import {
   Save, Download, AlertCircle, Home,
   Layers, Hand,
   MousePointer,
-  School
+  School,
+  BarChart3,
+  Target,
 } from 'lucide-react'
 import { useParams, useNavigate } from 'react-router-dom'
 
@@ -55,6 +57,12 @@ import {
 
 // Custom Edges
 import { ConversionEdge } from '@/components/Edges'
+
+// Analytics
+import NodeStatsOverlay from '@/components/Nodes/NodeStatsOverlay'
+import GoalConfigModal from '@/components/Nodes/GoalConfigModal'
+import flowAnalyticsService from '@/services/flowAnalyticsService'
+import type { AggregatedNodeMetrics, NodeGoal, DropOffData } from '@/services/flowAnalyticsService'
 
 // Formulários
 import TrafficSourceForm from '@/components/Forms/TrafficSourceForm'
@@ -137,7 +145,17 @@ function FlowEditor() {
   const [lastSaved, setLastSaved] = useState<Date | null>(null)
   const [showSidebar, setShowSidebar] = useState(true)
   const [panOnDrag, setPanOnDrag] = useState(false)
-  
+
+  // Analytics state
+  const [analyticsMode, setAnalyticsMode] = useState(false)
+  const [nodeMetricsMap, setNodeMetricsMap] = useState<Record<string, AggregatedNodeMetrics>>({})
+  const [nodeGoalsMap, setNodeGoalsMap] = useState<Record<string, NodeGoal[]>>({})
+  const [dropOffMap, setDropOffMap] = useState<Record<string, DropOffData>>({})
+  const [goalModalNode, setGoalModalNode] = useState<{ id: string; label: string } | null>(null)
+
+  // dropOffMap available for ConversionEdge integration (future)
+  void dropOffMap
+
   const autoSaveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
@@ -192,6 +210,78 @@ function FlowEditor() {
       }
     }
   }, [nodes, edges, flowName, flowDescription])
+
+  // Load analytics data when analytics mode is toggled ON
+  const loadAnalyticsData = useCallback(async () => {
+    if (!currentFlowId) return
+
+    const today = new Date()
+    const thirtyDaysAgo = new Date(today)
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
+    const dateRange = {
+      from: thirtyDaysAgo.toISOString().split('T')[0],
+      to: today.toISOString().split('T')[0],
+    }
+
+    try {
+      // Fetch aggregated node metrics
+      const allMetrics = await flowAnalyticsService.getFlowNodeMetricsAggregated(currentFlowId, dateRange)
+      const metricsMap: Record<string, AggregatedNodeMetrics> = {}
+      for (const m of allMetrics) {
+        metricsMap[m.node_id] = m
+      }
+      setNodeMetricsMap(metricsMap)
+
+      // Fetch goals for all nodes
+      const goalsMap: Record<string, NodeGoal[]> = {}
+      const performance = await flowAnalyticsService.getFlowPerformance(currentFlowId)
+      for (const p of performance) {
+        if (p.goal_metric && p.goal_value) {
+          if (!goalsMap[p.node_id]) goalsMap[p.node_id] = []
+          goalsMap[p.node_id].push({
+            id: '',
+            flow_id: p.flow_id,
+            node_id: p.node_id,
+            client_id: p.client_id || '',
+            metric: p.goal_metric,
+            target_value: p.goal_value,
+            period: 'monthly',
+          })
+        }
+      }
+      setNodeGoalsMap(goalsMap)
+
+      // Fetch drop-off rates
+      const dropOffs = await flowAnalyticsService.getDropOffRates(currentFlowId, dateRange)
+      const dMap: Record<string, DropOffData> = {}
+      for (const d of dropOffs) {
+        dMap[`${d.source_node_id}::${d.target_node_id}`] = d
+      }
+      setDropOffMap(dMap)
+    } catch (err) {
+      console.error('[FlowEditor] Error loading analytics:', err)
+    }
+  }, [currentFlowId])
+
+  useEffect(() => {
+    if (analyticsMode) {
+      loadAnalyticsData()
+    }
+  }, [analyticsMode, loadAnalyticsData])
+
+  const toggleAnalytics = () => {
+    setAnalyticsMode((prev) => !prev)
+  }
+
+  // Right-click handler for goal config
+  const handleNodeContextMenu = useCallback(
+    (event: React.MouseEvent, node: Node) => {
+      if (!analyticsMode) return
+      event.preventDefault()
+      setGoalModalNode({ id: node.id, label: node.data?.label || node.type || node.id })
+    },
+    [analyticsMode]
+  )
 
   const handleSave = async () => {
     try {
@@ -613,6 +703,20 @@ function FlowEditor() {
           </div>
 
           <div className="flex items-center gap-2">
+            {/* 📊 Analytics Toggle */}
+            <button
+              onClick={toggleAnalytics}
+              className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all shadow-sm font-medium ${
+                analyticsMode
+                  ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white hover:from-emerald-700 hover:to-teal-700'
+                  : 'border-2 border-slate-300 text-slate-600 hover:bg-slate-50'
+              }`}
+              title={analyticsMode ? 'Desativar Analytics' : 'Ativar Analytics nos nós'}
+            >
+              <BarChart3 className="w-4 h-4" />
+              Analytics
+            </button>
+
             {/* ✨ Botão Isaac Newton Template */}
             <button
               onClick={loadIsaacNewtonTemplate}
@@ -674,6 +778,7 @@ function FlowEditor() {
             nodeTypes={nodeTypes}
             edgeTypes={edgeTypes}
             defaultEdgeOptions={defaultEdgeOptions}
+            onNodeContextMenu={handleNodeContextMenu}
             panOnDrag={panOnDrag}
             selectionOnDrag={!panOnDrag}
             panOnScroll={panOnDrag}
@@ -722,7 +827,39 @@ function FlowEditor() {
                 borderRadius: '8px',
               }}
             />
+
+            {/* Analytics Overlays on nodes */}
+            {analyticsMode && (
+              <Panel position="top-right" className="pointer-events-none">
+                {nodes.map((node) => (
+                  <NodeStatsOverlay
+                    key={`stats-${node.id}`}
+                    nodeId={node.id}
+                    flowId={currentFlowId || ''}
+                    metrics={nodeMetricsMap[node.id] || null}
+                    goals={nodeGoalsMap[node.id] || []}
+                    isVisible={analyticsMode}
+                  />
+                ))}
+              </Panel>
+            )}
           </ReactFlow>
+
+          {/* Analytics mode: floating Set Goal button for selected nodes */}
+          {analyticsMode && selectedNodes.length === 1 && (
+            <button
+              onClick={() => {
+                const node = nodes.find((n) => n.id === selectedNodes[0])
+                if (node) {
+                  setGoalModalNode({ id: node.id, label: node.data?.label || node.type || node.id })
+                }
+              }}
+              className="absolute right-4 top-4 flex items-center gap-1.5 px-3 py-2 bg-white border-2 border-emerald-400 text-emerald-700 rounded-lg shadow-lg hover:bg-emerald-50 transition-all z-10 text-sm font-medium"
+            >
+              <Target className="w-4 h-4" />
+              Definir Meta
+            </button>
+          )}
 
           <button
             onClick={() => setShowSidebar(!showSidebar)}
@@ -767,6 +904,18 @@ function FlowEditor() {
           onUpdate={handleSaveNode}
           onClose={() => setEditingNode(null)}
           nodeType={editingNode.type}
+        />
+      )}
+
+      {/* Goal Config Modal */}
+      {goalModalNode && currentFlowId && (
+        <GoalConfigModal
+          flowId={currentFlowId}
+          nodeId={goalModalNode.id}
+          nodeLabel={goalModalNode.label}
+          metrics={nodeMetricsMap[goalModalNode.id] || null}
+          onClose={() => setGoalModalNode(null)}
+          onSaved={() => loadAnalyticsData()}
         />
       )}
     </div>

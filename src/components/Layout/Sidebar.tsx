@@ -31,6 +31,7 @@ import {
   LogOut,
   Sparkles,
   ShieldCheck,
+  Brain,
 } from 'lucide-react'
 
 // ========== NAV CONFIG ==========
@@ -64,6 +65,7 @@ const NAV_SECTIONS: NavSection[] = [
       { path: '/bi', label: 'Analytics', icon: BarChart3 },
       { path: '/dashboard-builder', label: 'Dashboards', icon: PanelTop, isNew: true },
       { path: '/conversion-truth', label: 'Verdade da Conversão', icon: ShieldCheck, isNew: true },
+      { path: '/insights', label: 'Insights IA', icon: Brain, isNew: true },
       { path: '/reports', label: 'Relatórios', icon: FileText, minRole: 'analyst' },
     ],
   },
