@@ -24,6 +24,8 @@ import {
   ArrowUpRight,
   Star,
 } from 'lucide-react'
+import { useDateRange } from '@/contexts/DateRangeContext'
+import DateRangeSelector from '@/components/UI/DateRangeSelector'
 import { googleAccountsService } from '@/services/googleAuthService'
 import type { GoogleAccount } from '@/services/googleAuthService'
 import {
@@ -51,15 +53,6 @@ function formatPercent(value: number): string {
   return `${value.toFixed(2)}%`
 }
 
-function getDateRange(days: number): { since: string; until: string } {
-  const until = new Date()
-  const since = new Date()
-  since.setDate(since.getDate() - days)
-  return {
-    since: since.toISOString().split('T')[0],
-    until: until.toISOString().split('T')[0],
-  }
-}
 
 function getQSColor(score: number | null): string {
   if (score == null) return 'text-slate-400'
@@ -133,6 +126,7 @@ const TABS: Array<{ key: TabKey; label: string; icon: React.ElementType }> = [
 export default function GoogleAdsPage() {
   const { user, activeClient } = useAuth()
   const toast = useToast()
+  const { dateRange: globalDateRange, setDateRange: setGlobalDateRange, dateFrom, dateTo } = useDateRange()
 
   // State
   const [activeTab, setActiveTab] = useState<TabKey>('overview')
@@ -140,7 +134,6 @@ export default function GoogleAdsPage() {
   const [selectedAccountId, setSelectedAccountId] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
   const [syncing, setSyncing] = useState(false)
-  const [dateRangeDays, setDateRangeDays] = useState(30)
 
   // Data
   const [metrics, setMetrics] = useState<GoogleAdsAggregatedMetrics | null>(null)
@@ -148,7 +141,7 @@ export default function GoogleAdsPage() {
   const [keywords, setKeywords] = useState<Awaited<ReturnType<typeof googleAdsQueryService.getKeywordPerformance>>>([])
   const [qsDistribution, setQsDistribution] = useState<Awaited<ReturnType<typeof googleAdsQueryService.getQualityScoreDistribution>>>([])
 
-  const dateRange = getDateRange(dateRangeDays)
+  const dateRange = { since: dateFrom, until: dateTo }
 
   // Load accounts
   const fetchAccounts = useCallback(async () => {
@@ -194,7 +187,7 @@ export default function GoogleAdsPage() {
     } catch (err) {
       console.error('Error fetching Google Ads data:', err)
     }
-  }, [selectedAccountId, dateRangeDays])
+  }, [selectedAccountId, dateFrom, dateTo])
 
   useEffect(() => {
     if (selectedAccountId) {
@@ -293,17 +286,10 @@ export default function GoogleAdsPage() {
           )}
 
           {/* Date Range */}
-          <select
-            value={dateRangeDays}
-            onChange={(e) => setDateRangeDays(Number(e.target.value))}
-            className="appearance-none bg-white border border-slate-200 rounded-lg px-3 py-2 pr-8 text-sm text-slate-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-          >
-            <option value={7}>7 dias</option>
-            <option value={14}>14 dias</option>
-            <option value={30}>30 dias</option>
-            <option value={60}>60 dias</option>
-            <option value={90}>90 dias</option>
-          </select>
+          <DateRangeSelector
+            value={globalDateRange}
+            onChange={setGlobalDateRange}
+          />
 
           {/* Sync Button */}
           <button

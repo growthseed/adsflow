@@ -30,6 +30,8 @@ import {
   Image,
 } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
+import { useDateRange } from '@/contexts/DateRangeContext'
+import DateRangeSelector from '@/components/UI/DateRangeSelector'
 import { useAdAccounts } from '@/hooks/useMetaAdsData'
 import { reportsService } from '@/services/reportsService'
 import type { SavedReport } from '@/services/reportsService'
@@ -583,12 +585,14 @@ export default function ReportsPage() {
   const confirm = useConfirm()
   const toast = useToast()
   const { activeAccounts } = useAdAccounts()
+  const { dateRange, setDateRange } = useDateRange()
   const [reports, setReports] = useState<SavedReport[]>([])
   const [loading, setLoading] = useState(true)
   const [showCreateModal, setShowCreateModal] = useState(false)
   const [previewReport, setPreviewReport] = useState<SavedReport | null>(null)
   const [generating, setGenerating] = useState(false)
   const [copiedLink, setCopiedLink] = useState<string | null>(null)
+  const [filterByDate, setFilterByDate] = useState(false)
 
   // Fetch reports
   const fetchReports = useCallback(async () => {
@@ -696,21 +700,41 @@ export default function ReportsPage() {
   return (
     <div className="max-w-6xl mx-auto">
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
         <div>
           <h1 className="text-2xl font-bold text-slate-900">Relatórios</h1>
           <p className="text-slate-500 mt-1">
             Gere e compartilhe relatórios de performance com seus clientes.
           </p>
         </div>
-        <button
-          onClick={() => setShowCreateModal(true)}
-          disabled={activeAccounts.length === 0}
-          className="flex items-center gap-2 px-4 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors shadow-sm"
-        >
-          <Plus className="w-4 h-4" />
-          Novo Relatório
-        </button>
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setFilterByDate(!filterByDate)}
+              className={`px-3 py-2 text-xs font-medium rounded-lg border transition-colors ${
+                filterByDate
+                  ? 'bg-blue-50 border-blue-300 text-blue-700'
+                  : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
+              }`}
+            >
+              {filterByDate ? 'Filtro ativo' : 'Filtrar por data'}
+            </button>
+            {filterByDate && (
+              <DateRangeSelector
+                value={dateRange}
+                onChange={setDateRange}
+              />
+            )}
+          </div>
+          <button
+            onClick={() => setShowCreateModal(true)}
+            disabled={activeAccounts.length === 0}
+            className="flex items-center gap-2 px-4 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors shadow-sm"
+          >
+            <Plus className="w-4 h-4" />
+            Novo Relatório
+          </button>
+        </div>
       </div>
 
       {/* Loading */}
@@ -746,9 +770,23 @@ export default function ReportsPage() {
       )}
 
       {/* Reports Grid */}
-      {!loading && reports.length > 0 && (
+      {!loading && reports.length > 0 && (() => {
+        const filteredReports = filterByDate
+          ? reports.filter((r) => {
+              const created = new Date(r.created_at)
+              return created >= dateRange.startDate && created <= new Date(dateRange.endDate.getTime() + 86400000)
+            })
+          : reports
+
+        return filteredReports.length === 0 ? (
+          <div className="text-center py-12 bg-white rounded-xl border border-slate-200">
+            <FileText className="w-10 h-10 text-slate-300 mx-auto mb-3" />
+            <h3 className="font-medium text-slate-700 mb-1">Nenhum relatório neste período</h3>
+            <p className="text-sm text-slate-400">Altere o filtro de datas ou desative-o para ver todos.</p>
+          </div>
+        ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {reports.map((report) => {
+          {filteredReports.map((report) => {
             const Icon = TEMPLATE_ICONS[report.report_type as ReportType] || FileText
             const color = TEMPLATE_COLORS[report.report_type as ReportType] || 'bg-slate-600'
             const status = statusConfig[report.status] || statusConfig.draft
@@ -844,7 +882,8 @@ export default function ReportsPage() {
             )
           })}
         </div>
-      )}
+        )
+      })()}
 
       {/* Create Modal */}
       <CreateReportModal

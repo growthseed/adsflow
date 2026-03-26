@@ -2,6 +2,7 @@ import { Component, type ReactNode, lazy, Suspense } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AuthProvider, useAuth } from './contexts/AuthContext'
+import { DateRangeProvider } from './contexts/DateRangeContext'
 
 // Layout (not lazy — always needed for protected routes)
 import AppLayout from './components/Layout/AppLayout'
@@ -145,6 +146,7 @@ function App() {
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
       <AuthProvider>
+        <DateRangeProvider>
         <ToastProvider>
         <ConfirmDialogProvider>
         <BrowserRouter>
@@ -362,6 +364,7 @@ function App() {
         </BrowserRouter>
         </ConfirmDialogProvider>
         </ToastProvider>
+        </DateRangeProvider>
       </AuthProvider>
       </QueryClientProvider>
     </ErrorBoundary>

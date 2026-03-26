@@ -34,7 +34,8 @@ import {
   useMetaAdsDashboard,
   DATE_RANGES,
 } from '@/hooks/useMetaAdsData'
-// Date range types used via useMetaAdsDashboard
+import { useDateRange } from '@/contexts/DateRangeContext'
+import DateRangeSelector from '@/components/UI/DateRangeSelector'
 import { downloadCSV } from '@/lib/csv'
 import { KPICardSkeleton, ChartSkeleton, TableSkeleton } from '@/components/UI/Skeleton'
 
@@ -328,14 +329,27 @@ export default function CampaignsPage() {
     activeAccounts,
     selectedAccountId,
     setSelectedAccountId,
-    dateRange,
-    setDateRange,
+    dateRange: _hookDateRange,
+    setDateRange: setHookDateRange,
     metrics,
     dailyData,
     topCampaigns,
     topCreatives,
     loading,
   } = useMetaAdsDashboard()
+
+  const { dateRange: globalDateRange, setDateRange: setGlobalDateRange } = useDateRange()
+
+  // Sync global date range -> hook date range (find closest preset or use exact days)
+  const handleDateRangeChange = useCallback((range: { startDate: Date; endDate: Date }) => {
+    setGlobalDateRange(range)
+    const days = Math.round(
+      (range.endDate.getTime() - range.startDate.getTime()) / (1000 * 60 * 60 * 24)
+    ) + 1
+    // Find closest DATE_RANGES preset or use custom days
+    const closest = DATE_RANGES.find((r) => r.days === days) || { days, label: `${days} dias` }
+    setHookDateRange(closest)
+  }, [setGlobalDateRange, setHookDateRange])
 
   const [chartMetric, setChartMetric] = useState<'spend' | 'clicks' | 'conversions' | 'leads'>('spend')
   const [tableSortBy, setTableSortBy] = useState('spend')
@@ -410,23 +424,10 @@ export default function CampaignsPage() {
           )}
 
           {/* Date Range */}
-          <div className="relative">
-            <select
-              value={dateRange.days}
-              onChange={(e) => {
-                const r = DATE_RANGES.find((d) => d.days === Number(e.target.value))
-                if (r) setDateRange(r)
-              }}
-              className="appearance-none bg-white border border-slate-200 rounded-lg px-3 py-2 pr-8 text-sm text-slate-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
-            >
-              {DATE_RANGES.map((r) => (
-                <option key={r.days} value={r.days}>
-                  {r.label}
-                </option>
-              ))}
-            </select>
-            <ChevronDown className="w-4 h-4 text-slate-400 absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none" />
-          </div>
+          <DateRangeSelector
+            value={globalDateRange}
+            onChange={handleDateRangeChange}
+          />
 
           {/* Export CSV */}
           <button

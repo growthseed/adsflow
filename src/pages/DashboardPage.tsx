@@ -33,8 +33,10 @@ import {
   Building2,
 } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
+import { useDateRange } from '@/contexts/DateRangeContext'
 import { useFlows } from '@/hooks/useFlows'
 import { useAdAccounts, useAggregatedMetrics } from '@/hooks/useMetaAdsData'
+import DateRangeSelector from '@/components/UI/DateRangeSelector'
 import { reportsService } from '@/services/reportsService'
 import type { SavedReport } from '@/services/reportsService'
 import { useConfirm } from '@/components/UI/ConfirmDialog'
@@ -160,21 +162,20 @@ export default function DashboardPage() {
   const { user, activeClient } = useAuth()
   const { flows, isLoading: flowsLoading, refetch, deleteExistingFlow } = useFlows()
   const { accounts, activeAccounts } = useAdAccounts()
+  const { dateRange, setDateRange, periodLabel, dateFrom, dateTo } = useDateRange()
   const [recentReports, setRecentReports] = useState<SavedReport[]>([])
 
   const [searchTerm, setSearchTerm] = useState('')
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
 
-  // Get aggregated metrics for KPI cards (last 30 days)
-  const thirtyDaysAgo = new Date()
-  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
+  // Get aggregated metrics for KPI cards (reactive to date range)
   const firstAccountId = activeAccounts[0]?.id
   const { metrics, loading: metricsLoading } = useAggregatedMetrics(
     firstAccountId
       ? {
           adAccountId: firstAccountId,
-          dateFrom: thirtyDaysAgo.toISOString().split('T')[0],
-          dateTo: new Date().toISOString().split('T')[0],
+          dateFrom,
+          dateTo,
         }
       : null
   )
@@ -229,7 +230,11 @@ export default function DashboardPage() {
               : 'Visão geral das suas campanhas e estratégias'}
           </p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
+          <DateRangeSelector
+            value={dateRange}
+            onChange={setDateRange}
+          />
           <button
             onClick={handleCreateFlow}
             className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
@@ -249,28 +254,28 @@ export default function DashboardPage() {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           <StatCard
             icon={DollarSign}
-            label="Investimento (30d)"
+            label={`Investimento ${periodLabel}`}
             value={metrics ? formatCurrency(metrics.spend || 0) : '—'}
             subtext={activeAccounts.length > 0 ? `${activeAccounts.length} conta(s) ativa(s)` : 'Nenhuma conta conectada'}
             color="bg-blue-600"
           />
           <StatCard
             icon={Eye}
-            label="Impressões (30d)"
+            label={`Impressões ${periodLabel}`}
             value={metrics ? formatNumber(metrics.impressions || 0) : '—'}
             subtext={metrics?.reach ? `${formatNumber(metrics.reach)} alcance` : undefined}
             color="bg-purple-600"
           />
           <StatCard
             icon={MousePointer}
-            label="Cliques (30d)"
+            label={`Cliques ${periodLabel}`}
             value={metrics ? formatNumber(metrics.clicks || 0) : '—'}
             subtext={metrics?.ctr ? `CTR ${metrics.ctr.toFixed(2)}%` : undefined}
             color="bg-green-600"
           />
           <StatCard
             icon={Target}
-            label="Conversoes (30d)"
+            label={`Conversões ${periodLabel}`}
             value={metrics ? formatNumber(metrics.conversions || 0) : '—'}
             subtext={metrics?.roas ? `ROAS ${metrics.roas.toFixed(2)}x` : undefined}
             color="bg-amber-600"
