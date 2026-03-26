@@ -43,8 +43,8 @@ const KPICard: React.FC<KPICardProps> = ({ data, className = '' }) => {
     }
     return {
       icon: Minus,
-      color: 'text-gray-500',
-      bgColor: 'bg-gray-50',
+      color: 'text-slate-500',
+      bgColor: 'bg-slate-50',
     };
   };
 
@@ -62,17 +62,17 @@ const KPICard: React.FC<KPICardProps> = ({ data, className = '' }) => {
   return (
     <div
       className={`
-        bg-white rounded-lg shadow-sm border border-gray-200
+        bg-white rounded-lg shadow-sm border border-slate-200
         border-l-4 ${colorClass.border}
         p-4 hover:shadow-md transition-shadow
         ${className}
       `}
     >
       {/* Title */}
-      <div className="text-sm font-medium text-gray-500 mb-1">{title}</div>
+      <div className="text-sm font-medium text-slate-500 mb-1">{title}</div>
 
       {/* Main Value */}
-      <div className="text-3xl font-bold text-gray-900 mb-3">
+      <div className="text-3xl font-bold text-slate-900 mb-3">
         {formatValue(value)}
       </div>
 
@@ -81,9 +81,9 @@ const KPICard: React.FC<KPICardProps> = ({ data, className = '' }) => {
         {/* Last Month */}
         {lastMonth && (
           <div className="flex items-center justify-between text-sm">
-            <span className="text-gray-500">Mês anterior:</span>
+            <span className="text-slate-500">Mês anterior:</span>
             <div className="flex items-center gap-2">
-              <span className="font-medium text-gray-700">
+              <span className="font-medium text-slate-700">
                 {formatValue(lastMonth.value)}
               </span>
               <div
@@ -106,9 +106,9 @@ const KPICard: React.FC<KPICardProps> = ({ data, className = '' }) => {
         {/* Last Year */}
         {lastYear && (
           <div className="flex items-center justify-between text-sm">
-            <span className="text-gray-500">Ano anterior:</span>
+            <span className="text-slate-500">Ano anterior:</span>
             <div className="flex items-center gap-2">
-              <span className="font-medium text-gray-700">
+              <span className="font-medium text-slate-700">
                 {formatValue(lastYear.value)}
               </span>
               <div

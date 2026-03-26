@@ -19,8 +19,11 @@ import supabase, { isSupabaseConfigured } from '@/lib/supabase';
 
 const META_API_VERSION = import.meta.env.VITE_META_API_VERSION || 'v23.0';
 const META_APP_ID = import.meta.env.VITE_FACEBOOK_APP_ID || '';
-const META_APP_SECRET = import.meta.env.VITE_META_APP_SECRET || '';
+const N8N_WEBHOOK_URL = import.meta.env.VITE_N8N_WEBHOOK_URL || '';
 const GRAPH_BASE = `https://graph.facebook.com/${META_API_VERSION}`;
+
+// SECURITY: META_APP_SECRET was removed from frontend.
+// Token exchange and debug_token are now proxied through N8N server-side.
 
 // =====================================================
 // TYPES
@@ -156,20 +159,24 @@ export const metaTokenService = {
     accessToken: string;
     expiresIn: number;
   }> {
-    if (!META_APP_ID || !META_APP_SECRET) {
-      throw new Error('META_APP_ID and META_APP_SECRET required for token exchange');
+    if (!N8N_WEBHOOK_URL) {
+      throw new Error('N8N_WEBHOOK_URL required for secure token exchange');
     }
 
-    const url = new URL(`${GRAPH_BASE}/oauth/access_token`);
-    url.searchParams.set('grant_type', 'fb_exchange_token');
-    url.searchParams.set('client_id', META_APP_ID);
-    url.searchParams.set('client_secret', META_APP_SECRET);
-    url.searchParams.set('fb_exchange_token', shortLivedToken);
+    // SECURITY: Token exchange uses client_secret which MUST stay server-side.
+    // We proxy this through N8N which has the secret stored securely.
+    const response = await fetch(`${N8N_WEBHOOK_URL}/adsflow/meta-token-exchange`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        short_lived_token: shortLivedToken,
+        app_id: META_APP_ID,
+      }),
+    });
 
-    const response = await fetch(url.toString());
     if (!response.ok) {
       const error = await response.json().catch(() => ({}));
-      throw new Error(`Token exchange failed: ${error.error?.message || response.statusText}`);
+      throw new Error(`Token exchange failed: ${error.message || response.statusText}`);
     }
 
     const data = await response.json();
@@ -189,13 +196,11 @@ export const metaTokenService = {
     userId: string;
     appId: string;
   }> {
-    if (!META_APP_ID || !META_APP_SECRET) {
-      throw new Error('App credentials required');
-    }
-
+    // SECURITY: Use the user's own token to debug itself (self-inspection).
+    // This avoids needing app_id|app_secret in the frontend.
     const url = new URL(`${GRAPH_BASE}/debug_token`);
     url.searchParams.set('input_token', token);
-    url.searchParams.set('access_token', `${META_APP_ID}|${META_APP_SECRET}`);
+    url.searchParams.set('access_token', token);
 
     const response = await fetch(url.toString());
     const data = await response.json();

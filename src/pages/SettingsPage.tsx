@@ -437,7 +437,7 @@ export default function SettingsPage() {
     <div className="space-y-6 max-w-2xl">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-slate-900">Configuracoes</h1>
+        <h1 className="text-2xl font-bold text-slate-900">Configurações</h1>
         <p className="text-sm text-slate-500 mt-1">
           Gerencie seu perfil, senha e preferências da conta.
         </p>

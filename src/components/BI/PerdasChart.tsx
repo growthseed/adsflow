@@ -43,8 +43,8 @@ const PerdasChart: React.FC<PerdasChartProps> = ({
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-white p-3 rounded-lg shadow-lg border border-gray-200">
-          <p className="text-sm font-medium text-gray-900">{label}</p>
+        <div className="bg-white p-3 rounded-lg shadow-lg border border-slate-200">
+          <p className="text-sm font-medium text-slate-900">{label}</p>
           <p className="text-sm text-red-600">
             <span className="font-bold">{payload[0].value}</span> perdas
             {' '}({formatPercentageBI(payload[0].payload.percentage, 1)})
@@ -58,10 +58,10 @@ const PerdasChart: React.FC<PerdasChartProps> = ({
   return (
     <div className={`space-y-6 ${className}`}>
       {/* Perdas por Fonte */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+      <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-gray-900">Perdas por Fonte</h3>
-          <span className="text-sm text-gray-500">
+          <h3 className="text-lg font-semibold text-slate-900">Perdas por Fonte</h3>
+          <span className="text-sm text-slate-500">
             Total: <span className="font-medium text-red-600">{formatNumber(totalPerdas)}</span>
           </span>
         </div>
@@ -97,15 +97,15 @@ const PerdasChart: React.FC<PerdasChartProps> = ({
             </BarChart>
           </ResponsiveContainer>
         ) : (
-          <div className="flex items-center justify-center h-[250px] text-gray-500">
+          <div className="flex items-center justify-center h-[250px] text-slate-500">
             Nenhuma perda registrada
           </div>
         )}
       </div>
 
       {/* Perdas por Etapa */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Perdas por Etapa</h3>
+      <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
+        <h3 className="text-lg font-semibold text-slate-900 mb-4">Perdas por Etapa</h3>
 
         {perdasPorEtapa.length > 0 ? (
           <ResponsiveContainer width="100%" height={250}>
@@ -134,7 +134,7 @@ const PerdasChart: React.FC<PerdasChartProps> = ({
             </BarChart>
           </ResponsiveContainer>
         ) : (
-          <div className="flex items-center justify-center h-[250px] text-gray-500">
+          <div className="flex items-center justify-center h-[250px] text-slate-500">
             Nenhuma perda registrada
           </div>
         )}
@@ -145,10 +145,10 @@ const PerdasChart: React.FC<PerdasChartProps> = ({
         {perdasPorFonte.slice(0, 4).map((item, index) => (
           <div
             key={item.fonte}
-            className="bg-white rounded-lg shadow-sm border border-gray-200 p-4"
+            className="bg-white rounded-lg shadow-sm border border-slate-200 p-4"
           >
-            <div className="text-xs text-gray-500 mb-1">{item.fonte}</div>
-            <div className="text-2xl font-bold text-gray-900">{formatNumber(item.count)}</div>
+            <div className="text-xs text-slate-500 mb-1">{item.fonte}</div>
+            <div className="text-2xl font-bold text-slate-900">{formatNumber(item.count)}</div>
             <div
               className="text-sm font-medium"
               style={{ color: COLORS[index % COLORS.length] }}

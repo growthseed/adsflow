@@ -35,8 +35,8 @@ const LeadsLineChart: React.FC<LeadsLineChartProps> = ({
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-white p-3 rounded-lg shadow-lg border border-gray-200">
-          <p className="text-sm font-medium text-gray-900">{label}</p>
+        <div className="bg-white p-3 rounded-lg shadow-lg border border-slate-200">
+          <p className="text-sm font-medium text-slate-900">{label}</p>
           <p className="text-sm text-blue-600">
             <span className="font-bold">{payload[0].value}</span> leads
           </p>
@@ -47,9 +47,9 @@ const LeadsLineChart: React.FC<LeadsLineChartProps> = ({
   };
 
   return (
-    <div className={`bg-white rounded-lg shadow-sm border border-gray-200 p-6 ${className}`}>
+    <div className={`bg-white rounded-lg shadow-sm border border-slate-200 p-6 ${className}`}>
       {/* Header */}
-      <h3 className="text-lg font-semibold text-gray-900 mb-4">{title}</h3>
+      <h3 className="text-lg font-semibold text-slate-900 mb-4">{title}</h3>
 
       {/* Chart */}
       {chartData.length > 0 ? (
@@ -71,7 +71,7 @@ const LeadsLineChart: React.FC<LeadsLineChartProps> = ({
             <Tooltip content={<CustomTooltip />} />
             <Legend
               wrapperStyle={{ paddingTop: '20px' }}
-              formatter={() => <span className="text-sm text-gray-600">Leads</span>}
+              formatter={() => <span className="text-sm text-slate-600">Leads</span>}
             />
             <Line
               type="monotone"
@@ -85,7 +85,7 @@ const LeadsLineChart: React.FC<LeadsLineChartProps> = ({
           </LineChart>
         </ResponsiveContainer>
       ) : (
-        <div className="flex items-center justify-center h-[300px] text-gray-500">
+        <div className="flex items-center justify-center h-[300px] text-slate-500">
           Nenhum dado disponível para o período selecionado
         </div>
       )}

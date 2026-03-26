@@ -33,39 +33,39 @@ const ResponsavelTable: React.FC<ResponsavelTableProps> = ({
   const overallConversion = totals.leads > 0 ? (totals.vendas / totals.leads) * 100 : 0;
 
   return (
-    <div className={`bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden ${className}`}>
+    <div className={`bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden ${className}`}>
       {/* Header */}
-      <div className="px-6 py-4 border-b border-gray-200">
-        <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
+      <div className="px-6 py-4 border-b border-slate-200">
+        <h3 className="text-lg font-semibold text-slate-900">{title}</h3>
       </div>
 
       {/* Table */}
       <div className="overflow-x-auto">
         <table className="w-full">
-          <thead className="bg-gray-50">
+          <thead className="bg-slate-50">
             <tr>
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
                 Vendedor
               </th>
-              <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-4 py-3 text-center text-xs font-medium text-slate-500 uppercase tracking-wider">
                 Leads
               </th>
-              <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-4 py-3 text-center text-xs font-medium text-slate-500 uppercase tracking-wider">
                 Oportunidades
               </th>
-              <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-4 py-3 text-center text-xs font-medium text-slate-500 uppercase tracking-wider">
                 Vendas
               </th>
-              <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-4 py-3 text-center text-xs font-medium text-slate-500 uppercase tracking-wider">
                 Perdas
               </th>
-              <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-4 py-3 text-center text-xs font-medium text-slate-500 uppercase tracking-wider">
                 Abertos
               </th>
-              <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-4 py-3 text-center text-xs font-medium text-slate-500 uppercase tracking-wider">
                 Conversão
               </th>
-              <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-4 py-3 text-right text-xs font-medium text-slate-500 uppercase tracking-wider">
                 Valor
               </th>
             </tr>
@@ -73,17 +73,17 @@ const ResponsavelTable: React.FC<ResponsavelTableProps> = ({
           <tbody className="divide-y divide-gray-200">
             {sortedData.length > 0 ? (
               sortedData.map((item, index) => (
-                <tr key={item.vendedor_id} className="hover:bg-gray-50 transition-colors">
+                <tr key={item.vendedor_id} className="hover:bg-slate-50 transition-colors">
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center">
                         <User className="w-4 h-4 text-white" />
                       </div>
                       <div>
-                        <div className="text-sm font-medium text-gray-900">
+                        <div className="text-sm font-medium text-slate-900">
                           {item.vendedor_nome}
                         </div>
-                        <div className="text-xs text-gray-500">
+                        <div className="text-xs text-slate-500">
                           #{index + 1} no ranking
                         </div>
                       </div>
@@ -133,7 +133,7 @@ const ResponsavelTable: React.FC<ResponsavelTableProps> = ({
                     </div>
                   </td>
                   <td className="px-4 py-3 text-right">
-                    <span className="text-sm font-medium text-gray-900">
+                    <span className="text-sm font-medium text-slate-900">
                       {formatCurrencyBRL(item.valor_total)}
                     </span>
                   </td>
@@ -141,7 +141,7 @@ const ResponsavelTable: React.FC<ResponsavelTableProps> = ({
               ))
             ) : (
               <tr>
-                <td colSpan={8} className="px-4 py-8 text-center text-gray-500">
+                <td colSpan={8} className="px-4 py-8 text-center text-slate-500">
                   Nenhum dado disponível
                 </td>
               </tr>
@@ -149,9 +149,9 @@ const ResponsavelTable: React.FC<ResponsavelTableProps> = ({
           </tbody>
           {/* Footer with totals */}
           {sortedData.length > 0 && (
-            <tfoot className="bg-gray-50 border-t-2 border-gray-300">
+            <tfoot className="bg-slate-50 border-t-2 border-slate-300">
               <tr className="font-medium">
-                <td className="px-4 py-3 text-sm text-gray-900">
+                <td className="px-4 py-3 text-sm text-slate-900">
                   Total ({sortedData.length} vendedores)
                 </td>
                 <td className="px-4 py-3 text-center text-sm text-blue-600">
@@ -169,10 +169,10 @@ const ResponsavelTable: React.FC<ResponsavelTableProps> = ({
                 <td className="px-4 py-3 text-center text-sm text-yellow-600">
                   {formatNumber(totals.abertos)}
                 </td>
-                <td className="px-4 py-3 text-center text-sm text-gray-900">
+                <td className="px-4 py-3 text-center text-sm text-slate-900">
                   {formatPercentageBI(overallConversion, 1)}
                 </td>
-                <td className="px-4 py-3 text-right text-sm text-gray-900">
+                <td className="px-4 py-3 text-right text-sm text-slate-900">
                   {formatCurrencyBRL(totals.valor_total)}
                 </td>
               </tr>

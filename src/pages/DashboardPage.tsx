@@ -209,7 +209,7 @@ export default function DashboardPage() {
           />
           <StatCard
             icon={Eye}
-            label="Impressoes (30d)"
+            label="Impressões (30d)"
             value={metrics ? formatNumber(metrics.impressions || 0) : '—'}
             subtext={metrics?.reach ? `${formatNumber(metrics.reach)} alcance` : undefined}
             color="bg-purple-600"

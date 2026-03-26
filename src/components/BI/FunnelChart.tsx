@@ -19,12 +19,12 @@ const FunnelChart: React.FC<FunnelChartProps> = ({
   const maxCount = Math.max(...stages.map(s => s.count), 1);
 
   return (
-    <div className={`bg-white rounded-lg shadow-sm border border-gray-200 p-6 ${className}`}>
+    <div className={`bg-white rounded-lg shadow-sm border border-slate-200 p-6 ${className}`}>
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
-        <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
-        <div className="text-sm text-gray-500">
-          Total: <span className="font-medium text-gray-900">{formatNumber(totalEntries)}</span>
+        <h3 className="text-lg font-semibold text-slate-900">{title}</h3>
+        <div className="text-sm text-slate-500">
+          Total: <span className="font-medium text-slate-900">{formatNumber(totalEntries)}</span>
           {' | '}
           Conversão: <span className="font-medium text-green-600">{formatPercentageBI(overallConversionRate)}</span>
         </div>
@@ -47,14 +47,14 @@ const FunnelChart: React.FC<FunnelChartProps> = ({
               <div className="relative">
                 <div className="flex items-center gap-3">
                   {/* Label */}
-                  <div className="w-40 text-sm text-gray-700 truncate" title={stage.name}>
+                  <div className="w-40 text-sm text-slate-700 truncate" title={stage.name}>
                     {stage.name}
                   </div>
 
                   {/* Bar Container */}
                   <div className="flex-1 relative">
                     {/* Background */}
-                    <div className="h-10 bg-gray-100 rounded-lg overflow-hidden">
+                    <div className="h-10 bg-slate-100 rounded-lg overflow-hidden">
                       {/* Filled Bar */}
                       <div
                         className="h-full rounded-lg transition-all duration-500 flex items-center justify-end pr-3"
@@ -71,7 +71,7 @@ const FunnelChart: React.FC<FunnelChartProps> = ({
                   </div>
 
                   {/* Percentage */}
-                  <div className="w-16 text-right text-sm font-medium text-gray-600">
+                  <div className="w-16 text-right text-sm font-medium text-slate-600">
                     {formatPercentageBI(stage.percentage, 1)}
                   </div>
                 </div>
@@ -93,9 +93,9 @@ const FunnelChart: React.FC<FunnelChartProps> = ({
       </div>
 
       {/* Summary */}
-      <div className="mt-6 pt-4 border-t border-gray-200 flex justify-between items-center">
-        <div className="text-sm text-gray-500">
-          De <span className="font-medium text-gray-900">{formatNumber(totalEntries)}</span> leads,{' '}
+      <div className="mt-6 pt-4 border-t border-slate-200 flex justify-between items-center">
+        <div className="text-sm text-slate-500">
+          De <span className="font-medium text-slate-900">{formatNumber(totalEntries)}</span> leads,{' '}
           <span className="font-medium text-green-600">
             {formatNumber(stages.find(s => s.name === 'Contrato fechado')?.count || 0)}
           </span>{' '}

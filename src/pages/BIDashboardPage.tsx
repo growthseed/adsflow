@@ -11,13 +11,11 @@ import {
   ResponsiveContainer,
   Cell,
 } from 'recharts';
-import { Link } from 'react-router-dom';
 import {
   BarChart3,
   TrendingUp,
   Clock,
   XCircle,
-  Home,
   RefreshCw,
   Filter,
   Download,
@@ -30,6 +28,7 @@ import { useAuth } from '@/contexts/AuthContext';
 // Components
 import { KPICard, FunnelChart, LeadsLineChart, ResponsavelTable, PerdasChart } from '@/components/BI';
 import DateRangeSelector from '@/components/UI/DateRangeSelector';
+import { useToast } from '@/components/UI/Toast';
 
 // Hooks
 import {
@@ -223,6 +222,7 @@ function EcommerceView() {
 
 const BIDashboardPage: React.FC = () => {
   const { activeClient } = useAuth();
+  const toast = useToast();
   const clientId = activeClient?.client_id;
   const [activePage, setActivePage] = useState<BIPageType>('funil');
 
@@ -265,7 +265,7 @@ const BIDashboardPage: React.FC = () => {
     }
 
     if (leads.length === 0) {
-      alert('Nenhum dado para exportar neste período.');
+      toast.warning('Nenhum dado para exportar neste período.');
       return;
     }
 
@@ -308,103 +308,88 @@ const BIDashboardPage: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            {/* Left: Logo + Navigation */}
-            <div className="flex items-center gap-6">
-              <Link
-                to="/"
-                className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
-              >
-                <Home className="w-5 h-5" />
-                <span className="font-medium">Ads Flow</span>
-              </Link>
-
-              <div className="h-6 w-px bg-gray-300" />
-
-              <h1 className="text-xl font-bold text-gray-900">
-                Dashboard B.I.
-              </h1>
-            </div>
-
-            {/* Right: Actions */}
-            <div className="flex items-center gap-3">
-              <DateRangeSelector
-                value={filters.dateRange}
-                onChange={updateDateRange}
-              />
-
-              <select
-                className="px-3 py-2 border border-gray-300 rounded-lg text-sm
-                           focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={filters.vendedorId || ''}
-                onChange={(e) => updateVendedor(e.target.value || undefined)}
-              >
-                <option value="">Todos os vendedores</option>
-                {vendedores.map((v) => (
-                  <option key={v.id} value={v.id}>
-                    {v.nome}
-                  </option>
-                ))}
-              </select>
-
-              <button
-                onClick={resetFilters}
-                className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
-                title="Limpar filtros"
-              >
-                <Filter className="w-5 h-5" />
-              </button>
-
-              <button
-                onClick={handleRefresh}
-                disabled={isLoading}
-                className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors
-                           disabled:opacity-50"
-                title="Atualizar dados"
-              >
-                <RefreshCw className={`w-5 h-5 ${isLoading ? 'animate-spin' : ''}`} />
-              </button>
-
-              <button
-                onClick={handleExport}
-                className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg
-                           hover:bg-blue-700 transition-colors font-medium"
-              >
-                <Download className="w-4 h-4" />
-                Exportar
-              </button>
-            </div>
-          </div>
-
-          {/* Page Navigation */}
-          <div className="flex gap-1 -mb-px">
-            {navItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => setActivePage(item.id)}
-                className={`
-                  flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors
-                  ${
-                    activePage === item.id
-                      ? 'border-blue-600 text-blue-600'
-                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                  }
-                `}
-              >
-                <item.icon className="w-4 h-4" />
-                {item.label}
-              </button>
-            ))}
-          </div>
+    <div className="space-y-6">
+      {/* Page Header — inline with app shell, no duplicate header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-slate-900">Dashboard B.I.</h1>
+          <p className="text-sm text-slate-500 mt-1">Análise comercial e performance de vendas</p>
         </div>
-      </header>
+
+        <div className="flex items-center gap-3">
+          <DateRangeSelector
+            value={filters.dateRange}
+            onChange={updateDateRange}
+          />
+
+          <select
+            className="px-3 py-2 border border-slate-300 rounded-lg text-sm
+                       focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={filters.vendedorId || ''}
+            onChange={(e) => updateVendedor(e.target.value || undefined)}
+          >
+            <option value="">Todos os vendedores</option>
+            {vendedores.map((v) => (
+              <option key={v.id} value={v.id}>
+                {v.nome}
+              </option>
+            ))}
+          </select>
+
+          <button
+            onClick={resetFilters}
+            className="p-2 text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors"
+            title="Limpar filtros"
+          >
+            <Filter className="w-5 h-5" />
+          </button>
+
+          <button
+            onClick={handleRefresh}
+            disabled={isLoading}
+            className="p-2 text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors
+                       disabled:opacity-50"
+            title="Atualizar dados"
+          >
+            <RefreshCw className={`w-5 h-5 ${isLoading ? 'animate-spin' : ''}`} />
+          </button>
+
+          <button
+            onClick={handleExport}
+            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg
+                       hover:bg-blue-700 transition-colors font-medium"
+          >
+            <Download className="w-4 h-4" />
+            Exportar
+          </button>
+        </div>
+      </div>
+
+      {/* Tab Navigation — consistent with app design */}
+      <div className="border-b border-slate-200">
+        <div className="flex gap-1 -mb-px">
+          {navItems.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => setActivePage(item.id)}
+              className={`
+                flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors
+                ${
+                  activePage === item.id
+                    ? 'border-blue-600 text-blue-600'
+                    : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
+                }
+              `}
+            >
+              <item.icon className="w-4 h-4" />
+              {item.label}
+            </button>
+          ))}
+        </div>
+      </div>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div>
         {/* Loading State */}
         {isLoading && (
           <div className="flex items-center justify-center py-12">
@@ -606,16 +591,7 @@ const BIDashboardPage: React.FC = () => {
         {!isLoading && activePage === 'ecommerce' && (
           <EcommerceView />
         )}
-      </main>
-
-      {/* Footer */}
-      <footer className="bg-white border-t border-gray-200 py-4 mt-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-center text-sm text-gray-500">
-            Efeito Digital - Ads Flow B.I. Dashboard
-          </p>
-        </div>
-      </footer>
+      </div>
     </div>
   );
 };
