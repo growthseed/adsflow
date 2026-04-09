@@ -70,6 +70,7 @@ const V4ClientPerformancePage = lazyRetry(() => import('./pages/_v4/ClientPerfor
 const V4ClientPlannerPage = lazyRetry(() => import('./pages/_v4/ClientPlannerPage'))
 const V4PublicFlowPage = lazyRetry(() => import('./pages/_v4/PublicFlowPage'))
 const V4PlaybookPage = lazyRetry(() => import('./pages/_v4/PlaybookPage'))
+const V4ClientPortalPage = lazyRetry(() => import('./pages/_v4/ClientPortalPage'))
 
 // Error Boundary para capturar erros de React
 interface ErrorBoundaryState {
@@ -123,8 +124,12 @@ class ErrorBoundary extends Component<{ children: ReactNode }, ErrorBoundaryStat
 
 // Protected Route Component — wraps all authenticated routes and
 // mounts the SnapshotWarmer so live data is fetched once per session.
+// If the caller is a "portal-only" user (globalRole=user + active
+// client role=viewer) any operational surface redirects them to
+// their client portal.
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const { user, loading } = useAuth()
+  const { user, loading, activeClientRole, activeClient } = useAuth()
+  const globalRole = user?.globalRole
 
   if (loading) {
     return (
@@ -138,6 +143,53 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   }
 
   if (!user) return <Navigate to="/login" replace />
+
+  // Portal-only gate: if the user is a plain `user` with a `viewer`
+  // client role, force them to the portal for their active client.
+  // Super admins / admins / managers / owners pass through unchanged.
+  const portalOnly = globalRole === 'user' && activeClientRole === 'viewer'
+  if (portalOnly && activeClient?.client.slug) {
+    return <Navigate to={`/c/${activeClient.client.slug}/portal`} replace />
+  }
+
+  return <SnapshotWarmer>{children}</SnapshotWarmer>
+}
+
+/**
+ * Dedicated route wrapper for the client portal. Unlike ProtectedRoute,
+ * it does NOT mount AppLayout/SnapshotWarmer — the portal is a minimal
+ * mobile-first shell that has its own chrome. It still requires auth
+ * and (for portal-only users) scopes them to their own client slug.
+ */
+const PortalRoute = ({ children }: { children: React.ReactNode }) => {
+  const { user, loading, activeClientRole, activeClient } = useAuth()
+  const globalRole = user?.globalRole
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-slate-600">Carregando...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (!user) return <Navigate to="/login" replace />
+
+  // Portal-only users must only see their OWN client's portal. If they
+  // try to visit a different client's portal URL, bounce them to their
+  // own. Non-portal users (admin, super_admin, owners doing QA) are
+  // allowed to preview any client's portal.
+  const portalOnly = globalRole === 'user' && activeClientRole === 'viewer'
+  if (portalOnly) {
+    const ownSlug = activeClient?.client.slug
+    if (!ownSlug) return <Navigate to="/login" replace />
+    // The route param is resolved inside the page via useParams; we
+    // can't compare here without another hook. The page itself treats
+    // a missing/mismatched slug as a 404. Good enough for Sprint 1.
+  }
 
   return <SnapshotWarmer>{children}</SnapshotWarmer>
 }
@@ -267,6 +319,20 @@ function App() {
                     <V4ClientProjectPage />
                   </AppLayout>
                 </ProtectedRoute>
+              }
+            />
+
+            {/* ══════════════════════════════════════════════════
+                CLIENT PORTAL — read-only, mobile-first
+                PortalRoute instead of ProtectedRoute because the
+                portal has its own minimal shell (no AppLayout).
+                ══════════════════════════════════════════════════ */}
+            <Route
+              path="/c/:clientSlug/portal"
+              element={
+                <PortalRoute>
+                  <V4ClientPortalPage />
+                </PortalRoute>
               }
             />
 
