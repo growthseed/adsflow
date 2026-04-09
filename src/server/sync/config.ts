@@ -68,11 +68,23 @@ export function requireCronAuth(req: VercelRequest, res: VercelResponse): boolea
 }
 
 // =============================================================
-// CLIENT MAP — static mapping of agency clients to platform accounts
+// CLIENT MAP
 // =============================================================
-// This is the source of truth linking slugs → ClickUp folders +
-// Meta accounts + Google Ads CIDs. Maintained manually for now;
-// later will come from `clients` table in Supabase.
+// Historically this was a hardcoded AGENCY_CLIENTS array. The audit of
+// 2026-04-09 flagged that as an anti-pattern for a multi-tenant platform
+// (every new client needed a code deploy; impossible to sell to other
+// agencies). As of migration 019 the source of truth is Supabase:
+//
+//   public.clients                — agency clients (slug, name, industry, ...)
+//   public.client_integrations    — per-client provider accounts
+//                                    (clickup folder, meta account, google CID)
+//
+// `loadAgencyClients()` below fetches and joins these two tables using the
+// service role key and returns the same `AgencyClientMap` shape the cron
+// fetchers expect. The hardcoded `AGENCY_CLIENTS` const is still exported as
+// a last-resort fallback if Supabase is unreachable, but it's marked
+// deprecated and should be removed once `loadAgencyClients` is proven stable
+// in production.
 // =============================================================
 
 export interface AgencyClientMap {
@@ -88,6 +100,101 @@ export interface AgencyClientMap {
   google_ads_customer_id?: string
 }
 
+/**
+ * Load the agency client map from Supabase. Falls back to the hardcoded
+ * `AGENCY_CLIENTS` array if the DB is unreachable or returns zero rows
+ * (so the cron keeps working during an outage).
+ */
+export async function loadAgencyClients(): Promise<AgencyClientMap[]> {
+  if (!ENV.SUPABASE_URL || !ENV.SUPABASE_SERVICE_ROLE_KEY) {
+    console.warn('[loadAgencyClients] Supabase not configured — using hardcoded fallback')
+    return AGENCY_CLIENTS
+  }
+
+  try {
+    // 1. Pull all active clients
+    const clientsUrl = `${ENV.SUPABASE_URL}/rest/v1/clients?status=eq.active&select=id,slug,name,industry`
+    const clientsRes = await fetch(clientsUrl, {
+      headers: {
+        apikey: ENV.SUPABASE_SERVICE_ROLE_KEY,
+        Authorization: `Bearer ${ENV.SUPABASE_SERVICE_ROLE_KEY}`,
+      },
+    })
+    if (!clientsRes.ok) throw new Error(`clients fetch ${clientsRes.status}`)
+    const clientsRows = (await clientsRes.json()) as Array<{
+      id: string
+      slug: string
+      name: string
+      industry: string | null
+    }>
+
+    if (clientsRows.length === 0) {
+      console.warn('[loadAgencyClients] clients table empty — using hardcoded fallback')
+      return AGENCY_CLIENTS
+    }
+
+    // 2. Pull all active integrations
+    const integUrl = `${ENV.SUPABASE_URL}/rest/v1/client_integrations?status=eq.active&select=client_id,provider,external_account_id,external_account_name`
+    const integRes = await fetch(integUrl, {
+      headers: {
+        apikey: ENV.SUPABASE_SERVICE_ROLE_KEY,
+        Authorization: `Bearer ${ENV.SUPABASE_SERVICE_ROLE_KEY}`,
+      },
+    })
+    if (!integRes.ok) throw new Error(`integrations fetch ${integRes.status}`)
+    const integRows = (await integRes.json()) as Array<{
+      client_id: string
+      provider: string
+      external_account_id: string
+      external_account_name: string | null
+    }>
+
+    // 3. Index integrations by client_id → provider
+    const byClient = new Map<string, Record<string, { id: string; name: string | null }>>()
+    for (const row of integRows) {
+      const bag = byClient.get(row.client_id) || {}
+      bag[row.provider] = { id: row.external_account_id, name: row.external_account_name }
+      byClient.set(row.client_id, bag)
+    }
+
+    // 4. Stitch together the AgencyClientMap shape the fetchers expect.
+    // short_name / avatar_gradient / city are cosmetic fields only used by
+    // the UI side of the snapshot — default them sensibly.
+    return clientsRows.map((c): AgencyClientMap => {
+      const intg = byClient.get(c.id) || {}
+      const clickup = intg['clickup']
+      const meta = intg['meta_ads']
+      const google = intg['google_ads']
+
+      return {
+        slug: c.slug,
+        name: c.name,
+        short_name: c.name
+          .split(/\s+/)
+          .map((w) => w[0])
+          .slice(0, 2)
+          .join('')
+          .toUpperCase(),
+        clickup_folder_id: clickup?.id || '',
+        clickup_folder_name: clickup?.name || '',
+        avatar_gradient: 'from-slate-500 to-neutral-700',
+        industry: c.industry ?? undefined,
+        meta_account_id: meta?.id,
+        google_ads_customer_id: google?.id,
+      }
+    })
+  } catch (err) {
+    console.error('[loadAgencyClients] fetch failed, using hardcoded fallback:', err)
+    return AGENCY_CLIENTS
+  }
+}
+
+/**
+ * @deprecated Use `await loadAgencyClients()` instead. This hardcoded array
+ * is kept as an emergency fallback for when Supabase is unreachable. New
+ * clients should be inserted into `public.clients` + `public.client_integrations`
+ * via the admin UI, not added here.
+ */
 export const AGENCY_CLIENTS: AgencyClientMap[] = [
   {
     slug: 'dr-euvaldo-tomaz',

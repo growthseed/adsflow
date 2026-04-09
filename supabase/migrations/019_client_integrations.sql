@@ -77,12 +77,15 @@ CREATE INDEX IF NOT EXISTS idx_client_integrations_status
 -- -----------------------------------------------------------
 
 CREATE OR REPLACE FUNCTION public.tg_client_integrations_touch_updated_at()
-RETURNS TRIGGER AS $$
+RETURNS TRIGGER
+LANGUAGE plpgsql
+SET search_path = public, pg_catalog
+AS $$
 BEGIN
   NEW.updated_at := now();
   RETURN NEW;
 END;
-$$ LANGUAGE plpgsql;
+$$;
 
 DROP TRIGGER IF EXISTS trg_client_integrations_touch ON public.client_integrations;
 CREATE TRIGGER trg_client_integrations_touch
@@ -111,7 +114,11 @@ CREATE POLICY "client_integrations_deny_all"
 -- 4. SANITIZED VIEW (safe for frontend reads)
 -- -----------------------------------------------------------
 
-CREATE OR REPLACE VIEW public.client_integrations_public AS
+-- security_invoker=true makes the view honor the querying user's RLS + perms
+-- (PG 15+). Without it, the view would run with owner privileges, which the
+-- Supabase linter flags as "Security Definer View".
+CREATE OR REPLACE VIEW public.client_integrations_public
+WITH (security_invoker = true) AS
 SELECT
   ci.id,
   ci.client_id,
@@ -162,7 +169,11 @@ CREATE OR REPLACE FUNCTION public.get_client_integration(
   refresh_token TEXT,
   token_expires_at TIMESTAMPTZ,
   metadata JSONB
-) AS $$
+)
+LANGUAGE sql
+SECURITY DEFINER
+SET search_path = public, pg_catalog
+AS $$
   SELECT
     ci.id,
     ci.client_id,
@@ -179,7 +190,7 @@ CREATE OR REPLACE FUNCTION public.get_client_integration(
     AND ci.status = 'active'
   ORDER BY ci.updated_at DESC
   LIMIT 1;
-$$ LANGUAGE sql SECURITY DEFINER;
+$$;
 
 -- Lock it down — only service_role can call this.
 REVOKE EXECUTE ON FUNCTION public.get_client_integration(TEXT, TEXT) FROM PUBLIC;

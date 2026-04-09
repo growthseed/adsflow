@@ -7,7 +7,7 @@
  * ============================================
  */
 
-import { ENV, AGENCY_CLIENTS } from './config.js'
+import { ENV, loadAgencyClients } from './config.js'
 
 // =============================================================
 // Types — matching /src/services/adapters/performanceTypes.ts
@@ -483,7 +483,8 @@ export async function fetchPerformanceSnapshot(): Promise<PerformanceSnapshotRes
     console.error('[performanceFetcher] Google OAuth failed:', err)
   }
 
-  for (const client of AGENCY_CLIENTS) {
+  const agencyClients = await loadAgencyClients()
+  for (const client of agencyClients) {
     const platforms: ClientPerformance['platforms'] = {}
 
     // Meta Ads

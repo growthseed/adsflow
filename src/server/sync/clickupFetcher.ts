@@ -8,7 +8,7 @@
  * ============================================
  */
 
-import { ENV, AGENCY_CLIENTS } from './config.js'
+import { ENV, loadAgencyClients } from './config.js'
 
 const CLICKUP_API = 'https://api.clickup.com/api/v2'
 
@@ -265,7 +265,11 @@ export async function fetchClickUpSnapshot(): Promise<ClickUpSnapshotResult> {
   let totalOverdue = 0
   let totalDone = 0
 
-  for (const client of AGENCY_CLIENTS) {
+  const agencyClients = await loadAgencyClients()
+  for (const client of agencyClients) {
+    // Skip clients without a configured ClickUp folder (DB rows without a
+    // clickup integration). The fallback hardcoded array always has one.
+    if (!client.clickup_folder_id) continue
     try {
       const lists = await getFolderLists(client.clickup_folder_id)
 
