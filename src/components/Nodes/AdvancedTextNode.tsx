@@ -132,7 +132,7 @@ export default function AdvancedTextNode({ data, selected }: NodeProps<AdvancedT
             </div>
             <div>
               <label className="block text-xs font-medium mb-1">Fonte</label>
-              <select value={fontFamily} onChange={(e) => setFontFamily(e.target.value as any)} className="w-full px-3 py-2 border rounded-md">
+              <select value={fontFamily} onChange={(e) => setFontFamily(e.target.value as AdvancedTextData['fontFamily'])} className="w-full px-3 py-2 border rounded-md">
                 {FONT_FAMILIES.map(font => <option key={font} value={font}>{font}</option>)}
               </select>
             </div>

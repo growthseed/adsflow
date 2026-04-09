@@ -34,7 +34,7 @@ interface MetaAdData {
 interface SyncResult {
   success: boolean
   flowId?: string
-  data?: any
+  data?: unknown
   error?: string
 }
 
@@ -244,9 +244,9 @@ export function useMetaSync() {
   // Função auxiliar para buscar dados do Meta via MCP
   // Esta função será chamada pelo componente que tem acesso ao MCP
   const prepareSyncData = (
-    campaign: any,
-    adSets: any[],
-    ads: any[]
+    campaign: MetaCampaignData,
+    adSets: MetaAdSetData[],
+    ads: MetaAdData[]
   ) => {
     // Normalizar os dados do MCP para o formato esperado
     const normalizedCampaign: MetaCampaignData = {

@@ -111,7 +111,10 @@ export interface MetaAd {
   creative: {
     id: string
     name?: string
-    object_story_spec?: any
+    // Meta's creative spec is deeply polymorphic (link_data, video_data,
+    // photo_data, template_data, etc). Typing every variant is out of scope
+    // — treat as opaque JSON and narrow at the call site.
+    object_story_spec?: Record<string, unknown>
     image_hash?: string
     video_id?: string
   }

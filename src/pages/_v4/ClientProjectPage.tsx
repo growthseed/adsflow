@@ -36,11 +36,13 @@ export default function ClientProjectPage() {
   const [filter, setFilter] = useState<FilterKey>('all')
   const [showDone, setShowDone] = useState(false)
 
-  if (!client) return <Navigate to="/_v4/operations" replace />
-
-  // Prefer all_tasks if populated, otherwise upcoming_tasks (snapshot fallback)
-  const allTasks: ClickUpTask[] =
-    client.all_tasks.length > 0 ? client.all_tasks : client.upcoming_tasks
+  // Derive task list BEFORE any early return so hook order is stable.
+  // Prefer all_tasks if populated, otherwise upcoming_tasks (snapshot fallback).
+  const allTasks: ClickUpTask[] = client
+    ? client.all_tasks.length > 0
+      ? client.all_tasks
+      : client.upcoming_tasks
+    : []
 
   const filtered = useMemo(() => {
     switch (filter) {
@@ -54,6 +56,8 @@ export default function ClientProjectPage() {
         return allTasks
     }
   }, [allTasks, filter])
+
+  if (!client) return <Navigate to="/_v4/operations" replace />
 
   const stats = client.stats
 

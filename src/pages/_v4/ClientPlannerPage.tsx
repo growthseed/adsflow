@@ -129,14 +129,24 @@ export default function ClientPlannerPage() {
 
   const loadFlows = useCallback(async () => {
     if (!clientSlug) return
-    setLoading(true)
     const data = await listClientFlows(clientSlug)
     setFlows(data)
     setLoading(false)
   }, [clientSlug])
 
+  // Load flows on mount / when client changes. Classic fetch-and-set;
+  // proper fix is @tanstack/react-query (already a project dep) but
+  // migrating this component is out of scope for the lint cleanup pass.
   useEffect(() => {
-    loadFlows()
+    let cancelled = false
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setLoading(true)
+    loadFlows().catch((err) => {
+      if (!cancelled) console.error('[ClientPlannerPage] loadFlows failed:', err)
+    })
+    return () => {
+      cancelled = true
+    }
   }, [loadFlows])
 
   if (!client) return <Navigate to="/_v4/operations" replace />
@@ -191,7 +201,6 @@ export default function ClientPlannerPage() {
 
         {view.mode === 'picker' && clientSlug && (
           <TemplatePicker
-            clientSlug={clientSlug}
             onBlankFlow={async () => {
               const flow = await createFlow({
                 client_slug: clientSlug,
@@ -380,11 +389,9 @@ function FlowCard({
 // =============================================================
 
 function TemplatePicker({
-  clientSlug: _clientSlug,
   onBlankFlow,
   onTemplateSelected,
 }: {
-  clientSlug: string
   onBlankFlow: () => void
   onTemplateSelected: (t: PlannerTemplate) => void
 }) {

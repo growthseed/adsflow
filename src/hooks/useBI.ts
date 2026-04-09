@@ -523,8 +523,11 @@ export function useBIFilters(clientId?: string) {
     clientId,
   });
 
-  // Keep clientId in sync with active client changes
+  // Keep clientId in sync with the active client. The rest of the filter
+  // object (dateRange, vendedorId, statusFunil) must be preserved on client
+  // switch, so we can't simply derive the whole object.
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setFilters(prev => ({ ...prev, clientId }));
   }, [clientId]);
 

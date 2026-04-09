@@ -255,7 +255,12 @@ export const membersService = {
 
     if (error) throw error
 
-    return (data || []).map((m: any) => ({
+    // Supabase returns the `user` join as an array when the FK target is
+    // ambiguous. Normalize to a single object before casting.
+    type RawMember = Omit<ClientMember, 'user'> & {
+      user: ClientMember['user'] | ClientMember['user'][]
+    }
+    return (data || []).map((m: RawMember) => ({
       ...m,
       user: Array.isArray(m.user) ? m.user[0] : m.user,
     })) as ClientMember[]

@@ -6,6 +6,7 @@
 // ============================================
 
 import supabase from './supabase';
+import type { Node as ReactFlowNode, Edge as ReactFlowEdge } from 'reactflow';
 
 // URLs
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api'
@@ -50,8 +51,8 @@ export interface Flow {
   description?: string
   is_template?: boolean
   tags?: string[]
-  nodes: any[]
-  edges: any[]
+  nodes: ReactFlowNode[]
+  edges: ReactFlowEdge[]
   viewport?: {
     x: number
     y: number
@@ -67,8 +68,8 @@ export interface CreateFlowInput {
   description?: string
   is_template?: boolean
   tags?: string[]
-  nodes: any[]
-  edges: any[]
+  nodes: ReactFlowNode[]
+  edges: ReactFlowEdge[]
   viewport?: {
     x: number
     y: number
@@ -81,8 +82,8 @@ export interface UpdateFlowInput {
   description?: string
   is_template?: boolean
   tags?: string[]
-  nodes?: any[]
-  edges?: any[]
+  nodes?: ReactFlowNode[]
+  edges?: ReactFlowEdge[]
   viewport?: {
     x: number
     y: number

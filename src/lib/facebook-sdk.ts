@@ -34,8 +34,8 @@ declare global {
       ) => void
       api: (
         path: string,
-        params: Record<string, unknown> | ((response: any) => void),
-        callback?: (response: any) => void
+        params: Record<string, unknown> | ((response: unknown) => void),
+        callback?: (response: unknown) => void
       ) => void
     }
   }
@@ -238,7 +238,7 @@ export function facebookLogout(): Promise<void> {
 /**
  * Chama a Graph API do Facebook.
  */
-function fbApi<T = any>(
+function fbApi<T = unknown>(
   path: string,
   params: Record<string, unknown> = {}
 ): Promise<T> {
@@ -247,13 +247,14 @@ function fbApi<T = any>(
       reject(new Error('Facebook SDK não carregado'))
       return
     }
-    window.FB.api(path, params, (response: any) => {
-      if (response && !response.error) {
+    window.FB.api(path, params, (response: unknown) => {
+      const r = response as { error?: { message?: string } } | null
+      if (r && !r.error) {
         resolve(response as T)
       } else {
         reject(
           new Error(
-            response?.error?.message || 'Erro desconhecido na Graph API'
+            r?.error?.message || 'Erro desconhecido na Graph API'
           )
         )
       }

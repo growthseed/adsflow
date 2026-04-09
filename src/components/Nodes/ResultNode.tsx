@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { Handle, Position, NodeResizer } from "reactflow";
 import type { NodeProps } from "reactflow";
-import { Target, TrendingUp, DollarSign, FileText, ShoppingCart, ArrowUp, ArrowDown, Minus } from "lucide-react";
+import { Target, TrendingUp, DollarSign, FileText, ShoppingCart, ArrowUp, ArrowDown, Minus, type LucideIcon } from "lucide-react";
 
 export interface ResultData {
   label: string;
@@ -13,7 +13,7 @@ export interface ResultData {
   onEdit?: () => void;
 }
 
-const metricIcons: Record<string, any> = {
+const metricIcons: Record<string, LucideIcon> = {
   'Leads': FileText,
   'Vendas': ShoppingCart,
   'Conversões': Target,
@@ -38,7 +38,7 @@ const ResultNode = ({ data, selected }: NodeProps<ResultData>) => {
     gradient: string; 
     border: string; 
     bgLight: string;
-    icon: any;
+    icon: LucideIcon;
     iconColor: string;
   }> = {
     success: { 

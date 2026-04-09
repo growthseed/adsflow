@@ -1,7 +1,7 @@
 import { memo } from "react"
 import { Handle, Position, NodeResizer } from "reactflow"
 import type { NodeProps } from "reactflow"
-import { Facebook, Instagram, Globe, Linkedin, Mail, TrendingUp } from "lucide-react"
+import { Facebook, Instagram, Globe, Linkedin, Mail, TrendingUp, type LucideIcon } from "lucide-react"
 
 export interface TrafficSourceData {
   label: string
@@ -20,7 +20,7 @@ export interface TrafficSourceData {
   onEdit?: () => void
 }
 
-const platformIcons: Record<string, any> = {
+const platformIcons: Record<string, LucideIcon> = {
   'Meta': Facebook,
   'Facebook': Facebook,
   'Instagram': Instagram,

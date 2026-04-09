@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { Handle, Position, NodeResizer } from "reactflow";
 import type { NodeProps } from "reactflow";
-import { Users, Eye, TrendingUp, Target, Layers } from "lucide-react";
+import { Users, Eye, TrendingUp, Target, Layers, type LucideIcon } from "lucide-react";
 
 export interface AudienceData {
   label: string;
@@ -12,7 +12,7 @@ export interface AudienceData {
   onEdit?: () => void;
 }
 
-const typeIcons: Record<string, any> = {
+const typeIcons: Record<string, LucideIcon> = {
   'Personalizada': Users,
   'Lookalike': Eye,
   'Salva': Target,

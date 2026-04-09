@@ -125,8 +125,8 @@ function InviteModal({
         onInvited()
         onClose()
       }, 1500)
-    } catch (err: any) {
-      setError(err.message || 'Erro ao enviar convite')
+    } catch (err: unknown) {
+      setError((err instanceof Error ? err.message : null) || 'Erro ao enviar convite')
     } finally {
       setSending(false)
     }

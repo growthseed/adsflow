@@ -48,6 +48,29 @@ export default function ClientPerformancePage() {
 
   const [platformTab, setPlatformTab] = useState<PlatformTab>('all')
 
+  // --- Derived values that MUST be computed before any early return so the
+  //     hook order stays stable across renders. These are safe when `client`
+  //     or `performance` is undefined — the JSX below guards against that.
+
+  const platforms = performance?.platforms
+  const hasMeta = !!platforms?.meta_ads?.connected
+  const hasGoogle = !!platforms?.google_ads?.connected
+
+  const effectiveTab: PlatformTab =
+    platformTab === 'all' && hasMeta && !hasGoogle
+      ? 'meta_ads'
+      : platformTab === 'all' && !hasMeta && hasGoogle
+        ? 'google_ads'
+        : platformTab
+
+  const campaigns: Campaign[] = useMemo(() => {
+    const meta = platforms?.meta_ads?.campaigns || []
+    const google = platforms?.google_ads?.campaigns || []
+    if (effectiveTab === 'meta_ads') return meta
+    if (effectiveTab === 'google_ads') return google
+    return [...meta, ...google].sort((a, b) => b.metrics.spend - a.metrics.spend)
+  }, [effectiveTab, platforms])
+
   if (!client) return <Navigate to="/_v4/operations" replace />
 
   // Empty state — client exists on ClickUp but no performance data yet
@@ -90,29 +113,10 @@ export default function ClientPerformancePage() {
     )
   }
 
-  const { platforms, period } = performance
-  const hasMeta = !!platforms.meta_ads?.connected
-  const hasGoogle = !!platforms.google_ads?.connected
-
-  // Auto-select the only connected platform if just one
-  const effectiveTab: PlatformTab =
-    platformTab === 'all' && hasMeta && !hasGoogle
-      ? 'meta_ads'
-      : platformTab === 'all' && !hasMeta && hasGoogle
-        ? 'google_ads'
-        : platformTab
+  const { period } = performance
 
   // Build 4 KPI cards from blended metrics
   const kpis = buildBlendedKPIs(performance)
-
-  // Filter campaigns by selected platform
-  const campaigns: Campaign[] = useMemo(() => {
-    const meta = platforms.meta_ads?.campaigns || []
-    const google = platforms.google_ads?.campaigns || []
-    if (effectiveTab === 'meta_ads') return meta
-    if (effectiveTab === 'google_ads') return google
-    return [...meta, ...google].sort((a, b) => b.metrics.spend - a.metrics.spend)
-  }, [effectiveTab, platforms])
 
   return (
     <div className="min-h-screen bg-[var(--surface-page)]">

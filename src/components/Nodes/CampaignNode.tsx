@@ -1,7 +1,7 @@
 import { memo, useState } from "react"
 import { Handle, Position, NodeResizer } from "reactflow"
 import type { NodeProps } from "reactflow"
-import { Target, TrendingUp, Zap, ShoppingCart, Users, Award, Power } from "lucide-react"
+import { Target, TrendingUp, Zap, ShoppingCart, Users, Award, Power, type LucideIcon } from "lucide-react"
 
 export interface CampaignData {
   label: string
@@ -21,7 +21,7 @@ export interface CampaignData {
   onToggleActive?: (isActive: boolean) => void
 }
 
-const objectiveIcons: Record<string, any> = {
+const objectiveIcons: Record<string, LucideIcon> = {
   'Tráfego': Zap,
   'Conversões': Target,
   'Vendas': ShoppingCart,

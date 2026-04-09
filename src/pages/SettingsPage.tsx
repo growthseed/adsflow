@@ -95,9 +95,9 @@ function ProfileSection({ userId }: { userId: string }) {
         // Session refresh may fail but profile was saved
       }
       toast.success('Perfil atualizado!')
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Erro ao salvar perfil:', err)
-      toast.error(err.message || 'Erro ao salvar perfil. Verifique sua conexão.')
+      toast.error((err instanceof Error ? err.message : null) || 'Erro ao salvar perfil. Verifique sua conexão.')
     } finally {
       setSaving(false)
     }
@@ -203,8 +203,8 @@ function PasswordSection() {
       setNewPass('')
       setConfirmPass('')
       setTouched({ newPass: false, confirm: false })
-    } catch (err: any) {
-      toast.error(err.message || 'Erro ao alterar senha')
+    } catch (err: unknown) {
+      toast.error((err instanceof Error ? err.message : null) || 'Erro ao alterar senha')
     } finally {
       setSaving(false)
     }

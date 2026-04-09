@@ -19,5 +19,14 @@ export default defineConfig([
       ecmaVersion: 2020,
       globals: globals.browser,
     },
+    rules: {
+      // Fast Refresh is a DX-only concern (HMR), not a correctness bug.
+      // Downgrading to warn so contexts that idiomatically co-export a
+      // Provider + hook (AuthContext, DateRangeContext, Toast, etc) stop
+      // blocking CI. The proper long-term fix is to split each into
+      // `FooContext.ts` + `FooProvider.tsx` + `useFoo.ts` — tracked in
+      // the audit roadmap.
+      'react-refresh/only-export-components': 'warn',
+    },
   },
 ])

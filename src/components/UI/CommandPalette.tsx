@@ -121,8 +121,11 @@ export function CommandPaletteProvider({ children }: { children: ReactNode }) {
   const actions = filtered.filter((i) => i.category === 'action')
   const flatFiltered = [...pages, ...actions]
 
-  // Clamp selectedIndex
+  // Reset highlighted row whenever the search query changes. This is a
+  // legitimate "reset state on input change" pattern — keyboard navigation
+  // mutates selectedIndex independently so we can't derive it.
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setSelectedIndex(0)
   }, [query])
 

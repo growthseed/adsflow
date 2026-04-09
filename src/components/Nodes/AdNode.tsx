@@ -1,7 +1,7 @@
 import { memo, useState } from "react";
 import { Handle, Position, NodeResizer } from "reactflow";
 import type { NodeProps } from "reactflow";
-import { Image, Grid3x3, PlayCircle, Megaphone, Eye, MousePointer } from "lucide-react";
+import { Image, Grid3x3, PlayCircle, Megaphone, Eye, MousePointer, type LucideIcon } from "lucide-react";
 import ToggleSwitch from "@/components/UI/ToggleSwitch";
 
 export interface AdData {
@@ -16,7 +16,7 @@ export interface AdData {
   onEdit?: () => void;
 }
 
-const formatIcons: Record<string, any> = {
+const formatIcons: Record<string, LucideIcon> = {
   'Imagem Única': Image,
   'Carrossel': Grid3x3,
   'Vídeo': PlayCircle,

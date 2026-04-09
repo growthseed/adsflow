@@ -159,21 +159,24 @@ function MetaOAuthModal({ open, onClose, onSave }: MetaOAuthModalProps) {
   const toggleAdAccount = (id: string) => {
     setSelectedAdAccounts((prev) => {
       const next = new Set(prev)
-      next.has(id) ? next.delete(id) : next.add(id)
+      if (next.has(id)) next.delete(id)
+      else next.add(id)
       return next
     })
   }
   const togglePage = (id: string) => {
     setSelectedPages((prev) => {
       const next = new Set(prev)
-      next.has(id) ? next.delete(id) : next.add(id)
+      if (next.has(id)) next.delete(id)
+      else next.add(id)
       return next
     })
   }
   const toggleInstagram = (id: string) => {
     setSelectedInstagram((prev) => {
       const next = new Set(prev)
-      next.has(id) ? next.delete(id) : next.add(id)
+      if (next.has(id)) next.delete(id)
+      else next.add(id)
       return next
     })
   }
@@ -1303,7 +1306,10 @@ export default function IntegrationsPage() {
       name: 'Instagram',
       desc: 'Perfis Business & Insights',
       bgLight: 'bg-pink-50',
-      connected: metaAccounts.filter((a) => (a.metadata as any)?.connected_instagram?.length > 0).length,
+      connected: metaAccounts.filter((a) => {
+        const meta = a.metadata as { connected_instagram?: unknown[] } | null
+        return (meta?.connected_instagram?.length ?? 0) > 0
+      }).length,
       available: true,
       onConnect: hasFbApp ? () => setShowOAuthModal(true) : () => setShowManualModal(true),
       features: ['Perfis', 'Seguidores', 'Posts', 'Stories'],

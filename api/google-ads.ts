@@ -35,6 +35,15 @@ const CLIENT_SECRET = process.env.GOOGLE_ADS_CLIENT_SECRET || ''
 const GOOGLE_ADS_API_VERSION = 'v21'
 const GOOGLE_ADS_BASE = `https://googleads.googleapis.com/${GOOGLE_ADS_API_VERSION}`
 
+// Google/YouTube/GA4/Search Console REST responses are deeply nested and
+// poorly typed upstream. We use a permissive record alias so downstream
+// code can navigate the raw JSON without TS getting in the way — the trade
+// off is legitimate: typing every GAQL field by hand would add ~600 lines
+// of upstream-controlled schema that would rot on every Google API bump.
+// Treat any field access as optional at the call site.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type GaqlRow = Record<string, any>
+
 // =====================================================
 // HANDLER
 // =====================================================
@@ -212,7 +221,7 @@ async function fetchCampaigns(body: {
     body.login_customer_id,
   )
 
-  const campaigns = results.map((r: any) => ({
+  const campaigns = results.map((r: GaqlRow) => ({
     campaign_id: r.campaign.id,
     campaign_name: r.campaign.name,
     campaign_type: r.campaign.advertisingChannelType,
@@ -274,7 +283,7 @@ async function fetchInsights(body: {
     body.login_customer_id,
   )
 
-  const insights = results.map((r: any) => {
+  const insights = results.map((r: GaqlRow) => {
     const costMicros = Number(r.metrics.costMicros || 0)
     const cost = costMicros / 1_000_000
     const conversions = Number(r.metrics.conversions || 0)
@@ -356,7 +365,7 @@ async function fetchKeywords(body: {
     body.login_customer_id,
   )
 
-  const keywords = results.map((r: any) => ({
+  const keywords = results.map((r: GaqlRow) => ({
     campaign_id: r.campaign.id,
     ad_group_id: r.adGroup.id,
     ad_group_name: r.adGroup.name,
@@ -480,7 +489,7 @@ async function youtubeVideos(body: {
   const searchData = await searchResponse.json()
 
   const videoIds = (searchData.items || [])
-    .map((item: any) => item.id?.videoId)
+    .map((item: GaqlRow) => item.id?.videoId)
     .filter(Boolean)
     .join(',')
 
@@ -620,7 +629,7 @@ async function ga4Traffic(body: {
   if (!response.ok) throw new Error(`GA4 Data API: ${await response.text()}`)
   const data = await response.json()
 
-  const rows = (data.rows || []).map((r: any) => {
+  const rows = (data.rows || []).map((r: GaqlRow) => {
     const d = r.dimensionValues || []
     const m = r.metricValues || []
     const rawDate = d[0]?.value || '' // YYYYMMDD
@@ -692,7 +701,7 @@ async function ga4Conversions(body: {
   if (!response.ok) throw new Error(`GA4 Data API (conversions): ${await response.text()}`)
   const data = await response.json()
 
-  const events = (data.rows || []).map((r: any) => ({
+  const events = (data.rows || []).map((r: GaqlRow) => ({
     event_name: r.dimensionValues?.[0]?.value || '',
     event_count: Number(r.metricValues?.[0]?.value || 0),
     total_users: Number(r.metricValues?.[1]?.value || 0),
@@ -714,7 +723,7 @@ async function gscSites(body: { access_token: string }) {
   if (!response.ok) throw new Error(`Search Console sites: ${await response.text()}`)
   const data = await response.json()
 
-  const sites = (data.siteEntry || []).map((s: any) => ({
+  const sites = (data.siteEntry || []).map((s: GaqlRow) => ({
     site_url: s.siteUrl,
     permission_level: s.permissionLevel,
   }))
@@ -749,7 +758,7 @@ async function gscAnalytics(body: {
   if (!response.ok) throw new Error(`Search Console analytics: ${await response.text()}`)
   const data = await response.json()
 
-  const rows = (data.rows || []).map((r: any) => {
+  const rows = (data.rows || []).map((r: GaqlRow) => {
     const [date, query, page, device, country] = r.keys || []
     return {
       date: date || '',

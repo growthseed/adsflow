@@ -89,9 +89,9 @@ export function MetaSyncButton({ className = '' }: MetaSyncButtonProps) {
         setStep('error')
         setErrorMessage(result.error || 'Erro desconhecido')
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       setStep('error')
-      setErrorMessage(error.message || 'Erro ao sincronizar campanha')
+      setErrorMessage((error instanceof Error ? error.message : null) || 'Erro ao sincronizar campanha')
     }
   }
 
