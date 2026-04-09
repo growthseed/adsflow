@@ -25,26 +25,19 @@ import NotificationPanel from '@/components/UI/NotificationPanel'
 
 // ========== BREADCRUMB MAP ==========
 
+// Only includes routes that actually exist in App.tsx after the v4 cleanup.
+// Legacy entries (/dashboard, /editor, /bi, /campaigns, /funnels, /reports,
+// /conversion-truth, /insights, /goals, /google-ads, /dashboard-builder,
+// /report-builder, /overview) were removed when the pages were deleted.
 const PAGE_TITLES: Record<string, string> = {
-  '/dashboard': 'Dashboard',
-  '/overview': 'Visão Geral',
-  '/editor': 'Flow Editor',
-  '/bi': 'B.I. & Analytics',
-  '/campaigns': 'Campanhas',
-  '/google-ads': 'Google Ads',
-  '/funnels': 'Funis',
-  '/integrations': 'Integrações',
-  '/reports': 'Relatórios',
-  '/report-builder': 'Report Builder',
-  '/dashboard-builder': 'Dashboard Builder',
-  '/conversion-truth': 'Verdade da Conversão',
-  '/insights': 'Insights IA',
-  '/goals': 'Controle de Metas',
   '/clients': 'Clientes',
+  '/playbook': 'Playbook',
+  '/integrations': 'Integrações',
   '/team': 'Equipe',
   '/billing': 'Faturamento',
   '/settings': 'Configurações',
   '/admin': 'Admin Global',
+  '/_v4/operations': 'Operações',
 }
 
 // ========== COMPONENT ==========
