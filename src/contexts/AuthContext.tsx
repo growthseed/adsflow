@@ -151,57 +151,86 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const isSuperAdmin = useMemo(() => profile?.role === 'super_admin', [profile]);
   const isGlobalAdmin = useMemo(() => profile?.role === 'super_admin' || profile?.role === 'admin', [profile]);
 
-  // ---- Fetch profile + clients ----
+  // ---- Fetch profile + clients (PARALLEL with per-query timeout) ----
   const fetchUserData = useCallback(async (userId: string) => {
+    // Wrap any Supabase query in a 5s timeout race so one slow query
+    // doesn't block the entire auth flow.
+    const withTimeout = <T,>(p: PromiseLike<T>, label: string, ms = 5000): Promise<T> =>
+      Promise.race([
+        Promise.resolve(p),
+        new Promise<T>((_, reject) =>
+          setTimeout(() => reject(new Error(`Timeout ${label} (${ms}ms)`)), ms),
+        ),
+      ]);
+
     try {
-      // Fetch profile from public.users
-      const { data: profileData, error: profileError } = await supabase
-        .from('users')
-        .select('id, email, name, avatar_url, phone, role, is_active, last_login_at, created_at')
-        .eq('id', userId)
-        .single();
+      // Run profile + memberships in PARALLEL with independent timeouts
+      const profilePromise = withTimeout(
+        supabase
+          .from('users')
+          .select('id, email, name, avatar_url, phone, role, is_active, last_login_at, created_at')
+          .eq('id', userId)
+          .single(),
+        'fetchProfile',
+      );
 
-      if (profileError) {
-        console.warn('Erro ao carregar perfil:', profileError.message);
-      } else if (profileData) {
-        setProfile(profileData as UserProfile);
+      // Simpler membership query — no nested join, avoids recursive RLS
+      const membershipsPromise = withTimeout(
+        supabase
+          .from('client_members')
+          .select('client_id, role')
+          .eq('user_id', userId),
+        'fetchMemberships',
+      );
+
+      const [profileResult, membershipsResult] = await Promise.allSettled([
+        profilePromise,
+        membershipsPromise,
+      ]);
+
+      if (profileResult.status === 'fulfilled' && !profileResult.value.error && profileResult.value.data) {
+        setProfile(profileResult.value.data as UserProfile);
+      } else if (profileResult.status === 'rejected') {
+        console.warn('Profile fetch failed:', profileResult.reason?.message);
       }
 
-      // Fetch client memberships
-      const { data: memberships, error: membershipsError } = await supabase
-        .from('client_members')
-        .select(`
-          client_id,
-          role,
-          client:clients!client_members_client_id_fkey (
-            id,
-            name,
-            slug,
-            logo_url,
-            status,
-            industry
+      if (membershipsResult.status === 'fulfilled' && !membershipsResult.value.error && membershipsResult.value.data) {
+        // Fetch client details in a second step only if needed (non-blocking)
+        const memberships = membershipsResult.value.data
+        if (memberships.length > 0) {
+          const clientIds = memberships.map((m: { client_id: string }) => m.client_id)
+          const clientsResult = await withTimeout(
+            supabase
+              .from('clients')
+              .select('id, name, slug, logo_url, status, industry')
+              .in('id', clientIds),
+            'fetchClients',
           )
-        `)
-        .eq('user_id', userId);
 
-      if (membershipsError) {
-        console.warn('Erro ao carregar clientes:', membershipsError.message);
-      } else if (memberships) {
-        const mapped: ClientMembership[] = memberships
-          .filter((m: any) => m.client)
-          .map((m: any) => ({
-            client_id: m.client_id,
-            role: m.role as ClientRole,
-            client: Array.isArray(m.client) ? m.client[0] : m.client,
-          }));
-        setClients(mapped);
+          if (!clientsResult.error && clientsResult.data) {
+            const clientMap = new Map(clientsResult.data.map((c: { id: string }) => [c.id, c]))
+            const mapped: ClientMembership[] = memberships
+              .filter((m: { client_id: string }) => clientMap.has(m.client_id))
+              .map((m: { client_id: string; role: ClientRole }) => ({
+                client_id: m.client_id,
+                role: m.role as ClientRole,
+                client: clientMap.get(m.client_id) as ClientMembership['client'],
+              }))
+            setClients(mapped)
+          }
+        } else {
+          setClients([])
+        }
+      } else if (membershipsResult.status === 'rejected') {
+        console.warn('Memberships fetch failed:', membershipsResult.reason?.message);
       }
 
-      // Update last_login_at
-      await supabase
+      // Fire-and-forget: don't block auth on a write operation
+      supabase
         .from('users')
         .update({ last_login_at: new Date().toISOString() })
-        .eq('id', userId);
+        .eq('id', userId)
+        .then(() => {});
     } catch (err) {
       console.warn('Erro ao carregar dados do usuario:', err);
     }
@@ -217,20 +246,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     let mounted = true;
+    let initDone = false;
 
-    // Safety timeout: force loading=false after 5s to prevent infinite spinner
+    // Safety timeout: 20s (each query has its own 5s timeout via withTimeout,
+    // so reaching 20s here means multiple queries + session recovery all stalled)
     const timeout = setTimeout(() => {
-      if (mounted) {
-        console.warn('⚠️ Auth timeout (5s). Forçando loading=false.');
+      if (mounted && !initDone) {
+        console.warn('⚠️ Auth timeout (20s). Forçando loading=false — sessão ainda pode resolver em background.');
         setLoading(false);
       }
-    }, 5000);
+    }, 20000);
 
     const initSession = async () => {
       try {
-        console.log('🔐 [Auth] Iniciando getSession...');
         const { data: { session } } = await supabase.auth.getSession();
-        console.log('🔐 [Auth] getSession OK, user:', session?.user?.email ?? 'nenhum');
         if (!mounted) return;
 
         const currentUser = session?.user ?? null;
@@ -242,6 +271,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       } catch (error) {
         console.warn('Erro ao verificar sessao:', error);
       } finally {
+        initDone = true;
         clearTimeout(timeout);
         if (mounted) setLoading(false);
       }
@@ -254,6 +284,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       const currentUser = session?.user ?? null;
       setSupabaseUser(currentUser);
+
+      // Skip if initSession already handled this (dedup INITIAL_SESSION)
+      if (!initDone && _event === 'INITIAL_SESSION') return;
 
       if (currentUser) {
         await fetchUserData(currentUser.id);

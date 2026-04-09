@@ -15,6 +15,13 @@ import type { DatePreset } from './reports';
 export type DataSourceType =
   | 'meta_ads'
   | 'google_ads'
+  | 'ga4'
+  | 'search_console'
+  | 'youtube'
+  | 'gmb'
+  | 'kommo'
+  | 'linkedin'
+  | 'clickup'
   | 'bi_leads'
   | 'bi_vendedores'
   | 'bi_oportunidades'
@@ -30,7 +37,7 @@ export interface DataSourceConfig {
     preset: DatePreset;
     customRange?: { startDate: string; endDate: string };
   } | null;
-  groupBy?: 'day' | 'week' | 'month' | 'campaign' | 'adset' | 'ad' | 'vendedor' | 'fonte' | 'status_funil' | 'product' | 'estado' | 'cupom' | 'motivo_perda' | 'cohort' | 'creative';
+  groupBy?: 'day' | 'week' | 'month' | 'campaign' | 'adset' | 'ad' | 'vendedor' | 'fonte' | 'status_funil' | 'product' | 'estado' | 'cupom' | 'motivo_perda' | 'cohort' | 'creative' | 'assignee' | 'priority' | 'status' | 'space' | 'goal' | 'query' | 'video' | 'platform' | 'reviewer' | 'action' | 'post' | 'location';
 }
 
 // =====================================================
@@ -272,7 +279,7 @@ export interface DashboardTemplate {
   name: string;
   description: string;
   icon: string;
-  category: 'meta_ads' | 'google_ads' | 'crm' | 'ecommerce';
+  category: 'meta_ads' | 'google_ads' | 'ga4' | 'search_console' | 'youtube' | 'gmb' | 'kommo' | 'linkedin' | 'crm' | 'ecommerce' | 'clickup' | 'project_report';
   widgets: Array<Omit<DashboardWidget, 'id' | 'dashboard_id' | 'created_at'>>;
   theme: DashboardTheme;
   defaultFilters: DashboardGlobalFilters;

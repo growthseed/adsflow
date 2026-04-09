@@ -1,0 +1,247 @@
+/**
+ * ============================================
+ * DESIGN TOKENS — AdFlow v4
+ * ============================================
+ * Single source of truth for colors, spacing, typography, shadows,
+ * border-radius, and motion. All components should consume tokens
+ * via CSS variables or Tailwind classes that reference them.
+ *
+ * IMPORTANT: never hardcode colors/sizes in components. Always use
+ * tokens so dark mode + white-label tenants work out of the box.
+ * ============================================
+ */
+
+:root {
+  /* ==========================================================
+   * COLORS — Neutral scale (grayscale)
+   * ========================================================== */
+  --color-neutral-0:   #ffffff;
+  --color-neutral-50:  #fafafa;
+  --color-neutral-100: #f4f4f5;
+  --color-neutral-200: #e4e4e7;
+  --color-neutral-300: #d4d4d8;
+  --color-neutral-400: #a1a1aa;
+  --color-neutral-500: #71717a;
+  --color-neutral-600: #52525b;
+  --color-neutral-700: #3f3f46;
+  --color-neutral-800: #27272a;
+  --color-neutral-900: #18181b;
+  --color-neutral-950: #09090b;
+
+  /* ==========================================================
+   * COLORS — Brand (Efeito Digital / AdFlow)
+   * ========================================================== */
+  --color-brand-50:  #eff6ff;
+  --color-brand-100: #dbeafe;
+  --color-brand-200: #bfdbfe;
+  --color-brand-300: #93c5fd;
+  --color-brand-400: #60a5fa;
+  --color-brand-500: #3b82f6;
+  --color-brand-600: #2563eb;  /* primary action */
+  --color-brand-700: #1d4ed8;  /* primary hover */
+  --color-brand-800: #1e40af;
+  --color-brand-900: #1e3a8a;
+
+  /* ==========================================================
+   * COLORS — Semantic (success / warning / error / info)
+   * ========================================================== */
+  --color-success-50:  #f0fdf4;
+  --color-success-100: #dcfce7;
+  --color-success-500: #22c55e;
+  --color-success-600: #16a34a;
+  --color-success-700: #15803d;
+
+  --color-warning-50:  #fffbeb;
+  --color-warning-100: #fef3c7;
+  --color-warning-500: #f59e0b;
+  --color-warning-600: #d97706;
+  --color-warning-700: #b45309;
+
+  --color-error-50:  #fef2f2;
+  --color-error-100: #fee2e2;
+  --color-error-500: #ef4444;
+  --color-error-600: #dc2626;
+  --color-error-700: #b91c1c;
+
+  --color-info-50:  #eff6ff;
+  --color-info-100: #dbeafe;
+  --color-info-500: #3b82f6;
+  --color-info-600: #2563eb;
+  --color-info-700: #1d4ed8;
+
+  /* ==========================================================
+   * COLORS — KPI delta (positive / negative / neutral)
+   * Used by <KPICard> and chart trend indicators
+   * ========================================================== */
+  --color-delta-positive: var(--color-success-600);
+  --color-delta-negative: var(--color-error-600);
+  --color-delta-neutral:  var(--color-neutral-500);
+
+  /* ==========================================================
+   * SURFACES (backgrounds in layers)
+   * ========================================================== */
+  --surface-page:      var(--color-neutral-50);
+  --surface-card:      var(--color-neutral-0);
+  --surface-raised:    var(--color-neutral-0);
+  --surface-sunken:    var(--color-neutral-100);
+  --surface-overlay:   rgba(9, 9, 11, 0.5); /* modal backdrop */
+
+  /* ==========================================================
+   * TEXT colors (semantic, not raw)
+   * ========================================================== */
+  --text-primary:      var(--color-neutral-900);
+  --text-secondary:    var(--color-neutral-600);
+  --text-tertiary:     var(--color-neutral-500);
+  --text-disabled:     var(--color-neutral-400);
+  --text-inverse:      var(--color-neutral-0);
+  --text-on-brand:     var(--color-neutral-0);
+
+  /* ==========================================================
+   * BORDERS
+   * ========================================================== */
+  --border-subtle:  var(--color-neutral-200);
+  --border-default: var(--color-neutral-300);
+  --border-strong:  var(--color-neutral-400);
+  --border-brand:   var(--color-brand-600);
+
+  /* ==========================================================
+   * SPACING (4px grid — ALL spacing must be a multiple of 4)
+   * ========================================================== */
+  --space-0:   0;
+  --space-1:   0.25rem;  /*  4px */
+  --space-2:   0.5rem;   /*  8px */
+  --space-3:   0.75rem;  /* 12px */
+  --space-4:   1rem;     /* 16px */
+  --space-5:   1.25rem;  /* 20px */
+  --space-6:   1.5rem;   /* 24px */
+  --space-8:   2rem;     /* 32px */
+  --space-10:  2.5rem;   /* 40px */
+  --space-12:  3rem;     /* 48px */
+  --space-16:  4rem;     /* 64px */
+  --space-20:  5rem;     /* 80px */
+  --space-24:  6rem;     /* 96px */
+
+  /* ==========================================================
+   * TYPOGRAPHY — font families
+   * ========================================================== */
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system,
+               BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo,
+               Monaco, Consolas, 'Liberation Mono', monospace;
+
+  /* ==========================================================
+   * TYPOGRAPHY — size scale (modular, ratio 1.200)
+   * ========================================================== */
+  --text-2xs: 0.6875rem;  /* 11px — tiny meta, labels minúsculos */
+  --text-xs:  0.75rem;    /* 12px — captions, meta */
+  --text-sm:  0.875rem;   /* 14px — body small, table rows */
+  --text-base: 1rem;      /* 16px — body default */
+  --text-lg:  1.125rem;   /* 18px — body large, subtitles */
+  --text-xl:  1.25rem;    /* 20px — H4 */
+  --text-2xl: 1.5rem;     /* 24px — H3 */
+  --text-3xl: 1.875rem;   /* 30px — H2 */
+  --text-4xl: 2.25rem;    /* 36px — H1 / KPI medium */
+  --text-5xl: 3rem;       /* 48px — KPI big / hero */
+
+  /* ==========================================================
+   * TYPOGRAPHY — weights
+   * ========================================================== */
+  --font-weight-normal:   400;
+  --font-weight-medium:   500;
+  --font-weight-semibold: 600;
+  --font-weight-bold:     700;
+
+  /* ==========================================================
+   * LINE HEIGHT
+   * ========================================================== */
+  --leading-tight:  1.2;
+  --leading-snug:   1.35;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.625;
+
+  /* ==========================================================
+   * BORDER RADIUS
+   * ========================================================== */
+  --radius-none: 0;
+  --radius-sm:   0.25rem;  /*  4px */
+  --radius-md:   0.375rem; /*  6px */
+  --radius-lg:   0.5rem;   /*  8px — cards padrão */
+  --radius-xl:   0.75rem;  /* 12px — cards destacados */
+  --radius-2xl:  1rem;     /* 16px — modais, containers */
+  --radius-full: 9999px;   /* pills, avatars */
+
+  /* ==========================================================
+   * SHADOWS (elevation system)
+   * ========================================================== */
+  --shadow-none: none;
+  --shadow-xs:   0 1px 2px 0 rgba(9, 9, 11, 0.05);
+  --shadow-sm:   0 1px 3px 0 rgba(9, 9, 11, 0.08), 0 1px 2px -1px rgba(9, 9, 11, 0.06);
+  --shadow-md:   0 4px 6px -1px rgba(9, 9, 11, 0.08), 0 2px 4px -2px rgba(9, 9, 11, 0.06);
+  --shadow-lg:   0 10px 15px -3px rgba(9, 9, 11, 0.08), 0 4px 6px -4px rgba(9, 9, 11, 0.05);
+  --shadow-xl:   0 20px 25px -5px rgba(9, 9, 11, 0.1), 0 8px 10px -6px rgba(9, 9, 11, 0.06);
+  --shadow-2xl:  0 25px 50px -12px rgba(9, 9, 11, 0.25);
+
+  /* ==========================================================
+   * MOTION (durations + easings)
+   * ========================================================== */
+  --duration-instant: 0ms;
+  --duration-fast:    150ms;
+  --duration-normal:  250ms;
+  --duration-slow:    400ms;
+
+  --ease-linear:    linear;
+  --ease-in:        cubic-bezier(0.4, 0, 1, 1);
+  --ease-out:       cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out:    cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* ==========================================================
+   * LAYOUT
+   * ========================================================== */
+  --layout-max-width:    1440px;
+  --layout-sidebar-w:    256px;
+  --layout-header-h:     64px;
+  --layout-mobile-nav-h: 64px;
+
+  /* ==========================================================
+   * BREAKPOINTS (for reference — Tailwind uses these)
+   * ========================================================== */
+  /* sm:  640px
+   * md:  768px
+   * lg:  1024px  ← desktop ↔ mobile cutoff
+   * xl:  1280px
+   * 2xl: 1536px
+   */
+
+  /* ==========================================================
+   * Z-INDEX scale
+   * ========================================================== */
+  --z-base:      0;
+  --z-dropdown:  10;
+  --z-sticky:    20;
+  --z-fixed:     30;
+  --z-modal-bg:  40;
+  --z-modal:     50;
+  --z-popover:   60;
+  --z-tooltip:   70;
+  --z-toast:     80;
+}
+
+/* ==========================================================
+ * DARK MODE (ready mas não ativado por default)
+ * Apply via `<html class="dark">` when implementing
+ * ========================================================== */
+.dark {
+  --surface-page:    var(--color-neutral-950);
+  --surface-card:    var(--color-neutral-900);
+  --surface-raised:  var(--color-neutral-800);
+  --surface-sunken:  var(--color-neutral-900);
+
+  --text-primary:    var(--color-neutral-50);
+  --text-secondary:  var(--color-neutral-400);
+  --text-tertiary:   var(--color-neutral-500);
+  --text-disabled:   var(--color-neutral-600);
+
+  --border-subtle:   var(--color-neutral-800);
+  --border-default:  var(--color-neutral-700);
+  --border-strong:   var(--color-neutral-600);
+}

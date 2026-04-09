@@ -20,6 +20,13 @@ if (!supabaseUrl || !supabaseAnonKey) {
 }
 
 // Cliente Supabase - cria mesmo sem credenciais (vai falhar nas chamadas, mas não quebra a app)
+//
+// IMPORTANT: detectSessionInUrl is DISABLED on purpose.
+// We use Google OAuth (not Supabase OAuth providers) for third-party integrations.
+// When the Google OAuth callback URL arrives with `?code=...`, Supabase would
+// otherwise try to treat that code as its own PKCE code and hang trying to
+// exchange it with the wrong endpoint. Disabling this is safe because AdFlow
+// authenticates users via email/password — Supabase OAuth is not used.
 export const supabase = createClient(
   supabaseUrl || 'https://placeholder.supabase.co',
   supabaseAnonKey || 'placeholder-key',
@@ -27,7 +34,7 @@ export const supabase = createClient(
     auth: {
       autoRefreshToken: true,
       persistSession: true,
-      detectSessionInUrl: true,
+      detectSessionInUrl: false,
       storage: typeof window !== 'undefined' ? window.localStorage : undefined,
       storageKey: 'adsflow-auth'
     }

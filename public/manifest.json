@@ -1,16 +1,41 @@
 {
-  "name": "Ads Flow",
+  "name": "AdsFlow — Efeito Digital",
   "short_name": "AdsFlow",
   "description": "Plataforma de Marketing e Vendas — Efeito Digital",
-  "start_url": "/dashboard",
+  "start_url": "/_v4/operations",
+  "scope": "/",
   "display": "standalone",
+  "orientation": "portrait-primary",
   "background_color": "#f8fafc",
   "theme_color": "#1e40af",
+  "lang": "pt-BR",
+  "categories": ["business", "productivity"],
   "icons": [
     {
       "src": "/favicon.svg",
       "sizes": "any",
-      "type": "image/svg+xml"
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Visão Geral",
+      "short_name": "Visão",
+      "description": "Dashboard da agência",
+      "url": "/_v4/operations"
+    },
+    {
+      "name": "Playbook",
+      "short_name": "Playbook",
+      "description": "Ads Playbook Efeito Digital",
+      "url": "/playbook"
     }
   ]
 }

@@ -513,6 +513,309 @@ const ECOMMERCE_FATURAMENTO: DashboardTemplate = {
 };
 
 // =====================================================
+// 7. PROJECT REPORT — ClickUp + Ads (Cross-Platform)
+// =====================================================
+
+const PROJECT_REPORT: DashboardTemplate = {
+  id: 'project_report',
+  name: 'Project Report — Gestão + Performance',
+  description: 'Visão unificada: tarefas ClickUp, Ads (Meta+Google), tempo, velocidade e ROI',
+  icon: 'FolderKanban',
+  category: 'project_report',
+  theme: { colorScheme: 'light', accentColor: '#7C3AED', cardRadius: 'lg', cardShadow: 'sm' },
+  defaultFilters: { datePreset: 'last_30d' },
+  widgets: [
+    // Row 1: Project KPIs (ClickUp)
+    kpi('Tarefas Total', 0, 0, 2, 'total_tasks', 'number', 'purple', 'clickup'),
+    kpi('Concluídas', 2, 0, 2, 'completed_tasks', 'number', 'green', 'clickup'),
+    kpi('Em Progresso', 4, 0, 2, 'in_progress_tasks', 'number', 'blue', 'clickup'),
+    kpi('Atrasadas', 6, 0, 2, 'overdue_tasks', 'number', 'red', 'clickup'),
+    kpi('Taxa Conclusão', 8, 0, 2, 'completion_rate', 'percentage', 'indigo', 'clickup'),
+    kpi('Ciclo Médio (dias)', 10, 0, 2, 'avg_cycle_time', 'number', 'yellow', 'clickup'),
+
+    // Row 2: Ads KPIs (Cross-platform)
+    kpi('Investimento Ads', 0, 2, 3, 'spend', 'currency', 'blue'),
+    kpi('Leads', 3, 2, 3, 'leads', 'number', 'green'),
+    kpi('ROAS', 6, 2, 3, 'roas', 'number', 'purple'),
+    kpi('CPL', 9, 2, 3, 'cost_per_lead', 'currency', 'red'),
+
+    // Row 3: Velocity chart (ClickUp) + Spend over time (Ads)
+    w('area_chart', 'Velocidade do Projeto (semanal)', { x: 0, y: 4, w: 6, h: 4, minW: 4, minH: 3 },
+      { type: 'clickup', metrics: ['criadas', 'concluidas'], groupBy: 'week' },
+      { type: 'area_chart', chart: { chartType: 'area', xAxis: 'date', yAxis: ['criadas', 'concluidas'], colors: ['#8b5cf6', '#10b981'], showGrid: true, showLegend: true, curveType: 'monotone' } }),
+
+    w('line_chart', 'Investimento & Leads por Dia', { x: 6, y: 4, w: 6, h: 4, minW: 4, minH: 3 },
+      { type: 'meta_ads', metrics: ['spend', 'leads'], groupBy: 'day' },
+      { type: 'line_chart', chart: { chartType: 'line', xAxis: 'date', yAxis: ['spend', 'leads'], colors: ['#3b82f6', '#10b981'], showGrid: true, showLegend: true, curveType: 'monotone' } }),
+
+    // Row 4: Tasks by Status (pie) + Tasks by Assignee (bar) + Tasks by Priority (donut)
+    w('donut_chart', 'Tarefas por Status', { x: 0, y: 8, w: 4, h: 4, minW: 3, minH: 3 },
+      { type: 'clickup', metrics: ['count'], groupBy: 'status' },
+      { type: 'donut_chart', chart: { chartType: 'donut', showLegend: true, colors: ['#10b981', '#3b82f6', '#f59e0b', '#8b5cf6', '#ef4444', '#6b7280'] } }),
+
+    w('bar_chart', 'Tarefas por Responsável', { x: 4, y: 8, w: 4, h: 4, minW: 3, minH: 3 },
+      { type: 'clickup', metrics: ['total', 'completed'], groupBy: 'assignee' },
+      { type: 'bar_chart', chart: { chartType: 'bar', xAxis: 'assignee', yAxis: ['total', 'completed'], colors: ['#8b5cf6', '#10b981'], stacked: false, showGrid: true, showLegend: true } }),
+
+    w('pie_chart', 'Prioridade das Tarefas', { x: 8, y: 8, w: 4, h: 4, minW: 3, minH: 3 },
+      { type: 'clickup', metrics: ['count'], groupBy: 'priority' },
+      { type: 'pie_chart', chart: { chartType: 'pie', showLegend: true, colors: ['#ef4444', '#f59e0b', '#3b82f6', '#6b7280'] } }),
+
+    // Row 5: Top Campaigns table + Overdue tasks table
+    w('table', 'Top Campanhas por Investimento', { x: 0, y: 12, w: 6, h: 5, minW: 4, minH: 3 },
+      { type: 'meta_ads', metrics: ['campaign_name', 'spend', 'leads', 'ctr', 'roas'], groupBy: 'campaign' },
+      { type: 'table', table: {
+        columns: [
+          { key: 'campaign_name', label: 'Campanha', sortable: true },
+          { key: 'spend', label: 'Investimento', format: 'currency', sortable: true },
+          { key: 'leads', label: 'Leads', format: 'number', sortable: true },
+          { key: 'ctr', label: 'CTR', format: 'percentage', sortable: true },
+          { key: 'roas', label: 'ROAS', format: 'number', sortable: true },
+        ],
+        pageSize: 10, sortBy: 'spend', sortDirection: 'desc',
+      } }),
+
+    w('table', 'Tarefas Atrasadas', { x: 6, y: 12, w: 6, h: 5, minW: 4, minH: 3 },
+      { type: 'clickup', metrics: ['name', 'assignee', 'due_date', 'days_overdue'], groupBy: 'status' },
+      { type: 'table', table: {
+        columns: [
+          { key: 'name', label: 'Tarefa', sortable: true },
+          { key: 'assignee', label: 'Responsável', sortable: true },
+          { key: 'due_date', label: 'Prazo', sortable: true },
+          { key: 'days_overdue', label: 'Dias Atraso', format: 'number', sortable: true },
+        ],
+        pageSize: 10, sortBy: 'days_overdue', sortDirection: 'desc',
+      } }),
+
+    // Row 6: Funnel + Goals + Comparativo
+    w('funnel_chart', 'Funil de Tarefas', { x: 0, y: 17, w: 4, h: 4, minW: 3, minH: 3 },
+      { type: 'clickup', metrics: ['value'], groupBy: 'status' },
+      { type: 'funnel_chart', chart: { chartType: 'funnel', colors: ['#8b5cf6', '#3b82f6', '#10b981'], showLegend: true } }),
+
+    w('bar_chart', 'Metas (ClickUp Goals)', { x: 4, y: 17, w: 4, h: 4, minW: 3, minH: 3 },
+      { type: 'clickup', metrics: ['percent_completed'], groupBy: 'goal' },
+      { type: 'bar_chart', chart: { chartType: 'horizontal_bar', xAxis: 'name', yAxis: ['percent_completed'], colors: ['#7C3AED'], showGrid: true } }),
+
+    w('comparison', 'Comparativo — Período Anterior', { x: 8, y: 17, w: 4, h: 4, minW: 4, minH: 3 },
+      { type: 'meta_ads', metrics: ['spend', 'leads', 'roas', 'ctr'], groupBy: 'day' },
+      { type: 'comparison', comparison: { metrics: ['spend', 'leads', 'roas', 'ctr'], period1: { preset: 'this_month', label: 'Este mês' }, period2: { preset: 'last_month', label: 'Mês passado' }, displayMode: 'side_by_side' } }),
+  ],
+};
+
+// =====================================================
+// 8. SEO REPORT — SEARCH CONSOLE + GA4
+// =====================================================
+
+const SEO_REPORT: DashboardTemplate = {
+  id: 'seo_report',
+  name: 'SEO Report — Search Console + GA4',
+  description: 'Queries, páginas, posição, tráfego orgânico, CTR, impressões',
+  icon: 'Search',
+  category: 'search_console',
+  theme: { colorScheme: 'light', accentColor: '#34A853', cardRadius: 'lg', cardShadow: 'sm' },
+  defaultFilters: { datePreset: 'last_30d', platforms: ['search_console', 'ga4'] },
+  widgets: [
+    // Row 1: 6 KPIs
+    kpi('Clicks', 0, 0, 2, 'clicks', 'number', 'green', 'search_console'),
+    kpi('Impressions', 2, 0, 2, 'impressions', 'number', 'blue', 'search_console'),
+    kpi('CTR', 4, 0, 2, 'ctr', 'percentage', 'purple', 'search_console'),
+    kpi('Avg Position', 6, 0, 2, 'position', 'number', 'yellow', 'search_console'),
+    kpi('Sessions', 8, 0, 2, 'sessions', 'number', 'indigo', 'ga4'),
+    kpi('Pageviews', 10, 0, 2, 'pageviews', 'number', 'red', 'ga4'),
+
+    // Row 2: Daily clicks + impressions
+    w('line_chart', 'Clicks & Impressões por Dia', { x: 0, y: 2, w: 8, h: 4, minW: 4, minH: 3 },
+      { type: 'search_console', metrics: ['clicks', 'impressions'], groupBy: 'day' },
+      { type: 'line_chart', chart: { chartType: 'line', xAxis: 'date', yAxis: ['clicks', 'impressions'], colors: ['#34A853', '#4285F4'], showGrid: true, showLegend: true, curveType: 'monotone' } }),
+
+    // Row 2b: Top queries by clicks
+    w('bar_chart', 'Top Queries por Clicks', { x: 8, y: 2, w: 4, h: 4, minW: 3, minH: 3 },
+      { type: 'search_console', metrics: ['clicks'], groupBy: 'query' },
+      { type: 'bar_chart', chart: { chartType: 'horizontal_bar', xAxis: 'query', yAxis: ['clicks'], colors: ['#34A853'], showGrid: true } }),
+
+    // Row 3: GA4 daily sessions + users
+    w('area_chart', 'Sessões & Usuários (GA4)', { x: 0, y: 6, w: 8, h: 4, minW: 4, minH: 3 },
+      { type: 'ga4', metrics: ['sessions', 'users'], groupBy: 'day' },
+      { type: 'area_chart', chart: { chartType: 'area', xAxis: 'date', yAxis: ['sessions', 'users'], colors: ['#4285F4', '#FBBC05'], showGrid: true, showLegend: true, curveType: 'monotone' } }),
+
+    // Row 3b: Traffic by source
+    w('pie_chart', 'Tráfego por Fonte', { x: 8, y: 6, w: 4, h: 4, minW: 3, minH: 3 },
+      { type: 'ga4', metrics: ['sessions'], groupBy: 'fonte' },
+      { type: 'pie_chart', chart: { chartType: 'pie', showLegend: true, showLabels: false, colors: ['#34A853', '#4285F4', '#EA4335', '#FBBC05', '#8b5cf6'] } }),
+
+    // Row 4: Top queries table
+    w('table', 'Top Queries', { x: 0, y: 10, w: 12, h: 5, minW: 6, minH: 3 },
+      { type: 'search_console', metrics: ['query', 'clicks', 'impressions', 'ctr', 'position'], groupBy: 'query' },
+      { type: 'table', table: {
+        columns: [
+          { key: 'query', label: 'Query', sortable: true },
+          { key: 'clicks', label: 'Clicks', format: 'number', sortable: true },
+          { key: 'impressions', label: 'Impressões', format: 'number', sortable: true },
+          { key: 'ctr', label: 'CTR', format: 'percentage', sortable: true },
+          { key: 'position', label: 'Posição', format: 'number', sortable: true },
+        ],
+        pageSize: 10, sortBy: 'clicks', sortDirection: 'desc',
+      } }),
+  ],
+};
+
+// =====================================================
+// 9. SOCIAL MEDIA — YOUTUBE + LINKEDIN + META
+// =====================================================
+
+const SOCIAL_MEDIA_REPORT: DashboardTemplate = {
+  id: 'social_media_report',
+  name: 'Social Media — YouTube + LinkedIn + Meta',
+  description: 'Visualizações, seguidores, engajamento, top conteúdos',
+  icon: 'Share2',
+  category: 'youtube',
+  theme: { colorScheme: 'light', accentColor: '#FF0000', cardRadius: 'lg', cardShadow: 'sm' },
+  defaultFilters: { datePreset: 'last_30d', platforms: ['youtube', 'linkedin', 'meta_ads'] },
+  widgets: [
+    // Row 1: 6 KPIs
+    kpi('Views', 0, 0, 2, 'views', 'number', 'red', 'youtube'),
+    kpi('Subscribers', 2, 0, 2, 'subscribers', 'number', 'red', 'youtube'),
+    kpi('Followers', 4, 0, 2, 'followers', 'number', 'blue', 'linkedin'),
+    kpi('Engagement Rate', 6, 0, 2, 'engagement_rate', 'percentage', 'blue', 'linkedin'),
+    kpi('Impressions', 8, 0, 2, 'impressions', 'number', 'indigo', 'meta_ads'),
+    kpi('Reach', 10, 0, 2, 'reach', 'number', 'purple', 'meta_ads'),
+
+    // Row 2: YouTube views per day
+    w('area_chart', 'YouTube Views por Dia', { x: 0, y: 2, w: 8, h: 4, minW: 4, minH: 3 },
+      { type: 'youtube', metrics: ['views'], groupBy: 'day' },
+      { type: 'area_chart', chart: { chartType: 'area', xAxis: 'date', yAxis: ['views'], colors: ['#FF0000'], showGrid: true, showLegend: true, curveType: 'monotone' } }),
+
+    // Row 2b: LinkedIn impressions + clicks
+    w('line_chart', 'LinkedIn Impressões & Cliques', { x: 8, y: 2, w: 4, h: 4, minW: 3, minH: 3 },
+      { type: 'linkedin', metrics: ['impressions', 'clicks'], groupBy: 'day' },
+      { type: 'line_chart', chart: { chartType: 'line', xAxis: 'date', yAxis: ['impressions', 'clicks'], colors: ['#0A66C2', '#10b981'], showGrid: true, showLegend: true, curveType: 'monotone' } }),
+
+    // Row 3: Top videos bar chart
+    w('bar_chart', 'Top Vídeos', { x: 0, y: 6, w: 6, h: 4, minW: 4, minH: 3 },
+      { type: 'youtube', metrics: ['views'], groupBy: 'video' },
+      { type: 'bar_chart', chart: { chartType: 'horizontal_bar', xAxis: 'title', yAxis: ['views'], colors: ['#FF0000'], showGrid: true } }),
+
+    // Row 3b: Engagement by platform donut
+    w('donut_chart', 'Engajamento por Plataforma', { x: 6, y: 6, w: 6, h: 4, minW: 3, minH: 3 },
+      { type: 'meta_ads', metrics: ['engagement'], groupBy: 'platform' },
+      { type: 'donut_chart', chart: { chartType: 'donut', showLegend: true, colors: ['#FF0000', '#0A66C2', '#1877F2'] } }),
+
+    // Row 4: YouTube top videos table
+    w('table', 'YouTube — Top Vídeos', { x: 0, y: 10, w: 12, h: 5, minW: 6, minH: 3 },
+      { type: 'youtube', metrics: ['title', 'views', 'likes', 'comments'], groupBy: 'video' },
+      { type: 'table', table: {
+        columns: [
+          { key: 'title', label: 'Título', sortable: true },
+          { key: 'views', label: 'Views', format: 'number', sortable: true },
+          { key: 'likes', label: 'Likes', format: 'number', sortable: true },
+          { key: 'comments', label: 'Comentários', format: 'number', sortable: true },
+        ],
+        pageSize: 10, sortBy: 'views', sortDirection: 'desc',
+      } }),
+  ],
+};
+
+// =====================================================
+// 10. CRM PIPELINE — KOMMO
+// =====================================================
+
+const CRM_PIPELINE_KOMMO: DashboardTemplate = {
+  id: 'crm_pipeline_kommo',
+  name: 'CRM Pipeline — Kommo',
+  description: 'Funil de vendas, leads, conversão, ciclo, responsáveis',
+  icon: 'Users',
+  category: 'kommo',
+  theme: { colorScheme: 'light', accentColor: '#4C75A3', cardRadius: 'lg', cardShadow: 'sm' },
+  defaultFilters: { datePreset: 'last_30d', platforms: ['kommo'] },
+  widgets: [
+    // Row 1: 6 KPIs
+    kpi('Total Leads', 0, 0, 2, 'total_leads', 'number', 'blue', 'kommo'),
+    kpi('Leads Won', 2, 0, 2, 'leads_won', 'number', 'green', 'kommo'),
+    kpi('Conversão', 4, 0, 2, 'conversion_rate', 'percentage', 'purple', 'kommo'),
+    kpi('Valor Pipeline', 6, 0, 2, 'pipeline_value', 'currency', 'indigo', 'kommo'),
+    kpi('Ciclo Médio', 8, 0, 2, 'avg_deal_cycle', 'number', 'yellow', 'kommo'),
+    kpi('Ticket Médio', 10, 0, 2, 'avg_deal_value', 'currency', 'red', 'kommo'),
+
+    // Row 2: Funnel by status
+    w('funnel_chart', 'Funil de Leads por Status', { x: 0, y: 2, w: 6, h: 4, minW: 4, minH: 3 },
+      { type: 'kommo', metrics: ['value'], groupBy: 'status_funil' },
+      { type: 'funnel_chart', chart: { chartType: 'funnel', colors: ['#4C75A3', '#3b82f6', '#60a5fa', '#10b981', '#f59e0b'], showLegend: true } }),
+
+    // Row 2b: Top sellers
+    w('bar_chart', 'Top Vendedores', { x: 6, y: 2, w: 6, h: 4, minW: 4, minH: 3 },
+      { type: 'kommo', metrics: ['leads_won', 'pipeline_value'], groupBy: 'vendedor' },
+      { type: 'bar_chart', chart: { chartType: 'bar', xAxis: 'vendedor', yAxis: ['leads_won'], colors: ['#4C75A3'], showGrid: true, showLegend: true } }),
+
+    // Row 3: Daily leads
+    w('area_chart', 'Leads por Dia', { x: 0, y: 6, w: 8, h: 4, minW: 4, minH: 3 },
+      { type: 'kommo', metrics: ['total_leads', 'leads_won'], groupBy: 'day' },
+      { type: 'area_chart', chart: { chartType: 'area', xAxis: 'date', yAxis: ['total_leads', 'leads_won'], colors: ['#4C75A3', '#10b981'], showGrid: true, showLegend: true, curveType: 'monotone' } }),
+
+    // Row 3b: Leads by source
+    w('pie_chart', 'Leads por Fonte', { x: 8, y: 6, w: 4, h: 4, minW: 3, minH: 3 },
+      { type: 'kommo', metrics: ['total_leads'], groupBy: 'fonte' },
+      { type: 'pie_chart', chart: { chartType: 'pie', showLegend: true, showLabels: false, colors: ['#4C75A3', '#3b82f6', '#10b981', '#f59e0b', '#ef4444'] } }),
+
+    // Row 4: Leads by status table
+    w('table', 'Leads por Status', { x: 0, y: 10, w: 12, h: 5, minW: 6, minH: 3 },
+      { type: 'kommo', metrics: ['status', 'count', 'value'], groupBy: 'status_funil' },
+      { type: 'table', table: {
+        columns: [
+          { key: 'status', label: 'Status', sortable: true },
+          { key: 'count', label: 'Quantidade', format: 'number', sortable: true },
+          { key: 'value', label: 'Valor', format: 'currency', sortable: true },
+        ],
+        pageSize: 10, sortBy: 'count', sortDirection: 'desc',
+      } }),
+  ],
+};
+
+// =====================================================
+// 11. LOCAL BUSINESS — GOOGLE MEU NEGÓCIO
+// =====================================================
+
+const LOCAL_BUSINESS_GMB: DashboardTemplate = {
+  id: 'local_business_gmb',
+  name: 'Negócio Local — Google Meu Negócio',
+  description: 'Reviews, rating, buscas, visualizações, chamadas, rotas',
+  icon: 'MapPin',
+  category: 'gmb',
+  theme: { colorScheme: 'light', accentColor: '#4285F4', cardRadius: 'lg', cardShadow: 'sm' },
+  defaultFilters: { datePreset: 'last_30d', platforms: ['gmb'] },
+  widgets: [
+    // Row 1: 6 KPIs
+    kpi('Total Reviews', 0, 0, 2, 'total_reviews', 'number', 'blue', 'gmb'),
+    kpi('Avg Rating', 2, 0, 2, 'avg_rating', 'number', 'yellow', 'gmb'),
+    kpi('Search Views', 4, 0, 2, 'search_views', 'number', 'green', 'gmb'),
+    kpi('Map Views', 6, 0, 2, 'map_views', 'number', 'indigo', 'gmb'),
+    kpi('Website Clicks', 8, 0, 2, 'website_clicks', 'number', 'purple', 'gmb'),
+    kpi('Phone Calls', 10, 0, 2, 'phone_calls', 'number', 'red', 'gmb'),
+
+    // Row 2: Daily search + map views
+    w('area_chart', 'Visualizações — Busca & Mapa', { x: 0, y: 2, w: 8, h: 4, minW: 4, minH: 3 },
+      { type: 'gmb', metrics: ['search_views', 'map_views'], groupBy: 'day' },
+      { type: 'area_chart', chart: { chartType: 'area', xAxis: 'date', yAxis: ['search_views', 'map_views'], colors: ['#4285F4', '#34A853'], showGrid: true, showLegend: true, curveType: 'monotone' } }),
+
+    // Row 2b: Actions breakdown
+    w('bar_chart', 'Ações do Perfil', { x: 8, y: 2, w: 4, h: 4, minW: 3, minH: 3 },
+      { type: 'gmb', metrics: ['website_clicks', 'phone_calls', 'direction_requests'], groupBy: 'action' },
+      { type: 'bar_chart', chart: { chartType: 'bar', xAxis: 'action', yAxis: ['value'], colors: ['#4285F4', '#34A853', '#FBBC05'], showGrid: true, showLegend: false } }),
+
+    // Row 3: Recent reviews table
+    w('table', 'Reviews Recentes', { x: 0, y: 6, w: 12, h: 5, minW: 6, minH: 3 },
+      { type: 'gmb', metrics: ['reviewer', 'rating', 'comment'], groupBy: 'reviewer' },
+      { type: 'table', table: {
+        columns: [
+          { key: 'reviewer', label: 'Reviewer', sortable: true },
+          { key: 'rating', label: 'Rating', format: 'number', sortable: true },
+          { key: 'comment', label: 'Comentário', sortable: false },
+        ],
+        pageSize: 10, sortBy: 'rating', sortDirection: 'desc',
+      } }),
+  ],
+};
+
+// =====================================================
 // EXPORT ALL
 // =====================================================
 
@@ -523,6 +826,11 @@ export const DASHBOARD_TEMPLATES: DashboardTemplate[] = [
   GOOGLE_ADS_ECOMMERCE,
   CRM_VENDAS_FUNIL,
   ECOMMERCE_FATURAMENTO,
+  PROJECT_REPORT,
+  SEO_REPORT,
+  SOCIAL_MEDIA_REPORT,
+  CRM_PIPELINE_KOMMO,
+  LOCAL_BUSINESS_GMB,
 ];
 
 export function getTemplateById(id: string): DashboardTemplate | undefined {

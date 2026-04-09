@@ -76,6 +76,79 @@ export const TwitterIcon = () => (
   </svg>
 )
 
+export const KommoIcon = () => (
+  <svg viewBox="0 0 48 48" fill="none" className="w-full h-full">
+    <circle cx="24" cy="24" r="24" fill="#4C75A3" />
+    <text
+      x="24"
+      y="24"
+      textAnchor="middle"
+      dominantBaseline="central"
+      fill="#fff"
+      fontSize="26"
+      fontWeight="700"
+      fontFamily="Arial, sans-serif"
+    >
+      K
+    </text>
+  </svg>
+)
+
+export const GoogleAnalyticsIcon = () => (
+  <svg viewBox="0 0 48 48" fill="none" className="w-full h-full">
+    <path
+      fill="#E37400"
+      d="M38 6h-6a2 2 0 00-2 2v32a2 2 0 002 2h6a2 2 0 002-2V8a2 2 0 00-2-2z"
+    />
+    <path
+      fill="#E37400"
+      d="M27 18h-6a2 2 0 00-2 2v20a2 2 0 002 2h6a2 2 0 002-2V20a2 2 0 00-2-2z"
+      opacity="0.7"
+    />
+    <path
+      fill="#E37400"
+      d="M16 30h-6a2 2 0 00-2 2v8a2 2 0 002 2h6a2 2 0 002-2v-8a2 2 0 00-2-2z"
+      opacity="0.4"
+    />
+  </svg>
+)
+
+export const GoogleMyBusinessIcon = () => (
+  <svg viewBox="0 0 48 48" fill="none" className="w-full h-full">
+    <path
+      fill="#4285F4"
+      d="M24 2C15.72 2 9 8.72 9 17c0 11.25 15 29 15 29s15-17.75 15-29c0-8.28-6.72-15-15-15zm0 21a6 6 0 110-12 6 6 0 010 12z"
+    />
+  </svg>
+)
+
+export const ClickUpIcon = () => (
+  <svg viewBox="0 0 48 48" fill="none" className="w-full h-full">
+    <path
+      fill="#7B68EE"
+      d="M8 28l6.4-5.2c3.2 4 6.4 5.6 9.6 5.6 3.2 0 6.4-1.6 9.6-5.6L40 28c-4.8 6-10.4 9.2-16 9.2S12.8 34 8 28z"
+    />
+    <path
+      fill="#7B68EE"
+      d="M24 10.8l-12 12 6.4 5.2 5.6-5.6 5.6 5.6 6.4-5.2-12-12z"
+      opacity="0.7"
+    />
+  </svg>
+)
+
+export const SearchConsoleIcon = () => (
+  <svg viewBox="0 0 48 48" fill="none" className="w-full h-full">
+    <path
+      fill="#34A853"
+      d="M20 4C11.16 4 4 11.16 4 20s7.16 16 16 16c3.7 0 7.1-1.26 9.8-3.38l10.3 10.3 4.24-4.24-10.3-10.3A15.88 15.88 0 0036 20c0-8.84-7.16-16-16-16zm0 6c5.52 0 10 4.48 10 10s-4.48 10-10 10S10 25.52 10 20s4.48-10 10-10z"
+    />
+  </svg>
+)
+
+// Aliases
+export const GA4Icon = GoogleAnalyticsIcon
+export const GMBIcon = GoogleMyBusinessIcon
+
 export const BrandIcons = {
   Instagram: InstagramIcon,
   Facebook: FacebookIcon,
@@ -84,4 +157,11 @@ export const BrandIcons = {
   YouTube: YouTubeIcon,
   Twitter: TwitterIcon,
   X: TwitterIcon, // X usa o mesmo ícone do Twitter
+  Kommo: KommoIcon,
+  GoogleAnalytics: GoogleAnalyticsIcon,
+  GoogleMyBusiness: GoogleMyBusinessIcon,
+  ClickUp: ClickUpIcon,
+  SearchConsole: SearchConsoleIcon,
+  GA4: GA4Icon,
+  GMB: GMBIcon,
 }

@@ -12,12 +12,10 @@ import { useAuth } from '@/contexts/AuthContext'
 import type { ClientRole } from '@/contexts/AuthContext'
 import {
   LayoutDashboard,
-  BarChart3,
-  Megaphone,
-  Target,
   Link2,
-  FileText,
   GitBranch,
+  BarChart3,
+  CheckSquare,
   Users,
   Settings,
   ChevronLeft,
@@ -27,15 +25,15 @@ import {
   Shield,
   CreditCard,
   FolderKanban,
-  PanelTop,
   LogOut,
   Sparkles,
-  ShieldCheck,
-  Brain,
-  FileEdit,
+  BookOpen,
 } from 'lucide-react'
 
 // ========== NAV CONFIG ==========
+// v4 — Estrutura dos 3 pilares (Planner / Performance / Projeto)
+// Nível 1 (Agency) sempre visível. Nível 2-4 (Client modules) só aparecem
+// quando o usuário está dentro de um cliente específico (/c/:slug/*).
 
 interface NavItem {
   path: string
@@ -52,52 +50,58 @@ interface NavSection {
   items: NavItem[]
 }
 
-const NAV_SECTIONS: NavSection[] = [
+/** Nível 1 — navegação da agência (sempre visível) */
+const AGENCY_SECTIONS: NavSection[] = [
   {
     title: '',
     items: [
-      { path: '/overview', label: 'Visão Geral', icon: LayoutDashboard },
-      { path: '/dashboard', label: 'Dashboard', icon: BarChart3 },
+      { path: '/_v4/operations', label: 'Visão Geral', icon: LayoutDashboard },
+      { path: '/clients', label: 'Clientes', icon: FolderKanban, minRole: 'admin' },
+      { path: '/playbook', label: 'Playbook', icon: BookOpen, isNew: true },
     ],
   },
   {
-    title: 'Performance',
-    items: [
-      { path: '/campaigns', label: 'Campanhas', icon: Megaphone, minRole: 'analyst' },
-      { path: '/google-ads', label: 'Google Ads', icon: Target, isNew: true },
-      { path: '/bi', label: 'Analytics', icon: BarChart3 },
-      { path: '/dashboard-builder', label: 'Dashboards', icon: PanelTop, isNew: true },
-      { path: '/conversion-truth', label: 'Verdade da Conversão', icon: ShieldCheck, isNew: true },
-      { path: '/insights', label: 'Insights IA', icon: Brain, isNew: true },
-      { path: '/goals', label: 'Controle de Metas', icon: Target, isNew: true },
-      { path: '/reports', label: 'Relatórios', icon: FileText, minRole: 'analyst' },
-      { path: '/report-builder', label: 'Report Builder', icon: FileEdit, isNew: true },
-    ],
-  },
-  {
-    title: 'Planejamento',
-    items: [
-      { path: '/editor', label: 'Flows', icon: GitBranch },
-      { path: '/funnels', label: 'Funis', icon: Target, minRole: 'analyst' },
-    ],
-  },
-  {
-    title: 'Configurar',
+    title: 'Configurações',
     items: [
       { path: '/integrations', label: 'Integrações', icon: Link2, minRole: 'manager' },
-      { path: '/clients', label: 'Clientes', icon: FolderKanban, minRole: 'admin' },
       { path: '/team', label: 'Equipe', icon: Users, minRole: 'admin' },
-      { path: '/settings', label: 'Ajustes', icon: Settings, minRole: 'manager' },
-    ],
-  },
-  {
-    title: '',
-    items: [
-      { path: '/billing', label: 'Faturamento', icon: CreditCard, minRole: 'owner' },
+      { path: '/billing', label: 'Planos & Billing', icon: CreditCard, minRole: 'owner' },
+      { path: '/settings', label: 'Marca & Ajustes', icon: Settings, minRole: 'manager' },
       { path: '/admin', label: 'Admin', icon: Shield, superAdminOnly: true },
     ],
   },
 ]
+
+/** Nível 2-4 — pilares do cliente (renderizados quando dentro de /c/:slug/*) */
+function getClientSections(clientSlug: string): NavSection[] {
+  return [
+    {
+      title: 'Cliente',
+      items: [
+        {
+          path: `/c/${clientSlug}/overview`,
+          label: 'Visão Geral',
+          icon: LayoutDashboard,
+        },
+        {
+          path: `/c/${clientSlug}/planner`,
+          label: 'Planner',
+          icon: GitBranch,
+        },
+        {
+          path: `/c/${clientSlug}/performance`,
+          label: 'Performance',
+          icon: BarChart3,
+        },
+        {
+          path: `/c/${clientSlug}/projeto`,
+          label: 'Projeto',
+          icon: CheckSquare,
+        },
+      ],
+    },
+  ]
+}
 
 // ========== COMPONENT ==========
 
@@ -126,10 +130,25 @@ export default function Sidebar({ collapsed, setCollapsed, mobileOpen = false, o
   }, [])
 
   const isActive = (path: string) => {
-    if (path === '/editor') return location.pathname.startsWith('/editor')
-    if (path === '/dashboard-builder') return location.pathname.startsWith('/dashboard-builder')
+    // Exact match for agency-level routes
+    if (path.startsWith('/_v4/') || path === '/clients' || path === '/integrations' ||
+        path === '/team' || path === '/billing' || path === '/settings' || path === '/admin' ||
+        path === '/playbook') {
+      return location.pathname === path
+    }
+    // Client-scoped routes match their own segment
     return location.pathname === path
   }
+
+  // Detect if we're inside a client context: /c/:slug/<module>
+  const clientMatch = location.pathname.match(/^\/c\/([^/]+)/)
+  const currentClientSlug = clientMatch?.[1]
+  const clientSections = currentClientSlug ? getClientSections(currentClientSlug) : []
+
+  // Compose nav sections: client sections first (when inside a client), then agency
+  const NAV_SECTIONS: NavSection[] = currentClientSlug
+    ? [...clientSections, ...AGENCY_SECTIONS]
+    : AGENCY_SECTIONS
 
   const canSeeItem = (item: NavItem): boolean => {
     if (item.superAdminOnly) return isSuperAdmin

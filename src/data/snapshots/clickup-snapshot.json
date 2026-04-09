@@ -1,0 +1,588 @@
+{
+  "captured_at": "2026-04-08T02:30:00Z",
+  "workspace_id": "9011123812",
+  "operations_space_id": "90113696605",
+  "aggregate": {
+    "total_clients": 15,
+    "total_active_tasks": 187,
+    "total_overdue": 43,
+    "total_done_week": 28,
+    "on_time_rate": 0.89
+  },
+  "clients": [
+    {
+      "slug": "dr-euvaldo-tomaz",
+      "name": "Dr. Euvaldo Tomaz",
+      "short_name": "DE",
+      "clickup_folder_id": "90116051679",
+      "clickup_folder_name": "CL01 - Dr. Euvaldo Tomaz",
+      "avatar_gradient": "from-blue-500 to-cyan-600",
+      "industry": "Saúde / Oftalmologia",
+      "city": "Macapá, AP",
+      "task_count": 47,
+      "stats": {
+        "urgent": 3,
+        "in_progress": 14,
+        "review": 4,
+        "upcoming": 8,
+        "backlog": 6,
+        "done": 12,
+        "overdue": 3,
+        "total_active": 35
+      },
+      "upcoming_tasks": [
+        {
+          "id": "868j5t6mp",
+          "title": "[DIÁRIO] Revisão semanal do desempenho da campanha",
+          "status_raw": "tarefas",
+          "status": "in_progress",
+          "priority": "medium",
+          "due_date": "2026-04-12",
+          "due_date_label": "Em 4 dias",
+          "days_late": null,
+          "assignees": [
+            { "id": "81928284", "username": "Johnathan Martins", "initial": "J", "color": "#3B82F6" }
+          ],
+          "list_id": "901110363184",
+          "list_name": "Gestão de Campanhas",
+          "list_color": "#4285F4",
+          "tags": ["otimização"],
+          "url": "https://app.clickup.com/t/868j5t6mp"
+        }
+      ],
+      "all_tasks": [],
+      "last_synced_at": "2026-04-08T02:30:00Z",
+      "clickup_url": "https://app.clickup.com/9011123812/v/li/90116051679"
+    },
+    {
+      "slug": "isaac-newton",
+      "name": "Isaac Newton",
+      "short_name": "IN",
+      "clickup_folder_id": "90115986444",
+      "clickup_folder_name": "CL 02 - Isaac Newton",
+      "avatar_gradient": "from-indigo-500 to-purple-600",
+      "industry": "Educação",
+      "city": "Macapá, AP",
+      "task_count": 32,
+      "stats": {
+        "urgent": 2,
+        "in_progress": 10,
+        "review": 3,
+        "upcoming": 6,
+        "backlog": 4,
+        "done": 7,
+        "overdue": 2,
+        "total_active": 25
+      },
+      "upcoming_tasks": [
+        {
+          "id": "868j5z4p1",
+          "title": "E-04 Ações estratégias do Linkedin",
+          "status_raw": "tarefas",
+          "status": "in_progress",
+          "priority": "medium",
+          "due_date": "2026-04-19",
+          "due_date_label": "Em 11 dias",
+          "days_late": null,
+          "assignees": [
+            { "id": "75401978", "username": "Natan da Silva", "initial": "N", "color": "#3B82F6" },
+            { "id": "81928284", "username": "Johnathan Martins", "initial": "J", "color": "#EC4899" }
+          ],
+          "list_id": "901112375171",
+          "list_name": "Criação e Social Media",
+          "list_color": "#EC4899",
+          "tags": [],
+          "url": "https://app.clickup.com/t/868j5z4p1"
+        },
+        {
+          "id": "868j5h7vb",
+          "title": "E-04 - Estratégia de alcance Redes Sociais",
+          "status_raw": "tarefas",
+          "status": "in_progress",
+          "priority": "medium",
+          "due_date": "2026-04-16",
+          "due_date_label": "Em 8 dias",
+          "days_late": null,
+          "assignees": [
+            { "id": "81928284", "username": "Johnathan Martins", "initial": "J", "color": "#3B82F6" }
+          ],
+          "list_id": "901112375171",
+          "list_name": "Criação e Social Media",
+          "list_color": "#EC4899",
+          "tags": ["ia"],
+          "url": "https://app.clickup.com/t/868j5h7vb"
+        }
+      ],
+      "all_tasks": [],
+      "last_synced_at": "2026-04-08T02:30:00Z",
+      "clickup_url": "https://app.clickup.com/9011123812/v/li/90115986444"
+    },
+    {
+      "slug": "dra-luciana",
+      "name": "Dra. Luciana",
+      "short_name": "DL",
+      "clickup_folder_id": "90116151000",
+      "clickup_folder_name": "CL03 - Dra. Luciana (B+ e Fature+)",
+      "avatar_gradient": "from-pink-500 to-rose-600",
+      "industry": "Saúde / Dermatologia",
+      "city": "Macapá, AP",
+      "task_count": 18,
+      "stats": {
+        "urgent": 1,
+        "in_progress": 6,
+        "review": 2,
+        "upcoming": 4,
+        "backlog": 3,
+        "done": 2,
+        "overdue": 1,
+        "total_active": 15
+      },
+      "upcoming_tasks": [],
+      "all_tasks": [],
+      "last_synced_at": "2026-04-08T02:30:00Z",
+      "clickup_url": "https://app.clickup.com/9011123812/v/li/90116151000"
+    },
+    {
+      "slug": "sindmpu",
+      "name": "SINDMPU",
+      "short_name": "SI",
+      "clickup_folder_id": "90116940873",
+      "clickup_folder_name": "CL04 - SINDMPU",
+      "avatar_gradient": "from-emerald-500 to-teal-600",
+      "industry": "Sindicato / Associação",
+      "city": "Brasília, DF",
+      "task_count": 28,
+      "stats": {
+        "urgent": 4,
+        "in_progress": 9,
+        "review": 2,
+        "upcoming": 5,
+        "backlog": 3,
+        "done": 5,
+        "overdue": 4,
+        "total_active": 23
+      },
+      "upcoming_tasks": [],
+      "all_tasks": [],
+      "last_synced_at": "2026-04-08T02:30:00Z",
+      "clickup_url": "https://app.clickup.com/9011123812/v/li/90116940873"
+    },
+    {
+      "slug": "blink-oftalmologia",
+      "name": "Blink Oftalmologia",
+      "short_name": "BL",
+      "clickup_folder_id": "90116051703",
+      "clickup_folder_name": "CL10 - Blink Oftalmologia",
+      "avatar_gradient": "from-sky-500 to-blue-600",
+      "industry": "Saúde / Oftalmologia",
+      "city": "Macapá, AP",
+      "task_count": 34,
+      "stats": {
+        "urgent": 2,
+        "in_progress": 11,
+        "review": 3,
+        "upcoming": 7,
+        "backlog": 4,
+        "done": 7,
+        "overdue": 2,
+        "total_active": 27
+      },
+      "upcoming_tasks": [],
+      "all_tasks": [],
+      "last_synced_at": "2026-04-08T02:30:00Z",
+      "clickup_url": "https://app.clickup.com/9011123812/v/li/90116051703"
+    },
+    {
+      "slug": "escola-pequeno-aprendiz",
+      "name": "Escola Pequeno Aprendiz",
+      "short_name": "PA",
+      "clickup_folder_id": "90117036530",
+      "clickup_folder_name": "CL12 - Pequeno Aprendiz",
+      "avatar_gradient": "from-amber-500 to-orange-600",
+      "industry": "Educação Infantil",
+      "city": "Macapá, AP",
+      "task_count": 16,
+      "stats": {
+        "urgent": 2,
+        "in_progress": 5,
+        "review": 2,
+        "upcoming": 4,
+        "backlog": 1,
+        "done": 2,
+        "overdue": 2,
+        "total_active": 14
+      },
+      "upcoming_tasks": [
+        {
+          "id": "868j59nqk",
+          "title": "Campanha Disparo Whatsapp p/ Leads Livro Primeiro eu Coloco o Tênis",
+          "status_raw": "subir",
+          "status": "upcoming",
+          "priority": "medium",
+          "due_date": "2026-04-07",
+          "due_date_label": "Atrasada 1 dia",
+          "days_late": 1,
+          "assignees": [
+            { "id": "278518887", "username": "Digital ao Quadrado", "initial": "D", "color": "#3B82F6" }
+          ],
+          "list_id": "901113100568",
+          "list_name": "Gestão de Campanhas",
+          "list_color": "#4285F4",
+          "tags": [],
+          "url": "https://app.clickup.com/t/868j59nqk"
+        }
+      ],
+      "all_tasks": [],
+      "last_synced_at": "2026-04-08T02:30:00Z",
+      "clickup_url": "https://app.clickup.com/9011123812/v/li/90117036530"
+    },
+    {
+      "slug": "dra-diane-barranco",
+      "name": "Dra. Diane Barranco",
+      "short_name": "DB",
+      "clickup_folder_id": "90117061437",
+      "clickup_folder_name": "CL12 - Dra Diane Barranco",
+      "avatar_gradient": "from-fuchsia-500 to-pink-600",
+      "industry": "Saúde",
+      "city": "Macapá, AP",
+      "task_count": 12,
+      "stats": {
+        "urgent": 1,
+        "in_progress": 4,
+        "review": 1,
+        "upcoming": 3,
+        "backlog": 2,
+        "done": 1,
+        "overdue": 1,
+        "total_active": 11
+      },
+      "upcoming_tasks": [],
+      "all_tasks": [],
+      "last_synced_at": "2026-04-08T02:30:00Z",
+      "clickup_url": "https://app.clickup.com/9011123812/v/li/90117061437"
+    },
+    {
+      "slug": "dr-former",
+      "name": "Dr. Former",
+      "short_name": "DF",
+      "clickup_folder_id": "90117643529",
+      "clickup_folder_name": "CL12 - Dr. Former",
+      "avatar_gradient": "from-red-500 to-orange-600",
+      "industry": "Saúde",
+      "city": "Macapá, AP",
+      "task_count": 9,
+      "stats": {
+        "urgent": 0,
+        "in_progress": 3,
+        "review": 1,
+        "upcoming": 2,
+        "backlog": 2,
+        "done": 1,
+        "overdue": 0,
+        "total_active": 8
+      },
+      "upcoming_tasks": [],
+      "all_tasks": [],
+      "last_synced_at": "2026-04-08T02:30:00Z",
+      "clickup_url": "https://app.clickup.com/9011123812/v/li/90117643529"
+    },
+    {
+      "slug": "homero-reis",
+      "name": "Homero Reis",
+      "short_name": "HR",
+      "clickup_folder_id": "90117134048",
+      "clickup_folder_name": "CL16 - Homero Reis",
+      "avatar_gradient": "from-violet-500 to-purple-600",
+      "industry": "Coaching / Consultoria",
+      "city": "Brasília, DF",
+      "task_count": 58,
+      "stats": {
+        "urgent": 12,
+        "in_progress": 18,
+        "review": 6,
+        "upcoming": 9,
+        "backlog": 6,
+        "done": 7,
+        "overdue": 12,
+        "total_active": 51
+      },
+      "upcoming_tasks": [
+        {
+          "id": "868j3hxv4",
+          "title": "🎯 FASE 1 — Infraestrutura Base (Mar/Abr 2026)",
+          "status_raw": "solicitação",
+          "status": "urgent",
+          "priority": "urgent",
+          "due_date": "2026-03-31",
+          "due_date_label": "Atrasada 8 dias",
+          "days_late": 8,
+          "assignees": [],
+          "list_id": "901113505765",
+          "list_name": "Inbound IR — Estratégia Global",
+          "list_color": "#8B5CF6",
+          "tags": [],
+          "url": "https://app.clickup.com/t/868j3hxv4"
+        },
+        {
+          "id": "868j3jdch",
+          "title": "💰 Ads #2: NR1 URGÊNCIA — Lead Gen (Meta R$2.000/mês)",
+          "status_raw": "solicitação",
+          "status": "upcoming",
+          "priority": "urgent",
+          "due_date": "2026-04-29",
+          "due_date_label": "Em 3 semanas",
+          "days_late": null,
+          "assignees": [],
+          "list_id": "901113505765",
+          "list_name": "Inbound IR — Estratégia Global",
+          "list_color": "#8B5CF6",
+          "tags": [],
+          "url": "https://app.clickup.com/t/868j3jdch"
+        },
+        {
+          "id": "868j3hgv1",
+          "title": "Integração Assessment WordPress → Brevo (Webhook)",
+          "status_raw": "subir",
+          "status": "urgent",
+          "priority": "urgent",
+          "due_date": "2026-03-19",
+          "due_date_label": "Atrasada 20 dias",
+          "days_late": 20,
+          "assignees": [
+            { "id": "81928284", "username": "Johnathan Martins", "initial": "J", "color": "#3B82F6" }
+          ],
+          "list_id": "901113100568",
+          "list_name": "Gestão de Campanhas",
+          "list_color": "#4285F4",
+          "tags": [],
+          "url": "https://app.clickup.com/t/868j3hgv1"
+        },
+        {
+          "id": "868j3hgbn",
+          "title": "Criar Conta Brevo + Configurar Remetente",
+          "status_raw": "subir",
+          "status": "urgent",
+          "priority": "urgent",
+          "due_date": "2026-04-05",
+          "due_date_label": "Atrasada 3 dias",
+          "days_late": 3,
+          "assignees": [
+            { "id": "81928284", "username": "Johnathan Martins", "initial": "J", "color": "#3B82F6" }
+          ],
+          "list_id": "901113100568",
+          "list_name": "Gestão de Campanhas",
+          "list_color": "#4285F4",
+          "tags": [],
+          "url": "https://app.clickup.com/t/868j3hgbn"
+        },
+        {
+          "id": "868j3jcve",
+          "title": "🎬 Reels #3: NR1 em 60s — IR Corporate NR1",
+          "status_raw": "solicitação",
+          "status": "urgent",
+          "priority": "urgent",
+          "due_date": "2026-04-05",
+          "due_date_label": "Atrasada 3 dias",
+          "days_late": 3,
+          "assignees": [],
+          "list_id": "901113505765",
+          "list_name": "Inbound IR — Estratégia Global",
+          "list_color": "#8B5CF6",
+          "tags": [],
+          "url": "https://app.clickup.com/t/868j3jcve"
+        }
+      ],
+      "all_tasks": [],
+      "last_synced_at": "2026-04-08T02:30:00Z",
+      "clickup_url": "https://app.clickup.com/9011123812/v/li/90117134048"
+    },
+    {
+      "slug": "grupo-m3",
+      "name": "Grupo M3",
+      "short_name": "M3",
+      "clickup_folder_id": "90117264469",
+      "clickup_folder_name": "CL17 - Grupo M3",
+      "avatar_gradient": "from-slate-600 to-gray-800",
+      "industry": "Imobiliário",
+      "city": "Brasília, DF",
+      "task_count": 15,
+      "stats": {
+        "urgent": 1,
+        "in_progress": 6,
+        "review": 2,
+        "upcoming": 3,
+        "backlog": 1,
+        "done": 2,
+        "overdue": 1,
+        "total_active": 13
+      },
+      "upcoming_tasks": [
+        {
+          "id": "868j452q2",
+          "title": "Levantamento - Abril/2026",
+          "status_raw": "backlog",
+          "status": "backlog",
+          "priority": "medium",
+          "due_date": "2026-03-31",
+          "due_date_label": "Atrasada 8 dias",
+          "days_late": 8,
+          "assignees": [
+            { "id": "87390392", "username": "Julie Sink", "initial": "J", "color": "#F59E0B" }
+          ],
+          "list_id": "901113073543",
+          "list_name": "Sucesso do Cliente",
+          "list_color": "#F59E0B",
+          "tags": [],
+          "url": "https://app.clickup.com/t/868j452q2"
+        }
+      ],
+      "all_tasks": [],
+      "last_synced_at": "2026-04-08T02:30:00Z",
+      "clickup_url": "https://app.clickup.com/9011123812/v/li/90117264469"
+    },
+    {
+      "slug": "rharo",
+      "name": "Rharo",
+      "short_name": "RH",
+      "clickup_folder_id": "90117344470",
+      "clickup_folder_name": "CL18 - Rharo",
+      "avatar_gradient": "from-cyan-500 to-blue-600",
+      "industry": "Eventos / Podcast",
+      "city": "Brasília, DF",
+      "task_count": 14,
+      "stats": {
+        "urgent": 1,
+        "in_progress": 5,
+        "review": 2,
+        "upcoming": 3,
+        "backlog": 2,
+        "done": 1,
+        "overdue": 1,
+        "total_active": 13
+      },
+      "upcoming_tasks": [
+        {
+          "id": "868j6dckb",
+          "title": "Post para instagram",
+          "status_raw": "em revisão",
+          "status": "review",
+          "priority": "none",
+          "due_date": "2026-04-06",
+          "due_date_label": "Atrasada 2 dias",
+          "days_late": 2,
+          "assignees": [
+            { "id": "61037220", "username": "Vinicius Designer", "initial": "V", "color": "#3B82F6" }
+          ],
+          "list_id": "901112546561",
+          "list_name": "Criação e Social Media",
+          "list_color": "#EC4899",
+          "tags": [],
+          "url": "https://app.clickup.com/t/868j6dckb"
+        }
+      ],
+      "all_tasks": [],
+      "last_synced_at": "2026-04-08T02:30:00Z",
+      "clickup_url": "https://app.clickup.com/9011123812/v/li/90117344470"
+    },
+    {
+      "slug": "vip",
+      "name": "V.I.P",
+      "short_name": "VI",
+      "clickup_folder_id": "90117471958",
+      "clickup_folder_name": "CL19 - V.I.P",
+      "avatar_gradient": "from-yellow-500 to-amber-600",
+      "industry": "Serviços",
+      "city": "Macapá, AP",
+      "task_count": 11,
+      "stats": {
+        "urgent": 0,
+        "in_progress": 4,
+        "review": 1,
+        "upcoming": 3,
+        "backlog": 2,
+        "done": 1,
+        "overdue": 0,
+        "total_active": 10
+      },
+      "upcoming_tasks": [],
+      "all_tasks": [],
+      "last_synced_at": "2026-04-08T02:30:00Z",
+      "clickup_url": "https://app.clickup.com/9011123812/v/li/90117471958"
+    },
+    {
+      "slug": "uniao-norte-nordeste",
+      "name": "União Norte Nordeste",
+      "short_name": "UN",
+      "clickup_folder_id": "90117578724",
+      "clickup_folder_name": "CL22 - União Norte Nordeste",
+      "avatar_gradient": "from-blue-600 to-indigo-700",
+      "industry": "Igreja / Associação",
+      "city": "Belém, PA",
+      "task_count": 8,
+      "stats": {
+        "urgent": 1,
+        "in_progress": 3,
+        "review": 1,
+        "upcoming": 2,
+        "backlog": 1,
+        "done": 0,
+        "overdue": 1,
+        "total_active": 8
+      },
+      "upcoming_tasks": [],
+      "all_tasks": [],
+      "last_synced_at": "2026-04-08T02:30:00Z",
+      "clickup_url": "https://app.clickup.com/9011123812/v/li/90117578724"
+    },
+    {
+      "slug": "ze-umberto",
+      "name": "Zé Umberto",
+      "short_name": "ZU",
+      "clickup_folder_id": "90117591305",
+      "clickup_folder_name": "CL23 - Zé Umberto",
+      "avatar_gradient": "from-green-500 to-emerald-600",
+      "industry": "Alimentação",
+      "city": "Macapá, AP",
+      "task_count": 7,
+      "stats": {
+        "urgent": 0,
+        "in_progress": 3,
+        "review": 0,
+        "upcoming": 2,
+        "backlog": 2,
+        "done": 0,
+        "overdue": 0,
+        "total_active": 7
+      },
+      "upcoming_tasks": [],
+      "all_tasks": [],
+      "last_synced_at": "2026-04-08T02:30:00Z",
+      "clickup_url": "https://app.clickup.com/9011123812/v/li/90117591305"
+    },
+    {
+      "slug": "botequio-advogados",
+      "name": "Botéquio Advogados",
+      "short_name": "BA",
+      "clickup_folder_id": "90117779770",
+      "clickup_folder_name": "CL24 - Botéquio Advogados",
+      "avatar_gradient": "from-stone-600 to-neutral-800",
+      "industry": "Advocacia",
+      "city": "Brasília, DF",
+      "task_count": 9,
+      "stats": {
+        "urgent": 0,
+        "in_progress": 3,
+        "review": 1,
+        "upcoming": 3,
+        "backlog": 1,
+        "done": 1,
+        "overdue": 0,
+        "total_active": 8
+      },
+      "upcoming_tasks": [],
+      "all_tasks": [],
+      "last_synced_at": "2026-04-08T02:30:00Z",
+      "clickup_url": "https://app.clickup.com/9011123812/v/li/90117779770"
+    }
+  ]
+}

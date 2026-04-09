@@ -62,6 +62,7 @@ import {
   type GoogleAccount,
   type GooglePlatform,
 } from '@/services/googleAuthService'
+import { BrandLogo } from '@/components/canonical/BrandLogo'
 
 // =====================================================
 // META OAUTH CONNECT MODAL
@@ -1041,6 +1042,8 @@ export default function IntegrationsPage() {
   const googleAdsConnected = googleConnectedAccounts.filter((a) => a.platform === 'google_ads').length
   const ga4Connected = googleConnectedAccounts.filter((a) => a.platform === 'ga4').length
   const scConnected = googleConnectedAccounts.filter((a) => a.platform === 'search_console').length
+  const ytConnected = googleConnectedAccounts.filter((a) => a.platform === 'youtube').length
+  const gmbConnected = googleConnectedAccounts.filter((a) => a.platform === 'gmb').length
 
   // Google OAuth connect handler
   const handleGoogleConnect = (platforms: GooglePlatform[]) => {
@@ -1083,17 +1086,23 @@ export default function IntegrationsPage() {
 
         // For each platform in state, we need to discover accounts
         // For now, create a placeholder account that will be populated on first sync
+        const platformNames: Record<string, string> = {
+          google_ads: 'Google Ads',
+          ga4: 'Google Analytics 4',
+          search_console: 'Search Console',
+          youtube: 'YouTube',
+          gmb: 'Google Meu Negócio',
+        }
+
         for (const platform of (state.platforms as GooglePlatform[])) {
-          const accountName = platform === 'google_ads' ? 'Google Ads'
-            : platform === 'ga4' ? 'Google Analytics 4'
-            : 'Search Console'
+          const accountName = platformNames[platform] || platform
 
           await googleAccountsService.connectAccount(
             user.id,
             state.clientId || activeClient?.client_id || null,
             platform,
             `pending_${platform}_${Date.now()}`,
-            `${accountName} (adsefeito@gmail.com)`,
+            `${accountName} (${user.email || 'conta conectada'})`,
             tokens,
           )
         }
@@ -1264,17 +1273,25 @@ export default function IntegrationsPage() {
   const googleAccounts = accounts.filter((a) => a.platform === 'google_ads')
   const tiktokAccounts = accounts.filter((a) => (a.platform as string) === 'tiktok_ads')
 
-  // Plataformas disponíveis
-  const platforms = [
+  // Plataformas disponíveis — brand é usado pelo <BrandLogo> canônico (logos oficiais)
+  const platforms: Array<{
+    key: string
+    brand: import('@/types/metrics').KPISource
+    name: string
+    desc: string
+    bgLight: string
+    connected: number
+    available: boolean
+    onConnect: () => void
+    features: string[]
+    note?: string
+  }> = [
     {
       key: 'meta_ads',
+      brand: 'meta_ads',
       name: 'Meta Ads',
       desc: 'Facebook & Instagram Ads',
-      color: 'bg-[#1877F2]',
-      hoverColor: 'hover:bg-[#166FE5]',
-      borderColor: 'border-blue-200',
       bgLight: 'bg-blue-50',
-      icon: Facebook,
       connected: metaAccounts.length,
       available: true,
       onConnect: hasFbApp ? () => setShowOAuthModal(true) : () => setShowManualModal(true),
@@ -1282,13 +1299,10 @@ export default function IntegrationsPage() {
     },
     {
       key: 'instagram',
+      brand: 'instagram',
       name: 'Instagram',
       desc: 'Perfis Business & Insights',
-      color: 'bg-gradient-to-br from-[#833AB4] via-[#FD1D1D] to-[#F77737]',
-      hoverColor: '',
-      borderColor: 'border-pink-200',
       bgLight: 'bg-pink-50',
-      icon: Instagram,
       connected: metaAccounts.filter((a) => (a.metadata as any)?.connected_instagram?.length > 0).length,
       available: true,
       onConnect: hasFbApp ? () => setShowOAuthModal(true) : () => setShowManualModal(true),
@@ -1297,13 +1311,10 @@ export default function IntegrationsPage() {
     },
     {
       key: 'google_ads',
+      brand: 'google_ads',
       name: 'Google Ads',
       desc: 'Search, Display & YouTube',
-      color: 'bg-[#4285F4]',
-      hoverColor: 'hover:bg-[#3B78E7]',
-      borderColor: 'border-blue-200',
       bgLight: 'bg-blue-50',
-      icon: Globe,
       connected: googleAccounts.length + googleAdsConnected,
       available: true,
       onConnect: () => handleGoogleConnect(['google_ads']),
@@ -1311,13 +1322,10 @@ export default function IntegrationsPage() {
     },
     {
       key: 'google_analytics',
+      brand: 'ga4',
       name: 'Google Analytics 4',
       desc: 'GA4 — Tráfego & Conversões',
-      color: 'bg-[#E37400]',
-      hoverColor: 'hover:bg-[#D16A00]',
-      borderColor: 'border-orange-200',
       bgLight: 'bg-orange-50',
-      icon: BarChart3,
       connected: ga4Connected,
       available: true,
       onConnect: () => handleGoogleConnect(['ga4']),
@@ -1325,27 +1333,131 @@ export default function IntegrationsPage() {
     },
     {
       key: 'search_console',
+      brand: 'gsc',
       name: 'Search Console',
       desc: 'SEO — Queries & Rankings',
-      color: 'bg-[#4285F4]',
-      hoverColor: 'hover:bg-[#3B78E7]',
-      borderColor: 'border-indigo-200',
       bgLight: 'bg-indigo-50',
-      icon: Globe,
       connected: scConnected,
       available: true,
       onConnect: () => handleGoogleConnect(['search_console']),
       features: ['Queries', 'Páginas', 'CTR', 'Posição'],
     },
     {
+      key: 'youtube',
+      brand: 'youtube',
+      name: 'YouTube',
+      desc: 'Canal, Vídeos & Analytics',
+      bgLight: 'bg-red-50',
+      connected: ytConnected,
+      available: true,
+      onConnect: () => handleGoogleConnect(['youtube']),
+      features: ['Canal', 'Vídeos', 'Watch Time', 'Inscritos'],
+    },
+    {
+      key: 'gmb',
+      brand: 'gmb',
+      name: 'Google Meu Negócio',
+      desc: 'Reviews, Buscas & Ações',
+      bgLight: 'bg-blue-50',
+      connected: gmbConnected,
+      available: true,
+      onConnect: () => handleGoogleConnect(['gmb']),
+      features: ['Reviews', 'Rating', 'Buscas', 'Chamadas'],
+    },
+    {
+      key: 'kommo',
+      brand: 'kommo',
+      name: 'Kommo CRM',
+      desc: 'Leads, Pipeline & Vendas',
+      bgLight: 'bg-sky-50',
+      connected: 0,
+      available: true,
+      onConnect: () => setShowManualModal(true),
+      features: ['Leads', 'Pipeline', 'Conversão', 'Vendedores'],
+    },
+    {
+      key: 'linkedin',
+      brand: 'linkedin_ads',
+      name: 'LinkedIn',
+      desc: 'Página, Posts & Seguidores',
+      bgLight: 'bg-blue-50',
+      connected: 0,
+      available: true,
+      onConnect: () => setShowManualModal(true),
+      features: ['Página', 'Seguidores', 'Posts', 'Engajamento'],
+    },
+    {
+      key: 'clickup',
+      brand: 'clickup',
+      name: 'ClickUp',
+      desc: 'Projetos, Tarefas & Tempo',
+      bgLight: 'bg-violet-50',
+      connected: 0,
+      available: true,
+      onConnect: () => setShowManualModal(true),
+      features: ['Tarefas', 'Sprints', 'Goals', 'Time Tracking'],
+    },
+    {
+      key: 'shopify',
+      brand: 'shopify',
+      name: 'Shopify',
+      desc: 'Loja, Pedidos & Produtos',
+      bgLight: 'bg-green-50',
+      connected: 0,
+      available: true,
+      onConnect: () => setShowManualModal(true),
+      features: ['Pedidos', 'Receita', 'Produtos', 'Clientes'],
+    },
+    {
+      key: 'woocommerce',
+      brand: 'woocommerce',
+      name: 'WooCommerce',
+      desc: 'E-commerce WordPress',
+      bgLight: 'bg-purple-50',
+      connected: 0,
+      available: true,
+      onConnect: () => setShowManualModal(true),
+      features: ['Pedidos', 'Receita', 'Produtos', 'Cupons'],
+    },
+    {
+      key: 'mailchimp',
+      brand: 'mailchimp',
+      name: 'Mailchimp',
+      desc: 'Email Marketing & Automação',
+      bgLight: 'bg-yellow-50',
+      connected: 0,
+      available: true,
+      onConnect: () => setShowManualModal(true),
+      features: ['Listas', 'Campanhas', 'Aberturas', 'Cliques'],
+    },
+    {
+      key: 'brevo',
+      brand: 'brevo',
+      name: 'Brevo',
+      desc: 'Email, SMS & CRM',
+      bgLight: 'bg-emerald-50',
+      connected: 0,
+      available: true,
+      onConnect: () => setShowManualModal(true),
+      features: ['Campanhas', 'Contatos', 'Automações', 'SMS'],
+    },
+    {
+      key: 'hotmart',
+      brand: 'hotmart',
+      name: 'Hotmart',
+      desc: 'Infoprodutos & Vendas',
+      bgLight: 'bg-orange-50',
+      connected: 0,
+      available: true,
+      onConnect: () => setShowManualModal(true),
+      features: ['Vendas', 'Afiliados', 'Comissões', 'Produtos'],
+    },
+    {
       key: 'tiktok_ads',
+      brand: 'tiktok_ads',
       name: 'TikTok Ads',
       desc: 'TikTok Business Center',
-      color: 'bg-black',
-      hoverColor: 'hover:bg-gray-900',
-      borderColor: 'border-gray-200',
       bgLight: 'bg-gray-50',
-      icon: Zap,
       connected: tiktokAccounts.length,
       available: false,
       onConnect: () => {},
@@ -1354,18 +1466,18 @@ export default function IntegrationsPage() {
   ]
 
   return (
-    <div className="max-w-5xl mx-auto">
+    <div className="max-w-6xl mx-auto">
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex items-center justify-between mb-10">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Integrações</h1>
-          <p className="text-slate-500 mt-1">
-            Conecte seus canais de marketing para centralizar dados e relatórios.
+          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Integrações</h1>
+          <p className="text-slate-500 mt-1.5 text-[15px]">
+            Conecte seus canais de marketing, CRM e projetos para centralizar dados e relatórios.
           </p>
         </div>
         <button
           onClick={() => setShowManualModal(true)}
-          className="flex items-center gap-2 px-4 py-2.5 bg-white text-slate-700 text-sm font-medium rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors shadow-sm"
+          className="flex items-center gap-2 px-4 py-2.5 bg-white text-slate-700 text-sm font-medium rounded-xl border border-slate-200 hover:bg-slate-50 transition-all shadow-sm hover:shadow"
         >
           <Plus className="w-4 h-4" />
           Conexão Manual
@@ -1377,44 +1489,49 @@ export default function IntegrationsPage() {
         <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-4">
           Canais Disponíveis
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {platforms.map((p) => {
-            const Icon = p.icon
+            const isConnected = p.connected > 0
             return (
               <div
                 key={p.key}
-                className={`relative bg-white rounded-xl border shadow-sm overflow-hidden transition-all hover:shadow-md ${
-                  p.connected > 0 ? 'border-green-200' : p.borderColor
-                }`}
+                className={`group relative bg-white rounded-xl border overflow-hidden transition-all duration-200 ${
+                  isConnected
+                    ? 'border-emerald-200 shadow-[0_0_0_1px_rgba(16,185,129,0.1)]'
+                    : 'border-slate-200 shadow-[0_4px_10px_-2px_rgba(0,0,0,0.06)]'
+                } hover:shadow-[0_8px_20px_-4px_rgba(0,0,0,0.12)] hover:-translate-y-0.5`}
               >
-                {/* Connected badge */}
-                {p.connected > 0 && (
-                  <div className="absolute top-3 right-3">
-                    <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-green-100 text-green-700 text-[10px] font-semibold rounded-full">
-                      <CheckCircle2 className="w-3 h-3" />
-                      {p.connected} conectada{p.connected > 1 ? 's' : ''}
-                    </span>
-                  </div>
+                {/* Connected indicator bar */}
+                {isConnected && (
+                  <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-emerald-400 to-emerald-500" />
                 )}
 
-                <div className="p-5">
-                  {/* Icon + Name */}
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className={`w-10 h-10 ${p.color} rounded-xl flex items-center justify-center shrink-0`}>
-                      <Icon className="w-5 h-5 text-white" />
+                <div className="p-6">
+                  {/* Header: Official brand logo + Name + Badge */}
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="flex items-center gap-3.5">
+                      <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shrink-0 border border-slate-200 shadow-sm">
+                        <BrandLogo brand={p.brand} size={32} />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-slate-900 text-[15px] leading-tight">{p.name}</h3>
+                        <p className="text-xs text-slate-500 mt-0.5">{p.desc}</p>
+                      </div>
                     </div>
-                    <div>
-                      <h3 className="font-semibold text-slate-900 text-sm">{p.name}</h3>
-                      <p className="text-xs text-slate-500">{p.desc}</p>
-                    </div>
+                    {isConnected && (
+                      <span className="inline-flex items-center gap-1 px-2 py-1 bg-emerald-50 text-emerald-700 text-[10px] font-semibold rounded-full border border-emerald-200 shrink-0">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                        {p.connected}
+                      </span>
+                    )}
                   </div>
 
                   {/* Features */}
-                  <div className="flex flex-wrap gap-1.5 mb-4">
+                  <div className="flex flex-wrap gap-1.5 mb-5">
                     {p.features.map((f) => (
                       <span
                         key={f}
-                        className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${p.bgLight} text-slate-600`}
+                        className={`text-[11px] px-2.5 py-1 rounded-full font-medium ${p.bgLight} text-slate-600 border border-transparent`}
                       >
                         {f}
                       </span>
@@ -1423,34 +1540,34 @@ export default function IntegrationsPage() {
 
                   {/* Note */}
                   {p.note && (
-                    <p className="text-[10px] text-slate-400 mb-3">{p.note}</p>
+                    <p className="text-[10px] text-slate-400 mb-3 italic">{p.note}</p>
                   )}
 
                   {/* Connect button */}
                   {p.available ? (
                     <button
                       onClick={p.onConnect}
-                      className={`w-full flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
-                        p.connected > 0
-                          ? 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                          : `${p.color} text-white ${p.hoverColor}`
+                      className={`w-full flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 ${
+                        isConnected
+                          ? 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'
+                          : 'bg-slate-900 text-white hover:bg-slate-800 shadow-sm hover:shadow-md'
                       }`}
                     >
-                      {p.connected > 0 ? (
+                      {isConnected ? (
                         <>
-                          <Plus className="w-3.5 h-3.5" />
+                          <Plus className="w-4 h-4" />
                           Adicionar Conta
                         </>
                       ) : (
                         <>
-                          <Link2 className="w-3.5 h-3.5" />
+                          <Link2 className="w-4 h-4" />
                           Conectar
                         </>
                       )}
                     </button>
                   ) : (
-                    <div className="w-full flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium rounded-lg bg-slate-50 text-slate-400 border border-dashed border-slate-200">
-                      <Clock className="w-3.5 h-3.5" />
+                    <div className="w-full flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium rounded-xl bg-slate-50/80 text-slate-400 border border-dashed border-slate-200">
+                      <Clock className="w-4 h-4" />
                       Em breve
                     </div>
                   )}
@@ -1478,9 +1595,7 @@ export default function IntegrationsPage() {
           {metaAccounts.length > 0 && (
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <div className="w-6 h-6 bg-blue-600 rounded flex items-center justify-center">
-                  <Facebook className="w-3.5 h-3.5 text-white" />
-                </div>
+                <BrandLogo brand="meta_ads" size={24} />
                 <h3 className="text-base font-semibold text-slate-900">Meta Ads</h3>
                 <span className="text-xs text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">
                   {metaAccounts.length}
@@ -1505,9 +1620,7 @@ export default function IntegrationsPage() {
           {googleAccounts.length > 0 && (
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <div className="w-6 h-6 bg-[#4285F4] rounded flex items-center justify-center">
-                  <Globe className="w-3.5 h-3.5 text-white" />
-                </div>
+                <BrandLogo brand="google_ads" size={24} />
                 <h3 className="text-base font-semibold text-slate-900">Google Ads</h3>
                 <span className="text-xs text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">
                   {googleAccounts.length}

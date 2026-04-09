@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AuthProvider, useAuth } from './contexts/AuthContext'
 import { DateRangeProvider } from './contexts/DateRangeContext'
+import SnapshotWarmer from './contexts/SnapshotWarmer'
 
 // Layout (not lazy — always needed for protected routes)
 import AppLayout from './components/Layout/AppLayout'
@@ -22,32 +23,53 @@ const queryClient = new QueryClient({
   },
 })
 
-// Lazy-loaded Pages (code-splitting per route)
-const LandingPage = lazy(() => import('./pages/LandingPage'))
-const LoginPage = lazy(() => import('./pages/LoginPage'))
-const DashboardPage = lazy(() => import('./pages/DashboardPage'))
-const FlowEditorPage = lazy(() => import('./pages/FlowEditorPage'))
-const BIDashboardPage = lazy(() => import('./pages/BIDashboardPage'))
-const IntegrationsPage = lazy(() => import('./pages/IntegrationsPage'))
-const CampaignsPage = lazy(() => import('./pages/CampaignsPage'))
-const ReportsPage = lazy(() => import('./pages/ReportsPage'))
-const ClientsPage = lazy(() => import('./pages/ClientsPage'))
-const TeamPage = lazy(() => import('./pages/TeamPage'))
-const SettingsPage = lazy(() => import('./pages/SettingsPage'))
-const FunnelsPage = lazy(() => import('./pages/FunnelsPage'))
-const AdminPage = lazy(() => import('./pages/AdminPage'))
-const BillingPage = lazy(() => import('./pages/BillingPage'))
-const DashboardBuilderPage = lazy(() => import('./pages/DashboardBuilderPage'))
-const ConversionTruthPage = lazy(() => import('./pages/ConversionTruthPage'))
-const AIInsightsPage = lazy(() => import('./pages/AIInsightsPage'))
-const GoogleAdsPage = lazy(() => import('./pages/GoogleAdsPage'))
-const GoalsPage = lazy(() => import('./pages/GoalsPage'))
-const OverviewPage = lazy(() => import('./pages/OverviewPage'))
-const SharedDashboardPage = lazy(() => import('./pages/SharedDashboardPage'))
-const PrivacyPage = lazy(() => import('./pages/PrivacyPage'))
-const TermsPage = lazy(() => import('./pages/TermsPage'))
-const ReportBuilderPage = lazy(() => import('./pages/ReportBuilderPage'))
-const NotFoundPage = lazy(() => import('./pages/NotFoundPage'))
+// Retry wrapper for lazy imports — handles chunk load failures on deploy
+function lazyRetry(factory: () => Promise<{ default: React.ComponentType }>, retries = 2) {
+  return lazy(() =>
+    factory().catch((err) => {
+      if (retries > 0) {
+        return new Promise<{ default: React.ComponentType }>((resolve) => {
+          setTimeout(() => resolve(lazyRetry(factory, retries - 1) as unknown as Promise<{ default: React.ComponentType }>), 500)
+        })
+      }
+      // All retries failed — reload the page to get fresh chunks
+      window.location.reload()
+      throw err
+    })
+  )
+}
+
+// ============================================
+// Public pages (sem auth)
+// ============================================
+const LandingPage = lazyRetry(() => import('./pages/LandingPage'))
+const LoginPage = lazyRetry(() => import('./pages/LoginPage'))
+const PrivacyPage = lazyRetry(() => import('./pages/PrivacyPage'))
+const TermsPage = lazyRetry(() => import('./pages/TermsPage'))
+const NotFoundPage = lazyRetry(() => import('./pages/NotFoundPage'))
+const AuthCallbackPage = lazyRetry(() => import('./pages/AuthCallbackPage'))
+
+// ============================================
+// Configurações da agência (protegidas)
+// ============================================
+const IntegrationsPage = lazyRetry(() => import('./pages/IntegrationsPage'))
+const ClientsPage = lazyRetry(() => import('./pages/ClientsPage'))
+const TeamPage = lazyRetry(() => import('./pages/TeamPage'))
+const SettingsPage = lazyRetry(() => import('./pages/SettingsPage'))
+const AdminPage = lazyRetry(() => import('./pages/AdminPage'))
+const BillingPage = lazyRetry(() => import('./pages/BillingPage'))
+
+// ============================================
+// v4 — Os 3 pilares + navegação da agência
+// ============================================
+const V4DesignSystemPage = lazyRetry(() => import('./pages/_v4/DesignSystemPage'))
+const V4AgencyOverviewPage = lazyRetry(() => import('./pages/_v4/AgencyOverviewPage'))
+const V4ClientOverviewPage = lazyRetry(() => import('./pages/_v4/ClientOverviewPage'))
+const V4ClientProjectPage = lazyRetry(() => import('./pages/_v4/ClientProjectPage'))
+const V4ClientPerformancePage = lazyRetry(() => import('./pages/_v4/ClientPerformancePage'))
+const V4ClientPlannerPage = lazyRetry(() => import('./pages/_v4/ClientPlannerPage'))
+const V4PublicFlowPage = lazyRetry(() => import('./pages/_v4/PublicFlowPage'))
+const V4PlaybookPage = lazyRetry(() => import('./pages/_v4/PlaybookPage'))
 
 // Error Boundary para capturar erros de React
 interface ErrorBoundaryState {
@@ -99,7 +121,8 @@ class ErrorBoundary extends Component<{ children: ReactNode }, ErrorBoundaryStat
   }
 }
 
-// Protected Route Component
+// Protected Route Component — wraps all authenticated routes and
+// mounts the SnapshotWarmer so live data is fetched once per session.
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading } = useAuth()
 
@@ -114,7 +137,9 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     )
   }
 
-  return user ? <>{children}</> : <Navigate to="/login" replace />
+  if (!user) return <Navigate to="/login" replace />
+
+  return <SnapshotWarmer>{children}</SnapshotWarmer>
 }
 
 // Public Route - redirects to dashboard if logged in
@@ -158,127 +183,113 @@ function App() {
           <CommandPaletteProvider>
           <Suspense fallback={<PageLoader />}>
           <Routes>
-            {/* Public Routes */}
-            <Route
-              path="/"
-              element={
-                <PublicRoute>
-                  <LandingPage />
-                </PublicRoute>
-              }
-            />
-            <Route
-              path="/login"
-              element={
-                <PublicRoute>
-                  <LoginPage />
-                </PublicRoute>
-              }
-            />
+            {/* ══════════════════════════════════════════════════
+                PÚBLICAS (sem auth)
+                ══════════════════════════════════════════════════ */}
+            <Route path="/" element={<PublicRoute><LandingPage /></PublicRoute>} />
+            <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
+            <Route path="/privacy" element={<PrivacyPage />} />
+            <Route path="/terms" element={<TermsPage />} />
 
-            {/* Protected Routes - wrapped with AppLayout */}
+            {/* Public flow sharing (no auth) — Planner read-only */}
+            <Route path="/p/:token" element={<V4PublicFlowPage />} />
+
+            {/* OAuth callback — Google landa aqui */}
+            <Route path="/auth/google/callback" element={<AuthCallbackPage />} />
+
+            {/* ══════════════════════════════════════════════════
+                NÍVEL 1 — Agência (Efeito Digital)
+                ══════════════════════════════════════════════════ */}
             <Route
-              path="/dashboard"
+              path="/_v4/operations"
               element={
                 <ProtectedRoute>
                   <AppLayout>
-                    <DashboardPage />
+                    <V4AgencyOverviewPage />
                   </AppLayout>
                 </ProtectedRoute>
               }
             />
-            <Route
-              path="/editor"
-              element={
-                <ProtectedRoute>
-                  <AppLayout>
-                    <FlowEditorPage />
-                  </AppLayout>
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/editor/:id"
-              element={
-                <ProtectedRoute>
-                  <AppLayout>
-                    <FlowEditorPage />
-                  </AppLayout>
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/bi"
-              element={
-                <ProtectedRoute>
-                  <AppLayout>
-                    <BIDashboardPage />
-                  </AppLayout>
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/campaigns"
-              element={
-                <ProtectedRoute>
-                  <AppLayout>
-                    <CampaignsPage />
-                  </AppLayout>
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/funnels"
-              element={
-                <ProtectedRoute>
-                  <AppLayout>
-                    <FunnelsPage />
-                  </AppLayout>
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/integrations"
-              element={
-                <ProtectedRoute>
-                  <AppLayout>
-                    <IntegrationsPage />
-                  </AppLayout>
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/reports"
-              element={
-                <ProtectedRoute>
-                  <AppLayout>
-                    <ReportsPage />
-                  </AppLayout>
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/report-builder"
-              element={
-                <ProtectedRoute>
-                  <ReportBuilderPage />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/report-builder/:id"
-              element={
-                <ProtectedRoute>
-                  <ReportBuilderPage />
-                </ProtectedRoute>
-              }
-            />
+            {/* Alias legacy: /dashboard → nova visão geral */}
+            <Route path="/dashboard" element={<Navigate to="/_v4/operations" replace />} />
+            <Route path="/overview" element={<Navigate to="/_v4/operations" replace />} />
+
+            {/* Clientes list (mantida por enquanto, link da sidebar) */}
             <Route
               path="/clients"
               element={
                 <ProtectedRoute>
                   <AppLayout>
                     <ClientsPage />
+                  </AppLayout>
+                </ProtectedRoute>
+              }
+            />
+
+            {/* ══════════════════════════════════════════════════
+                NÍVEL 2-4 — Cliente (os 3 pilares)
+                ══════════════════════════════════════════════════ */}
+            <Route
+              path="/c/:clientSlug/overview"
+              element={
+                <ProtectedRoute>
+                  <AppLayout>
+                    <V4ClientOverviewPage />
+                  </AppLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/c/:clientSlug/planner"
+              element={
+                <ProtectedRoute>
+                  <AppLayout>
+                    <V4ClientPlannerPage />
+                  </AppLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/c/:clientSlug/performance"
+              element={
+                <ProtectedRoute>
+                  <AppLayout>
+                    <V4ClientPerformancePage />
+                  </AppLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/c/:clientSlug/projeto"
+              element={
+                <ProtectedRoute>
+                  <AppLayout>
+                    <V4ClientProjectPage />
+                  </AppLayout>
+                </ProtectedRoute>
+              }
+            />
+
+            {/* ══════════════════════════════════════════════════
+                CONFIGURAÇÕES DA AGÊNCIA
+                ══════════════════════════════════════════════════ */}
+            <Route
+              path="/playbook"
+              element={
+                <ProtectedRoute>
+                  <AppLayout>
+                    <V4PlaybookPage />
+                  </AppLayout>
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/integrations"
+              element={
+                <ProtectedRoute>
+                  <AppLayout>
+                    <IntegrationsPage />
                   </AppLayout>
                 </ProtectedRoute>
               }
@@ -323,80 +334,20 @@ function App() {
                 </ProtectedRoute>
               }
             />
+
+            {/* ══════════════════════════════════════════════════
+                DEV — Design System showcase
+                ══════════════════════════════════════════════════ */}
             <Route
-              path="/dashboard-builder"
+              path="/_v4/design-system"
               element={
                 <ProtectedRoute>
-                  <DashboardBuilderPage />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/dashboard-builder/:id"
-              element={
-                <ProtectedRoute>
-                  <DashboardBuilderPage />
+                  <V4DesignSystemPage />
                 </ProtectedRoute>
               }
             />
 
-            <Route
-              path="/google-ads"
-              element={
-                <ProtectedRoute>
-                  <AppLayout>
-                    <GoogleAdsPage />
-                  </AppLayout>
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/conversion-truth"
-              element={
-                <ProtectedRoute>
-                  <AppLayout>
-                    <ConversionTruthPage />
-                  </AppLayout>
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/insights"
-              element={
-                <ProtectedRoute>
-                  <AppLayout>
-                    <AIInsightsPage />
-                  </AppLayout>
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/goals"
-              element={
-                <ProtectedRoute>
-                  <AppLayout>
-                    <GoalsPage />
-                  </AppLayout>
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/overview"
-              element={
-                <ProtectedRoute>
-                  <AppLayout>
-                    <OverviewPage />
-                  </AppLayout>
-                </ProtectedRoute>
-              }
-            />
-
-            {/* Public pages (no auth) */}
-            <Route path="/share/:token" element={<SharedDashboardPage />} />
-            <Route path="/privacy" element={<PrivacyPage />} />
-            <Route path="/terms" element={<TermsPage />} />
-
-            {/* Catch all - redirect to home */}
+            {/* Catch all */}
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
           </Suspense>

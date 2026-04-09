@@ -12,18 +12,12 @@ import { useNavigate } from 'react-router-dom'
 import {
   Search,
   LayoutDashboard,
-  GitBranch,
-  BarChart3,
-  Megaphone,
-  Target,
   Link2,
-  FileText,
   FolderKanban,
   Users,
   CreditCard,
   Settings,
   Shield,
-  Plus,
   ArrowRight,
 } from 'lucide-react'
 
@@ -101,24 +95,16 @@ export function CommandPaletteProvider({ children }: { children: ReactNode }) {
     }
   }, [isOpen])
 
-  // Build items list
+  // Build items list — aligned with v4 structure (3 pillars)
   const allItems: PaletteItem[] = [
-    // Pages
-    { id: 'dashboard', label: 'Dashboard', description: 'KPIs e visão geral', icon: LayoutDashboard, action: () => navigate('/dashboard'), category: 'page' },
-    { id: 'editor', label: 'Flow Editor', description: 'Editor visual de fluxos', icon: GitBranch, action: () => navigate('/editor'), category: 'page' },
-    { id: 'bi', label: 'B.I. & Analytics', description: 'Dashboards de vendas e e-commerce', icon: BarChart3, action: () => navigate('/bi'), category: 'page' },
-    { id: 'campaigns', label: 'Campanhas', description: 'Performance Meta Ads', icon: Megaphone, action: () => navigate('/campaigns'), category: 'page' },
-    { id: 'funnels', label: 'Funis', description: 'Templates e funis criados', icon: Target, action: () => navigate('/funnels'), category: 'page' },
-    { id: 'integrations', label: 'Integrações', description: 'Contas de anúncio conectadas', icon: Link2, action: () => navigate('/integrations'), category: 'page' },
-    { id: 'reports', label: 'Relatórios', description: 'Criar e compartilhar relatórios', icon: FileText, action: () => navigate('/reports'), category: 'page' },
+    // Agency level
+    { id: 'operations', label: 'Operações — Visão Geral', description: 'Todos os clientes', icon: LayoutDashboard, action: () => navigate('/_v4/operations'), category: 'page' },
     { id: 'clients', label: 'Clientes', description: 'Gerenciar clientes da agência', icon: FolderKanban, action: () => navigate('/clients'), category: 'page' },
+    { id: 'integrations', label: 'Integrações', description: 'Conexões Meta, Google, ClickUp, Kommo', icon: Link2, action: () => navigate('/integrations'), category: 'page' },
     { id: 'team', label: 'Equipe', description: 'Membros e convites', icon: Users, action: () => navigate('/team'), category: 'page' },
-    { id: 'billing', label: 'Faturamento', description: 'Planos, faturas e pagamento', icon: CreditCard, action: () => navigate('/billing'), category: 'page' },
-    { id: 'settings', label: 'Configurações', description: 'Perfil, senha e preferências', icon: Settings, action: () => navigate('/settings'), category: 'page' },
+    { id: 'billing', label: 'Planos & Billing', description: 'Planos, faturas e pagamento', icon: CreditCard, action: () => navigate('/billing'), category: 'page' },
+    { id: 'settings', label: 'Marca & Ajustes', description: 'Perfil, marca e preferências', icon: Settings, action: () => navigate('/settings'), category: 'page' },
     { id: 'admin', label: 'Admin Global', description: 'Painel super admin', icon: Shield, action: () => navigate('/admin'), category: 'page' },
-    // Actions
-    { id: 'new-flow', label: 'Criar novo flow', description: 'Abrir editor em branco', icon: Plus, action: () => navigate('/editor'), category: 'action' },
-    { id: 'new-report', label: 'Criar relatório', description: 'Novo relatório de performance', icon: Plus, action: () => navigate('/reports'), category: 'action' },
   ]
 
   // Filter

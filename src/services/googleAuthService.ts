@@ -21,11 +21,15 @@ const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || ''
 const GOOGLE_REDIRECT_URI = import.meta.env.VITE_GOOGLE_REDIRECT_URI || `${window.location.origin}/auth/google/callback`
 const N8N_BASE_URL = import.meta.env.VITE_N8N_WEBHOOK_URL || 'https://ia-kommo-n8n.xl78rn.easypanel.host/webhook'
 
+/** Vercel serverless proxy for token operations */
+const VERCEL_API_URL = `${window.location.origin}/api/google-ads`
+const USE_DIRECT_API = import.meta.env.VITE_GOOGLE_ADS_DIRECT !== 'false'
+
 // =====================================================
 // TYPES
 // =====================================================
 
-export type GooglePlatform = 'google_ads' | 'ga4' | 'search_console'
+export type GooglePlatform = 'google_ads' | 'ga4' | 'search_console' | 'youtube' | 'gmb'
 
 export interface GoogleAccount {
   id: string
@@ -66,6 +70,13 @@ export const GOOGLE_SCOPES: Record<GooglePlatform, string[]> = {
   ],
   search_console: [
     'https://www.googleapis.com/auth/webmasters.readonly',
+  ],
+  youtube: [
+    'https://www.googleapis.com/auth/youtube.readonly',
+    'https://www.googleapis.com/auth/yt-analytics.readonly',
+  ],
+  gmb: [
+    'https://www.googleapis.com/auth/business.manage',
   ],
 }
 
@@ -122,17 +133,34 @@ export const googleAuthService = {
   },
 
   /**
-   * Exchange the authorization code for tokens via N8N proxy.
+   * Exchange the authorization code for tokens.
+   * Uses Vercel /api/google-ads proxy (preferred) with N8N fallback.
    * NEVER expose client_secret in frontend.
    */
   async exchangeCodeForTokens(code: string): Promise<GoogleTokenResponse> {
+    // Try Vercel proxy first
+    if (USE_DIRECT_API) {
+      try {
+        const response = await fetch(VERCEL_API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'exchange',
+            code,
+            redirect_uri: GOOGLE_REDIRECT_URI,
+          }),
+        })
+        if (response.ok) return response.json()
+      } catch {
+        console.warn('[googleAuth] Direct API unavailable for exchange, falling back to N8N')
+      }
+    }
+
+    // Fallback: N8N
     const response = await fetch(`${N8N_BASE_URL}/adsflow/google-token-exchange`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        code,
-        redirect_uri: GOOGLE_REDIRECT_URI,
-      }),
+      body: JSON.stringify({ code, redirect_uri: GOOGLE_REDIRECT_URI }),
     })
 
     if (!response.ok) {
@@ -144,9 +172,28 @@ export const googleAuthService = {
   },
 
   /**
-   * Refresh an expired access token via N8N proxy.
+   * Refresh an expired access token.
+   * Uses Vercel /api/google-ads proxy (preferred) with N8N fallback.
    */
   async refreshAccessToken(refreshToken: string): Promise<GoogleTokenResponse> {
+    // Try Vercel proxy first
+    if (USE_DIRECT_API) {
+      try {
+        const response = await fetch(VERCEL_API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'refresh',
+            refresh_token: refreshToken,
+          }),
+        })
+        if (response.ok) return response.json()
+      } catch {
+        console.warn('[googleAuth] Direct API unavailable for refresh, falling back to N8N')
+      }
+    }
+
+    // Fallback: N8N
     const response = await fetch(`${N8N_BASE_URL}/adsflow/google-token-refresh`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

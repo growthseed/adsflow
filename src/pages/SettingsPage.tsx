@@ -210,15 +210,22 @@ function PasswordSection() {
     }
   }
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    handleChange()
+  }
+
   return (
     <SettingsSection icon={Lock} title="Senha" description="Altere sua senha de acesso">
-      <div className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-slate-700 mb-1">Nova Senha</label>
           <div className="relative">
             <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
             <input
               type={showPass ? 'text' : 'password'}
+              name="new-password"
+              autoComplete="new-password"
               value={newPass}
               onChange={(e) => setNewPass(e.target.value)}
               onBlur={() => setTouched((t) => ({ ...t, newPass: true }))}
@@ -257,6 +264,8 @@ function PasswordSection() {
             <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
             <input
               type={showPass ? 'text' : 'password'}
+              name="confirm-password"
+              autoComplete="new-password"
               value={confirmPass}
               onChange={(e) => setConfirmPass(e.target.value)}
               onBlur={() => setTouched((t) => ({ ...t, confirm: true }))}
@@ -270,14 +279,14 @@ function PasswordSection() {
         </div>
 
         <button
-          onClick={handleChange}
+          type="submit"
           disabled={saving || !newPass || !confirmPass}
           className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 text-sm font-medium"
         >
           <Lock className="w-4 h-4" />
           {saving ? 'Alterando...' : 'Alterar Senha'}
         </button>
-      </div>
+      </form>
     </SettingsSection>
   )
 }

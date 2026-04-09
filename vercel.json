@@ -1,5 +1,6 @@
 {
   "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/$1" },
     { "source": "/(.*)", "destination": "/index.html" }
   ],
   "headers": [
@@ -11,6 +12,24 @@
           "value": "public, max-age=31536000, immutable"
         }
       ]
+    }
+  ],
+  "functions": {
+    "api/sync/clickup.ts": {
+      "maxDuration": 120
+    },
+    "api/sync/performance.ts": {
+      "maxDuration": 120
+    }
+  },
+  "crons": [
+    {
+      "path": "/api/sync/clickup",
+      "schedule": "0 7 * * *"
+    },
+    {
+      "path": "/api/sync/performance",
+      "schedule": "0 8 * * *"
     }
   ]
 }

@@ -2,10 +2,11 @@
  * ============================================
  * GOOGLE ADS SERVICE — API + Sync + Queries
  * ============================================
- * Integrates with Google Ads API via N8N proxy.
- * Manages campaigns, insights, keywords with daily granularity.
+ * Integrates with Google Ads API via direct Vercel proxy (/api/google-ads)
+ * with automatic fallback to N8N if the Vercel route is unavailable.
  *
- * Flow: Frontend → N8N Webhook → Google Ads API → N8N → Response
+ * Flow (primary):  Frontend → /api/google-ads → Google Ads REST API
+ * Flow (fallback): Frontend → N8N Webhook → Google Ads API → N8N
  * Storage: Results upserted to Supabase google_ads_* tables
  */
 
@@ -19,6 +20,12 @@ import { googleAuthService } from './googleAuthService'
 const N8N_BASE_URL =
   import.meta.env.VITE_N8N_WEBHOOK_URL ||
   'https://ia-kommo-n8n.xl78rn.easypanel.host/webhook'
+
+/** Vercel serverless API route — direct Google Ads proxy */
+const VERCEL_API_URL = `${window.location.origin}/api/google-ads`
+
+/** Use direct API by default, set to false to force N8N */
+const USE_DIRECT_API = import.meta.env.VITE_GOOGLE_ADS_DIRECT !== 'false'
 
 // =====================================================
 // TYPES
@@ -110,36 +117,73 @@ export interface DateRange {
 }
 
 // =====================================================
-// N8N API CALLS
+// API CALLS — Direct (/api/google-ads) with N8N fallback
 // =====================================================
 
 /**
- * Fetch campaigns from Google Ads API via N8N proxy
+ * Call the Vercel serverless proxy first; fall back to N8N if unavailable.
+ */
+async function callGoogleAdsApi<T>(
+  action: string,
+  payload: Record<string, unknown>,
+  n8nEndpoint: string,
+): Promise<T> {
+  // --- Primary: Vercel direct API ---
+  if (USE_DIRECT_API) {
+    try {
+      const response = await fetch(VERCEL_API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action, ...payload }),
+      })
+
+      if (response.ok) {
+        return response.json()
+      }
+
+      // If 500 with "not configured", fall through to N8N
+      const errText = await response.text().catch(() => '')
+      if (!errText.includes('not configured')) {
+        throw new Error(`Google Ads API (${response.status}): ${errText}`)
+      }
+    } catch (err) {
+      // Network error → try N8N fallback
+      console.warn('[googleAdsService] Direct API unavailable, falling back to N8N:', err)
+    }
+  }
+
+  // --- Fallback: N8N proxy ---
+  const response = await fetch(`${N8N_BASE_URL}${n8nEndpoint}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  })
+
+  if (!response.ok) {
+    const error = await response.text().catch(() => 'Unknown error')
+    throw new Error(`Google Ads N8N fetch failed: ${error}`)
+  }
+
+  return response.json()
+}
+
+/**
+ * Fetch campaigns from Google Ads API
  */
 export async function listCampaigns(
   accountId: string,
   accessToken: string,
 ): Promise<GoogleAdsCampaign[]> {
-  const response = await fetch(`${N8N_BASE_URL}/adsflow/google-ads-campaigns`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      account_id: accountId,
-      access_token: accessToken,
-    }),
-  })
-
-  if (!response.ok) {
-    const error = await response.text().catch(() => 'Unknown error')
-    throw new Error(`Google Ads campaigns fetch failed: ${error}`)
-  }
-
-  const result = await response.json()
+  const result = await callGoogleAdsApi<{ campaigns: GoogleAdsCampaign[] }>(
+    'campaigns',
+    { account_id: accountId, access_token: accessToken },
+    '/adsflow/google-ads-campaigns',
+  )
   return result.campaigns || []
 }
 
 /**
- * Fetch campaign performance insights via N8N proxy
+ * Fetch campaign performance insights
  */
 export async function getCampaignInsights(
   accountId: string,
@@ -147,28 +191,16 @@ export async function getCampaignInsights(
   dateTo: string,
   accessToken: string,
 ): Promise<GoogleAdsInsight[]> {
-  const response = await fetch(`${N8N_BASE_URL}/adsflow/google-ads-insights`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      account_id: accountId,
-      access_token: accessToken,
-      date_from: dateFrom,
-      date_to: dateTo,
-    }),
-  })
-
-  if (!response.ok) {
-    const error = await response.text().catch(() => 'Unknown error')
-    throw new Error(`Google Ads insights fetch failed: ${error}`)
-  }
-
-  const result = await response.json()
+  const result = await callGoogleAdsApi<{ insights: GoogleAdsInsight[] }>(
+    'insights',
+    { account_id: accountId, access_token: accessToken, date_from: dateFrom, date_to: dateTo },
+    '/adsflow/google-ads-insights',
+  )
   return result.insights || []
 }
 
 /**
- * Fetch keyword data with quality scores via N8N proxy
+ * Fetch keyword data with quality scores
  */
 export async function getKeywordInsights(
   accountId: string,
@@ -177,24 +209,11 @@ export async function getKeywordInsights(
   dateTo: string,
   accessToken: string,
 ): Promise<GoogleAdsKeyword[]> {
-  const response = await fetch(`${N8N_BASE_URL}/adsflow/google-ads-keywords`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      account_id: accountId,
-      access_token: accessToken,
-      campaign_id: campaignId,
-      date_from: dateFrom,
-      date_to: dateTo,
-    }),
-  })
-
-  if (!response.ok) {
-    const error = await response.text().catch(() => 'Unknown error')
-    throw new Error(`Google Ads keywords fetch failed: ${error}`)
-  }
-
-  const result = await response.json()
+  const result = await callGoogleAdsApi<{ keywords: GoogleAdsKeyword[] }>(
+    'keywords',
+    { account_id: accountId, access_token: accessToken, campaign_id: campaignId, date_from: dateFrom, date_to: dateTo },
+    '/adsflow/google-ads-keywords',
+  )
   return result.keywords || []
 }
 
