@@ -19,7 +19,7 @@ import type { KPI, ProjectScopeId } from '@/types/metrics'
 
 export function getKPIsForScope(scope: ProjectScopeId): KPI[] {
   switch (scope) {
-    case 'educacao':
+    case 'leads_b2b':
       return [
         {
           key: 'edu.enrollments',
@@ -81,7 +81,7 @@ export function getKPIsForScope(scope: ProjectScopeId): KPI[] {
         },
       ]
 
-    case 'lead_gen':
+    case 'sales_inside':
       return [
         {
           key: 'lead.qualified',
@@ -138,7 +138,9 @@ export function getKPIsForScope(scope: ProjectScopeId): KPI[] {
         },
       ]
 
-    case 'performance':
+    case 'ecommerce':
+    case 'pdv_local':
+    case 'custom':
     default:
       return [
         {

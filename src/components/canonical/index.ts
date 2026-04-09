@@ -23,3 +23,7 @@ export type { EmptyStateProps } from './EmptyState'
 
 export { ScopeSelector } from './ScopeSelector'
 export type { ScopeSelectorProps } from './ScopeSelector'
+
+export { default as TierGate, tierGte } from './TierGate'
+export { default as PermissionGate } from './PermissionGate'
+export { default as UpgradePrompt } from './UpgradePrompt'

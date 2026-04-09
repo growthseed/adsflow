@@ -11,6 +11,16 @@ import { createContext, useContext, useEffect, useState, useMemo, useCallback } 
 import type { ReactNode } from 'react';
 import type { User, AuthError } from '@supabase/supabase-js';
 import supabase, { isSupabaseConfigured } from '../lib/supabase';
+import { SERVICE_TIERS } from '@/data/serviceTiers';
+import type { ClientServiceTier, ClientServiceTierConfig } from '@/types/metrics';
+import {
+  permKey,
+  type PermissionModule,
+  type PermissionAction,
+  type PermissionKey,
+  type RolePermissionsMap,
+  type ClientOverridesMap,
+} from '@/types/permissions';
 
 // ========== TYPES ==========
 
@@ -39,6 +49,10 @@ export interface ClientMembership {
     logo_url: string | null;
     status: string;
     industry: string | null;
+    /** Column in DB: service_tier. Default 'basic'. */
+    tier: ClientServiceTier;
+    /** Column in DB: active_scope. Default 'performance'. */
+    scope: string;
   };
 }
 
@@ -75,6 +89,18 @@ export interface AuthContextType {
   isSuperAdmin: boolean;
   isGlobalAdmin: boolean;
   hasClientRole: (minRole: ClientRole) => boolean;
+
+  // Sprint 1 — Tier + Permission resolution
+  /** Tier of the active client ('basic' | 'pro' | 'black' | 'enterprise'). */
+  activeClientTier: ClientServiceTier | null;
+  /** Full tier config (channels, feature flags) from SERVICE_TIERS. */
+  activeClientTierConfig: ClientServiceTierConfig | null;
+  /**
+   * Permission resolver. Returns true when the current user can perform
+   * `action` on `module`. Checks role_permissions template + per-client
+   * overrides + staff bypass (super_admin/global admin always pass).
+   */
+  can: (module: PermissionModule, action: PermissionAction) => boolean;
 
   // Auth actions
   signUp: (email: string, password: string, metadata?: { name?: string; company?: string }) => Promise<{ error: AuthError | null }>;
@@ -118,6 +144,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return null;
   });
   const [loading, setLoading] = useState(true);
+
+  // Sprint 1 — permission maps. Role templates are global and loaded once;
+  // client overrides are scoped to the active client and reload on switch.
+  const [rolePermissions, setRolePermissions] = useState<RolePermissionsMap>({});
+  const [clientOverrides, setClientOverrides] = useState<ClientOverridesMap>({});
 
   // ---- Derived state ----
   const user = useMemo((): AuthUser | null => {
@@ -202,13 +233,39 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           const clientsResult = await withTimeout(
             supabase
               .from('clients')
-              .select('id, name, slug, logo_url, status, industry')
+              .select('id, name, slug, logo_url, status, industry, service_tier, active_scope')
               .in('id', clientIds),
             'fetchClients',
           )
 
           if (!clientsResult.error && clientsResult.data) {
-            const clientMap = new Map(clientsResult.data.map((c: { id: string }) => [c.id, c]))
+            // Normalize DB column names (service_tier, active_scope) to the
+            // shorter fields the rest of the app consumes (tier, scope).
+            type RawClient = {
+              id: string
+              name: string
+              slug: string
+              logo_url: string | null
+              status: string
+              industry: string | null
+              service_tier: ClientServiceTier | null
+              active_scope: string | null
+            }
+            const clientMap = new Map<string, ClientMembership['client']>(
+              (clientsResult.data as RawClient[]).map((c) => [
+                c.id,
+                {
+                  id: c.id,
+                  name: c.name,
+                  slug: c.slug,
+                  logo_url: c.logo_url,
+                  status: c.status,
+                  industry: c.industry,
+                  tier: (c.service_tier as ClientServiceTier) ?? 'basic',
+                  scope: c.active_scope ?? 'performance',
+                },
+              ]),
+            )
             const mapped: ClientMembership[] = memberships
               .filter((m: { client_id: string }) => clientMap.has(m.client_id))
               .map((m: { client_id: string; role: ClientRole }) => ({
@@ -277,6 +334,42 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
     };
 
+    // Sprint 1 — load the global role_permissions template once. This is
+    // public reference data (RLS read-open to authenticated) so a single
+    // fetch per session is enough. Per-client overrides load separately
+    // when the active client changes (see the effect below).
+    ;(async () => {
+      try {
+        const { data, error } = await supabase
+          .from('role_permissions')
+          .select('role_name, permissions(module, action)')
+        if (error) {
+          console.warn('[auth] role_permissions fetch failed:', error.message)
+          return
+        }
+        // Supabase v2 infers the joined `permissions` field as an array
+        // even for many-to-one FKs. Normalize to first element.
+        type PermLite = { module: PermissionModule; action: PermissionAction }
+        type Row = {
+          role_name: string
+          permissions: PermLite | PermLite[] | null
+        }
+        const map: Record<string, Set<PermissionKey>> = {}
+        for (const row of (data || []) as unknown as Row[]) {
+          const perm = Array.isArray(row.permissions)
+            ? row.permissions[0]
+            : row.permissions
+          if (!perm) continue
+          const key = `${perm.module}:${perm.action}` as PermissionKey
+          if (!map[row.role_name]) map[row.role_name] = new Set()
+          map[row.role_name].add(key)
+        }
+        if (mounted) setRolePermissions(map)
+      } catch (err) {
+        console.warn('[auth] role_permissions fetch crashed:', err)
+      }
+    })();
+
     initSession();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
@@ -319,6 +412,83 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (!activeClientRole) return false;
     return CLIENT_ROLE_HIERARCHY[activeClientRole] >= CLIENT_ROLE_HIERARCHY[minRole];
   }, [activeClientRole, isSuperAdmin]);
+
+  // ---- Sprint 1 — Tier derivation ----
+
+  const activeClientTier = useMemo<ClientServiceTier | null>(
+    () => activeClient?.client.tier ?? null,
+    [activeClient],
+  );
+
+  const activeClientTierConfig = useMemo<ClientServiceTierConfig | null>(
+    () => (activeClientTier ? SERVICE_TIERS[activeClientTier] ?? null : null),
+    [activeClientTier],
+  );
+
+  // ---- Sprint 1 — Per-client overrides loader ----
+  // Enterprise clients can flip individual (role, permission) pairs.
+  // We scope the fetch to the active client only — no point loading
+  // overrides the user can't act on.
+  useEffect(() => {
+    if (!activeClient) {
+      setClientOverrides({});
+      return;
+    }
+    let cancelled = false;
+    ;(async () => {
+      try {
+        const { data, error } = await supabase
+          .from('client_role_overrides')
+          .select('role_name, is_granted, permissions(module, action)')
+          .eq('client_id', activeClient.client_id)
+        if (error || !data) return
+        type PermLite = { module: PermissionModule; action: PermissionAction }
+        type Row = {
+          role_name: string
+          is_granted: boolean
+          permissions: PermLite | PermLite[] | null
+        }
+        const map: ClientOverridesMap = {}
+        for (const row of data as unknown as Row[]) {
+          const perm = Array.isArray(row.permissions)
+            ? row.permissions[0]
+            : row.permissions
+          if (!perm) continue
+          const key = permKey(perm.module, perm.action)
+          if (!map[row.role_name]) map[row.role_name] = {}
+          map[row.role_name]![key] = row.is_granted
+        }
+        if (!cancelled) setClientOverrides(map)
+      } catch (err) {
+        console.warn('[auth] client_role_overrides fetch failed:', err)
+      }
+    })()
+    return () => {
+      cancelled = true
+    }
+  }, [activeClient])
+
+  // ---- Sprint 1 — can() resolver ----
+  // Resolution order:
+  //   1. super_admin / global admin → always allow (staff bypass)
+  //   2. If an override exists for the active role+permission, use it
+  //   3. Otherwise fall back to the role_permissions template
+  //   4. Default deny
+  const can = useCallback(
+    (module: PermissionModule, action: PermissionAction): boolean => {
+      if (isGlobalAdmin) return true;
+      const role = activeClientRole
+      if (!role) return false
+
+      const key = permKey(module, action)
+
+      const override = clientOverrides[role]?.[key]
+      if (override !== undefined) return override
+
+      return rolePermissions[role]?.has(key) ?? false
+    },
+    [isGlobalAdmin, activeClientRole, clientOverrides, rolePermissions],
+  );
 
   const signUp = useCallback(async (email: string, password: string, metadata?: { name?: string; company?: string }) => {
     try {
@@ -395,6 +565,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     isSuperAdmin,
     isGlobalAdmin,
     hasClientRole,
+    activeClientTier,
+    activeClientTierConfig,
+    can,
     signUp,
     signIn,
     signOut,
@@ -407,6 +580,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     user, profile, loading, isAuthenticated,
     clients, activeClient, activeClientRole, setActiveClient,
     isSuperAdmin, isGlobalAdmin, hasClientRole,
+    activeClientTier, activeClientTierConfig, can,
     signUp, signIn, signOut, refreshSession, resetPassword,
     login, register, logout,
   ]);

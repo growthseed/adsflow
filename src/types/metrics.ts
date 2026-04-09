@@ -230,14 +230,16 @@ export type ComparisonMode =
 // PROJECT SCOPE — métricas de sucesso por tipo de projeto
 // =============================================================
 
+/**
+ * TDD v3.0 canonical scopes. The 8 legacy ids (performance, branding,
+ * social, lead_gen, educacao, hibrido) resolve to one of these via
+ * `resolveScopeId()` in `@/data/projectScopes`.
+ */
 export type ProjectScopeId =
-  | 'branding'
-  | 'social'
-  | 'performance'
-  | 'lead_gen'
+  | 'leads_b2b'
   | 'ecommerce'
-  | 'hibrido'
-  | 'educacao'        // vertical custom
+  | 'pdv_local'
+  | 'sales_inside'
   | 'custom'
 
 export interface ProjectScopeMetric {

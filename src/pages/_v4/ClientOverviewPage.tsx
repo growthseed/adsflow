@@ -48,6 +48,7 @@ import {
 } from '@/data/mockPerformance'
 import { formatMetric } from '@/lib/formatMetric'
 import type { KPI, ProjectScopeId } from '@/types/metrics'
+import { inferDefaultScope } from '@/data/projectScopes'
 
 const PERIOD_OPTIONS = [
   { value: 'last_7_days', label: 'Últimos 7 dias' },
@@ -74,18 +75,13 @@ export default function ClientOverviewPage() {
     [clientSlug],
   )
 
-  // Default scope inference from industry (until persisted in Supabase).
-  // Depend on the whole `client` object — React Compiler infers the wider
-  // dep when a nested `?.industry` access is used, so we declare it that
-  // way to keep the manual/inferred deps aligned.
-  const defaultScope: ProjectScopeId = useMemo(() => {
-    if (!client?.industry) return 'performance'
-    const i = client.industry.toLowerCase()
-    if (i.includes('educa')) return 'educacao'
-    if (i.includes('saúde') || i.includes('saude') || i.includes('med')) return 'lead_gen'
-    if (i.includes('ecomm') || i.includes('varej')) return 'ecommerce'
-    return 'performance'
-  }, [client])
+  // Default scope inferred from the client's industry via the canonical
+  // helper. See src/data/projectScopes.ts for the full rule set (includes
+  // backward compat with the legacy 8 scope ids).
+  const defaultScope: ProjectScopeId = useMemo(
+    () => inferDefaultScope(client?.industry),
+    [client],
+  )
 
   const [scope, setScope] = useState<ProjectScopeId>(defaultScope)
   const [period, setPeriod] = useState<Period>('last_30_days')

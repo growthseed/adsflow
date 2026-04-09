@@ -73,7 +73,7 @@ const sampleKPIs: KPI[] = [
 ]
 
 export default function DesignSystemPage() {
-  const [scope, setScope] = useState<ProjectScopeId>('performance')
+  const [scope, setScope] = useState<ProjectScopeId>('leads_b2b')
 
   return (
     <div className="min-h-screen bg-[var(--surface-page)]">
