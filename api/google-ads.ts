@@ -18,6 +18,12 @@
  */
 
 import type { VercelRequest, VercelResponse } from '@vercel/node'
+import {
+  applyCors,
+  allowMethods,
+  requireUserAuth,
+  requireClientMembership,
+} from './_lib/security'
 
 // =====================================================
 // CONFIG
@@ -34,19 +40,42 @@ const GOOGLE_ADS_BASE = `https://googleads.googleapis.com/${GOOGLE_ADS_API_VERSI
 // =====================================================
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  // CORS for frontend
-  res.setHeader('Access-Control-Allow-Origin', '*')
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS')
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
-
-  if (req.method === 'OPTIONS') return res.status(200).end()
-  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' })
+  if (!applyCors(req, res)) return
+  if (!allowMethods(req, res, ['POST'])) return
 
   if (!DEVELOPER_TOKEN) {
     return res.status(500).json({ error: 'GOOGLE_ADS_DEVELOPER_TOKEN not configured' })
   }
 
-  const { action, ...body } = req.body || {}
+  // Verify JWT — closes the "open proxy" hole flagged by the audit.
+  const auth = await requireUserAuth(req, res)
+  if (!auth) return
+
+  const { action, client_slug, ...body } = req.body || {}
+
+  // OAuth endpoints (exchange/refresh) only need an authenticated user —
+  // they don't act on a specific tenant's data, so no client_slug required.
+  const tenantScopedActions = new Set([
+    'campaigns',
+    'insights',
+    'keywords',
+    'youtube-channel',
+    'youtube-analytics',
+    'youtube-videos',
+    'gmb-locations',
+    'gmb-reviews',
+    'gmb-metrics',
+    'ga4-properties',
+    'ga4-traffic',
+    'ga4-conversions',
+    'gsc-sites',
+    'gsc-analytics',
+  ])
+
+  if (tenantScopedActions.has(action)) {
+    const client = await requireClientMembership(auth, client_slug, res)
+    if (!client) return
+  }
 
   try {
     switch (action) {

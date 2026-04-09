@@ -13,19 +13,31 @@
  */
 
 import type { VercelRequest, VercelResponse } from '@vercel/node'
+import {
+  applyCors,
+  allowMethods,
+  requireUserAuth,
+  requireClientMembership,
+} from './_lib/security'
 
 const CLIENT_ID = process.env.LINKEDIN_CLIENT_ID || ''
 const CLIENT_SECRET = process.env.LINKEDIN_CLIENT_SECRET || ''
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  res.setHeader('Access-Control-Allow-Origin', '*')
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS')
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
+  if (!applyCors(req, res)) return
+  if (!allowMethods(req, res, ['POST'])) return
 
-  if (req.method === 'OPTIONS') return res.status(200).end()
-  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' })
+  const auth = await requireUserAuth(req, res)
+  if (!auth) return
 
-  const { action, ...body } = req.body || {}
+  const { action, client_slug, ...body } = req.body || {}
+
+  // analytics/followers act on a specific client's org — require membership.
+  // exchange/refresh are OAuth bootstrap, authenticated user is enough.
+  if (action === 'analytics' || action === 'followers') {
+    const client = await requireClientMembership(auth, client_slug, res)
+    if (!client) return
+  }
 
   try {
     switch (action) {

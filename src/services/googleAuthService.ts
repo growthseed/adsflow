@@ -138,12 +138,19 @@ export const googleAuthService = {
    * NEVER expose client_secret in frontend.
    */
   async exchangeCodeForTokens(code: string): Promise<GoogleTokenResponse> {
-    // Try Vercel proxy first
+    // Try Vercel proxy first. The hardened proxy requires a Supabase JWT.
     if (USE_DIRECT_API) {
       try {
+        const { data: sessionData } = await supabase.auth.getSession()
+        const jwt = sessionData.session?.access_token
+        if (!jwt) throw new Error('no-supabase-session')
+
         const response = await fetch(VERCEL_API_URL, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${jwt}`,
+          },
           body: JSON.stringify({
             action: 'exchange',
             code,
@@ -176,12 +183,19 @@ export const googleAuthService = {
    * Uses Vercel /api/google-ads proxy (preferred) with N8N fallback.
    */
   async refreshAccessToken(refreshToken: string): Promise<GoogleTokenResponse> {
-    // Try Vercel proxy first
+    // Try Vercel proxy first. The hardened proxy requires a Supabase JWT.
     if (USE_DIRECT_API) {
       try {
+        const { data: sessionData } = await supabase.auth.getSession()
+        const jwt = sessionData.session?.access_token
+        if (!jwt) throw new Error('no-supabase-session')
+
         const response = await fetch(VERCEL_API_URL, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${jwt}`,
+          },
           body: JSON.stringify({
             action: 'refresh',
             refresh_token: refreshToken,

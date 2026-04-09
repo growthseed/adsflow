@@ -308,9 +308,17 @@ export async function insertSnapshot(payload: SnapshotInsert): Promise<{
 // CORS + method helpers
 // =============================================================
 
+/**
+ * Sync endpoints are cron-only (auth via CRON_SECRET bearer). They do not need
+ * CORS at all — they're never called from a browser. Setting `Access-Control-
+ * Allow-Origin: *` here was a leftover from when these were callable from the
+ * frontend, and the audit flagged it as an open proxy surface. Now we only
+ * emit a no-store cache header.
+ */
 export function setCommonHeaders(res: VercelResponse) {
   res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate')
-  res.setHeader('Access-Control-Allow-Origin', '*')
-  res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+  // Intentionally no Access-Control-Allow-* — these endpoints are server-to-
+  // server (Vercel cron → our function) and should never satisfy a browser
+  // preflight. If a new origin legitimately needs one of these, add it to the
+  // per-route handler via api/_lib/security.ts `applyCors`.
 }

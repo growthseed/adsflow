@@ -122,6 +122,11 @@ export interface DateRange {
 
 /**
  * Call the Vercel serverless proxy first; fall back to N8N if unavailable.
+ *
+ * Since the security hardening of 2026-04-09, the Vercel proxy requires a
+ * Supabase JWT (Authorization bearer) AND a `client_slug` in the body for any
+ * tenant-scoped action. OAuth bootstrap actions (`exchange`, `refresh`) only
+ * need the JWT.
  */
 async function callGoogleAdsApi<T>(
   action: string,
@@ -131,9 +136,20 @@ async function callGoogleAdsApi<T>(
   // --- Primary: Vercel direct API ---
   if (USE_DIRECT_API) {
     try {
+      // Grab the current Supabase session JWT. If the user isn't signed in we
+      // skip the direct route entirely and fall back to N8N.
+      const { data: sessionData } = await supabase.auth.getSession()
+      const accessToken = sessionData.session?.access_token
+      if (!accessToken) {
+        throw new Error('no-supabase-session')
+      }
+
       const response = await fetch(VERCEL_API_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
         body: JSON.stringify({ action, ...payload }),
       })
 
@@ -147,7 +163,7 @@ async function callGoogleAdsApi<T>(
         throw new Error(`Google Ads API (${response.status}): ${errText}`)
       }
     } catch (err) {
-      // Network error → try N8N fallback
+      // Network error or missing session → try N8N fallback
       console.warn('[googleAdsService] Direct API unavailable, falling back to N8N:', err)
     }
   }
