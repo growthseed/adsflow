@@ -140,26 +140,62 @@ function summarizePdvLocal(snap: ClientDashboardSnapshot): string[] {
 }
 
 function summarizeSalesInside(snap: ClientDashboardSnapshot): string[] {
-  const { opportunities, won, pipeline_value } = snap.kpis
-  if (!opportunities || !won) return []
+  const { opportunities, won, pipeline_value, spend, leads, cpl, qualified_rate } = snap.kpis
 
-  const sentences: string[] = []
-  sentences.push(
-    `Foram ${nBR(opportunities.value)} novas oportunidades e ${nBR(won.value)} vendas fechadas no período.`,
-  )
-
-  const wonDirection = wasGood(won)
-  if (wonDirection === true) {
+  // Classic sales_inside (opportunities + won)
+  if (opportunities && won) {
+    const sentences: string[] = []
     sentences.push(
-      `O volume de fechamento cresceu ${formatDelta(won.delta_percent)} vs o mês anterior.`,
+      `Foram ${nBR(opportunities.value)} novas oportunidades e ${nBR(won.value)} vendas fechadas no período.`,
     )
+
+    const wonDirection = wasGood(won)
+    if (wonDirection === true) {
+      sentences.push(
+        `O volume de fechamento cresceu ${formatDelta(won.delta_percent)} vs o mês anterior.`,
+      )
+    }
+
+    if (pipeline_value && pipeline_value.value > 0) {
+      sentences.push(`O pipeline em aberto soma ${formatKpiValue(pipeline_value)}.`)
+    }
+
+    return sentences
   }
 
-  if (pipeline_value && pipeline_value.value > 0) {
-    sentences.push(`O pipeline em aberto soma ${formatKpiValue(pipeline_value)}.`)
+  // Fallback: product sales (spend + leads/checkouts + purchases)
+  // Used by clients like Zé Umberto who sell books/courses via Meta Ads
+  if (spend && leads) {
+    const sentences: string[] = []
+    sentences.push(
+      `Nos últimos ${snap.period.days} dias foram investidos ${formatKpiValue(spend)} em mídia, gerando ${nBR(leads.value)} ${leads.label.toLowerCase()}.`,
+    )
+
+    if (cpl) {
+      const direction = wasGood(cpl)
+      if (direction === true) {
+        sentences.push(
+          `O custo por conversão caiu ${formatDelta(cpl.delta_percent)} em relação ao período anterior — boa evolução.`,
+        )
+      } else if (direction === false) {
+        sentences.push(
+          `O custo por conversão subiu ${formatDelta(cpl.delta_percent)}. Estamos monitorando.`,
+        )
+      } else {
+        sentences.push(`O custo médio por conversão foi de ${formatKpiValue(cpl)}.`)
+      }
+    }
+
+    if (qualified_rate && qualified_rate.value > 0) {
+      sentences.push(
+        `${qualified_rate.label}: ${nBR(qualified_rate.value)} no período.`,
+      )
+    }
+
+    return sentences
   }
 
-  return sentences
+  return []
 }
 
 // =============================================================

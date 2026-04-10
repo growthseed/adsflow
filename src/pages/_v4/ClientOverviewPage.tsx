@@ -225,7 +225,93 @@ export default function ClientOverviewPage() {
           </section>
         )}
 
-        {/* ─── 4. MODULE NAV CARDS ────────────────────────────── */}
+        {/* ─── 4. PROJECT HIGHLIGHTS ───────────────────────────── */}
+        {client && (client.stats.urgent > 0 || client.stats.in_progress > 0 || client.upcoming_tasks.length > 0) && (
+          <section className="bg-white border border-slate-200 rounded-2xl overflow-hidden">
+            <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100">
+              <div>
+                <h3 className="text-sm font-semibold text-slate-900">Destaques do projeto</h3>
+                <p className="text-xs text-slate-500 mt-0.5">
+                  {client.stats.total_active} tarefas ativas · {client.stats.overdue} atrasadas
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => navigate(`/c/${client.slug}/projeto`)}
+                className="text-xs font-medium text-blue-600 hover:text-blue-800 flex items-center gap-1"
+              >
+                Ver todas
+                <ArrowRight className="w-3 h-3" />
+              </button>
+            </div>
+
+            {/* Stats strip */}
+            <div className="grid grid-cols-4 divide-x divide-slate-100 bg-slate-50">
+              <div className="px-4 py-3 text-center">
+                <div className="text-lg font-bold text-slate-900">{client.stats.in_progress}</div>
+                <div className="text-[10px] text-slate-500 uppercase tracking-wide">Em andamento</div>
+              </div>
+              <div className="px-4 py-3 text-center">
+                <div className="text-lg font-bold text-slate-900">{client.stats.review}</div>
+                <div className="text-[10px] text-slate-500 uppercase tracking-wide">Em revisão</div>
+              </div>
+              <div className="px-4 py-3 text-center">
+                <div className={`text-lg font-bold ${client.stats.urgent > 0 ? 'text-red-600' : 'text-slate-900'}`}>{client.stats.overdue}</div>
+                <div className="text-[10px] text-slate-500 uppercase tracking-wide">Atrasadas</div>
+              </div>
+              <div className="px-4 py-3 text-center">
+                <div className="text-lg font-bold text-emerald-600">{client.stats.done}</div>
+                <div className="text-[10px] text-slate-500 uppercase tracking-wide">Concluídas</div>
+              </div>
+            </div>
+
+            {/* Upcoming tasks */}
+            {client.upcoming_tasks.length > 0 && (
+              <div className="divide-y divide-slate-100">
+                {client.upcoming_tasks.slice(0, 5).map((task) => (
+                  <div key={task.id} className="flex items-center gap-3 px-5 py-3 hover:bg-slate-50 transition-colors">
+                    <div
+                      className={`w-2 h-2 rounded-full flex-shrink-0 ${
+                        task.status === 'urgent' ? 'bg-red-500' :
+                        task.status === 'in_progress' ? 'bg-blue-500' :
+                        task.status === 'review' ? 'bg-amber-500' :
+                        task.status === 'done' ? 'bg-emerald-500' :
+                        'bg-slate-400'
+                      }`}
+                    />
+                    <div className="min-w-0 flex-1">
+                      <div className="text-sm text-slate-800 truncate">{task.title}</div>
+                      <div className="flex items-center gap-2 mt-0.5">
+                        {task.list_name && (
+                          <span className="text-[10px] text-slate-500">{task.list_name}</span>
+                        )}
+                        {task.due_date_label && (
+                          <span className={`text-[10px] font-medium ${
+                            task.days_late && task.days_late > 0 ? 'text-red-600' : 'text-slate-500'
+                          }`}>
+                            {task.due_date_label}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    {task.assignees.slice(0, 2).map((a) => (
+                      <div
+                        key={a.id}
+                        className="w-6 h-6 rounded-full flex items-center justify-center text-[9px] font-semibold text-white flex-shrink-0"
+                        style={{ backgroundColor: a.color }}
+                        title={a.username}
+                      >
+                        {a.initial}
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            )}
+          </section>
+        )}
+
+        {/* ─── 5. MODULE NAV CARDS ────────────────────────────── */}
         <section className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
           <ModuleCard
             title="Planner"
