@@ -13,6 +13,7 @@
  * ============================================
  */
 
+import { useState } from 'react'
 import type { KPI } from '@/types/metrics'
 import { isGoodTrend } from '@/types/metrics'
 import { formatMetric, formatDelta } from '@/lib/formatMetric'
@@ -36,6 +37,15 @@ export interface KPICardProps {
   compact?: boolean
   /** Loading state */
   loading?: boolean
+  /** Editable goal mode — when provided, shows an editable goal field below the value */
+  editableGoal?: {
+    /** Current goal value from the DB (undefined = no goal set yet) */
+    value: number | undefined
+    /** 'meta' = hard target, 'expectativa' = soft benchmark */
+    type: 'meta' | 'expectativa'
+    /** Called when the user saves a new goal value */
+    onSave: (newValue: number) => void
+  }
 }
 
 const SIZE_CLASSES = {
@@ -78,9 +88,15 @@ export function KPICard({
   onClick,
   className = '',
   compact = false,
+  editableGoal,
   loading = false,
 }: KPICardProps) {
   const sizes = SIZE_CLASSES[size]
+  const [editingGoal, setEditingGoal] = useState(false)
+  const [goalInput, setGoalInput] = useState('')
+
+  // Effective goal: editableGoal overrides kpi.goal
+  const effectiveGoal = editableGoal?.value ?? kpi.goal
 
   if (loading) {
     return (
@@ -109,7 +125,7 @@ export function KPICard({
         : 'text-error-600'
 
   const goalProgress =
-    kpi.goal && kpi.goal > 0 ? Math.min(1, kpi.value / kpi.goal) : null
+    effectiveGoal && effectiveGoal > 0 ? Math.min(1.5, kpi.value / effectiveGoal) : null
 
   return (
     <div
@@ -172,27 +188,86 @@ export function KPICard({
         </p>
       )}
 
-      {/* Goal progress */}
-      {showGoal && goalProgress !== null && (
+      {/* Goal progress — shows editable goal when editableGoal prop is passed */}
+      {showGoal && (goalProgress !== null || editableGoal) && (
         <div className="mt-3">
-          <div className="flex justify-between text-2xs text-neutral-500 mb-1">
-            <span>Meta</span>
-            <span className="tabular-nums">
-              {formatMetric(kpi.goal || 0, kpi.unit, {
-                currency: kpi.currency,
-                compact,
-              })}
+          {/* Progress bar */}
+          {goalProgress !== null && (
+            <div className="mb-2">
+              <div className="h-1.5 bg-neutral-200 rounded-full overflow-hidden">
+                <div
+                  className={`
+                    h-full rounded-full transition-all duration-normal
+                    ${goalProgress >= 1 ? 'bg-success-500' : goalProgress >= 0.7 ? 'bg-brand-500' : 'bg-warning-500'}
+                  `}
+                  style={{ width: `${Math.min(goalProgress, 1) * 100}%` }}
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Goal label + value (editable when editableGoal is provided) */}
+          <div className="flex justify-between items-center text-2xs">
+            <span className="text-neutral-500">
+              {editableGoal?.type === 'expectativa' ? 'Expectativa' : 'Meta'}
             </span>
+
+            {editableGoal ? (
+              editingGoal ? (
+                <form
+                  className="flex items-center gap-1"
+                  onSubmit={(e) => {
+                    e.preventDefault()
+                    const num = Number(goalInput.replace(',', '.'))
+                    if (!isNaN(num) && num > 0) {
+                      editableGoal.onSave(num)
+                    }
+                    setEditingGoal(false)
+                  }}
+                >
+                  <input
+                    type="text"
+                    value={goalInput}
+                    onChange={(e) => setGoalInput(e.target.value)}
+                    autoFocus
+                    onBlur={() => setEditingGoal(false)}
+                    className="w-16 px-1.5 py-0.5 text-2xs tabular-nums border border-brand-300 rounded text-right focus:outline-none focus:ring-1 focus:ring-brand-500"
+                    placeholder="0"
+                  />
+                </form>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setGoalInput(String(editableGoal.value ?? ''))
+                    setEditingGoal(true)
+                  }}
+                  className="tabular-nums text-neutral-600 hover:text-brand-700 hover:bg-brand-50 px-1.5 py-0.5 -mr-1.5 rounded transition-colors cursor-pointer"
+                  title="Clique para editar a meta"
+                >
+                  {editableGoal.value != null
+                    ? formatMetric(editableGoal.value, kpi.unit, { currency: kpi.currency, compact })
+                    : 'Definir'}
+                  <span className="ml-1 text-neutral-400">✎</span>
+                </button>
+              )
+            ) : effectiveGoal ? (
+              <span className="tabular-nums text-neutral-500">
+                {formatMetric(effectiveGoal, kpi.unit, { currency: kpi.currency, compact })}
+              </span>
+            ) : null}
           </div>
-          <div className="h-1.5 bg-neutral-200 rounded-full overflow-hidden">
-            <div
-              className={`
-                h-full rounded-full transition-all duration-normal
-                ${goalProgress >= 1 ? 'bg-success-500' : 'bg-brand-500'}
-              `}
-              style={{ width: `${goalProgress * 100}%` }}
-            />
-          </div>
+
+          {/* Achievement label */}
+          {goalProgress !== null && (
+            <div className={`text-2xs mt-1 font-medium ${
+              goalProgress >= 1 ? 'text-success-600' : goalProgress >= 0.7 ? 'text-brand-600' : 'text-warning-600'
+            }`}>
+              {goalProgress >= 1
+                ? `Meta atingida (${Math.round(goalProgress * 100)}%)`
+                : `${Math.round(goalProgress * 100)}% da meta`}
+            </div>
+          )}
         </div>
       )}
 

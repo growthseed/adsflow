@@ -33,6 +33,7 @@ import {
 } from '@/components/canonical'
 import { getClientBySlug } from '@/services/adapters/clickupAdapter'
 import { getClientSnapshot } from '@/data/clientDashboardSnapshots'
+import { useClientGoals } from '@/hooks/useClientGoals'
 import { humanizeSnapshot } from '@/lib/humanizeSnapshot'
 import { useAuth } from '@/contexts/AuthContext'
 import type { SnapshotKPI } from '@/types/clientDashboardSnapshot'
@@ -56,6 +57,9 @@ export default function ClientOverviewPage() {
     () => (snapshot ? humanizeSnapshot(snapshot) : null),
     [snapshot],
   )
+
+  // Editable goals from Supabase
+  const { getGoal, upsertGoal } = useClientGoals(activeClient?.client_id)
 
   if (!client) return <Navigate to="/_v4/operations" replace />
 
@@ -139,28 +143,40 @@ export default function ClientOverviewPage() {
         {snapshot && kpiOrder.length > 0 && (
           <section>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-              {kpiOrder.map((k) => (
-                <KPICard
-                  key={k.key}
-                  kpi={{
-                    key: k.key,
-                    label: k.label,
-                    value: k.value,
-                    previous_value: k.previous_value,
-                    delta_percent: k.delta_percent,
-                    trend: k.trend ?? 'flat',
-                    improvement_direction: k.improvement_direction ?? 'higher_better',
-                    unit: k.unit,
-                    currency: k.currency,
-                    goal: k.goal,
-                    sparkline: k.sparkline,
-                    source: 'blended',
-                  }}
-                  size="md"
-                  showSparkline
-                  showGoal
-                />
-              ))}
+              {kpiOrder.map((k) => {
+                const dbGoal = getGoal(k.key)
+                const isLower = k.improvement_direction === 'lower_better'
+                const goalType = isLower ? 'expectativa' as const : 'meta' as const
+                return (
+                  <KPICard
+                    key={k.key}
+                    kpi={{
+                      key: k.key,
+                      label: k.label,
+                      value: k.value,
+                      previous_value: k.previous_value,
+                      delta_percent: k.delta_percent,
+                      trend: k.trend ?? 'flat',
+                      improvement_direction: k.improvement_direction ?? 'higher_better',
+                      unit: k.unit,
+                      currency: k.currency,
+                      goal: dbGoal?.goal_value ?? k.goal,
+                      sparkline: k.sparkline,
+                      source: 'blended',
+                    }}
+                    size="md"
+                    showSparkline
+                    showGoal
+                    editableGoal={{
+                      value: dbGoal?.goal_value ?? k.goal,
+                      type: goalType,
+                      onSave: (newValue) => {
+                        upsertGoal(k.key, newValue, goalType, isLower ? 'lower_better' : 'higher_better')
+                      },
+                    }}
+                  />
+                )
+              })}
             </div>
           </section>
         )}
