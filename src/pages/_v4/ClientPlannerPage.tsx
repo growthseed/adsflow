@@ -668,8 +668,8 @@ function FlowEditor({
   const onDrop = useCallback(
     (e: React.DragEvent) => {
       e.preventDefault()
-      const type = e.dataTransfer.getData('application/reactflow')
-      if (!type) return
+      const rawType = e.dataTransfer.getData('application/reactflow')
+      if (!rawType) return
 
       // Parse optional size from drag data
       let width = 220
@@ -688,13 +688,27 @@ function FlowEditor({
         y: e.clientY,
       })
 
+      // Brand nodes use format "brand:whatsapp" — split into type + data.brand
+      let nodeType = rawType
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      let nodeData: Record<string, any> = {
+        label: rawType.replace(/([A-Z])/g, ' $1').trim(),
+      }
+
+      if (rawType.startsWith('brand:')) {
+        const brandKey = rawType.split(':')[1]
+        nodeType = 'brand'
+        nodeData = {
+          brand: brandKey,
+          label: brandKey.charAt(0).toUpperCase() + brandKey.slice(1),
+        }
+      }
+
       const newNode: Node = {
-        id: `${type}-${Date.now()}`,
-        type,
+        id: `${nodeType}-${Date.now()}`,
+        type: nodeType,
         position,
-        data: {
-          label: type.replace(/([A-Z])/g, ' $1').trim(),
-        },
+        data: nodeData,
         style: { width, height },
       }
 

@@ -46,7 +46,42 @@ interface NodeGroup {
   nodes: NodeDef[]
 }
 
+// Brand nodes — each brand becomes its own draggable item with
+// data.brand pre-set so the BrandNode renders the right logo/color.
+const BRAND_NODES: NodeDef[] = [
+  { type: 'brand:whatsapp', label: 'WhatsApp', icon: <Circle className="w-4 h-4" />, color: '#25D366', description: 'Logo oficial circular' },
+  { type: 'brand:meta', label: 'Meta Ads', icon: <Circle className="w-4 h-4" />, color: '#0081FB', description: 'Logo oficial circular' },
+  { type: 'brand:facebook', label: 'Facebook', icon: <Circle className="w-4 h-4" />, color: '#1877F2', description: 'Logo oficial circular' },
+  { type: 'brand:instagram', label: 'Instagram', icon: <Circle className="w-4 h-4" />, color: '#E1306C', description: 'Logo oficial circular' },
+  { type: 'brand:google', label: 'Google Ads', icon: <Circle className="w-4 h-4" />, color: '#4285F4', description: 'Logo oficial circular' },
+  { type: 'brand:youtube', label: 'YouTube', icon: <Circle className="w-4 h-4" />, color: '#FF0000', description: 'Logo oficial circular' },
+  { type: 'brand:linkedin', label: 'LinkedIn', icon: <Circle className="w-4 h-4" />, color: '#0A66C2', description: 'Logo oficial circular' },
+  { type: 'brand:tiktok', label: 'TikTok', icon: <Circle className="w-4 h-4" />, color: '#000000', description: 'Logo oficial circular' },
+  { type: 'brand:twitter', label: 'X (Twitter)', icon: <Circle className="w-4 h-4" />, color: '#000000', description: 'Logo oficial circular' },
+  { type: 'brand:telegram', label: 'Telegram', icon: <Circle className="w-4 h-4" />, color: '#26A5E4', description: 'Logo oficial circular' },
+  { type: 'brand:email', label: 'Email', icon: <Circle className="w-4 h-4" />, color: '#0072C6', description: 'Email marketing' },
+  { type: 'brand:messenger', label: 'Messenger', icon: <Circle className="w-4 h-4" />, color: '#0084FF', description: 'Logo oficial circular' },
+  { type: 'brand:shopify', label: 'Shopify', icon: <Circle className="w-4 h-4" />, color: '#96BF48', description: 'Logo oficial circular' },
+  { type: 'brand:wordpress', label: 'WordPress', icon: <Circle className="w-4 h-4" />, color: '#21759B', description: 'Logo oficial circular' },
+  { type: 'brand:hubspot', label: 'HubSpot', icon: <Circle className="w-4 h-4" />, color: '#FF7A59', description: 'Logo oficial circular' },
+  { type: 'brand:mailchimp', label: 'Mailchimp', icon: <Circle className="w-4 h-4" />, color: '#FFE01B', description: 'Logo oficial circular' },
+  { type: 'brand:slack', label: 'Slack', icon: <Circle className="w-4 h-4" />, color: '#4A154B', description: 'Logo oficial circular' },
+  { type: 'brand:stripe', label: 'Stripe', icon: <Circle className="w-4 h-4" />, color: '#635BFF', description: 'Logo oficial circular' },
+  { type: 'brand:zapier', label: 'Zapier', icon: <Circle className="w-4 h-4" />, color: '#FF4A00', description: 'Logo oficial circular' },
+  { type: 'brand:spotify', label: 'Spotify', icon: <Circle className="w-4 h-4" />, color: '#1DB954', description: 'Logo oficial circular' },
+  { type: 'brand:pinterest', label: 'Pinterest', icon: <Circle className="w-4 h-4" />, color: '#E60023', description: 'Logo oficial circular' },
+  { type: 'brand:discord', label: 'Discord', icon: <Circle className="w-4 h-4" />, color: '#5865F2', description: 'Logo oficial circular' },
+  { type: 'brand:notion', label: 'Notion', icon: <Circle className="w-4 h-4" />, color: '#FFFFFF', description: 'Logo oficial circular' },
+  { type: 'brand:paypal', label: 'PayPal', icon: <Circle className="w-4 h-4" />, color: '#00457C', description: 'Logo oficial circular' },
+  { type: 'brand:woocommerce', label: 'WooCommerce', icon: <Circle className="w-4 h-4" />, color: '#96588A', description: 'Logo oficial circular' },
+  { type: 'brand:reddit', label: 'Reddit', icon: <Circle className="w-4 h-4" />, color: '#FF4500', description: 'Logo oficial circular' },
+]
+
 const NODE_GROUPS: NodeGroup[] = [
+  {
+    title: 'Marcas (Circulares)',
+    nodes: BRAND_NODES,
+  },
   {
     title: 'Mídia Paga',
     nodes: [
@@ -67,7 +102,6 @@ const NODE_GROUPS: NodeGroup[] = [
   {
     title: 'Visual (Circulares)',
     nodes: [
-      { type: 'brand', label: 'Marca / Logo', icon: <Globe className="w-4 h-4" />, color: '#1e40af', description: 'WhatsApp, Meta, Google, etc (circular)' },
       { type: 'visualCampaign', label: 'Campanha (visual)', icon: <Megaphone className="w-4 h-4" />, color: '#7c3aed', description: 'Campanha circular compacta' },
       { type: 'visualAudience', label: 'Público (visual)', icon: <Users className="w-4 h-4" />, color: '#059669', description: 'Público circular compacto' },
       { type: 'visualCreative', label: 'Criativo (visual)', icon: <FileImage className="w-4 h-4" />, color: '#db2777', description: 'Imagem/vídeo circular' },
