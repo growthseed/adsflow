@@ -232,69 +232,38 @@ const brandColors: Record<string, {
 
 const BrandNode = memo(({ data, selected }: NodeProps<BrandNodeData>) => {
   const brandConfig = brandColors[data.brand] || brandColors.whatsapp
-  const isActive = data.isActive !== false
 
   return (
     <>
       <NodeResizer isVisible={selected} minWidth={60} minHeight={60} />
-      <div className="relative flex flex-col items-center group">
-        {/* Handles — positioned for circular shape */}
+      <div className="relative">
         <Handle
           type="target"
           position={Position.Left}
-          className="w-2.5 h-2.5 !bg-blue-500 border-2 border-white"
-          style={{ left: -5 }}
+          className="w-3 h-3 !bg-blue-500 border-2 border-white"
         />
 
-        {/* Circular brand node */}
+        {/* Círculo com logo da marca — mesmo formato do VisualCampaignNode */}
         <div
           className={`
-            w-20 h-20 rounded-full border-3 flex items-center justify-center
+            w-16 h-16 rounded-full flex items-center justify-center
+            ${brandConfig.color} ${brandConfig.textColor}
+            ${brandConfig.shadow}
+            hover:scale-110 hover:shadow-xl
             transition-all duration-300 cursor-pointer
-            ${isActive ? brandConfig.color : 'bg-gray-100'}
-            ${isActive ? brandConfig.border : 'border-gray-300'}
-            ${isActive ? brandConfig.shadow : 'shadow-md'}
-            ${isActive ? brandConfig.hoverColor : 'hover:bg-gray-200'}
-            ${isActive ? '' : 'grayscale opacity-60'}
-            ${selected ? 'ring-2 ring-blue-400 ring-offset-2' : ''}
           `}
         >
           <BrandIcon
             name={data.brand}
-            size={36}
-            className={isActive ? brandConfig.textColor : 'text-gray-600'}
+            size={32}
+            className={brandConfig.textColor}
           />
         </div>
-
-        {/* Label below the circle */}
-        <div className="mt-1.5 text-center max-w-[100px]">
-          <span className="text-[11px] font-semibold text-gray-800 leading-tight block truncate">
-            {data.label || brandConfig.name}
-          </span>
-          {data.subtitle && (
-            <span className="text-[9px] text-gray-500 block truncate">
-              {data.subtitle}
-            </span>
-          )}
-        </div>
-
-        {/* Status dot */}
-        {data.status && (
-          <div className={`
-            absolute -top-1 -right-1 w-4 h-4 rounded-full border-2 border-white flex items-center justify-center
-            ${isActive ? 'bg-green-500' : 'bg-gray-400'}
-          `}>
-            {isActive && (
-              <div className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-            )}
-          </div>
-        )}
 
         <Handle
           type="source"
           position={Position.Right}
-          className="w-2.5 h-2.5 !bg-blue-500 border-2 border-white"
-          style={{ right: -5 }}
+          className="w-3 h-3 !bg-blue-500 border-2 border-white"
         />
       </div>
     </>
