@@ -236,91 +236,67 @@ const BrandNode = memo(({ data, selected }: NodeProps<BrandNodeData>) => {
 
   return (
     <>
-    <NodeResizer isVisible={selected} minWidth={80} minHeight={80} />
-    <div className="relative group">
-      <Handle
-        type="target"
-        position={Position.Left}
-        className="w-3 h-3 !bg-blue-500 border-2 border-white"
-      />
-      
-      <div
-        className={`
-          relative px-6 py-5 rounded-xl border-2 transition-all duration-300
-          ${isActive ? brandConfig.color : 'bg-gray-100'}
-          ${isActive ? brandConfig.border : 'border-gray-300'}
-          ${isActive ? brandConfig.shadow : 'shadow-md'}
-          ${isActive ? brandConfig.hoverColor : 'hover:bg-gray-200'}
-          min-w-[240px] max-w-[280px]
-          ${isActive ? '' : 'grayscale opacity-60'}
-        `}
-      >
-        {/* Ícone da marca */}
-        <div className="flex items-center gap-3 mb-3">
-          <div className={`
-            p-2 rounded-lg
-            ${isActive ? 'bg-white/20' : 'bg-white/50'}
-            backdrop-blur-sm
-          `}>
-            <BrandIcon 
-              name={data.brand} 
-              size={64}
-              className={isActive ? brandConfig.textColor : 'text-gray-600'}
-            />
-          </div>
-          
-          <div className="flex-1">
-            <h3 className={`
-              font-bold text-lg
-              ${isActive ? brandConfig.textColor : 'text-gray-700'}
-            `}>
-              {data.label}
-            </h3>
-            {data.subtitle && (
-              <p className={`
-                text-sm mt-0.5
-                ${isActive ? `${brandConfig.textColor} opacity-80` : 'text-gray-600'}
-              `}>
-                {data.subtitle}
-              </p>
-            )}
-          </div>
+      <NodeResizer isVisible={selected} minWidth={60} minHeight={60} />
+      <div className="relative flex flex-col items-center group">
+        {/* Handles — positioned for circular shape */}
+        <Handle
+          type="target"
+          position={Position.Left}
+          className="w-2.5 h-2.5 !bg-blue-500 border-2 border-white"
+          style={{ left: -5 }}
+        />
+
+        {/* Circular brand node */}
+        <div
+          className={`
+            w-20 h-20 rounded-full border-3 flex items-center justify-center
+            transition-all duration-300 cursor-pointer
+            ${isActive ? brandConfig.color : 'bg-gray-100'}
+            ${isActive ? brandConfig.border : 'border-gray-300'}
+            ${isActive ? brandConfig.shadow : 'shadow-md'}
+            ${isActive ? brandConfig.hoverColor : 'hover:bg-gray-200'}
+            ${isActive ? '' : 'grayscale opacity-60'}
+            ${selected ? 'ring-2 ring-blue-400 ring-offset-2' : ''}
+          `}
+        >
+          <BrandIcon
+            name={data.brand}
+            size={36}
+            className={isActive ? brandConfig.textColor : 'text-gray-600'}
+          />
         </div>
 
-        {/* Descrição */}
-        {data.description && (
-          <p className={`
-            text-sm mb-3
-            ${isActive ? `${brandConfig.textColor} opacity-90` : 'text-gray-600'}
-          `}>
-            {data.description}
-          </p>
-        )}
-
-        {/* Status badge */}
-        {data.status && (
-          <div className="flex items-center gap-2 mt-3 pt-3 border-t border-white/20">
-            <div className={`
-              w-2 h-2 rounded-full
-              ${isActive ? 'bg-white' : 'bg-gray-400'}
-              ${isActive ? 'animate-pulse' : ''}
-            `} />
-            <span className={`
-              text-xs font-medium
-              ${isActive ? brandConfig.textColor : 'text-gray-600'}
-            `}>
-              {data.status}
+        {/* Label below the circle */}
+        <div className="mt-1.5 text-center max-w-[100px]">
+          <span className="text-[11px] font-semibold text-gray-800 leading-tight block truncate">
+            {data.label || brandConfig.name}
+          </span>
+          {data.subtitle && (
+            <span className="text-[9px] text-gray-500 block truncate">
+              {data.subtitle}
             </span>
+          )}
+        </div>
+
+        {/* Status dot */}
+        {data.status && (
+          <div className={`
+            absolute -top-1 -right-1 w-4 h-4 rounded-full border-2 border-white flex items-center justify-center
+            ${isActive ? 'bg-green-500' : 'bg-gray-400'}
+          `}>
+            {isActive && (
+              <div className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+            )}
           </div>
         )}
-      </div>
 
-      <Handle
-        type="source"
-        position={Position.Right}
-        className="w-3 h-3 !bg-blue-500 border-2 border-white"
-      />
-    </div>
+        <Handle
+          type="source"
+          position={Position.Right}
+          className="w-2.5 h-2.5 !bg-blue-500 border-2 border-white"
+          style={{ right: -5 }}
+        />
+      </div>
     </>
   )
 })
