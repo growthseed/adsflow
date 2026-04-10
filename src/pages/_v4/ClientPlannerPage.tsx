@@ -63,6 +63,13 @@ import ResultNode from '@/components/Nodes/ResultNode'
 import LandingPageNode from '@/components/Nodes/LandingPageNode'
 import PostitNode from '@/components/Nodes/PostitNode'
 import AdvancedTextNode from '@/components/Nodes/AdvancedTextNode'
+// Restored visual/circular nodes from legacy
+import BrandNode from '@/components/Nodes/BrandNode'
+import VisualCampaignNode from '@/components/Nodes/VisualCampaignNode'
+import VisualAudienceNode from '@/components/Nodes/VisualAudienceNode'
+import VisualCreativeNode from '@/components/Nodes/VisualCreativeNode'
+import ChannelNode from '@/components/Nodes/ChannelNode'
+import IconNode from '@/components/Nodes/IconNode'
 import {
   SourceNode as FunnelSourceNode,
   PageNode as FunnelPageNode,
@@ -96,6 +103,7 @@ function withLiveOverlay(Component: React.ComponentType<any>): React.ComponentTy
 }
 
 const nodeTypes = {
+  // Core ads nodes (retangulares com métricas)
   trafficSource: withLiveOverlay(TrafficSourceNode),
   traffic_source: withLiveOverlay(TrafficSourceNode),
   campaign: withLiveOverlay(CampaignNode),
@@ -105,11 +113,23 @@ const nodeTypes = {
   audience: withLiveOverlay(AudienceNode),
   result: withLiveOverlay(ResultNode),
   landingPage: withLiveOverlay(LandingPageNode),
-  postit: PostitNode, // post-its não recebem overlay (são anotações)
-  advancedText: AdvancedTextNode, // idem
+
+  // Visual / circular nodes (restored from legacy)
+  brand: BrandNode,
+  visualCampaign: VisualCampaignNode,
+  visualAudience: VisualAudienceNode,
+  visualCreative: VisualCreativeNode,
+  channel: ChannelNode,
+  icon: IconNode,
+
+  // Funnelytics nodes
   funnelSource: withLiveOverlay(FunnelSourceNode),
   funnelPage: withLiveOverlay(FunnelPageNode),
   funnelAction: withLiveOverlay(FunnelActionNode),
+
+  // Annotation nodes
+  postit: PostitNode,
+  advancedText: AdvancedTextNode,
 }
 
 type ViewState =
@@ -595,6 +615,26 @@ function FlowEditor({
     [],
   )
 
+  // Delete selected nodes/edges with Backspace or Delete key
+  const deleteSelected = useCallback(() => {
+    setNodes((nds) => nds.filter((n) => !n.selected))
+    setEdges((eds) => eds.filter((e) => !e.selected))
+    setDirty(true)
+  }, [])
+
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'Backspace' || e.key === 'Delete') {
+        // Don't delete if user is typing in an input/textarea
+        const tag = (e.target as HTMLElement)?.tagName
+        if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return
+        deleteSelected()
+      }
+    }
+    document.addEventListener('keydown', handler)
+    return () => document.removeEventListener('keydown', handler)
+  }, [deleteSelected])
+
   const onEdgesChange = useCallback(
     (changes: EdgeChange[]) => {
       setEdges((eds) => applyEdgeChanges(changes, eds))
@@ -912,14 +952,19 @@ function FlowEditor({
         </div>
       </div>
 
-      {/* Canvas */}
-      <div className="relative h-[calc(100vh-240px)] bg-[var(--surface-card)] border border-[var(--border-subtle)] rounded-xl overflow-hidden">
-        {/* Nodes sidebar — slides in from the left */}
-        <NodesSidebar
-          isOpen={nodesSidebarOpen}
-          onClose={() => setNodesSidebarOpen(false)}
-        />
+      {/* Canvas + sidebar layout */}
+      <div className="flex gap-3 h-[calc(100vh-240px)]">
+        {/* Nodes sidebar — OUTSIDE the flow, left side */}
+        {nodesSidebarOpen && (
+          <div className="w-64 flex-shrink-0">
+            <NodesSidebar
+              isOpen={nodesSidebarOpen}
+              onClose={() => setNodesSidebarOpen(false)}
+            />
+          </div>
+        )}
 
+        <div className="flex-1 bg-[var(--surface-card)] border border-[var(--border-subtle)] rounded-xl overflow-hidden">
         <ReactFlow
           nodes={displayNodes}
           edges={edges}
@@ -941,6 +986,7 @@ function FlowEditor({
           <Controls position="bottom-left" showInteractive={false} />
           <MiniMap pannable zoomable style={{ height: 100 }} />
         </ReactFlow>
+        </div>
       </div>
 
       {/* Version history modal */}

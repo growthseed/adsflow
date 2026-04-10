@@ -65,6 +65,17 @@ const NODE_GROUPS: NodeGroup[] = [
     ],
   },
   {
+    title: 'Visual (Circulares)',
+    nodes: [
+      { type: 'brand', label: 'Marca / Logo', icon: <Globe className="w-4 h-4" />, color: '#1e40af', description: 'WhatsApp, Meta, Google, etc (circular)' },
+      { type: 'visualCampaign', label: 'Campanha (visual)', icon: <Megaphone className="w-4 h-4" />, color: '#7c3aed', description: 'Campanha circular compacta' },
+      { type: 'visualAudience', label: 'Público (visual)', icon: <Users className="w-4 h-4" />, color: '#059669', description: 'Público circular compacto' },
+      { type: 'visualCreative', label: 'Criativo (visual)', icon: <FileImage className="w-4 h-4" />, color: '#db2777', description: 'Imagem/vídeo circular' },
+      { type: 'channel', label: 'Canal', icon: <Globe className="w-4 h-4" />, color: '#0284c7', description: 'Canal de mídia com ícone' },
+      { type: 'icon', label: 'Ícone', icon: <Circle className="w-4 h-4" />, color: '#64748b', description: 'Ícone genérico circular' },
+    ],
+  },
+  {
     title: 'Funnelytics',
     nodes: [
       { type: 'funnelSource', label: 'Fonte (Funil)', icon: <Globe className="w-4 h-4" />, color: '#0ea5e9', description: 'Ponto de entrada do funil' },
@@ -73,7 +84,7 @@ const NODE_GROUPS: NodeGroup[] = [
     ],
   },
   {
-    title: 'Visual & Anotação',
+    title: 'Anotação',
     nodes: [
       { type: 'postit', label: 'Post-it', icon: <StickyNote className="w-4 h-4" />, color: '#fbbf24', description: 'Nota adesiva colorida' },
       { type: 'advancedText', label: 'Texto rico', icon: <Type className="w-4 h-4" />, color: '#64748b', description: 'Texto com formatação avançada' },
@@ -131,7 +142,7 @@ export default function NodesSidebar({ isOpen, onClose }: NodesSidebarProps) {
   if (!isOpen) return null
 
   return (
-    <div className="absolute top-0 left-0 h-full w-64 bg-white border-r border-slate-200 shadow-xl z-10 flex flex-col overflow-hidden">
+    <div className="h-full w-full bg-white border border-slate-200 rounded-xl shadow-sm flex flex-col overflow-hidden">
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-slate-200">
         <h3 className="text-sm font-semibold text-slate-900">Adicionar Node</h3>
