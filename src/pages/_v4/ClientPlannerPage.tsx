@@ -344,7 +344,13 @@ function FlowCard({
   })
 
   return (
-    <div className="group bg-[var(--surface-card)] border border-[var(--border-subtle)] rounded-xl p-4 hover:border-brand-300 hover:shadow-md transition-all duration-normal">
+    <div
+      onClick={onOpen}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => { if (e.key === 'Enter') onOpen() }}
+      className="group cursor-pointer bg-[var(--surface-card)] border border-[var(--border-subtle)] rounded-xl p-4 hover:border-brand-300 hover:shadow-md transition-all duration-normal"
+    >
       <div className="flex items-start justify-between mb-3">
         <div className="min-w-0 flex-1">
           <h3 className="text-sm font-semibold text-neutral-900 truncate">{flow.name}</h3>

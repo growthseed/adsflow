@@ -198,7 +198,8 @@ export const ACTION_CONFIG: Record<ActionType, { icon: string; color: string; la
 // ============================================
 // HELPERS
 // ============================================
-export function formatNumber(num: number): string {
+export function formatNumber(num: number | undefined | null): string {
+  if (num == null) return '0';
   if (num >= 1000000) {
     return (num / 1000000).toFixed(1) + 'M';
   }
@@ -208,7 +209,8 @@ export function formatNumber(num: number): string {
   return num.toString();
 }
 
-export function formatPercentage(num: number): string {
+export function formatPercentage(num: number | undefined | null): string {
+  if (num == null) return '0%';
   return num.toFixed(1) + '%';
 }
 
