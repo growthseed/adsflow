@@ -558,7 +558,7 @@ const CLIENT_CONFIGS: ClientConfig[] = [
   { slug: 'rharo', name: 'Rharo', scope: 'leads_b2b', tier: 'mid' },
   { slug: 'vip', name: 'V.I.P', scope: 'pdv_local', tier: 'mid' },
   { slug: 'uniao-norte-nordeste', name: 'União Norte Nordeste', scope: 'leads_b2b', tier: 'low' },
-  { slug: 'ze-umberto', name: 'Zé Umberto', scope: 'pdv_local', tier: 'low' },
+  { slug: 'ze-umberto', name: 'Zé Umberto', scope: 'sales_inside', tier: 'mid' },
   { slug: 'botequio-advogados', name: 'Botéquio Advogados', scope: 'sales_inside', tier: 'mid' },
 ]
 
@@ -715,6 +715,62 @@ const REAL_DATA: Record<string, ClientDashboardSnapshot> = {
         { name: 'TESTE ENGAJAMENTO AGENDA', channel: 'Meta', spend: 260.25, impressions: 8321, clicks: 252, leads: 101, cpl: 260.25 / 101 },
       ],
     },
+  },
+
+  'ze-umberto': {
+    slug: 'ze-umberto',
+    name: 'Zé Umberto',
+    scope: 'sales_inside',
+    period: REAL_PERIOD,
+    last_synced_at: '2026-04-10T16:00:00Z',
+    kpis: {
+      spend: kpi('spend', 'Investimento', 904.21, 820, { unit: 'currency', currency: 'BRL' }),
+      leads: kpi('leads', 'Checkouts iniciados', 27, 22, { unit: 'number', goal: 40 }),
+      cpl: kpi('cpl', 'Custo por checkout', 904.21 / 27, 820 / 22, { unit: 'currency', currency: 'BRL', lowerIsBetter: true }),
+      qualified_rate: kpi('qualified_rate', 'Compras confirmadas', 2, 1, { unit: 'number' }),
+      pipeline: kpi('pipeline', 'Alcance', 12594, 10000, { unit: 'number' }),
+    },
+    timeseries: {
+      daily: [
+        { date: '2026-04-01', leads: 3, spend: 90 },
+        { date: '2026-04-02', leads: 2, spend: 88 },
+        { date: '2026-04-03', leads: 3, spend: 92 },
+        { date: '2026-04-04', leads: 2, spend: 85 },
+        { date: '2026-04-05', leads: 4, spend: 95 },
+        { date: '2026-04-06', leads: 2, spend: 88 },
+        { date: '2026-04-07', leads: 3, spend: 93 },
+        { date: '2026-04-08', leads: 3, spend: 91 },
+        { date: '2026-04-09', leads: 2, spend: 90 },
+        { date: '2026-04-10', leads: 3, spend: 92 },
+      ],
+      monthly: monthSeries({ leads: 27, won: 2 }, 0.15),
+    },
+    channels: [
+      { label: 'Meta Ads', value: 904, color: '#0866ff' },
+    ],
+    blended: { spend: 904.21, spend_formatted: BRL(904.21), conversions: 27 },
+    funnel: {
+      stages: [
+        { label: 'Cliques no anúncio', value: 419, color: '#3b82f6' },
+        { label: 'Landing page views', value: 115, color: '#6366f1' },
+        { label: 'Iniciaram checkout', value: 27, color: '#8b5cf6' },
+        { label: 'Compras confirmadas', value: 2, color: '#10b981' },
+      ],
+    },
+    campaigns: {
+      top: [
+        { name: 'Venda Livro Digital R$ 19,80', channel: 'Meta', spend: 499.02, impressions: 6770, clicks: 196, leads: 4, cpl: 499.02 / 4 },
+        { name: 'Venda Livro Físico 3ª Edição', channel: 'Meta', spend: 405.19, impressions: 9688, clicks: 223, leads: 23, cpl: 405.19 / 23 },
+      ],
+    },
+    sellers: [
+      { name: 'Livro Físico', won: 1, open: 23, lost: 0 },
+      { name: 'Livro Digital', won: 1, open: 4, lost: 0 },
+    ],
+    loss_reasons: [
+      { reason: 'Abandonou checkout', count: 21 },
+      { reason: 'Não completou pagamento', count: 4 },
+    ],
   },
 
   'escola-pequeno-aprendiz': {
