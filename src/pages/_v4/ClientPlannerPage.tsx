@@ -68,6 +68,7 @@ import {
   PageNode as FunnelPageNode,
   ActionNode as FunnelActionNode,
 } from '@/components/Nodes/Funnelytics'
+import NodesSidebar from '@/components/Planner/NodesSidebar'
 
 /**
  * Wraps any ReactFlow node component so that when `data.liveMetrics`
@@ -548,6 +549,7 @@ function FlowEditor({
   const [loading, setLoading] = useState(true)
   const [shareUrl, setShareUrl] = useState<string | null>(null)
   const [versionsOpen, setVersionsOpen] = useState(false)
+  const [nodesSidebarOpen, setNodesSidebarOpen] = useState(false)
   const [versions, setVersions] = useState<FlowVersion[]>([])
   const [loadingVersions, setLoadingVersions] = useState(false)
   const [liveDataOn, setLiveDataOn] = useState(false)
@@ -607,6 +609,53 @@ function FlowEditor({
       setDirty(true)
     },
     [],
+  )
+
+  // --- Drag & Drop from NodesSidebar ---
+  const onDragOver = useCallback((e: React.DragEvent) => {
+    e.preventDefault()
+    e.dataTransfer.dropEffect = 'move'
+  }, [])
+
+  const reactFlowInstance = useReactFlow()
+
+  const onDrop = useCallback(
+    (e: React.DragEvent) => {
+      e.preventDefault()
+      const type = e.dataTransfer.getData('application/reactflow')
+      if (!type) return
+
+      // Parse optional size from drag data
+      let width = 220
+      let height = 120
+      try {
+        const sizeData = e.dataTransfer.getData('application/nodesize')
+        if (sizeData) {
+          const parsed = JSON.parse(sizeData)
+          width = parsed.width || width
+          height = parsed.height || height
+        }
+      } catch { /* use defaults */ }
+
+      const position = reactFlowInstance.screenToFlowPosition({
+        x: e.clientX,
+        y: e.clientY,
+      })
+
+      const newNode: Node = {
+        id: `${type}-${Date.now()}`,
+        type,
+        position,
+        data: {
+          label: type.replace(/([A-Z])/g, ' $1').trim(),
+        },
+        style: { width, height },
+      }
+
+      setNodes((nds) => [...nds, newNode])
+      setDirty(true)
+    },
+    [reactFlowInstance],
   )
 
   const handleSave = useCallback(async () => {
@@ -743,6 +792,23 @@ function FlowEditor({
         </div>
         <div className="flex items-center gap-2 flex-shrink-0">
           <button
+            onClick={() => setNodesSidebarOpen((v) => !v)}
+            className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg transition-colors border ${
+              nodesSidebarOpen
+                ? 'bg-blue-50 border-blue-200 text-blue-700'
+                : 'bg-white border-neutral-200 text-neutral-700 hover:bg-neutral-50'
+            }`}
+            title="Painel de nodes"
+          >
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="3" width="7" height="7" />
+              <rect x="14" y="3" width="7" height="7" />
+              <rect x="3" y="14" width="7" height="7" />
+              <rect x="14" y="14" width="7" height="7" />
+            </svg>
+            Nodes
+          </button>
+          <button
             onClick={() => setLiveDataOn((v) => !v)}
             className={`
               hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg transition-colors border
@@ -847,13 +913,21 @@ function FlowEditor({
       </div>
 
       {/* Canvas */}
-      <div className="h-[calc(100vh-240px)] bg-[var(--surface-card)] border border-[var(--border-subtle)] rounded-xl overflow-hidden">
+      <div className="relative h-[calc(100vh-240px)] bg-[var(--surface-card)] border border-[var(--border-subtle)] rounded-xl overflow-hidden">
+        {/* Nodes sidebar — slides in from the left */}
+        <NodesSidebar
+          isOpen={nodesSidebarOpen}
+          onClose={() => setNodesSidebarOpen(false)}
+        />
+
         <ReactFlow
           nodes={displayNodes}
           edges={edges}
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
           onConnect={onConnect}
+          onDragOver={onDragOver}
+          onDrop={onDrop}
           nodeTypes={nodeTypes}
           defaultEdgeOptions={{
             type: 'smoothstep',

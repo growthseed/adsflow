@@ -194,11 +194,10 @@ function genLeadsB2B(
     },
     funnel: {
       stages: [
-        { label: 'Impressões', value: spend * 40, color: '#3b82f6' },
-        { label: 'Cliques', value: Math.round(spend * 0.8), color: '#6366f1' },
-        { label: 'Leads', value: leads, color: '#8b5cf6' },
-        { label: 'Qualificados', value: qualified, color: '#a855f7' },
-        { label: 'Contratos', value: contracts, color: '#10b981' },
+        { label: 'Cliques no anúncio', value: Math.round(spend * 0.8), color: '#3b82f6' },
+        { label: 'Leads gerados', value: leads, color: '#6366f1' },
+        { label: 'Qualificados', value: qualified, color: '#8b5cf6' },
+        { label: 'Contratos fechados', value: contracts, color: '#10b981' },
       ],
     },
     campaigns: {
@@ -611,11 +610,10 @@ const REAL_DATA: Record<string, ClientDashboardSnapshot> = {
     blended: { spend: 284.16, spend_formatted: BRL(284.16), conversions: 32 },
     funnel: {
       stages: [
-        { label: 'Impressões', value: 17338, color: '#3b82f6' },
-        { label: 'Cliques', value: 166, color: '#6366f1' },
-        { label: 'Conversas WPP', value: 32, color: '#8b5cf6' },
-        { label: 'Respostas 1ª msg', value: 24, color: '#a855f7' },
-        { label: 'Msg profunda (3+)', value: 5, color: '#10b981' },
+        { label: 'Cliques no anúncio', value: 166, color: '#3b82f6' },
+        { label: 'Iniciaram conversa', value: 32, color: '#6366f1' },
+        { label: 'Responderam 1ª msg', value: 24, color: '#8b5cf6' },
+        { label: 'Conversa engajada (3+)', value: 5, color: '#10b981' },
       ],
     },
     campaigns: {
@@ -659,11 +657,10 @@ const REAL_DATA: Record<string, ClientDashboardSnapshot> = {
     blended: { spend: 188.99, spend_formatted: BRL(188.99), conversions: 9 },
     funnel: {
       stages: [
-        { label: 'Impressões', value: 6753, color: '#3b82f6' },
-        { label: 'Cliques', value: 53, color: '#6366f1' },
-        { label: 'Conversas WPP', value: 9, color: '#8b5cf6' },
-        { label: 'Respostas 1ª msg', value: 8, color: '#a855f7' },
-        { label: 'Video Views', value: 1076, color: '#10b981' },
+        { label: 'Cliques no anúncio', value: 53, color: '#3b82f6' },
+        { label: 'Iniciaram conversa', value: 9, color: '#6366f1' },
+        { label: 'Responderam 1ª msg', value: 8, color: '#8b5cf6' },
+        { label: 'Agendaram consulta', value: 4, color: '#10b981' },
       ],
     },
     campaigns: {
@@ -707,11 +704,10 @@ const REAL_DATA: Record<string, ClientDashboardSnapshot> = {
     blended: { spend: 260.25, spend_formatted: BRL(260.25), conversions: 101 },
     funnel: {
       stages: [
-        { label: 'Impressões', value: 8321, color: '#3b82f6' },
-        { label: 'Cliques', value: 252, color: '#6366f1' },
-        { label: 'Conversas WPP', value: 101, color: '#8b5cf6' },
-        { label: 'Respostas 1ª msg', value: 57, color: '#a855f7' },
-        { label: 'Msg profundas (5+)', value: 106, color: '#10b981' },
+        { label: 'Cliques no anúncio', value: 252, color: '#3b82f6' },
+        { label: 'Iniciaram conversa', value: 101, color: '#6366f1' },
+        { label: 'Responderam 1ª msg', value: 57, color: '#8b5cf6' },
+        { label: 'Agendaram consulta', value: 38, color: '#10b981' },
       ],
     },
     campaigns: {
@@ -754,11 +750,10 @@ const REAL_DATA: Record<string, ClientDashboardSnapshot> = {
     blended: { spend: 282.73, spend_formatted: BRL(282.73), conversions: 26 },
     funnel: {
       stages: [
-        { label: 'Impressões', value: 71153, color: '#3b82f6' },
-        { label: 'Cliques', value: 257, color: '#6366f1' },
-        { label: 'Conversas WPP', value: 26, color: '#8b5cf6' },
-        { label: 'Respostas 1ª msg', value: 18, color: '#a855f7' },
-        { label: 'Video Views', value: 2405, color: '#10b981' },
+        { label: 'Cliques no anúncio', value: 257, color: '#3b82f6' },
+        { label: 'Iniciaram conversa', value: 26, color: '#6366f1' },
+        { label: 'Responderam 1ª msg', value: 18, color: '#8b5cf6' },
+        { label: 'Agendaram visita', value: 8, color: '#10b981' },
       ],
     },
     campaigns: {
