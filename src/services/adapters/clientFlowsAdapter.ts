@@ -146,7 +146,11 @@ export async function updateFlow(input: UpdateFlowInput): Promise<ClientFlow | n
     .single()
 
   if (error) {
-    console.error('[clientFlows] update failed:', error.message)
+    console.error('[clientFlows] update failed:', error.message, error.details, error.hint, error.code)
+    return null
+  }
+  if (!data) {
+    console.error('[clientFlows] update returned no data — likely RLS denied the write')
     return null
   }
   return data as ClientFlow

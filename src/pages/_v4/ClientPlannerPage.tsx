@@ -707,19 +707,35 @@ function FlowEditor({
   const handleSave = useCallback(async () => {
     if (!flow) return
     setSaving(true)
-    const viewport: Viewport = getViewport()
-    const updated = await updateFlow({
-      id: flow.id,
-      nodes,
-      edges,
-      viewport,
-    })
-    if (updated) {
-      setFlow(updated)
-      setDirty(false)
+    try {
+      const viewport: Viewport = getViewport()
+      const updated = await updateFlow({
+        id: flow.id,
+        nodes,
+        edges,
+        viewport,
+      })
+      if (updated) {
+        setFlow(updated)
+        setDirty(false)
+      } else {
+        console.error('[FlowEditor] Save returned null — RLS may be blocking the update')
+      }
+    } catch (err) {
+      console.error('[FlowEditor] Save threw:', err)
+    } finally {
+      setSaving(false)
     }
-    setSaving(false)
   }, [flow, nodes, edges, getViewport])
+
+  // Auto-save: persist positions 2s after the user stops dragging
+  useEffect(() => {
+    if (!dirty || !flow) return
+    const timer = setTimeout(() => {
+      handleSave()
+    }, 2000)
+    return () => clearTimeout(timer)
+  }, [dirty, flow, handleSave])
 
   const handleShare = useCallback(async () => {
     if (!flow) return
