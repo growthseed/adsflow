@@ -7,6 +7,7 @@ import SnapshotWarmer from './contexts/SnapshotWarmer'
 
 // Layout (not lazy — always needed for protected routes)
 import AppLayout from './components/Layout/AppLayout'
+import ClientContextGuard from './components/Layout/ClientContextGuard'
 
 // UI
 import { ToastProvider } from './components/UI/Toast'
@@ -71,6 +72,7 @@ const V4ClientPlannerPage = lazyRetry(() => import('./pages/_v4/ClientPlannerPag
 const V4PublicFlowPage = lazyRetry(() => import('./pages/_v4/PublicFlowPage'))
 const V4PlaybookPage = lazyRetry(() => import('./pages/_v4/PlaybookPage'))
 const V4ClientPortalPage = lazyRetry(() => import('./pages/_v4/ClientPortalPage'))
+const V4ClientRootRedirect = lazyRetry(() => import('./pages/_v4/ClientRootRedirect'))
 
 // Error Boundary para capturar erros de React
 interface ErrorBoundaryState {
@@ -281,13 +283,25 @@ function App() {
             {/* ══════════════════════════════════════════════════
                 NÍVEL 2-4 — Cliente (os 3 pilares)
                 ══════════════════════════════════════════════════ */}
+            {/* Short public access link — resolves /c/:slug to the right
+                landing page (portal for viewers, overview for staff) */}
+            <Route
+              path="/c/:clientSlug"
+              element={
+                <ProtectedRoute>
+                  <V4ClientRootRedirect />
+                </ProtectedRoute>
+              }
+            />
             <Route
               path="/c/:clientSlug/overview"
               element={
                 <ProtectedRoute>
-                  <AppLayout>
-                    <V4ClientOverviewPage />
-                  </AppLayout>
+                  <ClientContextGuard>
+                    <AppLayout>
+                      <V4ClientOverviewPage />
+                    </AppLayout>
+                  </ClientContextGuard>
                 </ProtectedRoute>
               }
             />
@@ -295,9 +309,11 @@ function App() {
               path="/c/:clientSlug/planner"
               element={
                 <ProtectedRoute>
-                  <AppLayout>
-                    <V4ClientPlannerPage />
-                  </AppLayout>
+                  <ClientContextGuard>
+                    <AppLayout>
+                      <V4ClientPlannerPage />
+                    </AppLayout>
+                  </ClientContextGuard>
                 </ProtectedRoute>
               }
             />
@@ -305,9 +321,11 @@ function App() {
               path="/c/:clientSlug/performance"
               element={
                 <ProtectedRoute>
-                  <AppLayout>
-                    <V4ClientPerformancePage />
-                  </AppLayout>
+                  <ClientContextGuard>
+                    <AppLayout>
+                      <V4ClientPerformancePage />
+                    </AppLayout>
+                  </ClientContextGuard>
                 </ProtectedRoute>
               }
             />
@@ -315,9 +333,11 @@ function App() {
               path="/c/:clientSlug/projeto"
               element={
                 <ProtectedRoute>
-                  <AppLayout>
-                    <V4ClientProjectPage />
-                  </AppLayout>
+                  <ClientContextGuard>
+                    <AppLayout>
+                      <V4ClientProjectPage />
+                    </AppLayout>
+                  </ClientContextGuard>
                 </ProtectedRoute>
               }
             />

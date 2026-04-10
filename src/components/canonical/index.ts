@@ -27,3 +27,8 @@ export type { ScopeSelectorProps } from './ScopeSelector'
 export { default as TierGate, tierGte } from './TierGate'
 export { default as PermissionGate } from './PermissionGate'
 export { default as UpgradePrompt } from './UpgradePrompt'
+export { default as ClientBrand, getClientInitials, getClientGradient } from './ClientBrand'
+export type { ClientBrandSize } from './ClientBrand'
+
+// Chart widgets — every widget composes with ChartCard
+export * from './widgets'

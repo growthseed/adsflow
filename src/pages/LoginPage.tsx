@@ -10,7 +10,7 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
-import { ArrowLeft, Mail, Lock, User, Building, CheckCircle, KeyRound } from 'lucide-react'
+import { ArrowLeft, Mail, Lock, User, Building, CheckCircle, KeyRound, Eye, EyeOff } from 'lucide-react'
 
 type AuthMode = 'login' | 'register' | 'forgot'
 
@@ -21,6 +21,8 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [successMessage, setSuccessMessage] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
+  const [lgpdAccepted, setLgpdAccepted] = useState(false)
 
   const [formData, setFormData] = useState({
     email: '',
@@ -71,7 +73,11 @@ export default function LoginPage() {
       if (mode === 'login') {
         const success = await login(formData.email, formData.password)
         if (success) {
-          navigate('/dashboard')
+          // /dashboard is now a legacy redirect; go straight to the agency
+          // operations overview. ProtectedRoute will bounce portal-only
+          // users (globalRole=user + activeClientRole=viewer) to their
+          // own /c/:slug/portal.
+          navigate('/_v4/operations')
         } else {
           setError('Email ou senha incorretos.')
         }
@@ -86,6 +92,11 @@ export default function LoginPage() {
           setLoading(false)
           return
         }
+        if (!lgpdAccepted) {
+          setError('Você precisa aceitar os Termos e a Política de Privacidade para continuar.')
+          setLoading(false)
+          return
+        }
         const success = await register({
           email: formData.email,
           password: formData.password,
@@ -93,7 +104,7 @@ export default function LoginPage() {
           company: formData.company,
         })
         if (success) {
-          navigate('/dashboard')
+          navigate('/_v4/operations')
         } else {
           setError('Erro ao criar conta. Verifique os dados e tente novamente.')
         }
@@ -270,20 +281,58 @@ export default function LoginPage() {
                   <div className="relative">
                     <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
                     <input
-                      type="password"
+                      type={showPassword ? 'text' : 'password'}
                       name="password"
                       value={formData.password}
                       onChange={handleChange}
                       onBlur={handleBlur}
                       required
                       autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
-                      className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                      className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
                         fieldErrors.password ? 'border-red-400' : 'border-slate-300'
                       }`}
                       placeholder="••••••••"
                     />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword((v) => !v)}
+                      aria-label={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
+                      aria-pressed={showPassword}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 transition-colors p-1 rounded"
+                    >
+                      {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                    </button>
                   </div>
                   {fieldErrors.password && <p className="text-xs text-red-500 mt-1">{fieldErrors.password}</p>}
+                  {mode === 'register' && (
+                    <p className="text-xs text-slate-500 mt-1.5">
+                      Use no mínimo 6 caracteres. Recomendamos combinar letras, números e símbolos.
+                    </p>
+                  )}
+                </div>
+              )}
+
+              {/* LGPD consent — register only, required by law to be opt-in */}
+              {mode === 'register' && (
+                <div className="flex items-start gap-2 pt-1">
+                  <input
+                    type="checkbox"
+                    id="lgpd-consent"
+                    checked={lgpdAccepted}
+                    onChange={(e) => setLgpdAccepted(e.target.checked)}
+                    className="mt-0.5 w-4 h-4 text-blue-600 border-slate-300 rounded focus:ring-blue-500 flex-shrink-0"
+                  />
+                  <label htmlFor="lgpd-consent" className="text-xs text-slate-600 leading-relaxed cursor-pointer">
+                    Li e concordo com os{' '}
+                    <Link to="/terms" target="_blank" className="text-blue-600 hover:underline font-medium">
+                      Termos de Uso
+                    </Link>{' '}
+                    e a{' '}
+                    <Link to="/privacy" target="_blank" className="text-blue-600 hover:underline font-medium">
+                      Política de Privacidade
+                    </Link>
+                    , incluindo o tratamento de dados pessoais pela Efeito Digital conforme a LGPD (Lei 13.709/2018).
+                  </label>
                 </div>
               )}
 
@@ -343,6 +392,29 @@ export default function LoginPage() {
                 Lembrou a senha? <span className="font-semibold">Voltar ao login</span>
               </button>
             )}
+          </div>
+
+          {/* Legal footer — always visible, LGPD requires easy access */}
+          <div className="mt-8 pt-6 border-t border-slate-100 text-center">
+            <div className="flex items-center justify-center gap-3 text-xs text-slate-500">
+              <Link to="/terms" className="hover:text-slate-900 transition-colors">
+                Termos de Uso
+              </Link>
+              <span className="text-slate-300">•</span>
+              <Link to="/privacy" className="hover:text-slate-900 transition-colors">
+                Privacidade
+              </Link>
+              <span className="text-slate-300">•</span>
+              <a
+                href="mailto:jw@efeito.digital"
+                className="hover:text-slate-900 transition-colors"
+              >
+                Suporte
+              </a>
+            </div>
+            <p className="text-[11px] text-slate-400 mt-3">
+              © {new Date().getFullYear()} Efeito Digital Marketing e Comunicação LTDA
+            </p>
           </div>
         </div>
       </div>

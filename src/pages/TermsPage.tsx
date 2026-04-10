@@ -1,11 +1,18 @@
 import { Link } from 'react-router-dom';
 import { ArrowLeft, FileText } from 'lucide-react';
 
+/**
+ * Termos de Uso do AdsFlow. Complementares à Política de Privacidade.
+ * Escritos em português simples, sem jargão jurídico desnecessário.
+ */
 const TermsPage = () => {
   return (
     <div className="min-h-screen bg-slate-50">
       <div className="max-w-3xl mx-auto px-4 py-12">
-        <Link to="/" className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-slate-700 mb-8">
+        <Link
+          to="/"
+          className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-slate-700 mb-8"
+        >
           <ArrowLeft className="w-4 h-4" />
           Voltar ao AdsFlow
         </Link>
@@ -15,118 +22,235 @@ const TermsPage = () => {
             <FileText className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-slate-900">Termos de Servico</h1>
-            <p className="text-sm text-slate-500">Ultima atualizacao: 26 de marco de 2026</p>
+            <h1 className="text-2xl font-bold text-slate-900">Termos de Uso</h1>
+            <p className="text-sm text-slate-500">Última atualização: 9 de abril de 2026</p>
           </div>
         </div>
 
-        <div className="bg-white rounded-xl border border-slate-200 p-8 shadow-sm space-y-6 text-slate-700 leading-relaxed">
+        <div className="bg-white rounded-xl border border-slate-200 p-8 shadow-sm space-y-8 text-slate-700 leading-relaxed">
+          {/* =============================================== */}
           <section>
-            <h2 className="text-lg font-semibold text-slate-900 mb-3">1. Aceitacao dos Termos</h2>
+            <h2 className="text-lg font-semibold text-slate-900 mb-3">
+              1. Aceitação destes termos
+            </h2>
             <p>
-              Ao acessar e utilizar o AdsFlow, voce concorda com estes Termos de Servico.
-              O AdsFlow e uma ferramenta de gestao de marketing digital operada pela
-              <strong> Efeito Digital Marketing e Comunicacao LTDA</strong>.
+              Ao acessar e usar o AdsFlow, você concorda com estes Termos de Uso e
+              com nossa{' '}
+              <Link to="/privacy" className="text-blue-600 hover:underline">
+                Política de Privacidade
+              </Link>
+              . O AdsFlow é operado pela{' '}
+              <strong>Efeito Digital Marketing e Comunicação LTDA</strong>. Se você
+              não concorda com algum item, por favor não use a plataforma.
             </p>
           </section>
 
+          {/* =============================================== */}
           <section>
-            <h2 className="text-lg font-semibold text-slate-900 mb-3">2. Descricao do Servico</h2>
-            <p>O AdsFlow oferece:</p>
-            <ul className="list-disc pl-6 space-y-1 mt-2">
-              <li>Integracao com plataformas de anuncios (Meta Ads, Google Ads)</li>
-              <li>Integracao com ferramentas de analytics (Google Analytics 4, Search Console)</li>
-              <li>Dashboards interativos e configuráveis</li>
-              <li>Geracao automatizada de relatorios de performance</li>
-              <li>Insights baseados em inteligencia artificial</li>
-              <li>Controle de metas e objetivos por indicador</li>
-              <li>Fluxos visuais de funil de marketing (Funnelytics)</li>
-              <li>Portal de compartilhamento para clientes</li>
-            </ul>
-          </section>
-
-          <section>
-            <h2 className="text-lg font-semibold text-slate-900 mb-3">3. Conta e Acesso</h2>
+            <h2 className="text-lg font-semibold text-slate-900 mb-3">
+              2. O que é o AdsFlow
+            </h2>
+            <p className="mb-2">
+              O AdsFlow é uma plataforma interna da Efeito Digital que oferece aos
+              nossos clientes:
+            </p>
             <ul className="list-disc pl-6 space-y-1">
-              <li>O acesso ao AdsFlow requer uma conta autenticada</li>
-              <li>Voce e responsavel por manter a seguranca de suas credenciais</li>
-              <li>Nao compartilhe suas credenciais de acesso com terceiros</li>
-              <li>Notifique-nos imediatamente em caso de uso nao autorizado</li>
+              <li>Dashboards de performance de mídia paga (Meta Ads, Google Ads)</li>
+              <li>Visualização do andamento dos projetos e entregas</li>
+              <li>Relatórios automatizados</li>
+              <li>Fluxos visuais de estratégia de campanhas</li>
+              <li>Portal de acompanhamento para clientes da agência</li>
+            </ul>
+            <p className="mt-3 text-sm text-slate-500">
+              A plataforma está em constante evolução. Podemos adicionar, modificar
+              ou remover funcionalidades sem aviso prévio.
+            </p>
+          </section>
+
+          {/* =============================================== */}
+          <section>
+            <h2 className="text-lg font-semibold text-slate-900 mb-3">
+              3. Conta de acesso
+            </h2>
+            <ul className="list-disc pl-6 space-y-1">
+              <li>
+                O acesso ao AdsFlow é concedido pela Efeito Digital a clientes ativos
+                e membros da equipe da agência
+              </li>
+              <li>
+                Você é responsável por manter suas credenciais em segurança e não
+                compartilhá-las com terceiros
+              </li>
+              <li>
+                Notifique a Efeito Digital imediatamente caso suspeite de uso não
+                autorizado da sua conta
+              </li>
+              <li>
+                Podemos suspender ou encerrar contas que descumpram estes termos ou
+                a lei
+              </li>
             </ul>
           </section>
 
+          {/* =============================================== */}
           <section>
-            <h2 className="text-lg font-semibold text-slate-900 mb-3">4. Integracoes com Terceiros</h2>
+            <h2 className="text-lg font-semibold text-slate-900 mb-3">
+              4. Integrações com plataformas externas
+            </h2>
             <p>
-              Ao conectar suas contas do Google Ads, Meta Ads, Google Analytics ou Search Console,
-              voce autoriza o AdsFlow a acessar seus dados de campanhas e metricas conforme descrito
-              na nossa <Link to="/privacy" className="text-blue-600 hover:underline">Politica de Privacidade</Link>.
+              Ao conectar suas contas do Google Ads, Meta Ads, Google Analytics,
+              Search Console ou ClickUp, você autoriza o AdsFlow a acessar os dados
+              dessas plataformas conforme descrito na{' '}
+              <Link to="/privacy" className="text-blue-600 hover:underline">
+                Política de Privacidade
+              </Link>
+              .
             </p>
             <p className="mt-2">
-              O AdsFlow utiliza exclusivamente escopos de <strong>somente leitura</strong> e nao
-              realiza alteracoes em suas campanhas, anuncios ou configuracoes de conta.
+              O AdsFlow utiliza exclusivamente escopos de{' '}
+              <strong>somente leitura</strong>. Nunca criamos, editamos ou excluímos
+              campanhas, anúncios, grupos de anúncios ou qualquer outro recurso nas
+              suas contas conectadas.
             </p>
           </section>
 
+          {/* =============================================== */}
           <section>
-            <h2 className="text-lg font-semibold text-slate-900 mb-3">5. Uso Aceitavel</h2>
-            <p>Voce concorda em nao:</p>
-            <ul className="list-disc pl-6 space-y-1 mt-2">
-              <li>Utilizar o servico para fins ilegais ou nao autorizados</li>
-              <li>Tentar acessar dados de outros usuarios ou clientes</li>
-              <li>Realizar engenharia reversa ou descompilar o software</li>
-              <li>Compartilhar links de dashboards publicos com dados sensiveis sem autorizacao</li>
-              <li>Sobrecarregar os servidores com requisicoes automatizadas excessivas</li>
+            <h2 className="text-lg font-semibold text-slate-900 mb-3">
+              5. Uso aceitável
+            </h2>
+            <p className="mb-2">Você concorda em não:</p>
+            <ul className="list-disc pl-6 space-y-1">
+              <li>Usar o serviço para fins ilegais ou não autorizados</li>
+              <li>Tentar acessar dados de outros clientes da agência</li>
+              <li>Fazer engenharia reversa ou descompilar o software</li>
+              <li>Compartilhar links internos com dados confidenciais sem autorização</li>
+              <li>
+                Executar scripts automatizados que sobrecarreguem a infraestrutura
+              </li>
+              <li>
+                Usar o AdsFlow para coletar dados de terceiros sem base legal
+              </li>
             </ul>
           </section>
 
+          {/* =============================================== */}
           <section>
-            <h2 className="text-lg font-semibold text-slate-900 mb-3">6. Propriedade Intelectual</h2>
+            <h2 className="text-lg font-semibold text-slate-900 mb-3">
+              6. Propriedade intelectual
+            </h2>
             <p>
-              O AdsFlow, incluindo seu codigo, design, logotipos e documentacao, e propriedade
-              da Efeito Digital Marketing e Comunicacao LTDA. Voce recebe uma licenca limitada,
-              nao exclusiva e nao transferivel para uso da ferramenta conforme estes termos.
+              O AdsFlow — incluindo código-fonte, design, logotipos, documentação,
+              interfaces e metodologia — é de propriedade exclusiva da Efeito Digital
+              Marketing e Comunicação LTDA. Você recebe uma licença limitada,
+              pessoal, não exclusiva e não transferível para usar a plataforma
+              enquanto for cliente ativo ou membro autorizado.
+            </p>
+            <p className="mt-2">
+              <strong>Dados do cliente</strong> (campanhas, resultados, projetos)
+              continuam sendo de propriedade do próprio cliente. A Efeito Digital
+              apenas processa esses dados para exibir no AdsFlow, conforme o
+              contrato de prestação de serviços vigente.
             </p>
           </section>
 
+          {/* =============================================== */}
           <section>
-            <h2 className="text-lg font-semibold text-slate-900 mb-3">7. Limitacao de Responsabilidade</h2>
+            <h2 className="text-lg font-semibold text-slate-900 mb-3">
+              7. Limitação de responsabilidade
+            </h2>
             <p>
-              O AdsFlow e fornecido "como esta". Nao garantimos que o servico sera ininterrupto
-              ou livre de erros. A Efeito Digital nao se responsabiliza por:
+              O AdsFlow é fornecido "como está", com o melhor esforço. Não
+              garantimos que o serviço estará sempre disponível ou livre de
+              imprecisões. A Efeito Digital não se responsabiliza por:
             </p>
             <ul className="list-disc pl-6 space-y-1 mt-2">
-              <li>Decisoes de negocio tomadas com base nos dados exibidos</li>
-              <li>Indisponibilidade temporaria das APIs de terceiros (Google, Meta)</li>
-              <li>Discrepancias entre dados reportados pelas plataformas e resultados reais</li>
-              <li>Perda de dados causada por fatores fora do nosso controle</li>
+              <li>Decisões comerciais tomadas exclusivamente com base nos dashboards</li>
+              <li>
+                Indisponibilidade temporária das APIs de Google, Meta, ClickUp ou
+                outras integrações de terceiros
+              </li>
+              <li>
+                Diferenças entre os dados exibidos no AdsFlow e os painéis nativos
+                das plataformas (decorrentes de timezone, atribuição ou cache)
+              </li>
+              <li>Perda de dados por falhas de serviços terceirizados</li>
+            </ul>
+            <p className="mt-2 text-sm text-slate-500">
+              Nossos dashboards são uma ferramenta de apoio à decisão — decisões
+              finais devem considerar contexto adicional do cliente e do mercado.
+            </p>
+          </section>
+
+          {/* =============================================== */}
+          <section>
+            <h2 className="text-lg font-semibold text-slate-900 mb-3">
+              8. Encerramento da conta
+            </h2>
+            <p>
+              Você pode solicitar o encerramento da sua conta a qualquer momento
+              enviando um e-mail para{' '}
+              <a href="mailto:jw@efeito.digital" className="text-blue-600 hover:underline">
+                jw@efeito.digital
+              </a>
+              . Após o encerramento:
+            </p>
+            <ul className="list-disc pl-6 space-y-1 mt-2">
+              <li>Seus dados são mantidos por 30 dias (janela de recuperação)</li>
+              <li>Após esse período, dados pessoais são permanentemente excluídos</li>
+              <li>
+                Dados fiscais e logs exigidos por lei são retidos pelos prazos
+                legais (detalhes na Política de Privacidade)
+              </li>
             </ul>
           </section>
 
+          {/* =============================================== */}
           <section>
-            <h2 className="text-lg font-semibold text-slate-900 mb-3">8. Cancelamento</h2>
+            <h2 className="text-lg font-semibold text-slate-900 mb-3">
+              9. Alterações destes termos
+            </h2>
             <p>
-              Voce pode solicitar o cancelamento da sua conta a qualquer momento.
-              Ao cancelar, seus dados serao retidos por 30 dias para possivel recuperacao
-              e depois permanentemente excluidos.
+              Podemos atualizar estes termos periodicamente. Alterações relevantes
+              serão comunicadas por e-mail ou notificação na plataforma com pelo
+              menos 15 dias de antecedência. O uso continuado após a vigência da
+              nova versão indica concordância.
             </p>
           </section>
 
+          {/* =============================================== */}
           <section>
-            <h2 className="text-lg font-semibold text-slate-900 mb-3">9. Alteracoes nos Termos</h2>
+            <h2 className="text-lg font-semibold text-slate-900 mb-3">
+              10. Lei aplicável e foro
+            </h2>
             <p>
-              Reservamo-nos o direito de alterar estes termos a qualquer momento.
-              Alteracoes significativas serao comunicadas por email ou notificacao no sistema.
-              O uso continuado apos alteracoes constitui aceitacao dos novos termos.
+              Estes termos são regidos pelas leis da República Federativa do Brasil,
+              em especial pelo Marco Civil da Internet (Lei 12.965/2014) e pela Lei
+              Geral de Proteção de Dados (Lei 13.709/2018). Fica eleito o foro da
+              comarca de Macapá/AP para dirimir quaisquer controvérsias.
             </p>
           </section>
 
+          {/* =============================================== */}
           <section>
-            <h2 className="text-lg font-semibold text-slate-900 mb-3">10. Contato</h2>
+            <h2 className="text-lg font-semibold text-slate-900 mb-3">11. Contato</h2>
             <p>
-              <strong>Efeito Digital Marketing e Comunicacao LTDA</strong><br />
-              Email: <a href="mailto:jw@efeito.digital" className="text-blue-600 hover:underline">jw@efeito.digital</a><br />
-              Website: <a href="https://efeito.digital" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">efeito.digital</a>
+              <strong>Efeito Digital Marketing e Comunicação LTDA</strong>
+              <br />
+              E-mail:{' '}
+              <a href="mailto:jw@efeito.digital" className="text-blue-600 hover:underline">
+                jw@efeito.digital
+              </a>
+              <br />
+              Website:{' '}
+              <a
+                href="https://efeito.digital"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:underline"
+              >
+                efeito.digital
+              </a>
             </p>
           </section>
         </div>

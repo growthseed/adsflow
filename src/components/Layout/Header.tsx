@@ -18,10 +18,13 @@ import {
   User,
   Settings,
   HelpCircle,
-  Building2,
   Menu,
+  Check,
+  Copy,
+  ArrowLeft,
 } from 'lucide-react'
 import NotificationPanel from '@/components/UI/NotificationPanel'
+import { ClientBrand } from '@/components/canonical'
 
 // ========== BREADCRUMB MAP ==========
 
@@ -48,12 +51,29 @@ interface HeaderProps {
 }
 
 export default function Header({ collapsed, onMobileMenuToggle }: HeaderProps) {
-  const { user, activeClient, signOut } = useAuth()
+  const { user, activeClient, signOut, isGlobalAdmin } = useAuth()
   const { open: openSearch } = useCommandPalette()
   const location = useLocation()
   const navigate = useNavigate()
   const [userMenuOpen, setUserMenuOpen] = useState(false)
+  const [linkCopied, setLinkCopied] = useState(false)
   const userMenuRef = useRef<HTMLDivElement>(null)
+
+  // Are we inside a specific client's context?
+  const inClientContext = /^\/c\/[^/]+\//.test(location.pathname)
+
+  const copyClientLink = async () => {
+    if (!activeClient) return
+    const url = `${window.location.origin}/c/${activeClient.client.slug}`
+    try {
+      await navigator.clipboard.writeText(url)
+      setLinkCopied(true)
+      setTimeout(() => setLinkCopied(false), 2000)
+    } catch {
+      // Fallback: select in a hidden input
+      window.prompt('Copie o link do cliente:', url)
+    }
+  }
 
   // Close user menu on outside click
   useEffect(() => {
@@ -87,30 +107,75 @@ export default function Header({ collapsed, onMobileMenuToggle }: HeaderProps) {
         collapsed ? 'md:left-[68px]' : 'md:left-60'
       }`}
     >
-      {/* ---- Left: Hamburger (mobile) + Page Title + Client Badge ---- */}
-      <div className="flex items-center gap-3">
+      {/* ---- Left: Hamburger + Client identity (when in client context)
+                    OR page title (when in staff context) ---- */}
+      <div className="flex items-center gap-3 min-w-0 flex-1">
         {/* Mobile hamburger */}
         <button
           onClick={onMobileMenuToggle}
-          className="p-1.5 -ml-1 text-slate-600 hover:bg-slate-100 rounded-lg md:hidden"
+          className="p-1.5 -ml-1 text-slate-600 hover:bg-slate-100 rounded-lg md:hidden flex-shrink-0"
           aria-label="Menu"
         >
           <Menu className="w-5 h-5" />
         </button>
 
-        <h1 className="text-lg font-semibold text-slate-900">
-          {getPageTitle()}
-        </h1>
-        {activeClient && (
-          <span className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 bg-slate-100 text-slate-600 rounded-full text-xs font-medium">
-            <Building2 className="w-3 h-3" />
-            {activeClient.client.name}
-          </span>
+        {inClientContext && activeClient ? (
+          <>
+            {/* Back to operations (staff only) */}
+            {isGlobalAdmin && (
+              <button
+                onClick={() => navigate('/_v4/operations')}
+                className="hidden md:inline-flex items-center gap-1 text-xs text-slate-500 hover:text-slate-900 px-2 py-1 rounded-md hover:bg-slate-100 transition-colors flex-shrink-0"
+                title="Voltar à visão da agência"
+              >
+                <ArrowLeft className="w-3.5 h-3.5" />
+                Operações
+              </button>
+            )}
+
+            {/* Client identity (prominent) */}
+            <ClientBrand
+              name={activeClient.client.name}
+              slug={activeClient.client.slug}
+              logoUrl={activeClient.client.logo_url}
+              size="sm"
+              subtitle={getPageTitle()}
+            />
+          </>
+        ) : (
+          <h1 className="text-lg font-semibold text-slate-900 truncate">
+            {getPageTitle()}
+          </h1>
         )}
       </div>
 
-      {/* ---- Right: Search + Notifications + User ---- */}
-      <div className="flex items-center gap-2">
+      {/* ---- Right: Share + Search + Notifications + User ---- */}
+      <div className="flex items-center gap-2 flex-shrink-0">
+        {/* Copy client share link — staff only, client context only */}
+        {inClientContext && isGlobalAdmin && activeClient && (
+          <button
+            onClick={copyClientLink}
+            className={`hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg transition-all ${
+              linkCopied
+                ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                : 'bg-blue-50 text-blue-700 border border-blue-200 hover:bg-blue-100'
+            }`}
+            title="Copiar link de acesso do cliente"
+          >
+            {linkCopied ? (
+              <>
+                <Check className="w-3.5 h-3.5" />
+                Link copiado
+              </>
+            ) : (
+              <>
+                <Copy className="w-3.5 h-3.5" />
+                Link do cliente
+              </>
+            )}
+          </button>
+        )}
+
         {/* Search (opens command palette) */}
         <button
           onClick={openSearch}
