@@ -7,7 +7,7 @@
  */
 
 import { useState, useRef, useEffect } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
 import type { ClientRole } from '@/contexts/AuthContext'
 import {
@@ -115,6 +115,7 @@ interface SidebarProps {
 export default function Sidebar({ collapsed, setCollapsed, mobileOpen = false, onMobileClose }: SidebarProps) {
   const { user, clients, activeClient, setActiveClient, hasClientRole, isSuperAdmin, signOut } = useAuth()
   const location = useLocation()
+  const navigate = useNavigate()
   const [clientDropdownOpen, setClientDropdownOpen] = useState(false)
   const [userMenuOpen, setUserMenuOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
@@ -159,6 +160,11 @@ export default function Sidebar({ collapsed, setCollapsed, mobileOpen = false, o
   const handleClientSwitch = (clientId: string) => {
     setActiveClient(clientId)
     setClientDropdownOpen(false)
+    // Navigate to the client's overview — find the slug from the membership
+    const membership = clients.find((c) => c.client_id === clientId)
+    if (membership) {
+      navigate(`/c/${membership.client.slug}/overview`)
+    }
   }
 
   useEffect(() => {
@@ -180,7 +186,7 @@ export default function Sidebar({ collapsed, setCollapsed, mobileOpen = false, o
         {!collapsed && (
           <div className="ml-2.5">
             <span className="text-base font-bold text-slate-900 tracking-tight">AdsFlow</span>
-            <span className="text-[9px] ml-1 px-1.5 py-0.5 bg-blue-50 text-blue-600 rounded font-semibold">PRO</span>
+            <span className="text-[10px] ml-1 text-slate-400 font-medium">Efeito Digital</span>
           </div>
         )}
       </div>

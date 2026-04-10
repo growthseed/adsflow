@@ -214,10 +214,14 @@ export const clientsService = {
    * Conta ad_accounts vinculadas ao cliente
    */
   async getAdAccountCount(clientId: string): Promise<number> {
+    // Count from the sanitized public view of client_integrations.
+    // The underlying table has deny-all RLS; the view is scoped by
+    // client_members and only exposes non-sensitive fields.
     const { count, error } = await supabase
-      .from('ad_accounts')
+      .from('client_integrations_public')
       .select('id', { count: 'exact', head: true })
       .eq('client_id', clientId)
+      .in('provider', ['meta_ads', 'google_ads', 'linkedin'])
 
     if (error) return 0
     return count || 0
