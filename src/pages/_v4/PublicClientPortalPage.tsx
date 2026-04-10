@@ -4,34 +4,36 @@
  * ============================================
  * Route: /portal/:token
  *
- * This is the link the gestor shares with the client via WhatsApp
- * or email. The token resolves to a client slug via Supabase RPC
- * (resolve_portal_token). No login needed — the token IS the auth.
+ * IMPORTANT: This page renders the SAME content as the internal
+ * client pages (Overview, Performance, Projeto) but without the
+ * Sidebar/AppLayout shell. The client gets the full experience
+ * with charts, widgets, template engine — not a stripped-down version.
  *
- * The page shows the same content as the authenticated portal
- * (MobileKPIHeader + TaskTimeline + progress bar) but uses the
- * snapshot data directly (no auth context).
+ * Layout: minimal header (logo + name + "Falar com gestor") + tab
+ * navigation (Visão Geral / Performance / Projeto) + full content.
  *
- * Security model:
- *   - Token is a 32-char hex string (128 bits of entropy)
- *   - RPC returns only slug + name + logo_url + industry (no secrets)
- *   - Snapshot data is the same pre-built mock/live data any viewer sees
- *   - If the client shares the link, it's their responsibility
- *   - The gestor can disable the token (portal_enabled = false) anytime
+ * Security: token is a 32-char hex (128 bits entropy). RPC returns
+ * only slug+name+logo. Data comes from the same snapshot the
+ * internal pages use.
  * ============================================
  */
 
 import { useState, useEffect, useMemo } from 'react'
 import { useParams } from 'react-router-dom'
+import { BarChart3, Layout, Briefcase, TrendingUp, ArrowRight } from 'lucide-react'
 
 import supabase from '@/lib/supabase'
-import { getClientPortalBundle } from '@/services/clientPortalService'
+import { ClientBrand, KPICard, FunnelChartWidget, GaugeWidget, DonutChartWidget, LineChartWidget } from '@/components/canonical'
+import { WidgetRenderer } from '@/components/canonical/widgets'
 import { getClientSnapshot } from '@/data/clientDashboardSnapshots'
+import { getDashboardTemplate } from '@/data/dashboardTemplates'
 import { humanizeSnapshot } from '@/lib/humanizeSnapshot'
-import MobileKPIHeader from '@/components/ClientPortal/MobileKPIHeader'
+import { getClientPortalBundle } from '@/services/clientPortalService'
+import type { SnapshotKPI } from '@/types/clientDashboardSnapshot'
+
+// Portal task components
 import TaskTimeline from '@/components/ClientPortal/TaskTimeline'
 import PortalEmptyState from '@/components/ClientPortal/PortalEmptyState'
-import { ClientBrand } from '@/components/canonical'
 
 interface ResolvedClient {
   slug: string
@@ -40,11 +42,20 @@ interface ResolvedClient {
   industry: string | null
 }
 
+type PortalTab = 'overview' | 'performance' | 'projeto'
+
+const TABS: Array<{ id: PortalTab; label: string; icon: typeof BarChart3 }> = [
+  { id: 'overview', label: 'Visão Geral', icon: Layout },
+  { id: 'performance', label: 'Performance', icon: TrendingUp },
+  { id: 'projeto', label: 'Projeto', icon: Briefcase },
+]
+
 export default function PublicClientPortalPage() {
   const { token } = useParams<{ token: string }>()
   const [client, setClient] = useState<ResolvedClient | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [activeTab, setActiveTab] = useState<PortalTab>('overview')
 
   useEffect(() => {
     if (!token) {
@@ -52,7 +63,6 @@ export default function PublicClientPortalPage() {
       setLoading(false)
       return
     }
-
     ;(async () => {
       try {
         const { data, error: rpcError } = await supabase.rpc(
@@ -75,22 +85,28 @@ export default function PublicClientPortalPage() {
     })()
   }, [token])
 
+  const snapshot = useMemo(
+    () => (client?.slug ? getClientSnapshot(client.slug) : null),
+    [client],
+  )
+  const template = useMemo(
+    () => (snapshot ? getDashboardTemplate(snapshot.scope) : null),
+    [snapshot],
+  )
+  const welcome = useMemo(
+    () => (snapshot ? humanizeSnapshot(snapshot) : null),
+    [snapshot],
+  )
   const bundle = useMemo(
     () => (client?.slug ? getClientPortalBundle(client.slug) : null),
     [client],
   )
 
-  const snapshot = useMemo(
-    () => (client?.slug ? getClientSnapshot(client.slug) : null),
-    [client],
-  )
+  const kpiOrder = snapshot
+    ? Object.values(snapshot.kpis).slice(0, 5)
+    : ([] as SnapshotKPI[])
 
-  const welcome = useMemo(
-    () => (snapshot ? humanizeSnapshot(snapshot) : null),
-    [snapshot],
-  )
-
-  // --- Loading state ---
+  // --- Loading ---
   if (loading) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
@@ -102,7 +118,7 @@ export default function PublicClientPortalPage() {
     )
   }
 
-  // --- Error state ---
+  // --- Error ---
   if (error || !client) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6">
@@ -118,13 +134,9 @@ export default function PublicClientPortalPage() {
             {error || 'Painel não encontrado'}
           </h1>
           <p className="text-sm text-slate-500 mb-6">
-            Se você recebeu esse link de um gestor da Efeito Digital e acredita
-            que deveria funcionar, entre em contato.
+            Se você recebeu esse link de um gestor da Efeito Digital, entre em contato.
           </p>
-          <a
-            href="mailto:jw@efeito.digital"
-            className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
-          >
+          <a href="mailto:jw@efeito.digital" className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700">
             Falar com a Efeito Digital
           </a>
         </div>
@@ -132,14 +144,11 @@ export default function PublicClientPortalPage() {
     )
   }
 
-  const roadmap = bundle?.roadmap
-  const kpi = bundle?.kpis ?? null
-
   return (
     <div className="min-h-screen bg-slate-50">
-      {/* --- HEADER -------------------------------------------------- */}
+      {/* ── HEADER ─────────────────────────────────────────── */}
       <header className="bg-white border-b border-slate-200 sticky top-0 z-20">
-        <div className="flex items-center justify-between px-4 py-3 max-w-3xl mx-auto">
+        <div className="max-w-5xl mx-auto flex items-center justify-between px-4 py-3">
           <ClientBrand
             name={client.name}
             slug={client.slug}
@@ -149,79 +158,202 @@ export default function PublicClientPortalPage() {
           />
           <a
             href="mailto:jw@efeito.digital"
-            className="text-xs font-medium text-blue-600 hover:text-blue-800 px-2 py-1"
+            className="text-xs font-medium text-blue-600 hover:text-blue-800 px-3 py-1.5 border border-blue-200 rounded-lg bg-blue-50 hover:bg-blue-100 transition-colors"
           >
             Falar com meu gestor
           </a>
         </div>
 
-        {/* KPI strip */}
-        <MobileKPIHeader kpi={kpi} />
+        {/* ── TAB NAVIGATION ───────────────────────────────── */}
+        <div className="max-w-5xl mx-auto px-4">
+          <nav className="flex gap-1 -mb-px">
+            {TABS.map((tab) => {
+              const Icon = tab.icon
+              const isActive = activeTab === tab.id
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium border-b-2 transition-colors ${
+                    isActive
+                      ? 'border-blue-600 text-blue-600'
+                      : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
+                  }`}
+                >
+                  <Icon className="w-4 h-4" />
+                  {tab.label}
+                </button>
+              )
+            })}
+          </nav>
+        </div>
       </header>
 
-      {/* --- WELCOME ------------------------------------------------- */}
-      {welcome && snapshot && (
-        <div className="max-w-3xl mx-auto px-4 pt-5">
-          <div className="bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 rounded-2xl p-5 text-white shadow-lg">
-            <div className="text-xs font-medium uppercase tracking-wider text-blue-200 mb-1">
-              {snapshot.period.label}
-            </div>
-            <h2 className="text-xl font-bold mb-2">{welcome.greeting}</h2>
-            <div className="space-y-1.5 text-sm text-blue-50 leading-relaxed">
-              {welcome.body.map((s, i) => (
-                <p key={i}>{s}</p>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* --- CONTENT ------------------------------------------------- */}
-      <main className="max-w-3xl mx-auto pb-24">
-        {roadmap && roadmap.tasks.length > 0 ? (
+      {/* ── CONTENT ────────────────────────────────────────── */}
+      <main className="max-w-5xl mx-auto px-4 py-6 space-y-6">
+        {/* === VISÃO GERAL TAB === */}
+        {activeTab === 'overview' && (
           <>
-            {/* Progress bar */}
-            <div className="px-4 pt-4">
-              <div className="flex items-center justify-between mb-1.5">
-                <span className="text-xs font-medium text-slate-600">
-                  Progresso do projeto
-                </span>
-                <span className="text-xs font-semibold tabular-nums text-slate-900">
-                  {roadmap.progress_percentage}%
-                </span>
-              </div>
-              <div className="w-full h-2 bg-slate-200 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-gradient-to-r from-blue-500 to-emerald-500 rounded-full transition-all duration-500"
-                  style={{ width: `${roadmap.progress_percentage}%` }}
-                />
-              </div>
-            </div>
+            {/* Welcome */}
+            {welcome && snapshot && (
+              <section className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 rounded-2xl shadow-xl p-6 sm:p-8 text-white">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-32 -mt-32" />
+                <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full -ml-24 -mb-24" />
+                <div className="relative">
+                  <div className="text-xs font-medium uppercase tracking-widest text-blue-200 mb-2">
+                    {snapshot.period.label}
+                  </div>
+                  <h1 className="text-2xl sm:text-3xl font-bold leading-tight mb-3">
+                    {welcome.greeting}
+                  </h1>
+                  <div className="space-y-2 max-w-3xl text-sm sm:text-base text-blue-50 leading-relaxed">
+                    {welcome.body.map((s, i) => (
+                      <p key={i}>{s}</p>
+                    ))}
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setActiveTab('performance')}
+                    className="mt-5 inline-flex items-center gap-2 px-4 py-2 bg-white text-blue-700 rounded-lg text-sm font-semibold hover:bg-blue-50 transition-colors shadow-lg"
+                  >
+                    Ver detalhes da performance
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                </div>
+              </section>
+            )}
 
-            <TaskTimeline tasks={roadmap.tasks} />
+            {/* KPI Strip */}
+            {kpiOrder.length > 0 && (
+              <section className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+                {kpiOrder.map((k) => (
+                  <KPICard
+                    key={k.key}
+                    kpi={{
+                      key: k.key,
+                      label: k.label,
+                      value: k.value,
+                      previous_value: k.previous_value,
+                      delta_percent: k.delta_percent,
+                      trend: k.trend ?? 'flat',
+                      improvement_direction: k.improvement_direction ?? 'higher_better',
+                      unit: k.unit,
+                      currency: k.currency,
+                      goal: k.goal,
+                      sparkline: k.sparkline,
+                      source: 'blended',
+                    }}
+                    size="md"
+                    showSparkline
+                    showGoal
+                  />
+                ))}
+              </section>
+            )}
+
+            {/* Charts row */}
+            {snapshot && snapshot.timeseries.daily.length > 0 && (
+              <section className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                <div className="lg:col-span-2">
+                  <LineChartWidget
+                    title="Evolução do período"
+                    subtitle="Dados diários"
+                    data={snapshot.timeseries.daily}
+                    xKey="date"
+                    series={[
+                      { key: 'leads', label: 'Leads', color: '#3b82f6' },
+                      { key: 'spend', label: 'Investimento', color: '#f59e0b' },
+                    ]}
+                    formatX={(v) => {
+                      const d = new Date(v)
+                      return `${d.getDate()}/${d.getMonth() + 1}`
+                    }}
+                    formatY={(v) => (v >= 1000 ? `${(v / 1000).toFixed(1)}k` : String(v))}
+                  />
+                </div>
+                <div>
+                  {snapshot.funnel ? (
+                    <FunnelChartWidget
+                      title="Funil"
+                      subtitle="Etapas de conversão"
+                      stages={snapshot.funnel.stages}
+                    />
+                  ) : snapshot.kpis.roas ? (
+                    <GaugeWidget
+                      title="ROAS atual"
+                      subtitle="Meta vs realizado"
+                      value={snapshot.kpis.roas.value}
+                      goal={snapshot.kpis.roas.goal ?? 4}
+                      valueLabel={snapshot.kpis.roas.value.toFixed(2)}
+                      goalLabel={String(snapshot.kpis.roas.goal ?? 4)}
+                    />
+                  ) : (
+                    <DonutChartWidget
+                      title="Distribuição por canal"
+                      data={snapshot.channels}
+                      centerLabel="TOTAL"
+                      centerValue={snapshot.blended.spend_formatted}
+                    />
+                  )}
+                </div>
+              </section>
+            )}
           </>
-        ) : (
-          <PortalEmptyState
-            title="Nada por aqui ainda"
-            description="Seu projeto está começando. As entregas aparecem aqui automaticamente."
-          />
         )}
 
-        {/* Footer branding */}
-        <div className="text-center py-8 px-6">
-          <p className="text-[11px] text-slate-400">
-            Painel de acompanhamento gerenciado pela Efeito Digital
-          </p>
-          <a
-            href="https://efeito.digital"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-[11px] text-blue-500 hover:text-blue-700"
-          >
-            efeito.digital
-          </a>
-        </div>
+        {/* === PERFORMANCE TAB === */}
+        {activeTab === 'performance' && (
+          <>
+            {snapshot && template ? (
+              <WidgetRenderer template={template} snapshot={snapshot} />
+            ) : (
+              <PortalEmptyState
+                title="Performance em preparação"
+                description="Os dados de performance serão exibidos aqui assim que forem sincronizados."
+              />
+            )}
+          </>
+        )}
+
+        {/* === PROJETO TAB === */}
+        {activeTab === 'projeto' && (
+          <>
+            {bundle?.roadmap && bundle.roadmap.tasks.length > 0 ? (
+              <>
+                {/* Progress bar */}
+                <div>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="text-xs font-medium text-slate-600">Progresso do projeto</span>
+                    <span className="text-xs font-semibold tabular-nums text-slate-900">{bundle.roadmap.progress_percentage}%</span>
+                  </div>
+                  <div className="w-full h-2 bg-slate-200 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-gradient-to-r from-blue-500 to-emerald-500 rounded-full transition-all duration-500"
+                      style={{ width: `${bundle.roadmap.progress_percentage}%` }}
+                    />
+                  </div>
+                </div>
+                <TaskTimeline tasks={bundle.roadmap.tasks} />
+              </>
+            ) : (
+              <PortalEmptyState
+                title="Nada por aqui ainda"
+                description="As entregas do projeto aparecem aqui automaticamente conforme são registradas."
+              />
+            )}
+          </>
+        )}
       </main>
+
+      {/* ── FOOTER ─────────────────────────────────────────── */}
+      <footer className="text-center py-8 px-6 border-t border-slate-200 mt-8">
+        <p className="text-[11px] text-slate-400">
+          Painel de acompanhamento gerenciado pela Efeito Digital
+        </p>
+        <a href="https://efeito.digital" target="_blank" rel="noopener noreferrer" className="text-[11px] text-blue-500 hover:text-blue-700">
+          efeito.digital
+        </a>
+      </footer>
     </div>
   )
 }
