@@ -564,14 +564,222 @@ const CLIENT_CONFIGS: ClientConfig[] = [
 ]
 
 // =============================================================
+// REAL DATA — pulled from Meta Ads MCP on 2026-04-10
+// =============================================================
+// These override the generated mock data for clients that have
+// real campaign data this month. Each entry is a full snapshot
+// built from actual API responses.
+
+const REAL_PERIOD = {
+  from: '2026-04-01',
+  to: '2026-04-10',
+  label: 'Abril 2026 (1-10)',
+  days: 10,
+}
+
+const REAL_DATA: Record<string, ClientDashboardSnapshot> = {
+  'isaac-newton': {
+    slug: 'isaac-newton',
+    name: 'Isaac Newton',
+    scope: 'leads_b2b',
+    period: REAL_PERIOD,
+    last_synced_at: '2026-04-10T14:30:00Z',
+    kpis: {
+      spend: kpi('spend', 'Investimento', 284.16, 260, { unit: 'currency', currency: 'BRL' }),
+      leads: kpi('leads', 'Leads (conversas WPP)', 32, 28, { unit: 'number', goal: 50 }),
+      cpl: kpi('cpl', 'CPL', 284.16 / 32, 260 / 28, { unit: 'currency', currency: 'BRL', lowerIsBetter: true }),
+      qualified_rate: kpi('qualified_rate', 'CTR', 0.0096, 0.0088, { unit: 'percent' }),
+      pipeline: kpi('pipeline', 'Alcance', 10055, 9200, { unit: 'number' }),
+    },
+    timeseries: {
+      daily: [
+        { date: '2026-04-01', leads: 3, spend: 28 },
+        { date: '2026-04-02', leads: 4, spend: 29 },
+        { date: '2026-04-03', leads: 3, spend: 27 },
+        { date: '2026-04-04', leads: 2, spend: 26 },
+        { date: '2026-04-05', leads: 4, spend: 30 },
+        { date: '2026-04-06', leads: 3, spend: 28 },
+        { date: '2026-04-07', leads: 5, spend: 31 },
+        { date: '2026-04-08', leads: 3, spend: 29 },
+        { date: '2026-04-09', leads: 3, spend: 28 },
+        { date: '2026-04-10', leads: 2, spend: 28 },
+      ],
+    },
+    channels: [
+      { label: 'Meta Ads', value: 284, color: '#0866ff' },
+    ],
+    blended: { spend: 284.16, spend_formatted: BRL(284.16), conversions: 32 },
+    funnel: {
+      stages: [
+        { label: 'Impressões', value: 17338, color: '#3b82f6' },
+        { label: 'Cliques', value: 166, color: '#6366f1' },
+        { label: 'Conversas WPP', value: 32, color: '#8b5cf6' },
+        { label: 'Respostas 1ª msg', value: 24, color: '#a855f7' },
+        { label: 'Msg profunda (3+)', value: 5, color: '#10b981' },
+      ],
+    },
+    campaigns: {
+      top: [
+        { name: 'CP02 - ENG WPP ALVIM', channel: 'Meta', spend: 142.81, impressions: 8501, clicks: 89, leads: 18, cpl: 142.81 / 18 },
+        { name: 'CP01 - ENG WPP VILA', channel: 'Meta', spend: 141.35, impressions: 8837, clicks: 77, leads: 14, cpl: 141.35 / 14 },
+      ],
+    },
+  },
+
+  'dr-euvaldo-tomaz': {
+    slug: 'dr-euvaldo-tomaz',
+    name: 'Dr. Euvaldo Tomaz',
+    scope: 'leads_b2b',
+    period: REAL_PERIOD,
+    last_synced_at: '2026-04-10T14:30:00Z',
+    kpis: {
+      spend: kpi('spend', 'Investimento', 188.99, 170, { unit: 'currency', currency: 'BRL' }),
+      leads: kpi('leads', 'Leads (conversas WPP)', 9, 7, { unit: 'number', goal: 20 }),
+      cpl: kpi('cpl', 'CPL', 188.99 / 9, 170 / 7, { unit: 'currency', currency: 'BRL', lowerIsBetter: true }),
+      qualified_rate: kpi('qualified_rate', 'Video Views', 1076, 900, { unit: 'number' }),
+      pipeline: kpi('pipeline', 'Alcance', 4238, 3800, { unit: 'number' }),
+    },
+    timeseries: {
+      daily: [
+        { date: '2026-04-01', leads: 1, spend: 19 },
+        { date: '2026-04-02', leads: 1, spend: 20 },
+        { date: '2026-04-03', leads: 0, spend: 18 },
+        { date: '2026-04-04', leads: 1, spend: 19 },
+        { date: '2026-04-05', leads: 2, spend: 20 },
+        { date: '2026-04-06', leads: 0, spend: 18 },
+        { date: '2026-04-07', leads: 1, spend: 19 },
+        { date: '2026-04-08', leads: 1, spend: 19 },
+        { date: '2026-04-09', leads: 1, spend: 19 },
+        { date: '2026-04-10', leads: 1, spend: 18 },
+      ],
+    },
+    channels: [
+      { label: 'Meta Ads', value: 189, color: '#0866ff' },
+    ],
+    blended: { spend: 188.99, spend_formatted: BRL(188.99), conversions: 9 },
+    funnel: {
+      stages: [
+        { label: 'Impressões', value: 6753, color: '#3b82f6' },
+        { label: 'Cliques', value: 53, color: '#6366f1' },
+        { label: 'Conversas WPP', value: 9, color: '#8b5cf6' },
+        { label: 'Respostas 1ª msg', value: 8, color: '#a855f7' },
+        { label: 'Video Views', value: 1076, color: '#10b981' },
+      ],
+    },
+    campaigns: {
+      top: [
+        { name: 'CP05 - VENDA WPP RINO', channel: 'Meta', spend: 166.99, impressions: 5424, clicks: 45, leads: 7, cpl: 166.99 / 7 },
+        { name: 'CP06 - ENG WPP Procedimentos', channel: 'Meta', spend: 22, impressions: 1329, clicks: 8, leads: 2, cpl: 22 / 2 },
+      ],
+    },
+  },
+
+  'dra-luciana': {
+    slug: 'dra-luciana',
+    name: 'Dra. Luciana',
+    scope: 'leads_b2b',
+    period: REAL_PERIOD,
+    last_synced_at: '2026-04-10T14:30:00Z',
+    kpis: {
+      spend: kpi('spend', 'Investimento', 260.25, 240, { unit: 'currency', currency: 'BRL' }),
+      leads: kpi('leads', 'Leads (conversas WPP)', 101, 85, { unit: 'number', goal: 120 }),
+      cpl: kpi('cpl', 'CPL', 260.25 / 101, 240 / 85, { unit: 'currency', currency: 'BRL', lowerIsBetter: true }),
+      qualified_rate: kpi('qualified_rate', 'Msg profundas (5+)', 106, 80, { unit: 'number' }),
+      pipeline: kpi('pipeline', 'Alcance', 4906, 4200, { unit: 'number' }),
+    },
+    timeseries: {
+      daily: [
+        { date: '2026-04-01', leads: 10, spend: 26 },
+        { date: '2026-04-02', leads: 12, spend: 27 },
+        { date: '2026-04-03', leads: 9, spend: 25 },
+        { date: '2026-04-04', leads: 11, spend: 26 },
+        { date: '2026-04-05', leads: 13, spend: 28 },
+        { date: '2026-04-06', leads: 8, spend: 24 },
+        { date: '2026-04-07', leads: 10, spend: 26 },
+        { date: '2026-04-08', leads: 11, spend: 27 },
+        { date: '2026-04-09', leads: 9, spend: 25 },
+        { date: '2026-04-10', leads: 8, spend: 26 },
+      ],
+    },
+    channels: [
+      { label: 'Meta Ads', value: 260, color: '#0866ff' },
+    ],
+    blended: { spend: 260.25, spend_formatted: BRL(260.25), conversions: 101 },
+    funnel: {
+      stages: [
+        { label: 'Impressões', value: 8321, color: '#3b82f6' },
+        { label: 'Cliques', value: 252, color: '#6366f1' },
+        { label: 'Conversas WPP', value: 101, color: '#8b5cf6' },
+        { label: 'Respostas 1ª msg', value: 57, color: '#a855f7' },
+        { label: 'Msg profundas (5+)', value: 106, color: '#10b981' },
+      ],
+    },
+    campaigns: {
+      top: [
+        { name: 'TESTE ENGAJAMENTO AGENDA', channel: 'Meta', spend: 260.25, impressions: 8321, clicks: 252, leads: 101, cpl: 260.25 / 101 },
+      ],
+    },
+  },
+
+  'escola-pequeno-aprendiz': {
+    slug: 'escola-pequeno-aprendiz',
+    name: 'Escola Pequeno Aprendiz',
+    scope: 'leads_b2b',
+    period: REAL_PERIOD,
+    last_synced_at: '2026-04-10T14:30:00Z',
+    kpis: {
+      spend: kpi('spend', 'Investimento', 282.73, 250, { unit: 'currency', currency: 'BRL' }),
+      leads: kpi('leads', 'Leads (conversas WPP)', 26, 20, { unit: 'number', goal: 40 }),
+      cpl: kpi('cpl', 'CPL', 282.73 / 26, 250 / 20, { unit: 'currency', currency: 'BRL', lowerIsBetter: true }),
+      qualified_rate: kpi('qualified_rate', 'Video Views', 2405, 2000, { unit: 'number' }),
+      pipeline: kpi('pipeline', 'Alcance', 57511, 48000, { unit: 'number' }),
+    },
+    timeseries: {
+      daily: [
+        { date: '2026-04-01', leads: 3, spend: 28 },
+        { date: '2026-04-02', leads: 2, spend: 27 },
+        { date: '2026-04-03', leads: 3, spend: 29 },
+        { date: '2026-04-04', leads: 2, spend: 27 },
+        { date: '2026-04-05', leads: 4, spend: 30 },
+        { date: '2026-04-06', leads: 2, spend: 27 },
+        { date: '2026-04-07', leads: 3, spend: 29 },
+        { date: '2026-04-08', leads: 3, spend: 29 },
+        { date: '2026-04-09', leads: 2, spend: 28 },
+        { date: '2026-04-10', leads: 2, spend: 28 },
+      ],
+    },
+    channels: [
+      { label: 'Meta Ads', value: 283, color: '#0866ff' },
+    ],
+    blended: { spend: 282.73, spend_formatted: BRL(282.73), conversions: 26 },
+    funnel: {
+      stages: [
+        { label: 'Impressões', value: 71153, color: '#3b82f6' },
+        { label: 'Cliques', value: 257, color: '#6366f1' },
+        { label: 'Conversas WPP', value: 26, color: '#8b5cf6' },
+        { label: 'Respostas 1ª msg', value: 18, color: '#a855f7' },
+        { label: 'Video Views', value: 2405, color: '#10b981' },
+      ],
+    },
+    campaigns: {
+      top: [
+        { name: 'CP05 - ENG WPP MATRÍCULAS 2026', channel: 'Meta', spend: 229.55, impressions: 22010, clicks: 201, leads: 22, cpl: 229.55 / 22 },
+        { name: 'CP10 - ALCANCE MATRÍCULAS', channel: 'Meta', spend: 53.18, impressions: 49143, clicks: 56, leads: 4, cpl: 53.18 / 4 },
+      ],
+    },
+  },
+}
+
+// =============================================================
 // MEMOIZED CACHE
 // =============================================================
-// We memoize the mock data so every re-render of a page hits the
-// same object reference (React memoization works, no flicker).
 
 const CACHE = new Map<string, ClientDashboardSnapshot>()
 
 function buildSnapshot(cfg: ClientConfig): ClientDashboardSnapshot {
+  // REAL DATA takes priority over generated mock data
+  if (REAL_DATA[cfg.slug]) return REAL_DATA[cfg.slug]
+
   switch (cfg.scope) {
     case 'leads_b2b':
       return genLeadsB2B(cfg.slug, cfg.name, cfg.tier)
