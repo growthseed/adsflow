@@ -76,6 +76,7 @@ import {
   ActionNode as FunnelActionNode,
 } from '@/components/Nodes/Funnelytics'
 import NodesSidebar from '@/components/Planner/NodesSidebar'
+import NodeEditPanel from '@/components/Planner/NodeEditPanel'
 
 /**
  * Wraps any ReactFlow node component so that when `data.liveMetrics`
@@ -576,6 +577,7 @@ function FlowEditor({
   const [shareUrl, setShareUrl] = useState<string | null>(null)
   const [versionsOpen, setVersionsOpen] = useState(false)
   const [nodesSidebarOpen, setNodesSidebarOpen] = useState(false)
+  const [editingNode, setEditingNode] = useState<Node | null>(null)
   const [versions, setVersions] = useState<FlowVersion[]>([])
   const [loadingVersions, setLoadingVersions] = useState(false)
   const [liveDataOn, setLiveDataOn] = useState(false)
@@ -653,6 +655,27 @@ function FlowEditor({
     (conn: Connection) => {
       setEdges((eds) => addEdge({ ...conn, type: 'smoothstep' }, eds))
       setDirty(true)
+    },
+    [],
+  )
+
+  // --- Node click → open edit panel ---
+  const onNodeClick = useCallback(
+    (_event: React.MouseEvent, clickedNode: Node) => {
+      setEditingNode(clickedNode)
+    },
+    [],
+  )
+
+  const handleNodeDataUpdate = useCallback(
+    (nodeId: string, newData: Record<string, unknown>) => {
+      setNodes((nds) =>
+        nds.map((n) =>
+          n.id === nodeId ? { ...n, data: { ...n.data, ...newData } } : n,
+        ),
+      )
+      setDirty(true)
+      setEditingNode(null)
     },
     [],
   )
@@ -1000,13 +1023,14 @@ function FlowEditor({
           </div>
         )}
 
-        <div className="flex-1 bg-[var(--surface-card)] border border-[var(--border-subtle)] rounded-xl overflow-hidden">
+        <div className="relative flex-1 bg-[var(--surface-card)] border border-[var(--border-subtle)] rounded-xl overflow-hidden">
         <ReactFlow
           nodes={displayNodes}
           edges={edges}
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
           onConnect={onConnect}
+          onNodeClick={onNodeClick}
           onDragOver={onDragOver}
           onDrop={onDrop}
           nodeTypes={nodeTypes}
@@ -1022,6 +1046,15 @@ function FlowEditor({
           <Controls position="bottom-left" showInteractive={false} />
           <MiniMap pannable zoomable style={{ height: 100 }} />
         </ReactFlow>
+
+        {/* Node edit panel — slides in from right on node click */}
+        {editingNode && (
+          <NodeEditPanel
+            node={editingNode}
+            onClose={() => setEditingNode(null)}
+            onUpdate={handleNodeDataUpdate}
+          />
+        )}
         </div>
       </div>
 
