@@ -14,6 +14,7 @@ import { ClientCardSkeleton } from '@/components/UI/Skeleton'
 import { clientsService, membersService } from '@/services/clientsService'
 import type { Client, ClientMember } from '@/services/clientsService'
 import type { ClientRole } from '@/contexts/AuthContext'
+import { uploadAndUpdateClientLogo } from '@/lib/supabaseStorage'
 import {
   Plus,
   Search,
@@ -30,6 +31,8 @@ import {
   Shield,
   Crown,
   Eye,
+  Upload,
+  ImageIcon,
 } from 'lucide-react'
 
 // =====================================================
@@ -103,6 +106,9 @@ function ClientFormModal({
   const [phone, setPhone] = useState(client?.phone || '')
   const [saving, setSaving] = useState(false)
   const [websiteError, setWebsiteError] = useState('')
+  const [logoFile, setLogoFile] = useState<File | null>(null)
+  const [logoPreview, setLogoPreview] = useState<string | null>(client?.logo_url || null)
+  const [uploadingLogo, setUploadingLogo] = useState(false)
 
   const validateWebsite = (url: string) => {
     if (!url) { setWebsiteError(''); return }
@@ -116,6 +122,17 @@ function ClientFormModal({
     return () => document.removeEventListener('keydown', handler)
   }, [onClose])
 
+  const handleLogoSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    if (file.size > 2 * 1024 * 1024) {
+      alert('Arquivo muito grande. Máximo 2MB.')
+      return
+    }
+    setLogoFile(file)
+    setLogoPreview(URL.createObjectURL(file))
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!name.trim()) return
@@ -128,6 +145,19 @@ function ClientFormModal({
         website: website || undefined,
         phone: phone || undefined,
       })
+
+      // Upload logo AFTER the client record is saved (need the client.id)
+      if (logoFile && client?.id) {
+        setUploadingLogo(true)
+        try {
+          await uploadAndUpdateClientLogo(client.id, logoFile, client.logo_url)
+        } catch (err) {
+          console.error('Logo upload failed:', err)
+        } finally {
+          setUploadingLogo(false)
+        }
+      }
+
       onClose()
     } catch (err) {
       console.error('Erro ao salvar cliente:', err)
@@ -149,6 +179,46 @@ function ClientFormModal({
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
+          {/* Logo upload */}
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-2">
+              Logo do cliente
+            </label>
+            <div className="flex items-center gap-4">
+              {/* Preview */}
+              <div className="w-16 h-16 rounded-xl border-2 border-dashed border-slate-200 bg-slate-50 flex items-center justify-center overflow-hidden flex-shrink-0">
+                {logoPreview ? (
+                  <img
+                    src={logoPreview}
+                    alt="Preview"
+                    className="w-full h-full object-cover rounded-xl"
+                  />
+                ) : (
+                  <ImageIcon className="w-6 h-6 text-slate-400" />
+                )}
+              </div>
+              {/* Upload button */}
+              <div className="flex-1">
+                <label className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-blue-700 bg-blue-50 border border-blue-200 rounded-lg cursor-pointer hover:bg-blue-100 transition-colors">
+                  <Upload className="w-4 h-4" />
+                  {logoFile ? 'Trocar logo' : 'Enviar logo'}
+                  <input
+                    type="file"
+                    accept="image/png,image/jpeg,image/svg+xml,image/webp"
+                    onChange={handleLogoSelect}
+                    className="hidden"
+                  />
+                </label>
+                <p className="text-[11px] text-slate-500 mt-1">
+                  PNG, JPG, SVG ou WebP. Máximo 2MB.
+                </p>
+                {uploadingLogo && (
+                  <p className="text-xs text-blue-600 mt-1 animate-pulse">Enviando logo...</p>
+                )}
+              </div>
+            </div>
+          </div>
+
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">
               Nome do Cliente *

@@ -73,6 +73,7 @@ const V4PublicFlowPage = lazyRetry(() => import('./pages/_v4/PublicFlowPage'))
 const V4PlaybookPage = lazyRetry(() => import('./pages/_v4/PlaybookPage'))
 const V4ClientPortalPage = lazyRetry(() => import('./pages/_v4/ClientPortalPage'))
 const V4ClientRootRedirect = lazyRetry(() => import('./pages/_v4/ClientRootRedirect'))
+const V4PublicClientPortalPage = lazyRetry(() => import('./pages/_v4/PublicClientPortalPage'))
 
 // Error Boundary para capturar erros de React
 interface ErrorBoundaryState {
@@ -247,6 +248,9 @@ function App() {
 
             {/* Public flow sharing (no auth) — Planner read-only */}
             <Route path="/p/:token" element={<V4PublicFlowPage />} />
+
+            {/* Public client portal (no auth) — token-based view-only */}
+            <Route path="/portal/:token" element={<V4PublicClientPortalPage />} />
 
             {/* OAuth callback — Google landa aqui */}
             <Route path="/auth/google/callback" element={<AuthCallbackPage />} />

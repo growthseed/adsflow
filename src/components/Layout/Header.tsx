@@ -64,13 +64,17 @@ export default function Header({ collapsed, onMobileMenuToggle }: HeaderProps) {
 
   const copyClientLink = async () => {
     if (!activeClient) return
-    const url = `${window.location.origin}/c/${activeClient.client.slug}`
+    // Prefer the public portal token link (no login required).
+    // Fall back to the slug-based link (requires login).
+    const portalToken = activeClient.client.portal_token
+    const url = portalToken
+      ? `${window.location.origin}/portal/${portalToken}`
+      : `${window.location.origin}/c/${activeClient.client.slug}`
     try {
       await navigator.clipboard.writeText(url)
       setLinkCopied(true)
       setTimeout(() => setLinkCopied(false), 2000)
     } catch {
-      // Fallback: select in a hidden input
       window.prompt('Copie o link do cliente:', url)
     }
   }

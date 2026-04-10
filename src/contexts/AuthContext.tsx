@@ -53,6 +53,9 @@ export interface ClientMembership {
     tier: ClientServiceTier;
     /** Column in DB: active_scope. Default 'performance'. */
     scope: string;
+    /** Public portal share token (32-char hex). Staff uses this to generate
+     *  the link adsflow.efeito.digital/portal/:token for the client. */
+    portal_token: string | null;
   };
 }
 
@@ -233,7 +236,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           const clientsResult = await withTimeout(
             supabase
               .from('clients')
-              .select('id, name, slug, logo_url, status, industry, service_tier, active_scope')
+              .select('id, name, slug, logo_url, status, industry, service_tier, active_scope, portal_token')
               .in('id', clientIds),
             'fetchClients',
           )
@@ -250,6 +253,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
               industry: string | null
               service_tier: ClientServiceTier | null
               active_scope: string | null
+              portal_token: string | null
             }
             const clientMap = new Map<string, ClientMembership['client']>(
               (clientsResult.data as RawClient[]).map((c) => [
@@ -263,6 +267,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                   industry: c.industry,
                   tier: (c.service_tier as ClientServiceTier) ?? 'basic',
                   scope: c.active_scope ?? 'performance',
+                  portal_token: c.portal_token,
                 },
               ]),
             )
