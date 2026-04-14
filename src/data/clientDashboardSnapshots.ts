@@ -773,6 +773,55 @@ const REAL_DATA: Record<string, ClientDashboardSnapshot> = {
     ],
   },
 
+  'homero-reis': {
+    slug: 'homero-reis',
+    name: 'Homero Reis',
+    scope: 'sales_inside',
+    period: {
+      from: '2026-03-01',
+      to: '2026-03-31',
+      label: 'Março 2026',
+      days: 31,
+    },
+    last_synced_at: '2026-04-10T16:30:00Z',
+    kpis: {
+      spend: kpi('spend', 'Investimento', 199.52, 180, { unit: 'currency', currency: 'BRL' }),
+      leads: kpi('leads', 'Cliques qualificados', 660, 500, { unit: 'number', goal: 800 }),
+      cpl: kpi('cpl', 'Custo por clique', 199.52 / 660, 180 / 500, { unit: 'currency', currency: 'BRL', lowerIsBetter: true }),
+      qualified_rate: kpi('qualified_rate', 'Interações no post', 261, 200, { unit: 'number' }),
+      pipeline: kpi('pipeline', 'Alcance único', 11360, 9000, { unit: 'number' }),
+    },
+    timeseries: {
+      daily: [
+        { date: '2026-03-01', leads: 20, spend: 6.5 },
+        { date: '2026-03-05', leads: 22, spend: 6.8 },
+        { date: '2026-03-10', leads: 21, spend: 6.4 },
+        { date: '2026-03-15', leads: 24, spend: 7.0 },
+        { date: '2026-03-20', leads: 22, spend: 6.5 },
+        { date: '2026-03-25', leads: 23, spend: 6.6 },
+        { date: '2026-03-31', leads: 21, spend: 6.2 },
+      ],
+    },
+    channels: [
+      { label: 'Meta Ads', value: 200, color: '#0866ff' },
+    ],
+    blended: { spend: 199.52, spend_formatted: BRL(199.52), conversions: 660 },
+    funnel: {
+      stages: [
+        { label: 'Cliques no anúncio', value: 660, color: '#3b82f6' },
+        { label: 'Curtidas + Salvamentos', value: 191, color: '#6366f1' },
+        { label: 'Views de vídeo', value: 5059, color: '#8b5cf6' },
+        { label: 'Comentários', value: 6, color: '#10b981' },
+        { label: 'Conversas iniciadas', value: 1, color: '#059669' },
+      ],
+    },
+    campaigns: {
+      top: [
+        { name: 'CP 03 - Seguidores Homero', channel: 'Meta', spend: 199.52, impressions: 12630, clicks: 660, leads: 660, cpl: 199.52 / 660 },
+      ],
+    },
+  },
+
   'escola-pequeno-aprendiz': {
     slug: 'escola-pequeno-aprendiz',
     name: 'Escola Pequeno Aprendiz',
