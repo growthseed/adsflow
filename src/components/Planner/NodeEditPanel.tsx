@@ -245,6 +245,26 @@ function getFieldsForType(nodeType: string, data: Record<string, unknown>): Fiel
         { key: 'fontFamily', label: 'Fonte', type: 'select', options: ['Inter', 'Roboto', 'Montserrat'] },
       ]
 
+    case 'leadJourney':
+      return [
+        { key: 'label', label: 'Nome da jornada', type: 'text', placeholder: 'Funil Matrículas Q2' },
+        { key: 'period_label', label: 'Período', type: 'text', placeholder: '2026-Q2' },
+        { key: 'forecast_end_of_period', label: 'Projeção fim do período', type: 'number', step: '1' },
+        { key: 'forecast_target', label: 'Meta final do período', type: 'number', step: '1' },
+      ]
+
+    case 'goal':
+      return [
+        { key: 'label', label: 'Nome da meta', type: 'text', placeholder: 'Leads qualificados' },
+        { key: 'objective', label: 'Objetivo', type: 'select', options: ['awareness', 'reach', 'engagement', 'lead_gen', 'lead_qualification', 'sales_direct', 'sales_complex', 'retention', 'local_traffic'] },
+        { key: 'metric_key', label: 'Métrica', type: 'text', placeholder: 'leads, cpl, roas, reach...' },
+        { key: 'period', label: 'Período', type: 'select', options: ['daily', 'weekly', 'monthly', 'quarterly', 'custom'] },
+        { key: 'active_range', label: 'Quarter/Range ativo', type: 'text', placeholder: '2026-Q2' },
+        { key: 'data_source', label: 'Fonte de dados', type: 'select', options: ['manual', 'google_ads', 'meta_ads', 'ga4', 'kommo', 'blended'] },
+        { key: 'account_ref', label: 'ID da conta (opcional)', type: 'text', placeholder: 'act_123 ou 4965532144' },
+        { key: 'realized', label: 'Realizado', type: 'number', step: '0.01' },
+      ]
+
     default:
       // Generic: show all string/number fields from data
       return Object.entries(data)

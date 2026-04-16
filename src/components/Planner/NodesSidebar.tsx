@@ -118,6 +118,13 @@ const NODE_GROUPS: NodeGroup[] = [
     ],
   },
   {
+    title: 'Metas & Objetivos',
+    nodes: [
+      { type: 'goal', label: 'Meta', icon: <Target className="w-4 h-4" />, color: '#0f3999', description: 'Meta com progresso, período e objetivo' },
+      { type: 'leadJourney', label: 'Jornada do Lead', icon: <MapPin className="w-4 h-4" />, color: '#7c3aed', description: 'Funil: Lead → MQL → Visita → Fechamento com conversão entre estágios' },
+    ],
+  },
+  {
     title: 'Anotação',
     nodes: [
       { type: 'postit', label: 'Post-it', icon: <StickyNote className="w-4 h-4" />, color: '#fbbf24', description: 'Nota adesiva colorida' },

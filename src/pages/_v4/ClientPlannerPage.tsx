@@ -75,6 +75,8 @@ import {
   PageNode as FunnelPageNode,
   ActionNode as FunnelActionNode,
 } from '@/components/Nodes/Funnelytics'
+import GoalNode from '@/components/Nodes/GoalNode'
+import LeadJourneyNode from '@/components/Nodes/LeadJourneyNode'
 import NodesSidebar from '@/components/Planner/NodesSidebar'
 import NodeEditPanel from '@/components/Planner/NodeEditPanel'
 
@@ -131,6 +133,10 @@ const nodeTypes = {
   // Annotation nodes
   postit: PostitNode,
   advancedText: AdvancedTextNode,
+
+  // Goal tracking
+  goal: GoalNode,
+  leadJourney: LeadJourneyNode,
 }
 
 type ViewState =

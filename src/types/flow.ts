@@ -33,7 +33,7 @@ export interface StrategyFlow {
 
 export interface StrategyNode {
   id: string
-  type: 'traffic_source' | 'campaign' | 'ad_set' | 'ad' | 'audience' | 'result'
+  type: 'traffic_source' | 'campaign' | 'ad_set' | 'ad' | 'audience' | 'result' | 'goal' | 'leadJourney'
   position: { x: number; y: number }
   
   data: {

@@ -14,35 +14,71 @@
  * ============================================
  */
 
-import { useMemo } from 'react'
+import { useMemo, useState, useCallback } from 'react'
 import { useParams, Navigate, useNavigate } from 'react-router-dom'
+import { subDays, format } from 'date-fns'
 
 import { PageHeader, ClientBrand } from '@/components/canonical'
 import { WidgetRenderer } from '@/components/canonical/widgets'
+import DateRangeSelector from '@/components/UI/DateRangeSelector'
 import { getClientBySlug } from '@/services/adapters/clickupAdapter'
 import { getClientSnapshot } from '@/data/clientDashboardSnapshots'
 import { getDashboardTemplate } from '@/data/dashboardTemplates'
+import { downloadClientReport } from '@/lib/generateClientReport'
 import { useAuth } from '@/contexts/AuthContext'
+
+interface DateRange {
+  startDate: Date
+  endDate: Date
+}
 
 export default function ClientPerformancePage() {
   const { clientSlug } = useParams<{ clientSlug: string }>()
   const navigate = useNavigate()
   const { activeClient } = useAuth()
 
+  const [dateRange, setDateRange] = useState<DateRange>({
+    startDate: subDays(new Date(), 29),
+    endDate: new Date(),
+  })
+
   const client = useMemo(
     () => (clientSlug ? getClientBySlug(clientSlug) : undefined),
     [clientSlug],
   )
 
-  const snapshot = useMemo(
+  const rawSnapshot = useMemo(
     () => (clientSlug ? getClientSnapshot(clientSlug) : null),
     [clientSlug],
   )
+
+  const snapshot = useMemo(() => {
+    if (!rawSnapshot) return null
+    const from = format(dateRange.startDate, 'yyyy-MM-dd')
+    const to = format(dateRange.endDate, 'yyyy-MM-dd')
+    const days = Math.round((dateRange.endDate.getTime() - dateRange.startDate.getTime()) / 864e5) + 1
+    const label = `${format(dateRange.startDate, 'dd/MM')} — ${format(dateRange.endDate, 'dd/MM/yyyy')}`
+
+    const daily = rawSnapshot.timeseries?.daily?.filter((row) => {
+      const d = String(row.date ?? row.day ?? '')
+      return d >= from && d <= to
+    }) ?? rawSnapshot.timeseries?.daily
+
+    return {
+      ...rawSnapshot,
+      period: { from, to, label, days },
+      timeseries: { ...rawSnapshot.timeseries, daily },
+    }
+  }, [rawSnapshot, dateRange])
 
   const template = useMemo(
     () => (snapshot ? getDashboardTemplate(snapshot.scope) : null),
     [snapshot],
   )
+
+  const handleDateChange = useCallback((range: DateRange) => {
+    setDateRange(range)
+  }, [])
 
   if (!client) return <Navigate to="/_v4/operations" replace />
 
@@ -90,7 +126,7 @@ export default function ClientPerformancePage() {
     <div className="min-h-screen bg-[var(--surface-page)]">
       <PageHeader
         title="Performance"
-        subtitle={`${snapshot.period.label} · ${snapshot.scope === 'leads_b2b' ? 'Leads & CRM' : snapshot.scope === 'ecommerce' ? 'E-commerce' : snapshot.scope === 'pdv_local' ? 'PDV Local' : snapshot.scope === 'sales_inside' ? 'Inside Sales' : 'Personalizado'}`}
+        subtitle={`${snapshot.period.label} (${snapshot.period.days}d) · ${snapshot.scope === 'leads_b2b' ? 'Leads & CRM' : snapshot.scope === 'ecommerce' ? 'E-commerce' : snapshot.scope === 'pdv_local' ? 'PDV Local' : snapshot.scope === 'sales_inside' ? 'Inside Sales' : 'Personalizado'}`}
         leading={
           <ClientBrand
             name={client.name}
@@ -106,13 +142,33 @@ export default function ClientPerformancePage() {
           { label: 'Performance' },
         ]}
         actions={
-          <button
-            type="button"
-            onClick={() => navigate(`/c/${client.slug}/projeto`)}
-            className="text-xs font-medium text-slate-600 hover:text-slate-900 border border-slate-200 hover:border-slate-300 bg-white px-3 py-1.5 rounded-lg transition-colors"
-          >
-            Ver projeto
-          </button>
+          <div className="flex items-center gap-3">
+            <DateRangeSelector value={dateRange} onChange={handleDateChange} />
+            <button
+              type="button"
+              onClick={() => {
+                if (!snapshot || !client) return
+                downloadClientReport({
+                  clientName: client.name,
+                  clientSlug: client.slug,
+                  periodLabel: snapshot.period.label,
+                  periodFrom: snapshot.period.from,
+                  periodTo: snapshot.period.to,
+                  snapshot,
+                })
+              }}
+              className="text-xs font-medium text-indigo-600 hover:text-indigo-800 border border-indigo-200 hover:border-indigo-300 bg-white px-3 py-1.5 rounded-lg transition-colors"
+            >
+              Gerar PDF
+            </button>
+            <button
+              type="button"
+              onClick={() => navigate(`/c/${client.slug}/projeto`)}
+              className="text-xs font-medium text-slate-600 hover:text-slate-900 border border-slate-200 hover:border-slate-300 bg-white px-3 py-1.5 rounded-lg transition-colors"
+            >
+              Ver projeto
+            </button>
+          </div>
         }
       />
 
