@@ -113,11 +113,13 @@ export default function BarChartWidget({
               </>
             )}
             <Tooltip
-              cursor={{ fill: '#f1f5f9' }}
+              cursor={{ fill: 'var(--color-neutral-100)' }}
               contentStyle={{
-                border: '1px solid #e2e8f0',
+                background: 'var(--surface-card)',
+                border: '1px solid var(--border-subtle)',
                 borderRadius: 8,
                 fontSize: 12,
+                color: 'var(--text-primary)',
               }}
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               formatter={((v: any) => {

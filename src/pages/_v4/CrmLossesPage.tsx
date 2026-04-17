@@ -113,7 +113,7 @@ export default function CrmLossesPage() {
                 <CartesianGrid stroke="var(--border-subtle)" strokeDasharray="3 3" horizontal={false} />
                 <XAxis type="number" stroke="var(--text-tertiary)" fontSize={11} tickLine={false} axisLine={false} />
                 <YAxis dataKey="reason" type="category" hide />
-                <Tooltip contentStyle={{ background: 'var(--surface-card)', border: '1px solid var(--border-subtle)', borderRadius: 8, fontSize: 12 }} />
+                <Tooltip contentStyle={{ background: 'var(--surface-card)', border: '1px solid var(--border-subtle)', borderRadius: 8, fontSize: 12, color: 'var(--text-primary)' }} />
                 <Bar dataKey="count" radius={[0, 6, 6, 0]}>
                   {LOSS_REASONS.map((_, i) => <Cell key={i} fill={PALETTE[i]} />)}
                 </Bar>
@@ -132,7 +132,7 @@ export default function CrmLossesPage() {
               <CartesianGrid stroke="var(--border-subtle)" strokeDasharray="3 3" vertical={false} />
               <XAxis dataKey="week" stroke="var(--text-tertiary)" fontSize={11} tickLine={false} axisLine={false} />
               <YAxis stroke="var(--text-tertiary)" fontSize={11} tickLine={false} axisLine={false} />
-              <Tooltip contentStyle={{ background: 'var(--surface-card)', border: '1px solid var(--border-subtle)', borderRadius: 8, fontSize: 12 }} />
+              <Tooltip contentStyle={{ background: 'var(--surface-card)', border: '1px solid var(--border-subtle)', borderRadius: 8, fontSize: 12, color: 'var(--text-primary)' }} />
               <Legend wrapperStyle={{ fontSize: 11 }} />
               <Bar stackId="a" dataKey="price" fill="var(--chart-1)" name="Preço" />
               <Bar stackId="a" dataKey="fit" fill="var(--chart-3)" name="Sem fit" />

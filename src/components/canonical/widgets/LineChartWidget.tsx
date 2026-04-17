@@ -68,9 +68,11 @@ export default function LineChartWidget({
             />
             <Tooltip
               contentStyle={{
-                border: '1px solid #e2e8f0',
+                background: 'var(--surface-card)',
+                border: '1px solid var(--border-subtle)',
                 borderRadius: 8,
                 fontSize: 12,
+                color: 'var(--text-primary)',
               }}
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               formatter={((v: any) => {

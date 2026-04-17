@@ -111,7 +111,7 @@ export default function MetaAdsPage() {
                 <CartesianGrid stroke="var(--border-subtle)" strokeDasharray="3 3" vertical={false} />
                 <XAxis dataKey="day" stroke="var(--text-tertiary)" fontSize={11} tickLine={false} axisLine={false} />
                 <YAxis stroke="var(--text-tertiary)" fontSize={11} tickLine={false} axisLine={false} />
-                <Tooltip contentStyle={{ background: 'var(--surface-card)', border: '1px solid var(--border-subtle)', borderRadius: 8, fontSize: 12 }} />
+                <Tooltip contentStyle={{ background: 'var(--surface-card)', border: '1px solid var(--border-subtle)', borderRadius: 8, fontSize: 12, color: 'var(--text-primary)' }} />
                 <Bar dataKey="spend" fill="var(--color-brand-600)" radius={[6, 6, 0, 0]} name="Investimento" />
               </BarChart>
             </ResponsiveContainer>
@@ -126,7 +126,7 @@ export default function MetaAdsPage() {
                 <Pie data={PLACEMENTS} dataKey="value" innerRadius={60} outerRadius={95} paddingAngle={2}>
                   {PLACEMENTS.map((_, i) => <Cell key={i} fill={COLORS[i]} stroke="var(--surface-card)" strokeWidth={2} />)}
                 </Pie>
-                <Tooltip contentStyle={{ background: 'var(--surface-card)', border: '1px solid var(--border-subtle)', borderRadius: 8, fontSize: 12 }} />
+                <Tooltip contentStyle={{ background: 'var(--surface-card)', border: '1px solid var(--border-subtle)', borderRadius: 8, fontSize: 12, color: 'var(--text-primary)' }} />
               </PieChart>
             </ResponsiveContainer>
           </div>
@@ -135,7 +135,7 @@ export default function MetaAdsPage() {
               <div key={p.name} className="flex items-center gap-2 text-xs">
                 <span className="h-2.5 w-2.5 rounded-sm" style={{ background: COLORS[i] }} />
                 <span className="text-[var(--text-tertiary)]">{p.name}</span>
-                <span className="ml-auto tabular-nums font-medium">{p.value}%</span>
+                <span className="ml-auto tabular-nums font-medium text-[var(--text-primary)]">{p.value}%</span>
               </div>
             ))}
           </div>
@@ -167,10 +167,10 @@ export default function MetaAdsPage() {
                 <tr key={c.id} className="border-t border-[var(--border-subtle)] hover:bg-[var(--color-neutral-50)] transition-colors">
                   <td className="px-5 py-3 font-medium text-[var(--text-primary)]">{c.name}</td>
                   <td className="px-3 py-3 text-[var(--text-tertiary)]">{c.objective}</td>
-                  <td className="px-3 py-3 text-right tabular-nums">R$ {c.spend.toLocaleString('pt-BR')}</td>
-                  <td className="px-3 py-3 text-right tabular-nums">{c.impressions.toLocaleString('pt-BR')}</td>
-                  <td className="px-3 py-3 text-right tabular-nums">{c.conversions}</td>
-                  <td className="px-3 py-3 text-right tabular-nums">R$ {c.cpa.toFixed(2)}</td>
+                  <td className="px-3 py-3 text-right tabular-nums text-[var(--text-primary)]">R$ {c.spend.toLocaleString('pt-BR')}</td>
+                  <td className="px-3 py-3 text-right tabular-nums text-[var(--text-primary)]">{c.impressions.toLocaleString('pt-BR')}</td>
+                  <td className="px-3 py-3 text-right tabular-nums text-[var(--text-primary)]">{c.conversions}</td>
+                  <td className="px-3 py-3 text-right tabular-nums text-[var(--text-primary)]">R$ {c.cpa.toFixed(2)}</td>
                   <td className="px-3 py-3 text-right tabular-nums font-semibold text-[var(--color-brand-600)]">{c.roas.toFixed(1)}x</td>
                   <td className="px-3 py-3">
                     <span className={`text-xs px-2 py-1 rounded-full font-medium ${

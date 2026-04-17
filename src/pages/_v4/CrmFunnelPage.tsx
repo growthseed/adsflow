@@ -154,7 +154,7 @@ export default function CrmFunnelPage() {
               <CartesianGrid stroke="var(--border-subtle)" strokeDasharray="3 3" horizontal={false} />
               <XAxis type="number" stroke="var(--text-tertiary)" fontSize={11} tickLine={false} axisLine={false} />
               <YAxis dataKey="stage" type="category" stroke="var(--text-tertiary)" fontSize={11} tickLine={false} axisLine={false} width={140} />
-              <Tooltip contentStyle={{ background: 'var(--surface-card)', border: '1px solid var(--border-subtle)', borderRadius: 8, fontSize: 12 }} />
+              <Tooltip contentStyle={{ background: 'var(--surface-card)', border: '1px solid var(--border-subtle)', borderRadius: 8, fontSize: 12, color: 'var(--text-primary)' }} />
               <Bar dataKey="count" fill="var(--color-brand-600)" radius={[0, 6, 6, 0]} />
             </BarChart>
           </ResponsiveContainer>

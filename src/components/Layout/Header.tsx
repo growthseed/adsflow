@@ -101,7 +101,7 @@ export default function Header({ collapsed, onMobileMenuToggle }: HeaderProps) {
         </button>
 
         {inClientContext && activeClient ? (
-          <>
+          <div className="flex items-center gap-2 min-w-0">
             {/* Back to operations (staff only) */}
             {isGlobalAdmin && (
               <button
@@ -114,15 +114,17 @@ export default function Header({ collapsed, onMobileMenuToggle }: HeaderProps) {
               </button>
             )}
 
-            {/* Client identity (prominent) */}
+            <div className="hidden md:block w-px h-5 bg-[var(--border-subtle)]" />
+
+            {/* Client identity */}
             <ClientBrand
               name={activeClient.client.name}
               slug={activeClient.client.slug}
               logoUrl={activeClient.client.logo_url}
               size="sm"
-              subtitle={getPageTitle()}
+              subtitle="Ads Flow"
             />
-          </>
+          </div>
         ) : (
           <h1 className="text-lg font-semibold text-[var(--text-primary)] truncate">
             {getPageTitle()}
