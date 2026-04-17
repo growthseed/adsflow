@@ -13,34 +13,36 @@
 
 :root {
   /* ==========================================================
-   * COLORS — Neutral scale (grayscale)
+   * COLORS — Neutral scale (G4 Scale — cinza-azulado)
+   * Paleta derivada de #476382 → gradações frias e profissionais
    * ========================================================== */
   --color-neutral-0:   #ffffff;
-  --color-neutral-50:  #fafafa;
-  --color-neutral-100: #f4f4f5;
-  --color-neutral-200: #e4e4e7;
-  --color-neutral-300: #d4d4d8;
-  --color-neutral-400: #a1a1aa;
-  --color-neutral-500: #71717a;
-  --color-neutral-600: #52525b;
-  --color-neutral-700: #3f3f46;
-  --color-neutral-800: #27272a;
-  --color-neutral-900: #18181b;
-  --color-neutral-950: #09090b;
+  --color-neutral-50:  #eff2f9;
+  --color-neutral-100: #e1ebf0;
+  --color-neutral-200: #c9d5df;
+  --color-neutral-300: #b0bfcc;
+  --color-neutral-400: #9ba5aa;
+  --color-neutral-500: #7a8a96;
+  --color-neutral-600: #5e7082;
+  --color-neutral-700: #476382;
+  --color-neutral-800: #344b63;
+  --color-neutral-900: #1f3044;
+  --color-neutral-950: #111c2a;
 
   /* ==========================================================
-   * COLORS — Brand (Efeito Digital / AdFlow)
+   * COLORS — Brand (G4 Scale — azul-aço profissional)
+   * Primário: #476382 (cinza-azulado denso)
    * ========================================================== */
-  --color-brand-50:  #eff6ff;
-  --color-brand-100: #dbeafe;
-  --color-brand-200: #bfdbfe;
-  --color-brand-300: #93c5fd;
-  --color-brand-400: #60a5fa;
-  --color-brand-500: #3b82f6;
-  --color-brand-600: #2563eb;  /* primary action */
-  --color-brand-700: #1d4ed8;  /* primary hover */
-  --color-brand-800: #1e40af;
-  --color-brand-900: #1e3a8a;
+  --color-brand-50:  #eff2f9;
+  --color-brand-100: #dce4ef;
+  --color-brand-200: #b8c9df;
+  --color-brand-300: #8aa8c8;
+  --color-brand-400: #6488ae;
+  --color-brand-500: #507196;
+  --color-brand-600: #476382;  /* primary action */
+  --color-brand-700: #3b536e;  /* primary hover */
+  --color-brand-800: #2e4259;
+  --color-brand-900: #1f3044;
 
   /* ==========================================================
    * COLORS — Semantic (success / warning / error / info)
@@ -84,7 +86,13 @@
   --surface-card:      var(--color-neutral-0);
   --surface-raised:    var(--color-neutral-0);
   --surface-sunken:    var(--color-neutral-100);
-  --surface-overlay:   rgba(9, 9, 11, 0.5); /* modal backdrop */
+  --surface-overlay:   rgba(31, 48, 68, 0.55); /* modal backdrop — G4 navy tint */
+  --surface-sidebar:   var(--color-neutral-0);
+  --surface-header:    rgba(255, 255, 255, 0.85);
+
+  /* Hero/banner gradient (azul vibrante como Lovable) */
+  --gradient-hero-from: #3b6df0;
+  --gradient-hero-to:   #7c5bf0;
 
   /* ==========================================================
    * TEXT colors (semantic, not raw)
@@ -181,6 +189,18 @@
   --shadow-xl:   0 20px 25px -5px rgba(9, 9, 11, 0.1), 0 8px 10px -6px rgba(9, 9, 11, 0.06);
   --shadow-2xl:  0 25px 50px -12px rgba(9, 9, 11, 0.25);
 
+  /* G4 Scale — Lovable design tokens */
+  --gradient-primary: linear-gradient(135deg, #476382, #6488ae);
+  --shadow-soft: 0 1px 2px rgba(71,99,130,0.08), 0 4px 12px rgba(71,99,130,0.06);
+  --shadow-elegant: 0 10px 30px -10px rgba(71,99,130,0.25);
+
+  /* Chart palette */
+  --chart-1: var(--color-brand-600);
+  --chart-2: var(--color-neutral-400);
+  --chart-3: var(--color-brand-400);
+  --chart-4: #f59e0b;
+  --chart-5: #22c55e;
+
   /* ==========================================================
    * MOTION (durations + easings)
    * ========================================================== */
@@ -231,17 +251,42 @@
  * Apply via `<html class="dark">` when implementing
  * ========================================================== */
 .dark {
-  --surface-page:    var(--color-neutral-950);
-  --surface-card:    var(--color-neutral-900);
-  --surface-raised:  var(--color-neutral-800);
-  --surface-sunken:  var(--color-neutral-900);
+  --color-neutral-0:   #111c2a;
+  --color-neutral-50:  #162233;
+  --color-neutral-100: #1c2d40;
+  --color-neutral-200: #253a50;
+  --color-neutral-300: #344b63;
+  --color-neutral-400: #5e7082;
+  --color-neutral-500: #7a8a96;
+  --color-neutral-600: #9ba5aa;
+  --color-neutral-700: #b0bfcc;
+  --color-neutral-800: #c9d5df;
+  --color-neutral-900: #e1ebf0;
+  --color-neutral-950: #eff2f9;
 
-  --text-primary:    var(--color-neutral-50);
-  --text-secondary:  var(--color-neutral-400);
-  --text-tertiary:   var(--color-neutral-500);
-  --text-disabled:   var(--color-neutral-600);
+  --color-brand-600: #6488ae;
+  --color-brand-700: #7a9dc0;
+  --color-brand-800: #8aa8c8;
 
-  --border-subtle:   var(--color-neutral-800);
-  --border-default:  var(--color-neutral-700);
-  --border-strong:   var(--color-neutral-600);
+  --surface-page:    #0f1923;
+  --surface-card:    #162233;
+  --surface-raised:  #1c2d40;
+  --surface-sunken:  #0f1923;
+  --surface-sidebar: #162233;
+  --surface-header:  rgba(22, 34, 51, 0.85);
+  --surface-overlay: rgba(0, 0, 0, 0.6);
+
+  --text-primary:    #eff2f9;
+  --text-secondary:  #9ba5aa;
+  --text-tertiary:   #7a8a96;
+  --text-disabled:   #5e7082;
+  --text-inverse:    #111c2a;
+
+  --border-subtle:   rgba(255,255,255,0.08);
+  --border-default:  rgba(255,255,255,0.12);
+  --border-strong:   rgba(255,255,255,0.18);
+
+  --gradient-primary: linear-gradient(135deg, #476382, #6488ae);
+  --shadow-soft: 0 1px 2px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.2);
+  --shadow-elegant: 0 10px 40px -10px rgba(0,0,0,0.6);
 }

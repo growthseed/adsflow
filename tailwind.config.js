@@ -25,9 +25,9 @@ export default {
         },
         // Brand AdFlow (extende o existente — já tinha `brand.primary`)
         brand: {
-          primary: '#1e40af',
+          primary: '#476382',
           secondary: '#10b981',
-          accent: '#8b5cf6',
+          accent: '#6488ae',
           50:  'var(--color-brand-50)',
           100: 'var(--color-brand-100)',
           200: 'var(--color-brand-200)',

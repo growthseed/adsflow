@@ -161,7 +161,7 @@ export default function LoginPage() {
         <div className="bg-white rounded-2xl shadow-xl border border-slate-200 p-8">
           {/* Logo */}
           <div className="flex items-center justify-center gap-3 mb-8">
-            <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-slate-800 rounded-lg flex items-center justify-center">
+            <div className="w-12 h-12 bg-gradient-to-br from-[var(--color-brand-600)] to-[var(--color-brand-900)] rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-2xl">A</span>
             </div>
             <span className="text-2xl font-bold text-slate-900">Ads Flow</span>
@@ -347,7 +347,7 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-3 bg-gradient-to-r from-blue-600 to-slate-800 text-white rounded-lg hover:shadow-lg hover:-translate-y-0.5 transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full py-3 bg-gradient-to-r from-[var(--color-brand-600)] to-[var(--color-brand-900)] text-white rounded-lg hover:shadow-lg hover:-translate-y-0.5 transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? submitLabels[mode].busy : submitLabels[mode].idle}
               </button>
@@ -358,7 +358,7 @@ export default function LoginPage() {
           {successMessage && mode === 'forgot' && (
             <button
               onClick={() => switchMode('login')}
-              className="w-full py-3 bg-gradient-to-r from-blue-600 to-slate-800 text-white rounded-lg hover:shadow-lg hover:-translate-y-0.5 transition-all font-medium mt-2"
+              className="w-full py-3 bg-gradient-to-r from-[var(--color-brand-600)] to-[var(--color-brand-900)] text-white rounded-lg hover:shadow-lg hover:-translate-y-0.5 transition-all font-medium mt-2"
             >
               Voltar para login
             </button>

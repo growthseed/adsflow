@@ -227,6 +227,13 @@ const PageLoader = () => (
 
 // App Principal
 function App() {
+  // Restore theme preference on mount
+  if (typeof window !== 'undefined') {
+    const saved = localStorage.getItem('adsflow-theme')
+    if (saved === 'dark') document.documentElement.classList.add('dark')
+    else document.documentElement.classList.remove('dark')
+  }
+
   return (
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>

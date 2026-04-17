@@ -10,12 +10,12 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const variantStyles: Record<NonNullable<ButtonProps['variant']>, string> = {
-  primary: 'bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800 shadow-sm',
-  secondary: 'bg-slate-100 text-slate-700 hover:bg-slate-200 active:bg-slate-300',
-  outline: 'border border-slate-300 text-slate-700 hover:bg-slate-50 active:bg-slate-100',
-  ghost: 'text-slate-600 hover:bg-slate-100 active:bg-slate-200',
-  danger: 'bg-red-600 text-white hover:bg-red-700 active:bg-red-800',
-  success: 'bg-emerald-600 text-white hover:bg-emerald-700 active:bg-emerald-800',
+  primary: 'bg-[var(--color-brand-600)] text-white hover:bg-[var(--color-brand-700)] active:bg-[var(--color-brand-800)] shadow-sm',
+  secondary: 'bg-[var(--color-neutral-100)] text-[var(--text-secondary)] hover:bg-[var(--color-neutral-200)] active:bg-[var(--color-neutral-300)]',
+  outline: 'border border-[var(--border-default)] text-[var(--text-secondary)] hover:bg-[var(--color-neutral-50)] active:bg-[var(--color-neutral-100)]',
+  ghost: 'text-[var(--text-secondary)] hover:bg-[var(--color-neutral-100)] active:bg-[var(--color-neutral-200)]',
+  danger: 'bg-[var(--color-error-600)] text-white hover:bg-[var(--color-error-700)] active:bg-red-800',
+  success: 'bg-[var(--color-success-600)] text-white hover:bg-[var(--color-success-700)] active:bg-emerald-800',
 }
 
 const sizeStyles: Record<NonNullable<ButtonProps['size']>, string> = {
@@ -49,7 +49,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         className={[
           'inline-flex items-center justify-center font-medium',
           'transition-all duration-150',
-          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2',
+          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brand-500)] focus-visible:ring-offset-2',
           'disabled:opacity-50 disabled:pointer-events-none',
           variantStyles[variant],
           sizeStyles[size],

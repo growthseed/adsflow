@@ -123,7 +123,7 @@ export default function LandingPage() {
       <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200/60">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-slate-800 rounded-xl flex items-center justify-center shadow-lg shadow-blue-600/20">
+            <div className="w-10 h-10 bg-gradient-to-br from-[var(--color-brand-600)] to-[var(--color-brand-900)] rounded-xl flex items-center justify-center shadow-lg shadow-blue-600/20">
               <span className="text-white font-extrabold text-xl">A</span>
             </div>
             <span className="text-xl font-bold text-slate-900 tracking-tight">Ads Flow</span>
@@ -375,7 +375,7 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-6 py-10">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-slate-800 rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 bg-gradient-to-br from-[var(--color-brand-600)] to-[var(--color-brand-900)] rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold">A</span>
               </div>
               <span className="font-semibold text-slate-900">Ads Flow</span>
