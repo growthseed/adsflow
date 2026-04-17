@@ -90,9 +90,14 @@ function getClientSections(clientSlug: string): NavSection[] {
       title: 'Tráfego pago',
       items: [
         {
-          path: `/c/${clientSlug}/performance`,
+          path: `/c/${clientSlug}/meta-ads`,
           label: 'Meta Ads',
           icon: Target,
+        },
+        {
+          path: `/c/${clientSlug}/performance`,
+          label: 'Performance',
+          icon: BarChart3,
         },
         {
           path: `/c/${clientSlug}/planner`,

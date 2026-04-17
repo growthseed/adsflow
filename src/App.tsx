@@ -76,6 +76,7 @@ const V4ClientRootRedirect = lazyRetry(() => import('./pages/_v4/ClientRootRedir
 const V4PublicClientPortalPage = lazyRetry(() => import('./pages/_v4/PublicClientPortalPage'))
 const V4CrmFunnelPage = lazyRetry(() => import('./pages/_v4/CrmFunnelPage'))
 const V4CrmLossesPage = lazyRetry(() => import('./pages/_v4/CrmLossesPage'))
+const V4MetaAdsPage = lazyRetry(() => import('./pages/_v4/MetaAdsPage'))
 
 // Error Boundary para capturar erros de React
 interface ErrorBoundaryState {
@@ -349,6 +350,20 @@ function App() {
                   <ClientContextGuard>
                     <AppLayout>
                       <V4ClientProjectPage />
+                    </AppLayout>
+                  </ClientContextGuard>
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Meta Ads dedicated page */}
+            <Route
+              path="/c/:clientSlug/meta-ads"
+              element={
+                <ProtectedRoute>
+                  <ClientContextGuard>
+                    <AppLayout>
+                      <V4MetaAdsPage />
                     </AppLayout>
                   </ClientContextGuard>
                 </ProtectedRoute>
