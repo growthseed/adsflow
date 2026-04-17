@@ -74,6 +74,8 @@ const V4PlaybookPage = lazyRetry(() => import('./pages/_v4/PlaybookPage'))
 const V4ClientPortalPage = lazyRetry(() => import('./pages/_v4/ClientPortalPage'))
 const V4ClientRootRedirect = lazyRetry(() => import('./pages/_v4/ClientRootRedirect'))
 const V4PublicClientPortalPage = lazyRetry(() => import('./pages/_v4/PublicClientPortalPage'))
+const V4CrmFunnelPage = lazyRetry(() => import('./pages/_v4/CrmFunnelPage'))
+const V4CrmLossesPage = lazyRetry(() => import('./pages/_v4/CrmLossesPage'))
 
 // Error Boundary para capturar erros de React
 interface ErrorBoundaryState {
@@ -347,6 +349,32 @@ function App() {
                   <ClientContextGuard>
                     <AppLayout>
                       <V4ClientProjectPage />
+                    </AppLayout>
+                  </ClientContextGuard>
+                </ProtectedRoute>
+              }
+            />
+
+            {/* CRM pages */}
+            <Route
+              path="/c/:clientSlug/crm/funil"
+              element={
+                <ProtectedRoute>
+                  <ClientContextGuard>
+                    <AppLayout>
+                      <V4CrmFunnelPage />
+                    </AppLayout>
+                  </ClientContextGuard>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/c/:clientSlug/crm/perdas"
+              element={
+                <ProtectedRoute>
+                  <ClientContextGuard>
+                    <AppLayout>
+                      <V4CrmLossesPage />
                     </AppLayout>
                   </ClientContextGuard>
                 </ProtectedRoute>

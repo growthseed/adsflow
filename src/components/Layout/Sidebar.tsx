@@ -105,9 +105,19 @@ function getClientSections(clientSlug: string): NavSection[] {
       title: 'CRM',
       items: [
         {
-          path: `/c/${clientSlug}/projeto`,
+          path: `/c/${clientSlug}/crm/funil`,
           label: 'Funil de vendas',
           icon: BarChart3,
+        },
+        {
+          path: `/c/${clientSlug}/crm/perdas`,
+          label: 'Perdas',
+          icon: TrendingDown,
+        },
+        {
+          path: `/c/${clientSlug}/projeto`,
+          label: 'Projeto',
+          icon: CheckSquare,
         },
       ],
     },
