@@ -151,7 +151,7 @@ function renderKpiStrip(spec: KpiStripWidget, snapshot: ClientDashboardSnapshot)
   return (
     <div className="space-y-3">
       {spec.title && (
-        <div className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">
+        <div className="text-[11px] font-semibold uppercase tracking-wider text-[var(--text-tertiary)]">
           {spec.title}
         </div>
       )}
@@ -161,6 +161,7 @@ function renderKpiStrip(spec: KpiStripWidget, snapshot: ClientDashboardSnapshot)
             key={k.key}
             kpi={toKpiCardShape(k)}
             size={spec.hero && i === 0 ? 'lg' : 'md'}
+            variant={spec.hero && i === 0 ? 'primary' : 'default'}
             showSparkline
             showGoal
           />

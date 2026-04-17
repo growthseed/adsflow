@@ -115,11 +115,11 @@ function DocLink({
     <button
       onClick={onClick}
       className={`w-full flex items-start gap-2.5 px-4 py-2.5 text-left transition-colors ${
-        active ? 'bg-blue-50 border-l-2 border-blue-600' : 'hover:bg-slate-50 border-l-2 border-transparent'
+        active ? 'bg-[var(--color-brand-50)] border-l-2 border-[var(--color-brand-600)]' : 'hover:bg-slate-50 border-l-2 border-transparent'
       }`}
     >
       <Icon
-        className={`w-4 h-4 mt-0.5 shrink-0 ${active ? 'text-blue-600' : 'text-slate-400'}`}
+        className={`w-4 h-4 mt-0.5 shrink-0 ${active ? 'text-[var(--color-brand-600)]' : 'text-slate-400'}`}
       />
       <div className="min-w-0 flex-1">
         <p
@@ -183,7 +183,7 @@ function OverviewPane({ onOpen }: { onOpen: (slug: string) => void }) {
               className="text-left p-4 rounded-xl border border-slate-200 bg-white hover:border-blue-400 hover:shadow-sm transition-all"
             >
               <div className="flex items-center gap-2 mb-1.5">
-                <ListChecks className="w-4 h-4 text-blue-600" />
+                <ListChecks className="w-4 h-4 text-[var(--color-brand-600)]" />
                 <p className="text-[13px] font-semibold text-slate-900">{doc.title}</p>
               </div>
               <p className="text-[12px] text-slate-500 leading-snug">{doc.description}</p>

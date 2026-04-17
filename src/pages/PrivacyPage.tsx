@@ -21,7 +21,7 @@ const PrivacyPage = () => {
         </Link>
 
         <div className="flex items-center gap-3 mb-8">
-          <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+          <div className="w-10 h-10 bg-[var(--color-brand-600)] rounded-lg flex items-center justify-center">
             <Shield className="w-5 h-5 text-white" />
           </div>
           <div>
@@ -45,7 +45,7 @@ const PrivacyPage = () => {
             </p>
             <p className="mt-2">
               Encarregado pelo tratamento de dados (DPO):{' '}
-              <a href="mailto:jw@efeito.digital" className="text-blue-600 hover:underline">
+              <a href="mailto:jw@efeito.digital" className="text-[var(--color-brand-600)] hover:underline">
                 jw@efeito.digital
               </a>
             </p>
@@ -232,7 +232,7 @@ const PrivacyPage = () => {
             </ul>
             <p className="mt-3">
               Para exercer qualquer desses direitos, envie um e-mail para{' '}
-              <a href="mailto:jw@efeito.digital" className="text-blue-600 hover:underline">
+              <a href="mailto:jw@efeito.digital" className="text-[var(--color-brand-600)] hover:underline">
                 jw@efeito.digital
               </a>{' '}
               com o assunto "LGPD — Direito do titular". Respondemos em até{' '}
@@ -277,7 +277,7 @@ const PrivacyPage = () => {
                 href="https://developers.google.com/terms/api-services-user-data-policy"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-blue-600 hover:underline"
+                className="text-[var(--color-brand-600)] hover:underline"
               >
                 Google API Services User Data Policy
               </a>{' '}
@@ -286,7 +286,7 @@ const PrivacyPage = () => {
                 href="https://developers.facebook.com/terms/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-blue-600 hover:underline"
+                className="text-[var(--color-brand-600)] hover:underline"
               >
                 Termos de Plataforma da Meta
               </a>
@@ -315,7 +315,7 @@ const PrivacyPage = () => {
               Encarregado de dados (DPO): João Wilker
               <br />
               E-mail:{' '}
-              <a href="mailto:jw@efeito.digital" className="text-blue-600 hover:underline">
+              <a href="mailto:jw@efeito.digital" className="text-[var(--color-brand-600)] hover:underline">
                 jw@efeito.digital
               </a>
               <br />
@@ -324,7 +324,7 @@ const PrivacyPage = () => {
                 href="https://efeito.digital"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-blue-600 hover:underline"
+                className="text-[var(--color-brand-600)] hover:underline"
               >
                 efeito.digital
               </a>
@@ -335,7 +335,7 @@ const PrivacyPage = () => {
                 href="https://www.gov.br/anpd/pt-br"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-blue-600 hover:underline"
+                className="text-[var(--color-brand-600)] hover:underline"
               >
                 Autoridade Nacional de Proteção de Dados (ANPD)
               </a>

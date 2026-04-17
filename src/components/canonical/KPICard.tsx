@@ -23,6 +23,8 @@ export interface KPICardProps {
   kpi: KPI
   /** Size variant affects typography and padding */
   size?: 'sm' | 'md' | 'lg' | 'xl'
+  /** Visual variant: 'default' = white card, 'primary' = gradient background (Lovable style) */
+  variant?: 'default' | 'primary'
   /** Show sparkline below value (if sparkline data is present) */
   showSparkline?: boolean
   /** Show goal progress bar */
@@ -82,6 +84,7 @@ const SIZE_CLASSES = {
 export function KPICard({
   kpi,
   size = 'md',
+  variant = 'default',
   showSparkline = true,
   showGoal = true,
   showSource = false,
@@ -91,6 +94,7 @@ export function KPICard({
   editableGoal,
   loading = false,
 }: KPICardProps) {
+  const isPrimary = variant === 'primary'
   const sizes = SIZE_CLASSES[size]
   const [editingGoal, setEditingGoal] = useState(false)
   const [goalInput, setGoalInput] = useState('')
@@ -130,13 +134,21 @@ export function KPICard({
   return (
     <div
       className={`
-        bg-[var(--surface-card)]
-        border border-[var(--border-subtle)]
         rounded-xl ${sizes.wrapper}
         transition-all duration-fast
-        ${onClick ? 'cursor-pointer hover:border-brand-300 hover:shadow-md' : ''}
+        ${isPrimary
+          ? 'text-white border-transparent'
+          : `bg-[var(--surface-card)] border border-[var(--border-subtle)]`
+        }
+        ${onClick ? 'cursor-pointer hover:shadow-md' : ''}
         ${className}
       `}
+      style={isPrimary ? {
+        background: 'var(--gradient-primary)',
+        boxShadow: 'var(--shadow-elegant)',
+      } : {
+        boxShadow: 'var(--shadow-soft)',
+      }}
       onClick={onClick}
       role={onClick ? 'button' : undefined}
       tabIndex={onClick ? 0 : undefined}
@@ -147,7 +159,8 @@ export function KPICard({
           <p
             className={`
               ${sizes.label}
-              font-medium text-neutral-600 truncate
+              font-medium truncate
+              ${isPrimary ? 'text-white/80 uppercase tracking-widest text-[11px]' : 'text-[var(--text-secondary)]'}
             `}
             title={kpi.description || kpi.label}
           >
@@ -163,7 +176,8 @@ export function KPICard({
       <p
         className={`
           ${sizes.value}
-          font-semibold text-neutral-900 tabular-nums leading-tight
+          font-semibold tabular-nums leading-tight
+          ${isPrimary ? 'text-white' : 'text-[var(--text-primary)]'}
         `}
       >
         {formatMetric(kpi.value, kpi.unit, {
@@ -174,10 +188,10 @@ export function KPICard({
 
       {/* Delta */}
       {kpi.delta_percent !== undefined && (
-        <p className={`${sizes.delta} ${deltaColor} font-medium mt-1 tabular-nums`}>
+        <p className={`${sizes.delta} ${isPrimary ? 'text-white/90' : deltaColor} font-medium mt-1 tabular-nums`}>
           {formatDelta(kpi.delta_percent)}
           {kpi.previous_value !== undefined && (
-            <span className="text-neutral-400 font-normal ml-1">
+            <span className={`${isPrimary ? 'text-white/60' : 'text-[var(--color-neutral-400)]'} font-normal ml-1`}>
               vs{' '}
               {formatMetric(kpi.previous_value, kpi.unit, {
                 currency: kpi.currency,

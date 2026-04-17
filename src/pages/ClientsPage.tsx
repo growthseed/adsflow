@@ -74,7 +74,7 @@ const ROLE_LABELS: Record<ClientRole, string> = {
 const ROLE_COLORS: Record<ClientRole, string> = {
   owner: 'bg-amber-100 text-amber-700',
   admin: 'bg-purple-100 text-purple-700',
-  manager: 'bg-blue-100 text-blue-700',
+  manager: 'bg-[var(--color-brand-100)] text-[var(--color-brand-700)]',
   analyst: 'bg-green-100 text-green-700',
   viewer: 'bg-slate-100 text-slate-700',
 }
@@ -199,7 +199,7 @@ function ClientFormModal({
               </div>
               {/* Upload button */}
               <div className="flex-1">
-                <label className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-blue-700 bg-blue-50 border border-blue-200 rounded-lg cursor-pointer hover:bg-blue-100 transition-colors">
+                <label className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-[var(--color-brand-700)] bg-[var(--color-brand-50)] border border-[var(--color-brand-200)] rounded-lg cursor-pointer hover:bg-[var(--color-brand-100)] transition-colors">
                   <Upload className="w-4 h-4" />
                   {logoFile ? 'Trocar logo' : 'Enviar logo'}
                   <input
@@ -213,7 +213,7 @@ function ClientFormModal({
                   PNG, JPG, SVG ou WebP. Máximo 2MB.
                 </p>
                 {uploadingLogo && (
-                  <p className="text-xs text-blue-600 mt-1 animate-pulse">Enviando logo...</p>
+                  <p className="text-xs text-[var(--color-brand-600)] mt-1 animate-pulse">Enviando logo...</p>
                 )}
               </div>
             </div>
@@ -287,7 +287,7 @@ function ClientFormModal({
             <button
               type="submit"
               disabled={saving || !name.trim()}
-              className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+              className="flex-1 px-4 py-2 bg-[var(--color-brand-600)] text-white rounded-lg hover:bg-[var(--color-brand-700)] disabled:opacity-50"
             >
               {saving ? 'Salvando...' : client ? 'Salvar' : 'Criar Cliente'}
             </button>
@@ -371,11 +371,11 @@ function ClientDetailPanel({
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center">
+            <div className="w-12 h-12 rounded-xl bg-[var(--color-brand-100)] flex items-center justify-center">
               {client.logo_url ? (
                 <img src={client.logo_url} alt="" className="w-10 h-10 rounded-lg object-cover" />
               ) : (
-                <Building2 className="w-6 h-6 text-blue-600" />
+                <Building2 className="w-6 h-6 text-[var(--color-brand-600)]" />
               )}
             </div>
             <div>
@@ -400,7 +400,7 @@ function ClientDetailPanel({
             {client.website && (
               <div className="flex items-center gap-2 text-sm text-slate-600">
                 <Globe className="w-4 h-4 text-slate-400" />
-                <a href={client.website} target="_blank" rel="noreferrer" className="hover:text-blue-600 underline">
+                <a href={client.website} target="_blank" rel="noreferrer" className="hover:text-[var(--color-brand-600)] underline">
                   {client.website.replace(/^https?:\/\//, '')}
                 </a>
               </div>
@@ -535,11 +535,11 @@ function ClientCard({
       <div className="p-5">
         <div className="flex items-start justify-between mb-3">
           <div className="flex items-center gap-3 cursor-pointer" onClick={onSelect}>
-            <div className="w-11 h-11 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0">
+            <div className="w-11 h-11 rounded-xl bg-[var(--color-brand-50)] flex items-center justify-center flex-shrink-0">
               {client.logo_url ? (
                 <img src={client.logo_url} alt="" className="w-9 h-9 rounded-lg object-cover" />
               ) : (
-                <Building2 className="w-5 h-5 text-blue-600" />
+                <Building2 className="w-5 h-5 text-[var(--color-brand-600)]" />
               )}
             </div>
             <div className="min-w-0">
@@ -602,7 +602,7 @@ function ClientCard({
           </span>
           <button
             onClick={onSelect}
-            className="flex items-center gap-1 text-xs text-blue-600 hover:text-blue-700 font-medium"
+            className="flex items-center gap-1 text-xs text-[var(--color-brand-600)] hover:text-[var(--color-brand-700)] font-medium"
           >
             Detalhes <ChevronRight className="w-3.5 h-3.5" />
           </button>
@@ -710,7 +710,7 @@ export default function ClientsPage() {
         {canCreate && (
           <button
             onClick={() => setShowForm(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+            className="flex items-center gap-2 px-4 py-2 bg-[var(--color-brand-600)] text-white rounded-lg hover:bg-[var(--color-brand-700)] transition-colors text-sm font-medium"
           >
             <Plus className="w-4 h-4" />
             Novo Cliente
@@ -751,7 +751,7 @@ export default function ClientsPage() {
           {!search && canCreate && (
             <button
               onClick={() => setShowForm(true)}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-[var(--color-brand-600)] text-white rounded-lg hover:bg-[var(--color-brand-700)] text-sm font-medium"
             >
               <Plus className="w-4 h-4" />
               Criar Primeiro Cliente

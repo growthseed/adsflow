@@ -18,7 +18,7 @@ const TermsPage = () => {
         </Link>
 
         <div className="flex items-center gap-3 mb-8">
-          <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+          <div className="w-10 h-10 bg-[var(--color-brand-600)] rounded-lg flex items-center justify-center">
             <FileText className="w-5 h-5 text-white" />
           </div>
           <div>
@@ -36,7 +36,7 @@ const TermsPage = () => {
             <p>
               Ao acessar e usar o AdsFlow, você concorda com estes Termos de Uso e
               com nossa{' '}
-              <Link to="/privacy" className="text-blue-600 hover:underline">
+              <Link to="/privacy" className="text-[var(--color-brand-600)] hover:underline">
                 Política de Privacidade
               </Link>
               . O AdsFlow é operado pela{' '}
@@ -101,7 +101,7 @@ const TermsPage = () => {
               Ao conectar suas contas do Google Ads, Meta Ads, Google Analytics,
               Search Console ou ClickUp, você autoriza o AdsFlow a acessar os dados
               dessas plataformas conforme descrito na{' '}
-              <Link to="/privacy" className="text-blue-600 hover:underline">
+              <Link to="/privacy" className="text-[var(--color-brand-600)] hover:underline">
                 Política de Privacidade
               </Link>
               .
@@ -190,7 +190,7 @@ const TermsPage = () => {
             <p>
               Você pode solicitar o encerramento da sua conta a qualquer momento
               enviando um e-mail para{' '}
-              <a href="mailto:jw@efeito.digital" className="text-blue-600 hover:underline">
+              <a href="mailto:jw@efeito.digital" className="text-[var(--color-brand-600)] hover:underline">
                 jw@efeito.digital
               </a>
               . Após o encerramento:
@@ -238,7 +238,7 @@ const TermsPage = () => {
               <strong>Efeito Digital Marketing e Comunicação LTDA</strong>
               <br />
               E-mail:{' '}
-              <a href="mailto:jw@efeito.digital" className="text-blue-600 hover:underline">
+              <a href="mailto:jw@efeito.digital" className="text-[var(--color-brand-600)] hover:underline">
                 jw@efeito.digital
               </a>
               <br />
@@ -247,7 +247,7 @@ const TermsPage = () => {
                 href="https://efeito.digital"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-blue-600 hover:underline"
+                className="text-[var(--color-brand-600)] hover:underline"
               >
                 efeito.digital
               </a>

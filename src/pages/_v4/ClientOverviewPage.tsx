@@ -129,7 +129,7 @@ export default function ClientOverviewPage() {
                 <button
                   type="button"
                   onClick={() => navigate(`/c/${client.slug}/performance`)}
-                  className="mt-5 inline-flex items-center gap-2 px-4 py-2 bg-white text-blue-700 rounded-lg text-sm font-semibold hover:bg-blue-50 transition-colors shadow-lg"
+                  className="mt-5 inline-flex items-center gap-2 px-4 py-2 bg-white text-[var(--color-brand-700)] rounded-lg text-sm font-semibold hover:bg-[var(--color-brand-50)] transition-colors shadow-lg"
                 >
                   {welcome.cta}
                   <ArrowRight className="w-4 h-4" />
@@ -254,7 +254,7 @@ export default function ClientOverviewPage() {
               <button
                 type="button"
                 onClick={() => navigate(`/c/${client.slug}/projeto`)}
-                className="text-xs font-medium text-blue-600 hover:text-blue-800 flex items-center gap-1"
+                className="text-xs font-medium text-[var(--color-brand-600)] hover:text-[var(--color-brand-800)] flex items-center gap-1"
               >
                 Ver todas
                 <ArrowRight className="w-3 h-3" />

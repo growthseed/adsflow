@@ -272,7 +272,7 @@ export default function LoginPage() {
                       <button
                         type="button"
                         onClick={() => switchMode('forgot')}
-                        className="text-xs text-blue-600 hover:text-blue-800 transition-colors font-medium"
+                        className="text-xs text-[var(--color-brand-600)] hover:text-[var(--color-brand-800)] transition-colors font-medium"
                       >
                         Esqueceu a senha?
                       </button>
@@ -320,15 +320,15 @@ export default function LoginPage() {
                     id="lgpd-consent"
                     checked={lgpdAccepted}
                     onChange={(e) => setLgpdAccepted(e.target.checked)}
-                    className="mt-0.5 w-4 h-4 text-blue-600 border-slate-300 rounded focus:ring-blue-500 flex-shrink-0"
+                    className="mt-0.5 w-4 h-4 text-[var(--color-brand-600)] border-slate-300 rounded focus:ring-blue-500 flex-shrink-0"
                   />
                   <label htmlFor="lgpd-consent" className="text-xs text-slate-600 leading-relaxed cursor-pointer">
                     Li e concordo com os{' '}
-                    <Link to="/terms" target="_blank" className="text-blue-600 hover:underline font-medium">
+                    <Link to="/terms" target="_blank" className="text-[var(--color-brand-600)] hover:underline font-medium">
                       Termos de Uso
                     </Link>{' '}
                     e a{' '}
-                    <Link to="/privacy" target="_blank" className="text-blue-600 hover:underline font-medium">
+                    <Link to="/privacy" target="_blank" className="text-[var(--color-brand-600)] hover:underline font-medium">
                       Política de Privacidade
                     </Link>
                     , incluindo o tratamento de dados pessoais pela Efeito Digital conforme a LGPD (Lei 13.709/2018).
@@ -369,7 +369,7 @@ export default function LoginPage() {
             {mode === 'login' && (
               <button
                 onClick={() => switchMode('register')}
-                className="text-sm text-slate-600 hover:text-blue-600 transition-colors"
+                className="text-sm text-slate-600 hover:text-[var(--color-brand-600)] transition-colors"
               >
                 Não tem conta? <span className="font-semibold">Criar agora</span>
               </button>
@@ -378,7 +378,7 @@ export default function LoginPage() {
             {mode === 'register' && (
               <button
                 onClick={() => switchMode('login')}
-                className="text-sm text-slate-600 hover:text-blue-600 transition-colors"
+                className="text-sm text-slate-600 hover:text-[var(--color-brand-600)] transition-colors"
               >
                 Já tem conta? <span className="font-semibold">Entrar</span>
               </button>
@@ -387,7 +387,7 @@ export default function LoginPage() {
             {mode === 'forgot' && !successMessage && (
               <button
                 onClick={() => switchMode('login')}
-                className="text-sm text-slate-600 hover:text-blue-600 transition-colors"
+                className="text-sm text-slate-600 hover:text-[var(--color-brand-600)] transition-colors"
               >
                 Lembrou a senha? <span className="font-semibold">Voltar ao login</span>
               </button>

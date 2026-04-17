@@ -54,7 +54,7 @@ const ROLE_DESCRIPTIONS: Record<ClientRole, string> = {
 const ROLE_COLORS: Record<ClientRole, string> = {
   owner: 'bg-amber-100 text-amber-700 border-amber-200',
   admin: 'bg-purple-100 text-purple-700 border-purple-200',
-  manager: 'bg-blue-100 text-blue-700 border-blue-200',
+  manager: 'bg-[var(--color-brand-100)] text-[var(--color-brand-700)] border-[var(--color-brand-200)]',
   analyst: 'bg-green-100 text-green-700 border-green-200',
   viewer: 'bg-slate-100 text-slate-700 border-slate-200',
 }
@@ -137,7 +137,7 @@ function InviteModal({
       <div className="bg-white rounded-xl shadow-2xl w-full max-w-md">
         <div className="flex items-center justify-between p-6 border-b">
           <div className="flex items-center gap-2">
-            <UserPlus className="w-5 h-5 text-blue-600" />
+            <UserPlus className="w-5 h-5 text-[var(--color-brand-600)]" />
             <h2 className="text-lg font-semibold text-slate-900">Convidar Membro</h2>
           </div>
           <button onClick={onClose} className="p-1 hover:bg-slate-100 rounded-lg">
@@ -185,7 +185,7 @@ function InviteModal({
                       key={r}
                       className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${
                         role === r
-                          ? 'border-blue-300 bg-blue-50'
+                          ? 'border-blue-300 bg-[var(--color-brand-50)]'
                           : 'border-slate-200 hover:bg-slate-50'
                       }`}
                     >
@@ -197,14 +197,14 @@ function InviteModal({
                         onChange={() => setRole(r)}
                         className="sr-only"
                       />
-                      <Icon className={`w-4 h-4 ${role === r ? 'text-blue-600' : 'text-slate-400'}`} />
+                      <Icon className={`w-4 h-4 ${role === r ? 'text-[var(--color-brand-600)]' : 'text-slate-400'}`} />
                       <div className="flex-1">
                         <p className="text-sm font-medium text-slate-900">{ROLE_LABELS[r]}</p>
                         <p className="text-xs text-slate-500">{ROLE_DESCRIPTIONS[r]}</p>
                       </div>
                       <div
                         className={`w-4 h-4 rounded-full border-2 ${
-                          role === r ? 'border-blue-600 bg-blue-600' : 'border-slate-300'
+                          role === r ? 'border-[var(--color-brand-600)] bg-[var(--color-brand-600)]' : 'border-slate-300'
                         }`}
                       >
                         {role === r && (
@@ -237,7 +237,7 @@ function InviteModal({
               <button
                 type="submit"
                 disabled={sending || !email.trim()}
-                className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+                className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-[var(--color-brand-600)] text-white rounded-lg hover:bg-[var(--color-brand-700)] disabled:opacity-50"
               >
                 <Send className="w-4 h-4" />
                 {sending ? 'Enviando...' : 'Enviar Convite'}
@@ -479,7 +479,7 @@ export default function TeamPage() {
         {canManage && (
           <button
             onClick={() => setShowInvite(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+            className="flex items-center gap-2 px-4 py-2 bg-[var(--color-brand-600)] text-white rounded-lg hover:bg-[var(--color-brand-700)] transition-colors text-sm font-medium"
           >
             <UserPlus className="w-4 h-4" />
             Convidar Membro

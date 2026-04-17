@@ -238,7 +238,7 @@ export default function AdminPage() {
 
       {loading ? (
         <div className="text-center py-12">
-          <RefreshCw className="w-8 h-8 text-blue-600 animate-spin mx-auto mb-3" />
+          <RefreshCw className="w-8 h-8 text-[var(--color-brand-600)] animate-spin mx-auto mb-3" />
           <p className="text-sm text-slate-500">Carregando dados do sistema...</p>
         </div>
       ) : (
@@ -247,7 +247,7 @@ export default function AdminPage() {
           {tab === 'overview' && stats && (
             <div className="space-y-6">
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                <AdminStatCard icon={Users} label="Usuários Totais" value={stats.totalUsers} color="bg-blue-600" />
+                <AdminStatCard icon={Users} label="Usuários Totais" value={stats.totalUsers} color="bg-[var(--color-brand-600)]" />
                 <AdminStatCard icon={Activity} label="Usuários Ativos" value={stats.activeUsers} color="bg-green-600" />
                 <AdminStatCard icon={Building2} label="Clientes" value={stats.totalClients} color="bg-purple-600" />
                 <AdminStatCard icon={Link2} label="Contas de Anúncio" value={stats.totalAdAccounts} color="bg-amber-600" />
@@ -265,7 +265,7 @@ export default function AdminPage() {
                   {users.slice(0, 5).map((u) => (
                     <div key={u.id} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-xs font-bold text-blue-700">
+                        <div className="w-8 h-8 rounded-full bg-[var(--color-brand-100)] flex items-center justify-center text-xs font-bold text-[var(--color-brand-700)]">
                           {u.name?.charAt(0)?.toUpperCase() || '?'}
                         </div>
                         <div>

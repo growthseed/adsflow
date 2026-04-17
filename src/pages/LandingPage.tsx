@@ -137,7 +137,7 @@ export default function LandingPage() {
             </a>
             <button
               onClick={go}
-              className="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-semibold shadow-md shadow-blue-600/20"
+              className="px-5 py-2 bg-[var(--color-brand-600)] text-white rounded-lg hover:bg-[var(--color-brand-700)] transition-colors text-sm font-semibold shadow-md shadow-blue-600/20"
             >
               Entrar
             </button>
@@ -156,7 +156,7 @@ export default function LandingPage() {
           <motion.div
             variants={fadeUp}
             custom={0}
-            className="inline-flex items-center gap-2 px-4 py-1.5 bg-blue-50 border border-blue-200 rounded-full text-sm text-blue-700 font-medium mb-6"
+            className="inline-flex items-center gap-2 px-4 py-1.5 bg-[var(--color-brand-50)] border border-[var(--color-brand-200)] rounded-full text-sm text-[var(--color-brand-700)] font-medium mb-6"
           >
             <Star className="w-4 h-4" />
             Alternativa brasileira ao Funnelytics + Reportei
@@ -229,10 +229,10 @@ export default function LandingPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ delay: i * 0.06, duration: 0.4 }}
-                className="group bg-slate-50 hover:bg-white border border-slate-200 hover:border-blue-200 rounded-2xl p-6 transition-all hover:shadow-lg"
+                className="group bg-slate-50 hover:bg-white border border-slate-200 hover:border-[var(--color-brand-200)] rounded-2xl p-6 transition-all hover:shadow-lg"
               >
-                <div className="w-11 h-11 bg-blue-100 group-hover:bg-blue-600 rounded-xl flex items-center justify-center mb-4 transition-colors">
-                  <f.icon className="w-5 h-5 text-blue-600 group-hover:text-white transition-colors" />
+                <div className="w-11 h-11 bg-[var(--color-brand-100)] group-hover:bg-[var(--color-brand-600)] rounded-xl flex items-center justify-center mb-4 transition-colors">
+                  <f.icon className="w-5 h-5 text-[var(--color-brand-600)] group-hover:text-white transition-colors" />
                 </div>
                 <h3 className="font-bold text-slate-900 mb-2">{f.title}</h3>
                 <p className="text-sm text-slate-500 leading-relaxed">{f.desc}</p>

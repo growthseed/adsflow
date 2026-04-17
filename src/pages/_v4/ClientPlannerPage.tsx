@@ -519,7 +519,7 @@ function TemplateCard({
 }) {
   const colors = {
     violet: 'from-violet-50 to-violet-100 border-violet-200 hover:border-violet-400',
-    blue: 'from-blue-50 to-blue-100 border-blue-200 hover:border-blue-400',
+    blue: 'from-blue-50 to-blue-100 border-[var(--color-brand-200)] hover:border-blue-400',
     emerald: 'from-emerald-50 to-emerald-100 border-emerald-200 hover:border-emerald-400',
     amber: 'from-amber-50 to-amber-100 border-amber-200 hover:border-amber-400',
     pink: 'from-pink-50 to-pink-100 border-pink-200 hover:border-pink-400',
@@ -900,7 +900,7 @@ function FlowEditor({
             onClick={() => setNodesSidebarOpen((v) => !v)}
             className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg transition-colors border ${
               nodesSidebarOpen
-                ? 'bg-blue-50 border-blue-200 text-blue-700'
+                ? 'bg-[var(--color-brand-50)] border-[var(--color-brand-200)] text-[var(--color-brand-700)]'
                 : 'bg-white border-neutral-200 text-neutral-700 hover:bg-neutral-50'
             }`}
             title="Painel de nodes"

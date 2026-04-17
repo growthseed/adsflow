@@ -41,8 +41,8 @@ function SettingsSection({
     <div className="bg-white border border-slate-200 rounded-xl">
       <div className="p-5 border-b border-slate-100">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center">
-            <Icon className="w-5 h-5 text-blue-600" />
+          <div className="w-9 h-9 rounded-lg bg-[var(--color-brand-50)] flex items-center justify-center">
+            <Icon className="w-5 h-5 text-[var(--color-brand-600)]" />
           </div>
           <div>
             <h2 className="text-sm font-semibold text-slate-900">{title}</h2>
@@ -160,7 +160,7 @@ function ProfileSection({ userId }: { userId: string }) {
         <button
           onClick={handleSave}
           disabled={saving}
-          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 text-sm font-medium"
+          className="flex items-center gap-2 px-4 py-2 bg-[var(--color-brand-600)] text-white rounded-lg hover:bg-[var(--color-brand-700)] disabled:opacity-50 text-sm font-medium"
         >
           <Save className="w-4 h-4" />
           {saving ? 'Salvando...' : 'Salvar Alterações'}
@@ -281,7 +281,7 @@ function PasswordSection() {
         <button
           type="submit"
           disabled={saving || !newPass || !confirmPass}
-          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 text-sm font-medium"
+          className="flex items-center gap-2 px-4 py-2 bg-[var(--color-brand-600)] text-white rounded-lg hover:bg-[var(--color-brand-700)] disabled:opacity-50 text-sm font-medium"
         >
           <Lock className="w-4 h-4" />
           {saving ? 'Alterando...' : 'Alterar Senha'}
@@ -363,7 +363,7 @@ function ToggleRow({
       <button
         onClick={() => onChange(!checked)}
         className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-          checked ? 'bg-blue-600' : 'bg-slate-300'
+          checked ? 'bg-[var(--color-brand-600)]' : 'bg-slate-300'
         }`}
       >
         <span

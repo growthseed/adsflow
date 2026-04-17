@@ -137,7 +137,7 @@ function PlanCard({
     purple: 'from-purple-500 to-purple-700',
   }
   const borderMap: Record<string, string> = {
-    blue: 'border-blue-200 hover:border-blue-400',
+    blue: 'border-[var(--color-brand-200)] hover:border-blue-400',
     indigo: 'border-indigo-300 hover:border-indigo-500 ring-2 ring-indigo-100',
     purple: 'border-purple-200 hover:border-purple-400',
   }
@@ -154,7 +154,7 @@ function PlanCard({
         </span>
       )}
       {isCurrentPlan && (
-        <span className="absolute -top-3 right-4 px-3 py-0.5 bg-blue-600 text-white text-xs font-bold rounded-full">
+        <span className="absolute -top-3 right-4 px-3 py-0.5 bg-[var(--color-brand-600)] text-white text-xs font-bold rounded-full">
           Plano Atual
         </span>
       )}
@@ -394,7 +394,7 @@ export default function BillingPage() {
             <button
               onClick={() => setAnnual(!annual)}
               className={`relative w-12 h-6 rounded-full transition-colors ${
-                annual ? 'bg-blue-600' : 'bg-slate-300'
+                annual ? 'bg-[var(--color-brand-600)]' : 'bg-slate-300'
               }`}
             >
               <span
@@ -414,7 +414,7 @@ export default function BillingPage() {
           </div>
 
           {processing && (
-            <div className="flex items-center justify-center gap-2 py-4 text-blue-600">
+            <div className="flex items-center justify-center gap-2 py-4 text-[var(--color-brand-600)]">
               <Loader2 className="w-5 h-5 animate-spin" />
               <span className="text-sm font-medium">Processando alteração...</span>
             </div>
@@ -472,7 +472,7 @@ export default function BillingPage() {
                 </div>
                 <button
                   onClick={() => handleDownloadInvoice(inv.id)}
-                  className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                  className="p-2 text-slate-400 hover:text-[var(--color-brand-600)] hover:bg-[var(--color-brand-50)] rounded-lg transition-colors"
                   title="Baixar PDF"
                 >
                   <Download className="w-4 h-4" />
@@ -497,14 +497,14 @@ export default function BillingPage() {
                 <p className="text-sm font-medium text-slate-900">•••• •••• •••• 4242</p>
                 <p className="text-xs text-slate-500">Expira em 12/2028 • Visa</p>
               </div>
-              <button className="text-sm text-blue-600 hover:text-blue-700 font-medium">
+              <button className="text-sm text-[var(--color-brand-600)] hover:text-[var(--color-brand-700)] font-medium">
                 Alterar
               </button>
             </div>
           </div>
 
           {/* Add new */}
-          <button className="flex items-center gap-2 px-4 py-3 border-2 border-dashed border-slate-300 rounded-xl text-slate-500 hover:border-blue-400 hover:text-blue-600 transition-colors w-full">
+          <button className="flex items-center gap-2 px-4 py-3 border-2 border-dashed border-slate-300 rounded-xl text-slate-500 hover:border-blue-400 hover:text-[var(--color-brand-600)] transition-colors w-full">
             <Plus className="w-4 h-4" />
             <span className="text-sm font-medium">Adicionar novo método de pagamento</span>
           </button>
@@ -540,7 +540,7 @@ export default function BillingPage() {
             </div>
             <button
               onClick={() => toast.success('Dados de faturamento salvos!')}
-              className="mt-4 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
+              className="mt-4 px-4 py-2 bg-[var(--color-brand-600)] text-white text-sm font-medium rounded-lg hover:bg-[var(--color-brand-700)] transition-colors"
             >
               Salvar
             </button>

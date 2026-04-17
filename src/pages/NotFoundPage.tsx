@@ -25,7 +25,7 @@ export default function NotFoundPage() {
           </button>
           <Link
             to="/dashboard"
-            className="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700"
+            className="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-[var(--color-brand-600)] rounded-lg hover:bg-[var(--color-brand-700)]"
           >
             <Home className="w-4 h-4" />
             Dashboard

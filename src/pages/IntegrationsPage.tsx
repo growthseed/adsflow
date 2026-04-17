@@ -213,7 +213,7 @@ function MetaOAuthModal({ open, onClose, onSave }: MetaOAuthModalProps) {
         {/* Header */}
         <div className="p-6 border-b border-slate-200 shrink-0">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center">
+            <div className="w-10 h-10 bg-[var(--color-brand-600)] rounded-xl flex items-center justify-center">
               <Facebook className="w-5 h-5 text-white" />
             </div>
             <div>
@@ -236,8 +236,8 @@ function MetaOAuthModal({ open, onClose, onSave }: MetaOAuthModalProps) {
           {/* IDLE — Botão Connect */}
           {step === 'idle' && (
             <div className="text-center py-8">
-              <div className="w-20 h-20 bg-blue-50 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                <Facebook className="w-10 h-10 text-blue-600" />
+              <div className="w-20 h-20 bg-[var(--color-brand-50)] rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <Facebook className="w-10 h-10 text-[var(--color-brand-600)]" />
               </div>
               <h3 className="text-lg font-semibold text-slate-900 mb-2">
                 Conectar com Facebook
@@ -257,7 +257,7 @@ function MetaOAuthModal({ open, onClose, onSave }: MetaOAuthModalProps) {
                   { icon: FileText, label: 'Relatórios & Insights', desc: 'Dados de performance' },
                 ].map(({ icon: Icon, label, desc }) => (
                   <div key={label} className="flex items-start gap-2 p-2.5 bg-slate-50 rounded-lg">
-                    <Icon className="w-4 h-4 text-blue-600 mt-0.5 shrink-0" />
+                    <Icon className="w-4 h-4 text-[var(--color-brand-600)] mt-0.5 shrink-0" />
                     <div>
                       <p className="text-xs font-medium text-slate-700">{label}</p>
                       <p className="text-[10px] text-slate-500">{desc}</p>
@@ -284,7 +284,7 @@ function MetaOAuthModal({ open, onClose, onSave }: MetaOAuthModalProps) {
           {/* CONNECTING / LOADING */}
           {(step === 'connecting' || step === 'loading_assets') && (
             <div className="text-center py-16">
-              <Loader2 className="w-10 h-10 text-blue-600 animate-spin mx-auto mb-4" />
+              <Loader2 className="w-10 h-10 text-[var(--color-brand-600)] animate-spin mx-auto mb-4" />
               <p className="text-slate-600 font-medium">
                 {step === 'connecting'
                   ? 'Aguardando autorização no Facebook...'
@@ -333,7 +333,7 @@ function MetaOAuthModal({ open, onClose, onSave }: MetaOAuthModalProps) {
                     <Icon className="w-3.5 h-3.5" />
                     {label}
                     <span className={`px-1.5 py-0.5 rounded-full text-[10px] ${
-                      activeTab === key ? 'bg-blue-100 text-blue-700' : 'bg-slate-200 text-slate-500'
+                      activeTab === key ? 'bg-[var(--color-brand-100)] text-[var(--color-brand-700)]' : 'bg-slate-200 text-slate-500'
                     }`}>
                       {count}
                     </span>
@@ -360,7 +360,7 @@ function MetaOAuthModal({ open, onClose, onSave }: MetaOAuthModalProps) {
                               setSelectedAdAccounts(new Set(assets.adAccounts.map(a => a.id)))
                             }
                           }}
-                          className="text-blue-600 hover:text-blue-700 font-medium"
+                          className="text-[var(--color-brand-600)] hover:text-[var(--color-brand-700)] font-medium"
                         >
                           {selectedAdAccounts.size === assets.adAccounts.length ? 'Desmarcar todas' : 'Selecionar todas'}
                         </button>
@@ -374,16 +374,16 @@ function MetaOAuthModal({ open, onClose, onSave }: MetaOAuthModalProps) {
                             onClick={() => toggleAdAccount(account.id)}
                             className={`w-full flex items-center gap-3 p-3 rounded-xl border-2 transition-all text-left ${
                               selected
-                                ? 'border-blue-500 bg-blue-50/50'
+                                ? 'border-blue-500 bg-[var(--color-brand-50)]/50'
                                 : 'border-slate-200 hover:border-slate-300'
                             }`}
                           >
                             <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center shrink-0 transition-colors ${
-                              selected ? 'bg-blue-600 border-blue-600' : 'border-slate-300'
+                              selected ? 'bg-[var(--color-brand-600)] border-[var(--color-brand-600)]' : 'border-slate-300'
                             }`}>
                               {selected && <Check className="w-3 h-3 text-white" />}
                             </div>
-                            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center shrink-0">
+                            <div className="w-8 h-8 bg-[var(--color-brand-600)] rounded-lg flex items-center justify-center shrink-0">
                               <span className="text-white font-bold text-xs">M</span>
                             </div>
                             <div className="flex-1 min-w-0">
@@ -425,7 +425,7 @@ function MetaOAuthModal({ open, onClose, onSave }: MetaOAuthModalProps) {
                               setSelectedPages(new Set(assets.pages.map(p => p.id)))
                             }
                           }}
-                          className="text-blue-600 hover:text-blue-700 font-medium"
+                          className="text-[var(--color-brand-600)] hover:text-[var(--color-brand-700)] font-medium"
                         >
                           {selectedPages.size === assets.pages.length ? 'Desmarcar todas' : 'Selecionar todas'}
                         </button>
@@ -438,12 +438,12 @@ function MetaOAuthModal({ open, onClose, onSave }: MetaOAuthModalProps) {
                             onClick={() => togglePage(page.id)}
                             className={`w-full flex items-center gap-3 p-3 rounded-xl border-2 transition-all text-left ${
                               selected
-                                ? 'border-blue-500 bg-blue-50/50'
+                                ? 'border-blue-500 bg-[var(--color-brand-50)]/50'
                                 : 'border-slate-200 hover:border-slate-300'
                             }`}
                           >
                             <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center shrink-0 transition-colors ${
-                              selected ? 'bg-blue-600 border-blue-600' : 'border-slate-300'
+                              selected ? 'bg-[var(--color-brand-600)] border-[var(--color-brand-600)]' : 'border-slate-300'
                             }`}>
                               {selected && <Check className="w-3 h-3 text-white" />}
                             </div>
@@ -454,8 +454,8 @@ function MetaOAuthModal({ open, onClose, onSave }: MetaOAuthModalProps) {
                                 className="w-8 h-8 rounded-lg object-cover shrink-0"
                               />
                             ) : (
-                              <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center shrink-0">
-                                <Globe className="w-4 h-4 text-blue-600" />
+                              <div className="w-8 h-8 bg-[var(--color-brand-100)] rounded-lg flex items-center justify-center shrink-0">
+                                <Globe className="w-4 h-4 text-[var(--color-brand-600)]" />
                               </div>
                             )}
                             <div className="flex-1 min-w-0">
@@ -505,7 +505,7 @@ function MetaOAuthModal({ open, onClose, onSave }: MetaOAuthModalProps) {
                               setSelectedInstagram(new Set(assets.instagramAccounts.map(i => i.id)))
                             }
                           }}
-                          className="text-blue-600 hover:text-blue-700 font-medium"
+                          className="text-[var(--color-brand-600)] hover:text-[var(--color-brand-700)] font-medium"
                         >
                           {selectedInstagram.size === assets.instagramAccounts.length ? 'Desmarcar todos' : 'Selecionar todos'}
                         </button>
@@ -563,7 +563,7 @@ function MetaOAuthModal({ open, onClose, onSave }: MetaOAuthModalProps) {
           {/* SAVING */}
           {step === 'saving' && (
             <div className="text-center py-16">
-              <Loader2 className="w-10 h-10 text-blue-600 animate-spin mx-auto mb-4" />
+              <Loader2 className="w-10 h-10 text-[var(--color-brand-600)] animate-spin mx-auto mb-4" />
               <p className="text-slate-600 font-medium">Salvando assets selecionados...</p>
             </div>
           )}
@@ -591,7 +591,7 @@ function MetaOAuthModal({ open, onClose, onSave }: MetaOAuthModalProps) {
               <p className="text-sm text-red-600 mb-6 max-w-md mx-auto">{error}</p>
               <button
                 onClick={() => setStep('idle')}
-                className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
+                className="px-4 py-2 bg-[var(--color-brand-600)] text-white text-sm font-medium rounded-lg hover:bg-[var(--color-brand-700)] transition-colors"
               >
                 Tentar Novamente
               </button>
@@ -612,7 +612,7 @@ function MetaOAuthModal({ open, onClose, onSave }: MetaOAuthModalProps) {
             <button
               onClick={handleSave}
               disabled={totalSelected === 0}
-              className="px-5 py-2.5 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors flex items-center gap-2"
+              className="px-5 py-2.5 bg-[var(--color-brand-600)] text-white text-sm font-semibold rounded-lg hover:bg-[var(--color-brand-700)] disabled:opacity-50 transition-colors flex items-center gap-2"
             >
               <Check className="w-4 h-4" />
               Conectar {totalSelected} Asset{totalSelected > 1 ? 's' : ''}
@@ -716,13 +716,13 @@ function ManualConnectModal({ open, onClose, onConnect }: ManualConnectModalProp
                   onClick={() => setPlatform(p)}
                   className={`p-3 rounded-lg border-2 text-left transition-all ${
                     platform === p
-                      ? 'border-blue-500 bg-blue-50'
+                      ? 'border-blue-500 bg-[var(--color-brand-50)]'
                       : 'border-slate-200 hover:border-slate-300'
                   }`}
                 >
                   <div className="flex items-center gap-2">
                     <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
-                      p === 'meta_ads' ? 'bg-blue-600' : 'bg-red-500'
+                      p === 'meta_ads' ? 'bg-[var(--color-brand-600)]' : 'bg-red-500'
                     }`}>
                       <span className="text-white font-bold text-sm">
                         {p === 'meta_ads' ? 'M' : 'G'}
@@ -797,7 +797,7 @@ function ManualConnectModal({ open, onClose, onConnect }: ManualConnectModalProp
             <button
               type="submit"
               disabled={loading}
-              className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors flex items-center gap-2"
+              className="px-4 py-2 bg-[var(--color-brand-600)] text-white text-sm font-medium rounded-lg hover:bg-[var(--color-brand-700)] disabled:opacity-50 transition-colors flex items-center gap-2"
             >
               {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Link2 className="w-4 h-4" />}
               Conectar Conta
@@ -910,7 +910,7 @@ function AccountCard({
           <div className="flex items-center gap-3">
             <div
               className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-                account.platform === 'meta_ads' ? 'bg-blue-600' : 'bg-red-500'
+                account.platform === 'meta_ads' ? 'bg-[var(--color-brand-600)]' : 'bg-red-500'
               }`}
             >
               <span className="text-white font-bold">
@@ -938,12 +938,12 @@ function AccountCard({
         )}
 
         {syncing && syncProgress && (
-          <div className="mt-3 bg-blue-50 p-3 rounded-lg">
-            <div className="flex items-center gap-2 text-blue-700 text-sm font-medium mb-2">
+          <div className="mt-3 bg-[var(--color-brand-50)] p-3 rounded-lg">
+            <div className="flex items-center gap-2 text-[var(--color-brand-700)] text-sm font-medium mb-2">
               <Loader2 className="w-4 h-4 animate-spin" />
               Sincronizando...
             </div>
-            <div className="grid grid-cols-4 gap-2 text-xs text-blue-600">
+            <div className="grid grid-cols-4 gap-2 text-xs text-[var(--color-brand-600)]">
               <div>Campanhas: {syncProgress.campaignsSynced}</div>
               <div>Ad Sets: {syncProgress.adsetsSynced}</div>
               <div>Ads: {syncProgress.adsSynced}</div>
@@ -973,7 +973,7 @@ function AccountCard({
           <button
             onClick={() => onSync(account.id)}
             disabled={syncing || account.status === 'disconnected'}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 text-white text-xs font-medium rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-[var(--color-brand-600)] text-white text-xs font-medium rounded-lg hover:bg-[var(--color-brand-700)] disabled:opacity-50 transition-colors"
           >
             {syncing ? (
               <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -1294,7 +1294,7 @@ export default function IntegrationsPage() {
       brand: 'meta_ads',
       name: 'Meta Ads',
       desc: 'Facebook & Instagram Ads',
-      bgLight: 'bg-blue-50',
+      bgLight: 'bg-[var(--color-brand-50)]',
       connected: metaAccounts.length,
       available: true,
       onConnect: hasFbApp ? () => setShowOAuthModal(true) : () => setShowManualModal(true),
@@ -1320,7 +1320,7 @@ export default function IntegrationsPage() {
       brand: 'google_ads',
       name: 'Google Ads',
       desc: 'Search, Display & YouTube',
-      bgLight: 'bg-blue-50',
+      bgLight: 'bg-[var(--color-brand-50)]',
       connected: googleAccounts.length + googleAdsConnected,
       available: true,
       onConnect: () => handleGoogleConnect(['google_ads']),
@@ -1364,7 +1364,7 @@ export default function IntegrationsPage() {
       brand: 'gmb',
       name: 'Google Meu Negócio',
       desc: 'Reviews, Buscas & Ações',
-      bgLight: 'bg-blue-50',
+      bgLight: 'bg-[var(--color-brand-50)]',
       connected: gmbConnected,
       available: true,
       onConnect: () => handleGoogleConnect(['gmb']),
@@ -1386,7 +1386,7 @@ export default function IntegrationsPage() {
       brand: 'linkedin_ads',
       name: 'LinkedIn',
       desc: 'Página, Posts & Seguidores',
-      bgLight: 'bg-blue-50',
+      bgLight: 'bg-[var(--color-brand-50)]',
       connected: 0,
       available: true,
       onConnect: () => setShowManualModal(true),
@@ -1661,7 +1661,7 @@ export default function IntegrationsPage() {
                 href="https://ia-kommo-n8n.xl78rn.easypanel.host"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 text-xs text-blue-600 hover:text-blue-700 font-medium mt-2"
+                className="inline-flex items-center gap-1 text-xs text-[var(--color-brand-600)] hover:text-[var(--color-brand-700)] font-medium mt-2"
               >
                 Abrir N8N <ExternalLink className="w-3 h-3" />
               </a>

@@ -111,7 +111,7 @@ export default function PublicClientPortalPage() {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600 mx-auto mb-3" />
+          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[var(--color-brand-600)] mx-auto mb-3" />
           <p className="text-sm text-slate-500">Carregando seu painel...</p>
         </div>
       </div>
@@ -136,7 +136,7 @@ export default function PublicClientPortalPage() {
           <p className="text-sm text-slate-500 mb-6">
             Se você recebeu esse link de um gestor da Efeito Digital, entre em contato.
           </p>
-          <a href="mailto:jw@efeito.digital" className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700">
+          <a href="mailto:jw@efeito.digital" className="inline-flex items-center gap-2 px-4 py-2 bg-[var(--color-brand-600)] text-white rounded-lg text-sm font-medium hover:bg-[var(--color-brand-700)]">
             Falar com a Efeito Digital
           </a>
         </div>
@@ -158,7 +158,7 @@ export default function PublicClientPortalPage() {
           />
           <a
             href="mailto:jw@efeito.digital"
-            className="text-xs font-medium text-blue-600 hover:text-blue-800 px-3 py-1.5 border border-blue-200 rounded-lg bg-blue-50 hover:bg-blue-100 transition-colors"
+            className="text-xs font-medium text-[var(--color-brand-600)] hover:text-[var(--color-brand-800)] px-3 py-1.5 border border-[var(--color-brand-200)] rounded-lg bg-[var(--color-brand-50)] hover:bg-[var(--color-brand-100)] transition-colors"
           >
             Falar com meu gestor
           </a>
@@ -176,7 +176,7 @@ export default function PublicClientPortalPage() {
                   onClick={() => setActiveTab(tab.id)}
                   className={`flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium border-b-2 transition-colors ${
                     isActive
-                      ? 'border-blue-600 text-blue-600'
+                      ? 'border-[var(--color-brand-600)] text-[var(--color-brand-600)]'
                       : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
                   }`}
                 >
@@ -214,7 +214,7 @@ export default function PublicClientPortalPage() {
                   <button
                     type="button"
                     onClick={() => setActiveTab('performance')}
-                    className="mt-5 inline-flex items-center gap-2 px-4 py-2 bg-white text-blue-700 rounded-lg text-sm font-semibold hover:bg-blue-50 transition-colors shadow-lg"
+                    className="mt-5 inline-flex items-center gap-2 px-4 py-2 bg-white text-[var(--color-brand-700)] rounded-lg text-sm font-semibold hover:bg-[var(--color-brand-50)] transition-colors shadow-lg"
                   >
                     Ver detalhes da performance
                     <ArrowRight className="w-4 h-4" />
@@ -350,7 +350,7 @@ export default function PublicClientPortalPage() {
         <p className="text-[11px] text-slate-400">
           Painel de acompanhamento gerenciado pela Efeito Digital
         </p>
-        <a href="https://efeito.digital" target="_blank" rel="noopener noreferrer" className="text-[11px] text-blue-500 hover:text-blue-700">
+        <a href="https://efeito.digital" target="_blank" rel="noopener noreferrer" className="text-[11px] text-blue-500 hover:text-[var(--color-brand-700)]">
           efeito.digital
         </a>
       </footer>
