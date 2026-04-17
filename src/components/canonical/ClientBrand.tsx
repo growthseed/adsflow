@@ -151,7 +151,7 @@ export default function ClientBrand({
           src={logoUrl!}
           alt={name}
           onError={() => setImgFailed(true)}
-          className={`${classes.logo} object-cover bg-white border border-slate-200 flex-shrink-0`}
+          className={`${classes.logo} object-cover bg-[var(--surface-card)] border border-[var(--border-subtle)] flex-shrink-0`}
         />
       ) : (
         <div
@@ -164,9 +164,9 @@ export default function ClientBrand({
 
       {showName && (
         <div className={`flex flex-col ${classes.gap} min-w-0`}>
-          <div className={`${classes.name} text-slate-900 truncate`}>{name}</div>
+          <div className={`${classes.name} text-[var(--text-primary)] truncate`}>{name}</div>
           {subtitle && (
-            <div className={`${classes.subtitle} text-slate-500 truncate`}>
+            <div className={`${classes.subtitle} text-[var(--text-tertiary)] truncate`}>
               {subtitle}
             </div>
           )}

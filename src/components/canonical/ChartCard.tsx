@@ -60,11 +60,11 @@ export function ChartCard({
       {/* Header */}
       <div className="flex items-start justify-between gap-3 p-4 border-b border-[var(--border-subtle)]">
         <div className="min-w-0 flex-1">
-          <h3 className="text-sm font-semibold text-neutral-900 leading-snug truncate">
+          <h3 className="text-sm font-semibold text-[var(--text-primary)] leading-snug truncate">
             {title}
           </h3>
           {subtitle && (
-            <p className="text-xs text-neutral-500 mt-0.5 truncate">{subtitle}</p>
+            <p className="text-xs text-[var(--text-tertiary)] mt-0.5 truncate">{subtitle}</p>
           )}
         </div>
         {actions && <div className="flex-shrink-0">{actions}</div>}
@@ -78,11 +78,11 @@ export function ChartCard({
             className="w-full flex items-center justify-center animate-pulse"
             style={{ height }}
           >
-            <div className="w-full h-full bg-neutral-100 rounded-lg" />
+            <div className="w-full h-full bg-[var(--color-neutral-100)] rounded-lg" />
           </div>
         ) : empty ? (
           <div
-            className="w-full flex flex-col items-center justify-center text-neutral-400"
+            className="w-full flex flex-col items-center justify-center text-[var(--text-disabled)]"
             style={{ height }}
           >
             <svg
@@ -109,7 +109,7 @@ export function ChartCard({
       {/* Footer note */}
       {footnote && (
         <div className="px-4 py-2 border-t border-[var(--border-subtle)] bg-[var(--surface-sunken)]">
-          <p className="text-xs text-neutral-500">{footnote}</p>
+          <p className="text-xs text-[var(--text-tertiary)]">{footnote}</p>
         </div>
       )}
     </div>

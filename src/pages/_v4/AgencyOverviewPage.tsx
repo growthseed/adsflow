@@ -380,7 +380,7 @@ function SortPill({
         ${
           active
             ? 'bg-neutral-900 border-neutral-900 text-white'
-            : 'bg-white border-neutral-200 text-neutral-600 hover:bg-neutral-50 hover:border-neutral-300'
+            : 'bg-[var(--surface-card)] border-[var(--border-subtle)] text-[var(--text-secondary)] hover:bg-[var(--color-neutral-50)] hover:border-[var(--border-default)]'
         }
       `}
     >

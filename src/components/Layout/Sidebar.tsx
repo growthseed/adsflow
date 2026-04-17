@@ -59,71 +59,38 @@ interface NavSection {
 /** Nível 1 — navegação da agência (sempre visível) */
 const AGENCY_SECTIONS: NavSection[] = [
   {
-    title: 'Visão geral',
+    title: '',
     items: [
       { path: '/_v4/operations', label: 'Dashboard', icon: LayoutDashboard },
       { path: '/clients', label: 'Clientes', icon: FolderKanban, minRole: 'admin' },
-    ],
-  },
-  {
-    title: 'Tráfego pago',
-    items: [
       { path: '/playbook', label: 'Playbook', icon: BookOpen, isNew: true },
     ],
   },
 ]
 
-/** Nível 2-4 — pilares do cliente (renderizados quando dentro de /c/:slug/*) */
+/** Client sections — Performance / CRM / Projeto */
 function getClientSections(clientSlug: string): NavSection[] {
   return [
     {
-      title: 'Visão geral',
+      title: 'Performance',
       items: [
-        {
-          path: `/c/${clientSlug}/overview`,
-          label: 'Dashboard',
-          icon: LayoutDashboard,
-        },
-      ],
-    },
-    {
-      title: 'Tráfego pago',
-      items: [
-        {
-          path: `/c/${clientSlug}/meta-ads`,
-          label: 'Meta Ads',
-          icon: Target,
-        },
-        {
-          path: `/c/${clientSlug}/performance`,
-          label: 'Performance',
-          icon: BarChart3,
-        },
-        {
-          path: `/c/${clientSlug}/planner`,
-          label: 'Planner',
-          icon: GitBranch,
-        },
+        { path: `/c/${clientSlug}/overview`, label: 'Dashboard', icon: LayoutDashboard },
+        { path: `/c/${clientSlug}/meta-ads`, label: 'Meta Ads', icon: Target },
+        { path: `/c/${clientSlug}/performance`, label: 'Google Ads', icon: BarChart3 },
       ],
     },
     {
       title: 'CRM',
       items: [
-        {
-          path: `/c/${clientSlug}/crm/funil`,
-          label: 'Funil de vendas',
-          icon: BarChart3,
-        },
-        {
-          path: `/c/${clientSlug}/crm/perdas`,
-          label: 'Perdas',
-          icon: TrendingDown,
-        },
-        {
-          path: `/c/${clientSlug}/projeto`,
-          label: 'Projeto',
-          icon: CheckSquare,
-        },
+        { path: `/c/${clientSlug}/crm/funil`, label: 'Funil de vendas', icon: TrendingUp },
+        { path: `/c/${clientSlug}/crm/perdas`, label: 'Perdas', icon: TrendingDown },
+      ],
+    },
+    {
+      title: 'Projeto',
+      items: [
+        { path: `/c/${clientSlug}/planner`, label: 'Planner', icon: GitBranch },
+        { path: `/c/${clientSlug}/projeto`, label: 'Demandas', icon: CheckSquare },
       ],
     },
   ]
@@ -219,8 +186,8 @@ export default function Sidebar({ collapsed, setCollapsed, mobileOpen = false, o
         </div>
         {!collapsed && (
           <div className="ml-2.5">
-            <span className="text-base font-bold text-[var(--text-primary)] tracking-tight">G4 Scale</span>
-            <span className="block text-[10px] text-[var(--text-tertiary)] font-medium -mt-0.5">Reporting Suite</span>
+            <span className="text-base font-bold text-[var(--text-primary)] tracking-tight">Ads Flow</span>
+            <span className="block text-[10px] text-[var(--text-tertiary)] font-medium -mt-0.5">by Efeito Digital</span>
           </div>
         )}
       </div>

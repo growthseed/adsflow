@@ -21,11 +21,11 @@ interface CardFooterProps {
 }
 
 const variantStyles: Record<NonNullable<CardProps['variant']>, string> = {
-  default: 'bg-white border border-slate-200 rounded-xl',
-  elevated: 'bg-white rounded-xl shadow-md',
-  bordered: 'bg-white border-2 border-slate-200 rounded-xl',
+  default: 'bg-[var(--surface-card)] border border-[var(--border-subtle)] rounded-xl',
+  elevated: 'bg-[var(--surface-card)] rounded-xl shadow-md',
+  bordered: 'bg-[var(--surface-card)] border-2 border-[var(--border-subtle)] rounded-xl',
   interactive:
-    'bg-white border border-slate-200 rounded-xl hover:shadow-md hover:border-slate-300 transition-all cursor-pointer',
+    'bg-[var(--surface-card)] border border-[var(--border-subtle)] rounded-xl hover:shadow-md hover:border-[var(--border-default)] transition-all cursor-pointer',
 }
 
 const paddingStyles: Record<NonNullable<CardProps['padding']>, string> = {
@@ -49,8 +49,8 @@ function Card({ children, variant = 'default', padding = 'md', className = '' }:
 
 function CardHeader({
   icon,
-  iconColor = 'text-blue-600',
-  iconBg = 'bg-blue-50',
+  iconColor = 'text-[var(--color-brand-600)]',
+  iconBg = 'bg-[var(--color-brand-50)]',
   title,
   subtitle,
   badge,
@@ -72,11 +72,11 @@ function CardHeader({
         )}
         <div className="min-w-0">
           <div className="flex items-center gap-2">
-            <h3 className="text-sm font-semibold text-slate-900 truncate">{title}</h3>
+            <h3 className="text-sm font-semibold text-[var(--text-primary)] truncate">{title}</h3>
             {badge}
           </div>
           {subtitle && (
-            <p className="text-xs text-slate-500 mt-0.5 truncate">{subtitle}</p>
+            <p className="text-xs text-[var(--text-tertiary)] mt-0.5 truncate">{subtitle}</p>
           )}
         </div>
       </div>
@@ -89,7 +89,7 @@ function CardFooter({ children, className = '' }: CardFooterProps) {
   return (
     <div
       className={[
-        'flex items-center gap-3 pt-4 mt-4 border-t border-slate-100',
+        'flex items-center gap-3 pt-4 mt-4 border-t border-[var(--border-subtle)]',
         className,
       ]
         .filter(Boolean)

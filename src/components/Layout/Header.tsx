@@ -138,8 +138,8 @@ export default function Header({ collapsed, onMobileMenuToggle }: HeaderProps) {
             onClick={copyClientLink}
             className={`hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg transition-all ${
               linkCopied
-                ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-                : 'bg-blue-50 text-blue-700 border border-blue-200 hover:bg-blue-100'
+                ? 'bg-[var(--color-success-50)] text-[var(--color-success-700)] border border-[var(--color-success-500)]/30'
+                : 'bg-[var(--color-brand-50)] text-[var(--color-brand-700)] border border-[var(--color-brand-200)] hover:bg-[var(--color-brand-100)]'
             }`}
             title="Copiar link de acesso do cliente"
           >
@@ -165,7 +165,7 @@ export default function Header({ collapsed, onMobileMenuToggle }: HeaderProps) {
         >
           <Search className="w-4 h-4" />
           <span className="hidden sm:inline text-xs text-[var(--text-tertiary)]">Buscar...</span>
-          <kbd className="hidden sm:inline text-[10px] text-[var(--color-neutral-300)] bg-white border border-[var(--border-subtle)] rounded px-1 py-0.5">
+          <kbd className="hidden sm:inline text-[10px] text-[var(--color-neutral-300)] bg-[var(--surface-card)] border border-[var(--border-subtle)] rounded px-1 py-0.5">
             ⌘K
           </kbd>
         </button>
