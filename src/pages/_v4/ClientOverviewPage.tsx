@@ -92,14 +92,14 @@ export default function ClientOverviewPage() {
             <button
               type="button"
               onClick={() => navigate(`/c/${client.slug}/performance`)}
-              className="text-xs font-medium text-slate-600 hover:text-slate-900 border border-slate-200 hover:border-slate-300 bg-white px-3 py-1.5 rounded-lg transition-colors"
+              className="text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] border border-[var(--border-subtle)] hover:border-[var(--border-default)] bg-[var(--surface-card)] px-3 py-1.5 rounded-lg transition-colors"
             >
               Performance
             </button>
             <button
               type="button"
               onClick={() => navigate(`/c/${client.slug}/projeto`)}
-              className="text-xs font-medium text-slate-600 hover:text-slate-900 border border-slate-200 hover:border-slate-300 bg-white px-3 py-1.5 rounded-lg transition-colors"
+              className="text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] border border-[var(--border-subtle)] hover:border-[var(--border-default)] bg-[var(--surface-card)] px-3 py-1.5 rounded-lg transition-colors"
             >
               Projeto
             </button>
@@ -110,17 +110,17 @@ export default function ClientOverviewPage() {
       <main className="max-w-layout mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6">
         {/* ─── 1. HUMANIZED WELCOME ──────────────────────────── */}
         {welcome && snapshot && (
-          <section className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 rounded-2xl shadow-xl p-6 sm:p-8 text-white">
+          <section className="relative overflow-hidden rounded-2xl p-6 sm:p-8 text-white" style={{ background: 'var(--gradient-primary)', boxShadow: 'var(--shadow-elegant)' }}>
             <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-32 -mt-32" />
             <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full -ml-24 -mb-24" />
             <div className="relative">
-              <div className="text-xs font-medium uppercase tracking-widest text-blue-200 mb-2">
+              <div className="text-xs font-medium uppercase tracking-widest text-white/60 mb-2">
                 {snapshot.period.label}
               </div>
               <h1 className="text-2xl sm:text-3xl font-bold leading-tight mb-3">
                 {welcome.greeting}
               </h1>
-              <div className="space-y-2 max-w-3xl text-sm sm:text-base text-blue-50 leading-relaxed">
+              <div className="space-y-2 max-w-3xl text-sm sm:text-base text-white/80 leading-relaxed">
                 {welcome.body.map((sentence, i) => (
                   <p key={i}>{sentence}</p>
                 ))}
@@ -243,11 +243,11 @@ export default function ClientOverviewPage() {
 
         {/* ─── 4. PROJECT HIGHLIGHTS ───────────────────────────── */}
         {client && (client.stats.urgent > 0 || client.stats.in_progress > 0 || client.upcoming_tasks.length > 0) && (
-          <section className="bg-white border border-slate-200 rounded-2xl overflow-hidden">
-            <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100">
+          <section className="bg-[var(--surface-card)] border border-[var(--border-subtle)] rounded-2xl overflow-hidden">
+            <div className="flex items-center justify-between px-5 py-4 border-b border-[var(--border-subtle)]">
               <div>
-                <h3 className="text-sm font-semibold text-slate-900">Destaques do projeto</h3>
-                <p className="text-xs text-slate-500 mt-0.5">
+                <h3 className="text-sm font-semibold text-[var(--text-primary)]">Destaques do projeto</h3>
+                <p className="text-xs text-[var(--text-tertiary)] mt-0.5">
                   {client.stats.total_active} tarefas ativas · {client.stats.overdue} atrasadas
                 </p>
               </div>
@@ -262,48 +262,48 @@ export default function ClientOverviewPage() {
             </div>
 
             {/* Stats strip */}
-            <div className="grid grid-cols-4 divide-x divide-slate-100 bg-slate-50">
+            <div className="grid grid-cols-4 divide-x divide-[var(--border-subtle)] bg-[var(--surface-sunken)]">
               <div className="px-4 py-3 text-center">
-                <div className="text-lg font-bold text-slate-900">{client.stats.in_progress}</div>
-                <div className="text-[10px] text-slate-500 uppercase tracking-wide">Em andamento</div>
+                <div className="text-lg font-bold text-[var(--text-primary)]">{client.stats.in_progress}</div>
+                <div className="text-[10px] text-[var(--text-tertiary)] uppercase tracking-wide">Em andamento</div>
               </div>
               <div className="px-4 py-3 text-center">
-                <div className="text-lg font-bold text-slate-900">{client.stats.review}</div>
-                <div className="text-[10px] text-slate-500 uppercase tracking-wide">Em revisão</div>
+                <div className="text-lg font-bold text-[var(--text-primary)]">{client.stats.review}</div>
+                <div className="text-[10px] text-[var(--text-tertiary)] uppercase tracking-wide">Em revisão</div>
               </div>
               <div className="px-4 py-3 text-center">
-                <div className={`text-lg font-bold ${client.stats.urgent > 0 ? 'text-red-600' : 'text-slate-900'}`}>{client.stats.overdue}</div>
-                <div className="text-[10px] text-slate-500 uppercase tracking-wide">Atrasadas</div>
+                <div className={`text-lg font-bold ${client.stats.urgent > 0 ? 'text-[var(--color-error-600)]' : 'text-[var(--text-primary)]'}`}>{client.stats.overdue}</div>
+                <div className="text-[10px] text-[var(--text-tertiary)] uppercase tracking-wide">Atrasadas</div>
               </div>
               <div className="px-4 py-3 text-center">
-                <div className="text-lg font-bold text-emerald-600">{client.stats.done}</div>
-                <div className="text-[10px] text-slate-500 uppercase tracking-wide">Concluídas</div>
+                <div className="text-lg font-bold text-[var(--color-success-600)]">{client.stats.done}</div>
+                <div className="text-[10px] text-[var(--text-tertiary)] uppercase tracking-wide">Concluídas</div>
               </div>
             </div>
 
             {/* Upcoming tasks */}
             {client.upcoming_tasks.length > 0 && (
-              <div className="divide-y divide-slate-100">
+              <div className="divide-y divide-[var(--border-subtle)]">
                 {client.upcoming_tasks.slice(0, 5).map((task) => (
-                  <div key={task.id} className="flex items-center gap-3 px-5 py-3 hover:bg-slate-50 transition-colors">
+                  <div key={task.id} className="flex items-center gap-3 px-5 py-3 hover:bg-[var(--color-neutral-50)] transition-colors">
                     <div
                       className={`w-2 h-2 rounded-full flex-shrink-0 ${
                         task.status === 'urgent' ? 'bg-red-500' :
-                        task.status === 'in_progress' ? 'bg-blue-500' :
+                        task.status === 'in_progress' ? 'bg-[var(--color-brand-500)]' :
                         task.status === 'review' ? 'bg-amber-500' :
                         task.status === 'done' ? 'bg-emerald-500' :
-                        'bg-slate-400'
+                        'bg-[var(--color-neutral-400)]'
                       }`}
                     />
                     <div className="min-w-0 flex-1">
-                      <div className="text-sm text-slate-800 truncate">{task.title}</div>
+                      <div className="text-sm text-[var(--text-primary)] truncate">{task.title}</div>
                       <div className="flex items-center gap-2 mt-0.5">
                         {task.list_name && (
-                          <span className="text-[10px] text-slate-500">{task.list_name}</span>
+                          <span className="text-[10px] text-[var(--text-tertiary)]">{task.list_name}</span>
                         )}
                         {task.due_date_label && (
                           <span className={`text-[10px] font-medium ${
-                            task.days_late && task.days_late > 0 ? 'text-red-600' : 'text-slate-500'
+                            task.days_late && task.days_late > 0 ? 'text-[var(--color-error-600)]' : 'text-[var(--text-tertiary)]'
                           }`}>
                             {task.due_date_label}
                           </span>
@@ -373,16 +373,16 @@ function ModuleCard({ title, description, icon, color, onClick }: ModuleCardProp
     <button
       type="button"
       onClick={onClick}
-      className="group relative overflow-hidden bg-white border border-slate-200 hover:border-slate-300 rounded-2xl p-5 text-left transition-all hover:shadow-md hover:-translate-y-0.5"
+      className="group relative overflow-hidden bg-[var(--surface-card)] border border-[var(--border-subtle)] hover:border-[var(--border-default)] rounded-2xl p-5 text-left transition-all hover:shadow-md hover:-translate-y-0.5"
     >
       <div
         className={`w-10 h-10 rounded-xl bg-gradient-to-br ${color} text-white flex items-center justify-center shadow-sm mb-3`}
       >
         {icon}
       </div>
-      <div className="text-sm font-semibold text-slate-900 mb-0.5">{title}</div>
-      <div className="text-xs text-slate-500">{description}</div>
-      <ArrowRight className="absolute top-5 right-5 w-4 h-4 text-slate-300 group-hover:text-slate-600 group-hover:translate-x-0.5 transition-all" />
+      <div className="text-sm font-semibold text-[var(--text-primary)] mb-0.5">{title}</div>
+      <div className="text-xs text-[var(--text-tertiary)]">{description}</div>
+      <ArrowRight className="absolute top-5 right-5 w-4 h-4 text-[var(--color-neutral-300)] group-hover:text-[var(--text-secondary)] group-hover:translate-x-0.5 transition-all" />
     </button>
   )
 }
