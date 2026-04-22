@@ -13,6 +13,7 @@
 
 import { useState, useMemo } from 'react'
 import { useParams, useNavigate, Navigate } from 'react-router-dom'
+import { RefreshCw } from 'lucide-react'
 
 import { PageHeader, EmptyState } from '@/components/canonical'
 import { getClientBySlug } from '@/services/adapters/clickupAdapter'
@@ -21,20 +22,27 @@ import type {
   ClickUpPriority,
   ClickUpAssignee,
 } from '@/services/adapters/clickupTypes'
+import { useLiveClickUpSnapshot } from '@/hooks/useLiveClickUpSnapshot'
+import { useToast } from '@/components/UI/Toast'
 
 type FilterKey = 'all' | 'mine' | 'urgent' | 'high'
 
 export default function ClientProjectPage() {
   const { clientSlug } = useParams<{ clientSlug: string }>()
   const navigate = useNavigate()
+  const toast = useToastSafe()
+  const { snapshot, capturedAt, refreshing, refresh, forceResync } = useLiveClickUpSnapshot()
 
-  const client = useMemo(
-    () => (clientSlug ? getClientBySlug(clientSlug) : undefined),
-    [clientSlug],
-  )
+  // Cliente sempre do snapshot live (com fallback pro bundled via getClientBySlug)
+  const client = useMemo(() => {
+    if (!clientSlug) return undefined
+    const fromLive = snapshot.clients.find((c) => c.slug === clientSlug)
+    return fromLive ?? getClientBySlug(clientSlug)
+  }, [clientSlug, snapshot])
 
   const [filter, setFilter] = useState<FilterKey>('all')
   const [showDone, setShowDone] = useState(false)
+  const [syncing, setSyncing] = useState(false)
 
   // Derive task list BEFORE any early return so hook order is stable.
   // Prefer all_tasks if populated, otherwise upcoming_tasks (snapshot fallback).
@@ -71,7 +79,7 @@ export default function ClientProjectPage() {
     <div className="min-h-screen bg-[var(--surface-page)]">
       <PageHeader
         title="Projeto"
-        subtitle={`${client.name} · ${stats.total_active} tarefas ativas`}
+        subtitle={`${client.name} · ${stats.total_active} tarefas ativas · sync ${relativeTimeBR(capturedAt)}${refreshing ? ' (atualizando…)' : ''}`}
         breadcrumbs={[
           { label: 'Operações', href: '/_v4/operations' },
           { label: client.name, href: `/c/${client.slug}/overview` },
@@ -79,16 +87,36 @@ export default function ClientProjectPage() {
         ]}
         leading={<ClientAvatar gradient={client.avatar_gradient} name={client.short_name} />}
         actions={
-          <button
-            onClick={() => navigate(`/c/${client.slug}/overview`)}
-            className="hidden sm:flex items-center gap-1.5 px-3 py-2 text-sm text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 rounded-lg transition-colors"
-          >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="19" y1="12" x2="5" y2="12" />
-              <polyline points="12 19 5 12 12 5" />
-            </svg>
-            Voltar à visão geral
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={async () => {
+                setSyncing(true)
+                const r = await forceResync()
+                setSyncing(false)
+                if (r.ok) toast?.success('Sincronizado com o ClickUp')
+                else {
+                  // Fallback: só refetch do snapshot já salvo
+                  await refresh()
+                  toast?.info('Carregado do último sync (forceResync requer CRON_SECRET)')
+                }
+              }}
+              disabled={syncing || refreshing}
+              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 text-sm text-neutral-700 hover:text-neutral-900 border border-neutral-200 hover:bg-neutral-50 rounded-lg disabled:opacity-50"
+            >
+              <RefreshCw size={14} className={syncing || refreshing ? 'animate-spin' : ''} />
+              {syncing ? 'Sincronizando' : refreshing ? 'Atualizando' : 'Atualizar agora'}
+            </button>
+            <button
+              onClick={() => navigate(`/c/${client.slug}/overview`)}
+              className="hidden sm:flex items-center gap-1.5 px-3 py-2 text-sm text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 rounded-lg transition-colors"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12" />
+                <polyline points="12 19 5 12 12 5" />
+              </svg>
+              Visão geral
+            </button>
+          </div>
         }
       />
 
@@ -628,4 +656,21 @@ function ClientAvatar({ gradient, name }: { gradient: string; name: string }) {
       {name}
     </div>
   )
+}
+
+function relativeTimeBR(d: Date): string {
+  const diffMin = Math.max(0, Math.round((Date.now() - d.getTime()) / 60000))
+  if (diffMin < 1) return 'agora'
+  if (diffMin < 60) return `há ${diffMin}min`
+  const h = Math.round(diffMin / 60)
+  if (h < 24) return `há ${h}h`
+  return `há ${Math.round(h / 24)}d`
+}
+
+function useToastSafe(): ReturnType<typeof useToast> | null {
+  try {
+    return useToast()
+  } catch {
+    return null
+  }
 }

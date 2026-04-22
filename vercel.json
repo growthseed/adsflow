@@ -15,21 +15,18 @@
     }
   ],
   "functions": {
-    "api/sync/clickup.ts": {
-      "maxDuration": 120
-    },
-    "api/sync/performance.ts": {
-      "maxDuration": 120
-    }
+    "api/sync/clickup.ts":          { "maxDuration": 120 },
+    "api/sync/performance.ts":      { "maxDuration": 120 },
+    "api/reports/generate.ts":      { "maxDuration": 60 },
+    "api/crons/pacing-tick.ts":     { "maxDuration": 90 },
+    "api/crons/alerts-evaluate.ts": { "maxDuration": 90 },
+    "api/crons/reports-deliver.ts": { "maxDuration": 300 }
   },
   "crons": [
-    {
-      "path": "/api/sync/clickup",
-      "schedule": "0 7 * * *"
-    },
-    {
-      "path": "/api/sync/performance",
-      "schedule": "0 8 * * *"
-    }
+    { "path": "/api/sync/clickup",          "schedule": "0 7 * * *" },
+    { "path": "/api/sync/performance",      "schedule": "0 8 * * *" },
+    { "path": "/api/crons/pacing-tick",     "schedule": "17 * * * *" },
+    { "path": "/api/crons/alerts-evaluate", "schedule": "23 * * * *" },
+    { "path": "/api/crons/reports-deliver", "schedule": "31 * * * *" }
   ]
 }

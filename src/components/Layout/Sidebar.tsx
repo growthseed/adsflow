@@ -14,22 +14,26 @@ import {
   LayoutDashboard,
   Link2,
   GitBranch,
+  GitCompareArrows,
   BarChart3,
+  Bell,
+  Bot,
   CheckSquare,
+  Clock,
   Users,
   Settings,
   ChevronLeft,
   ChevronRight,
   ChevronDown,
   Building2,
+  FileText,
   Shield,
-  CreditCard,
   FolderKanban,
   LogOut,
+  Rocket,
   Sparkles,
   BookOpen,
   Target,
-  Image as ImageIcon,
   TrendingUp,
   TrendingDown,
   Moon,
@@ -61,9 +65,20 @@ const AGENCY_SECTIONS: NavSection[] = [
   {
     title: '',
     items: [
-      { path: '/_v4/operations', label: 'Dashboard', icon: LayoutDashboard },
+      { path: '/_v4/operations', label: 'Hoje', icon: LayoutDashboard },
+      { path: '/_v4/operations?view=comparador', label: 'Comparador', icon: GitCompareArrows, isNew: true },
+      { path: '/pacing', label: 'Pacing', icon: Clock, isNew: true },
       { path: '/clients', label: 'Clientes', icon: FolderKanban, minRole: 'admin' },
-      { path: '/playbook', label: 'Playbook', icon: BookOpen, isNew: true },
+    ],
+  },
+  {
+    title: 'Workspace',
+    items: [
+      { path: '/reports', label: 'Relatórios', icon: FileText, isNew: true },
+      { path: '/alerts', label: 'Metas & alertas', icon: Bell, isNew: true },
+      { path: '/ai', label: 'AdsFlow AI', icon: Bot, isNew: true },
+      { path: '/onboarding', label: 'Onboarding', icon: Rocket, isNew: true },
+      { path: '/playbook', label: 'Playbook', icon: BookOpen },
     ],
   },
 ]
@@ -132,14 +147,19 @@ export default function Sidebar({ collapsed, setCollapsed, mobileOpen = false, o
   }, [])
 
   const isActive = (path: string) => {
-    // Exact match for agency-level routes
-    if (path.startsWith('/_v4/') || path === '/clients' || path === '/integrations' ||
-        path === '/team' || path === '/billing' || path === '/settings' || path === '/admin' ||
-        path === '/playbook') {
-      return location.pathname === path
+    const [rawPath, rawQuery] = path.split('?')
+    if (rawQuery) {
+      const params = new URLSearchParams(rawQuery)
+      const viewParam = params.get('view')
+      const currentView = new URLSearchParams(location.search).get('view')
+      return location.pathname === rawPath && viewParam === currentView
     }
-    // Client-scoped routes match their own segment
-    return location.pathname === path
+    // Home "Hoje" não deve ficar ativo quando view=comparador está na URL
+    if (path === '/_v4/operations') {
+      const currentView = new URLSearchParams(location.search).get('view')
+      return location.pathname === rawPath && (!currentView || currentView === 'hoje')
+    }
+    return location.pathname === rawPath
   }
 
   // Detect if we're inside a client context: /c/:slug/<module>

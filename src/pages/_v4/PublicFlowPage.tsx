@@ -162,7 +162,13 @@ export default function PublicFlowPage() {
         <ReactFlowProvider>
           <ReactFlow
             nodes={flow.nodes}
-            edges={flow.edges}
+            edges={flow.edges.map((e) => {
+              const cleaned = { ...e }
+              const bad = (v: unknown) => v === undefined || v === null || v === 'undefined' || v === ''
+              if (bad(cleaned.sourceHandle)) delete (cleaned as { sourceHandle?: unknown }).sourceHandle
+              if (bad(cleaned.targetHandle)) delete (cleaned as { targetHandle?: unknown }).targetHandle
+              return cleaned
+            })}
             nodeTypes={nodeTypes}
             defaultViewport={flow.viewport || undefined}
             fitView={!flow.viewport}

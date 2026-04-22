@@ -114,7 +114,7 @@
                 "conversions": 7,
                 "conversion_value": 0,
                 "ctr": 0.00684,
-                "cpc": 2.0,
+                "cpc": 2,
                 "cpm": 13.67,
                 "cost_per_conversion": 56.28,
                 "roas": 0
@@ -292,78 +292,6 @@
         "avg_cpc": 2.71,
         "avg_cpm": 23.69,
         "cost_per_conversion": 45.07,
-        "roas": 0
-      },
-      "last_synced_at": "2026-04-08T03:15:00Z"
-    },
-    "dra-luciana": {
-      "client_slug": "dra-luciana",
-      "client_name": "Dra. Luciana",
-      "period": {
-        "from": "2026-03-01",
-        "to": "2026-03-31",
-        "label": "Março 2026"
-      },
-      "platforms": {
-        "meta_ads": {
-          "platform": "meta_ads",
-          "account_id": "act_726604442982185",
-          "account_name": "[CA] 01 Dra. Luciana Botelho",
-          "currency": "BRL",
-          "timezone": "America/Noronha",
-          "connected": true,
-          "last_synced_at": "2026-04-08T03:15:00Z",
-          "summary": {
-            "impressions": 25485,
-            "clicks": 746,
-            "spend": 728.79,
-            "conversions": 24,
-            "conversion_value": 0,
-            "ctr": 0.02927,
-            "cpc": 0.98,
-            "cpm": 28.6,
-            "cost_per_conversion": 30.37,
-            "roas": 0,
-            "reach": 15417,
-            "frequency": 1.65,
-            "active_campaigns": 1,
-            "total_campaigns": 1
-          },
-          "campaigns": [
-            {
-              "id": "cmp-dl-1",
-              "name": "Dermatologia - Harmonização Facial",
-              "status": "enabled",
-              "status_raw": "1",
-              "platform": "meta_ads",
-              "campaign_type": "LEAD_GENERATION",
-              "metrics": {
-                "impressions": 25485,
-                "clicks": 746,
-                "spend": 728.79,
-                "conversions": 24,
-                "conversion_value": 0,
-                "ctr": 0.02927,
-                "cpc": 0.98,
-                "cpm": 28.6,
-                "cost_per_conversion": 30.37,
-                "roas": 0
-              }
-            }
-          ],
-          "daily": []
-        }
-      },
-      "blended": {
-        "total_spend": 728.79,
-        "total_impressions": 25485,
-        "total_clicks": 746,
-        "total_conversions": 24,
-        "total_reach": 15417,
-        "avg_ctr": 0.02927,
-        "avg_cpc": 0.98,
-        "avg_cpm": 28.6,
-        "cost_per_conversion": 30.37,
         "roas": 0
       },
       "last_synced_at": "2026-04-08T03:15:00Z"

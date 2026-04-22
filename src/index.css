@@ -86,4 +86,50 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+
+  /* Números tabulares — obrigatório em KPIs e métricas (handoff-pack V2) */
+  .tabular {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'tnum';
+  }
+
+  /* Eyebrow label — pequeno, uppercase, wide-letter-spacing */
+  .eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+  }
+
+  /* Gradient primary — hero cards, avatar default, AI mark */
+  .bg-gradient-primary {
+    background: var(--gradient-primary);
+  }
+
+  /* Shimmer — skeletons animados (estado loading obrigatório) */
+  .shimmer {
+    position: relative;
+    overflow: hidden;
+    background: var(--color-neutral-100);
+  }
+  .shimmer::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.6) 50%,
+      transparent 100%
+    );
+    animation: shimmer 2s infinite;
+  }
+  @keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .shimmer::after { animation: none; }
+  }
 }

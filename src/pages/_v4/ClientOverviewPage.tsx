@@ -37,6 +37,8 @@ import { useClientGoals } from '@/hooks/useClientGoals'
 import { humanizeSnapshot } from '@/lib/humanizeSnapshot'
 import { useAuth } from '@/contexts/AuthContext'
 import type { SnapshotKPI } from '@/types/clientDashboardSnapshot'
+import { BlendedPaidTrafficCard } from './components/BlendedPaidTrafficCard'
+import { KommoCrmCard } from './components/KommoCrmCard'
 
 export default function ClientOverviewPage() {
   const { clientSlug } = useParams<{ clientSlug: string }>()
@@ -138,6 +140,12 @@ export default function ClientOverviewPage() {
             </div>
           </section>
         )}
+
+        {/* ─── 1.5 · Tráfego pago consolidado (Meta + Google) ─── */}
+        {clientSlug && <BlendedPaidTrafficCard clientSlug={clientSlug} />}
+
+        {/* ─── 1.6 · CRM Kommo (MQL/SQL + conversão) ─────────── */}
+        {clientSlug && <KommoCrmCard clientSlug={clientSlug} />}
 
         {/* ─── 2. HERO KPI STRIP ──────────────────────────────── */}
         {snapshot && kpiOrder.length > 0 && (

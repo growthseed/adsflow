@@ -46,7 +46,7 @@ interface HeaderProps {
 }
 
 export default function Header({ collapsed, onMobileMenuToggle }: HeaderProps) {
-  const { user, activeClient, isGlobalAdmin } = useAuth()
+  const { activeClient, isGlobalAdmin } = useAuth()
   const { open: openSearch } = useCommandPalette()
   const location = useLocation()
   const navigate = useNavigate()

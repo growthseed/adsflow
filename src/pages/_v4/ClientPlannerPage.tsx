@@ -245,7 +245,7 @@ export default function ClientPlannerPage() {
                 description: template.description,
                 template_id: template.id,
                 nodes: JSON.parse(JSON.stringify(template.nodes)),
-                edges: JSON.parse(JSON.stringify(template.edges)),
+                edges: sanitizeEdges(JSON.parse(JSON.stringify(template.edges))),
               })
               if (flow) setView({ mode: 'editor', flowId: flow.id })
             }}
@@ -567,6 +567,22 @@ function TemplateCard({
 // FLOW EDITOR (simplified — no legacy coupling)
 // =============================================================
 
+/**
+ * Remove `sourceHandle`/`targetHandle` quando forem undefined/"undefined"
+ * ou string vazia. ReactFlow interpreta essa presença como "preciso achar
+ * um handle com id undefined" e loga warning #008 em loop. Edges antigas
+ * salvas no DB contêm esses campos lixo — sanitiza no load.
+ */
+function sanitizeEdges(raw: Edge[]): Edge[] {
+  return raw.map((e) => {
+    const cleaned = { ...e }
+    const bad = (v: unknown) => v === undefined || v === null || v === 'undefined' || v === ''
+    if (bad(cleaned.sourceHandle)) delete (cleaned as { sourceHandle?: unknown }).sourceHandle
+    if (bad(cleaned.targetHandle)) delete (cleaned as { targetHandle?: unknown }).targetHandle
+    return cleaned
+  })
+}
+
 function FlowEditor({
   flowId,
   onDeleted,
@@ -607,7 +623,7 @@ function FlowEditor({
       if (data) {
         setFlow(data)
         setNodes(data.nodes || [])
-        setEdges(data.edges || [])
+        setEdges(sanitizeEdges(data.edges || []))
         if (data.share_token && data.share_enabled) {
           setShareUrl(`${window.location.origin}/p/${data.share_token}`)
         }

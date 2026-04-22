@@ -10,7 +10,8 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
-import { ArrowLeft, Mail, Lock, User, Building, CheckCircle, KeyRound, Eye, EyeOff } from 'lucide-react'
+import { ArrowLeft, Mail, Lock, User, Building, CheckCircle, KeyRound, Eye, EyeOff, Sparkles } from 'lucide-react'
+import { supabase } from '@/lib/supabase'
 
 type AuthMode = 'login' | 'register' | 'forgot'
 
@@ -351,6 +352,38 @@ export default function LoginPage() {
               >
                 {loading ? submitLabels[mode].busy : submitLabels[mode].idle}
               </button>
+
+              {mode === 'login' && (
+                <button
+                  type="button"
+                  disabled={loading || !formData.email}
+                  onClick={async () => {
+                    setError('')
+                    setSuccessMessage('')
+                    if (!formData.email) {
+                      setFieldErrors((p) => ({ ...p, email: 'Informe um e-mail' }))
+                      return
+                    }
+                    setLoading(true)
+                    const { error } = await supabase.auth.signInWithOtp({
+                      email: formData.email,
+                      options: {
+                        emailRedirectTo: `${window.location.origin}/dashboard`,
+                      },
+                    })
+                    setLoading(false)
+                    if (error) setError(error.message || 'Falha ao enviar link mágico.')
+                    else
+                      setSuccessMessage(
+                        `Enviamos um link de acesso para ${formData.email}. Expira em 15 minutos.`,
+                      )
+                  }}
+                  className="mt-3 w-full py-2.5 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors font-medium text-slate-700 text-sm inline-flex items-center justify-center gap-2 disabled:opacity-40"
+                >
+                  <Sparkles className="w-4 h-4" />
+                  Entrar com link mágico
+                </button>
+              )}
             </form>
           )}
 

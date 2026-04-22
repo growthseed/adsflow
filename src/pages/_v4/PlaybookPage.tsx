@@ -9,16 +9,34 @@
  */
 
 import { useMemo, useState } from 'react'
-import { BookOpen, CheckCircle2, ListChecks, Sparkles } from 'lucide-react'
-import { PLAYBOOK_DOCS, PLAYBOOK_PRINCIPLES, getPlaybookDoc } from '@/data/playbook'
+import { BookOpen, CheckCircle2, ListChecks, Pencil, Plus, Sparkles } from 'lucide-react'
+import { PLAYBOOK_PRINCIPLES } from '@/data/playbook'
 import { RenderMarkdown } from '@/lib/renderMarkdown'
+import { useAuth } from '@/contexts/AuthContext'
+import { usePlaybookDocs, type PlaybookDocRow } from '@/features/playbook/hooks/usePlaybookDocs'
+import { PlaybookDocEditor } from '@/features/playbook/PlaybookDocEditor'
 
 export default function PlaybookPage() {
   const [activeSlug, setActiveSlug] = useState<string>('overview')
-  const activeDoc = useMemo(() => getPlaybookDoc(activeSlug), [activeSlug])
+  const { docs, save, remove } = usePlaybookDocs()
+  const { user } = useAuth()
+  const canEdit = user?.globalRole === 'super_admin' || user?.globalRole === 'admin'
+  const [editorOpen, setEditorOpen] = useState(false)
+  const [editing, setEditing] = useState<PlaybookDocRow | null>(null)
 
-  const intros = PLAYBOOK_DOCS.filter((d) => d.category === 'intro')
-  const checklists = PLAYBOOK_DOCS.filter((d) => d.category === 'checklist')
+  const activeDoc = useMemo(() => docs.find((d) => d.slug === activeSlug), [docs, activeSlug])
+  const intros = docs.filter((d) => d.category === 'intro')
+  const checklists = docs.filter((d) => d.category === 'checklist')
+  const others = docs.filter((d) => d.category !== 'intro' && d.category !== 'checklist')
+
+  const openNew = () => {
+    setEditing(null)
+    setEditorOpen(true)
+  }
+  const openEdit = (doc: PlaybookDocRow) => {
+    setEditing(doc)
+    setEditorOpen(true)
+  }
 
   return (
     <div className="flex h-[calc(100vh-3.5rem)] bg-slate-50">
@@ -29,10 +47,20 @@ export default function PlaybookPage() {
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-sm">
               <BookOpen className="w-4 h-4 text-white" />
             </div>
-            <div>
+            <div className="flex-1 min-w-0">
               <h2 className="text-sm font-bold text-slate-900">Ads Playbook</h2>
               <p className="text-[10px] text-slate-500">Efeito Digital · interno</p>
             </div>
+            {canEdit && (
+              <button
+                onClick={openNew}
+                aria-label="novo doc"
+                title="Criar novo doc"
+                className="w-7 h-7 grid place-items-center rounded-md bg-brand-600 hover:bg-brand-700 text-white"
+              >
+                <Plus size={14} />
+              </button>
+            )}
           </div>
         </div>
 
@@ -45,7 +73,9 @@ export default function PlaybookPage() {
               key={doc.slug}
               doc={doc}
               active={activeSlug === doc.slug}
+              canEdit={canEdit}
               onClick={() => setActiveSlug(doc.slug)}
+              onEdit={openEdit}
             />
           ))}
 
@@ -57,9 +87,29 @@ export default function PlaybookPage() {
               key={doc.slug}
               doc={doc}
               active={activeSlug === doc.slug}
+              canEdit={canEdit}
               onClick={() => setActiveSlug(doc.slug)}
+              onEdit={openEdit}
             />
           ))}
+
+          {others.length > 0 && (
+            <>
+              <p className="px-4 pt-4 pb-1.5 text-[10px] font-semibold uppercase tracking-widest text-slate-400">
+                Referências
+              </p>
+              {others.map((doc) => (
+                <DocLink
+                  key={doc.slug}
+                  doc={doc}
+                  active={activeSlug === doc.slug}
+                  canEdit={canEdit}
+                  onClick={() => setActiveSlug(doc.slug)}
+                  onEdit={openEdit}
+                />
+              ))}
+            </>
+          )}
         </nav>
 
         {/* Principles footer — always visible reminder */}
@@ -80,15 +130,28 @@ export default function PlaybookPage() {
       <main className="flex-1 overflow-y-auto">
         <div className="max-w-3xl mx-auto px-8 py-8">
           {activeSlug === 'overview' ? (
-            <OverviewPane onOpen={setActiveSlug} />
+            <OverviewPane checklists={checklists} onOpen={setActiveSlug} />
           ) : activeDoc ? (
             <article>
-              <header className="mb-6 pb-4 border-b border-slate-200">
-                <p className="text-[10px] font-semibold uppercase tracking-widest text-slate-400 mb-1">
-                  {activeDoc.category === 'intro' ? 'Introdução' : 'Checklist'}
-                </p>
-                <h1 className="text-2xl font-bold text-slate-900">{activeDoc.title}</h1>
-                <p className="mt-1 text-sm text-slate-500">{activeDoc.description}</p>
+              <header className="mb-6 pb-4 border-b border-slate-200 flex items-start justify-between gap-4">
+                <div className="min-w-0">
+                  <p className="text-[10px] font-semibold uppercase tracking-widest text-slate-400 mb-1">
+                    {activeDoc.category === 'intro' ? 'Introdução' : activeDoc.category === 'checklist' ? 'Checklist' : activeDoc.category === 'vertical' ? 'Vertical' : 'Referência'}
+                  </p>
+                  <h1 className="text-2xl font-bold text-slate-900">{activeDoc.title}</h1>
+                  {activeDoc.description && (
+                    <p className="mt-1 text-sm text-slate-500">{activeDoc.description}</p>
+                  )}
+                </div>
+                {canEdit && (
+                  <button
+                    onClick={() => openEdit(activeDoc)}
+                    className="shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-neutral-200 hover:bg-neutral-50 text-xs font-medium text-neutral-700"
+                  >
+                    <Pencil size={12} />
+                    {activeDoc.source === 'static' ? 'Customizar' : 'Editar'}
+                  </button>
+                )}
               </header>
               <RenderMarkdown source={activeDoc.content} />
             </article>
@@ -97,6 +160,14 @@ export default function PlaybookPage() {
           )}
         </div>
       </main>
+
+      <PlaybookDocEditor
+        open={editorOpen}
+        initial={editing}
+        onClose={() => setEditorOpen(false)}
+        onSave={save}
+        onDelete={remove}
+      />
     </div>
   )
 }
@@ -104,40 +175,63 @@ export default function PlaybookPage() {
 function DocLink({
   doc,
   active,
+  canEdit,
   onClick,
+  onEdit,
 }: {
-  doc: (typeof PLAYBOOK_DOCS)[number]
+  doc: PlaybookDocRow
   active: boolean
+  canEdit: boolean
   onClick: () => void
+  onEdit: (doc: PlaybookDocRow) => void
 }) {
   const Icon = doc.category === 'intro' ? BookOpen : ListChecks
   return (
-    <button
-      onClick={onClick}
-      className={`w-full flex items-start gap-2.5 px-4 py-2.5 text-left transition-colors ${
+    <div
+      className={`group relative flex items-start gap-2.5 px-4 py-2.5 text-left transition-colors ${
         active ? 'bg-[var(--color-brand-50)] border-l-2 border-[var(--color-brand-600)]' : 'hover:bg-slate-50 border-l-2 border-transparent'
       }`}
     >
-      <Icon
-        className={`w-4 h-4 mt-0.5 shrink-0 ${active ? 'text-[var(--color-brand-600)]' : 'text-slate-400'}`}
-      />
-      <div className="min-w-0 flex-1">
-        <p
-          className={`text-[13px] font-medium leading-tight ${
-            active ? 'text-blue-900' : 'text-slate-700'
-          }`}
+      <button onClick={onClick} className="flex-1 flex items-start gap-2.5 min-w-0 text-left">
+        <Icon
+          className={`w-4 h-4 mt-0.5 shrink-0 ${active ? 'text-[var(--color-brand-600)]' : 'text-slate-400'}`}
+        />
+        <div className="min-w-0 flex-1">
+          <p
+            className={`text-[13px] font-medium leading-tight ${
+              active ? 'text-blue-900' : 'text-slate-700'
+            }`}
+          >
+            {doc.title}
+            {doc.source === 'static' && (
+              <span className="ml-1.5 text-[9px] font-semibold uppercase tracking-widest text-amber-600">
+                base
+              </span>
+            )}
+          </p>
+          <p className="text-[11px] text-slate-500 mt-0.5 leading-snug line-clamp-2">
+            {doc.description}
+          </p>
+        </div>
+      </button>
+      {canEdit && (
+        <button
+          onClick={(e) => {
+            e.stopPropagation()
+            onEdit(doc)
+          }}
+          aria-label={`editar ${doc.title}`}
+          title="Editar doc"
+          className="shrink-0 opacity-0 group-hover:opacity-100 w-6 h-6 grid place-items-center rounded text-slate-400 hover:bg-white hover:text-slate-900 transition-opacity"
         >
-          {doc.title}
-        </p>
-        <p className="text-[11px] text-slate-500 mt-0.5 leading-snug line-clamp-2">
-          {doc.description}
-        </p>
-      </div>
-    </button>
+          <Pencil size={12} />
+        </button>
+      )}
+    </div>
   )
 }
 
-function OverviewPane({ onOpen }: { onOpen: (slug: string) => void }) {
+function OverviewPane({ checklists, onOpen }: { checklists: PlaybookDocRow[]; onOpen: (slug: string) => void }) {
   return (
     <div>
       <header className="mb-6 pb-4 border-b border-slate-200">
@@ -176,7 +270,7 @@ function OverviewPane({ onOpen }: { onOpen: (slug: string) => void }) {
           Checklists rápidos
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {PLAYBOOK_DOCS.filter((d) => d.category === 'checklist').map((doc) => (
+          {checklists.map((doc) => (
             <button
               key={doc.slug}
               onClick={() => onOpen(doc.slug)}

@@ -29,3 +29,9 @@ dist-ssr
 *.sw?
 
 .vercel
+
+# Claude Code local settings
+.claude/settings.local.json
+
+# V2 handoff pack (materiais de referência, não código)
+V2 - Novas Implementações/

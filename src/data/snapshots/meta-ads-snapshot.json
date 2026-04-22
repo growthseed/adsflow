@@ -1,0 +1,556 @@
+{
+  "captured_at": "2026-04-22T14:00:00Z",
+  "period": {
+    "from": "2026-04-01",
+    "to": "2026-04-22",
+    "label": "Abril 2026 (1-22)"
+  },
+  "source": "Meta Graph API v23.0 — puxado manualmente via MCP meta-ads",
+  "clients": {
+    "isaac-newton": {
+      "client_slug": "isaac-newton",
+      "client_name": "Escola Isaac Newton Vila",
+      "account_id": "act_3482049598727995",
+      "account_name": "CA01 - Escola Isaac Newton Vila",
+      "currency": "BRL",
+      "timezone": "America/Sao_Paulo",
+      "connected": true,
+      "last_synced_at": "2026-04-22T14:00:00Z",
+      "summary": {
+        "spend": 664.58,
+        "impressions": 39111,
+        "clicks": 444,
+        "reach": 24215,
+        "frequency": 1.62,
+        "ctr": 1.14,
+        "cpc": 1.50,
+        "cpm": 16.99,
+        "messaging_conversations": 67,
+        "link_clicks": 225,
+        "active_campaigns": 2
+      },
+      "campaigns": [
+        {
+          "id": "120242865487180286",
+          "name": "[ED] CP01 - CBO ENG WPP Vila",
+          "short_name": "CP01 WPP Vila",
+          "objective": "Engajamento",
+          "status": "Ativa",
+          "daily_budget": 16.00,
+          "metrics": {
+            "spend": 329.12,
+            "impressions": 18547,
+            "clicks": 207,
+            "reach": 9837,
+            "ctr": 1.12,
+            "cpc": 1.59,
+            "cpm": 17.75,
+            "conversions": 31,
+            "cost_per_conversion": 10.62
+          }
+        },
+        {
+          "id": "120242868291470286",
+          "name": "[ED] CP02 - CBO ENG WPP Artur Alvim",
+          "short_name": "CP02 WPP Alvim",
+          "objective": "Engajamento",
+          "status": "Ativa",
+          "daily_budget": 16.00,
+          "metrics": {
+            "spend": 335.46,
+            "impressions": 20564,
+            "clicks": 237,
+            "reach": 10029,
+            "ctr": 1.15,
+            "cpc": 1.42,
+            "cpm": 16.31,
+            "conversions": 52,
+            "cost_per_conversion": 6.45
+          }
+        }
+      ],
+      "placements": [
+        { "name": "Facebook", "spend": 450.78, "impressions": 30676, "pct_spend": 67.83 },
+        { "name": "Instagram", "spend": 186.53, "impressions": 7183, "pct_spend": 28.07 },
+        { "name": "Audience Network", "spend": 27.26, "impressions": 1252, "pct_spend": 4.10 }
+      ],
+      "creatives": [
+        {
+          "id": "120242868291500286",
+          "ad_name": "AN214 - CRS2 EDU C/ PRINCIPIOS",
+          "format": "Carrossel",
+          "campaign": "CP02 WPP Alvim",
+          "creative_id": "993316519692503",
+          "status": "Ativo",
+          "spend": 48.99,
+          "impressions": 2340,
+          "clicks": 30,
+          "ctr": 1.28,
+          "cpc": 1.63,
+          "conversions": 4,
+          "cost_per_conversion": 12.25,
+          "thumb_gradient": "linear-gradient(135deg,#476382,#6488ae)"
+        },
+        {
+          "id": "120242866929260286",
+          "ad_name": "AN112 - IMG2 AINDA Ñ DECIDIU?",
+          "format": "Imagem",
+          "campaign": "CP01 WPP Vila",
+          "creative_id": "947516364623075",
+          "status": "Ativo",
+          "spend": 117.45,
+          "impressions": 7204,
+          "clicks": 66,
+          "ctr": 0.92,
+          "cpc": 1.78,
+          "conversions": 10,
+          "cost_per_conversion": 11.74,
+          "thumb_gradient": "linear-gradient(135deg,#5d7a98,#bcc7cd)"
+        },
+        {
+          "id": "120242865487170286",
+          "ad_name": "AN111 - IMG1 FORMAR PELO CONHEC.",
+          "format": "Imagem",
+          "campaign": "CP01 WPP Vila",
+          "creative_id": "1916713672345206",
+          "status": "Ativo",
+          "spend": 185.60,
+          "impressions": 10402,
+          "clicks": 129,
+          "ctr": 1.24,
+          "cpc": 1.44,
+          "conversions": 20,
+          "cost_per_conversion": 9.28,
+          "thumb_gradient": "linear-gradient(135deg,#344b63,#6488ae)"
+        },
+        {
+          "id": "120244744613810286",
+          "ad_name": "AN212 - IMG2 AINDA Ñ DECIDIU?",
+          "format": "Imagem",
+          "campaign": "CP02 WPP Alvim",
+          "creative_id": "733563659745791",
+          "status": "Ativo",
+          "spend": 181.32,
+          "impressions": 12579,
+          "clicks": 139,
+          "ctr": 1.11,
+          "cpc": 1.30,
+          "conversions": 31,
+          "cost_per_conversion": 5.85,
+          "thumb_gradient": "linear-gradient(135deg,#476382,#8aa8c8)"
+        },
+        {
+          "id": "120244744613800286",
+          "ad_name": "AN214 - CRS2 EDU C/ PRINCIPIOS",
+          "format": "Carrossel",
+          "campaign": "CP02 WPP Alvim",
+          "creative_id": "993316519692503",
+          "status": "Ativo",
+          "spend": 20.71,
+          "impressions": 601,
+          "clicks": 15,
+          "ctr": 2.50,
+          "cpc": 1.38,
+          "conversions": 6,
+          "cost_per_conversion": 3.45,
+          "thumb_gradient": "linear-gradient(135deg,#7a8a96,#e1ebf0)"
+        },
+        {
+          "id": "120244744613840286",
+          "ad_name": "AN211 - IMG1 FORMAR PELO CONHEC.",
+          "format": "Imagem",
+          "campaign": "CP02 WPP Alvim",
+          "creative_id": "4486177368285050",
+          "status": "Ativo",
+          "spend": 37.04,
+          "impressions": 2241,
+          "clicks": 25,
+          "ctr": 1.12,
+          "cpc": 1.48,
+          "conversions": 4,
+          "cost_per_conversion": 9.26,
+          "thumb_gradient": "linear-gradient(135deg,#2e4259,#6488ae)"
+        }
+      ]
+    },
+    "homero-reis": {
+      "client_slug": "homero-reis",
+      "client_name": "Homero Reis Relações Inteligentes",
+      "account_id": "act_720926888081448",
+      "account_name": "HR-RIC Oficial",
+      "currency": "BRL",
+      "timezone": "America/Sao_Paulo",
+      "connected": true,
+      "last_synced_at": "2026-04-22T14:00:00Z",
+      "summary": {
+        "spend": 102.05,
+        "impressions": 8339,
+        "clicks": 663,
+        "reach": 7521,
+        "frequency": 1.11,
+        "ctr": 7.95,
+        "cpc": 0.15,
+        "cpm": 12.24,
+        "video_views": 3400,
+        "link_clicks": 662,
+        "active_campaigns": 1
+      },
+      "campaigns": [
+        {
+          "id": "120242299806210725",
+          "name": "[ED] CP03 - Seguidores Homero",
+          "short_name": "CP03 Seguidores IG",
+          "objective": "Tráfego",
+          "status": "Ativa",
+          "daily_budget": 10.00,
+          "metrics": {
+            "spend": 102.05,
+            "impressions": 8339,
+            "clicks": 663,
+            "reach": 7521,
+            "ctr": 7.95,
+            "cpc": 0.15,
+            "cpm": 12.24,
+            "video_views": 3400,
+            "link_clicks": 662
+          }
+        }
+      ],
+      "placements": [
+        { "name": "Instagram", "spend": 102.05, "impressions": 8339, "pct_spend": 100.0 }
+      ],
+      "creatives": [
+        {
+          "id": "120242598140610725",
+          "ad_name": "AD 01 VD 100 - Em que ponto cumprir a regra",
+          "format": "Vídeo",
+          "campaign": "CP03 Seguidores IG",
+          "creative_id": "948032090958936",
+          "status": "Ativo",
+          "spend": 68.93,
+          "impressions": 6115,
+          "clicks": 460,
+          "ctr": 7.52,
+          "cpc": 0.15,
+          "video_views": 2416,
+          "thumb_gradient": "linear-gradient(135deg,#1f3044,#476382)"
+        },
+        {
+          "id": "120242598140610725-v2",
+          "ad_name": "AD 02 - Reflexão diária",
+          "format": "Vídeo",
+          "campaign": "CP03 Seguidores IG",
+          "creative_id": "948032090958936",
+          "status": "Ativo",
+          "spend": 29.34,
+          "impressions": 1938,
+          "clicks": 176,
+          "ctr": 9.08,
+          "cpc": 0.17,
+          "video_views": 861,
+          "thumb_gradient": "linear-gradient(135deg,#2e4259,#8aa8c8)"
+        },
+        {
+          "id": "120242598140610725-v3",
+          "ad_name": "AD 03 - Pausa para pensar",
+          "format": "Vídeo",
+          "campaign": "CP03 Seguidores IG",
+          "creative_id": "948032090958936",
+          "status": "Ativo",
+          "spend": 3.05,
+          "impressions": 244,
+          "clicks": 21,
+          "ctr": 8.61,
+          "cpc": 0.15,
+          "video_views": 103,
+          "thumb_gradient": "linear-gradient(135deg,#476382,#b0bfcc)"
+        }
+      ]
+    },
+    "dr-euvaldo-tomaz": {
+      "client_slug": "dr-euvaldo-tomaz",
+      "client_name": "Dr. Euvaldo Tomaz",
+      "account_id": "act_2413246135708611",
+      "account_name": "CA Dr. Euvaldo Tomaz",
+      "currency": "BRL",
+      "timezone": "America/Sao_Paulo",
+      "connected": true,
+      "last_synced_at": "2026-04-22T14:00:00Z",
+      "summary": {
+        "spend": 397.54,
+        "impressions": 18812,
+        "clicks": 115,
+        "reach": 12946,
+        "frequency": 1.45,
+        "ctr": 0.61,
+        "cpc": 3.46,
+        "cpm": 21.13,
+        "messaging_conversations": 14,
+        "link_clicks": 54,
+        "active_campaigns": 2
+      },
+      "campaigns": [
+        {
+          "id": "120237404645610261",
+          "name": "[ED] CP05 - CBO VENDA WPP Rino",
+          "short_name": "CP05 Venda Rino",
+          "objective": "Vendas",
+          "status": "Ativa",
+          "daily_budget": 18.00,
+          "metrics": {
+            "spend": 375.54,
+            "impressions": 17483,
+            "clicks": 107,
+            "reach": 10767,
+            "ctr": 0.61,
+            "cpc": 3.51,
+            "cpm": 21.48,
+            "conversions": 14,
+            "cost_per_conversion": 26.82
+          }
+        },
+        {
+          "id": "120241600998070261",
+          "name": "[ED] CP06 - ABO ENG WPP Procedimentos",
+          "short_name": "CP06 Procedimentos",
+          "objective": "Engajamento",
+          "status": "Pausada",
+          "daily_budget": 0,
+          "metrics": {
+            "spend": 22.00,
+            "impressions": 1329,
+            "clicks": 8,
+            "reach": 1090,
+            "ctr": 0.60,
+            "cpc": 2.75,
+            "cpm": 16.55,
+            "conversions": 2,
+            "cost_per_conversion": 11.00
+          }
+        }
+      ],
+      "placements": [
+        { "name": "Facebook", "spend": 320.00, "impressions": 14500, "pct_spend": 80.50 },
+        { "name": "Instagram", "spend": 72.54, "impressions": 3900, "pct_spend": 18.25 },
+        { "name": "Messenger", "spend": 5.00, "impressions": 412, "pct_spend": 1.25 }
+      ],
+      "creatives": [
+        {
+          "id": "120240369006080261",
+          "ad_name": "AN518 - RINO JOZI",
+          "format": "Vídeo",
+          "campaign": "CP05 Venda Rino",
+          "creative_id": "907236091923371",
+          "status": "Ativo",
+          "spend": 221.43,
+          "impressions": 9114,
+          "clicks": 64,
+          "ctr": 0.70,
+          "cpc": 3.46,
+          "conversions": 11,
+          "cost_per_conversion": 20.13,
+          "thumb_gradient": "linear-gradient(135deg,#1f3044,#5e7082)"
+        },
+        {
+          "id": "120237404645740261",
+          "ad_name": "AN511 - VD RINO DUDA",
+          "format": "Vídeo",
+          "campaign": "CP05 Venda Rino",
+          "creative_id": "1458824192548317",
+          "status": "Ativo",
+          "spend": 79.49,
+          "impressions": 1707,
+          "clicks": 18,
+          "ctr": 1.05,
+          "cpc": 4.42,
+          "conversions": 3,
+          "cost_per_conversion": 26.50,
+          "thumb_gradient": "linear-gradient(135deg,#344b63,#8aa8c8)"
+        },
+        {
+          "id": "120241571642850261",
+          "ad_name": "AN51[10] - CIRURGIA OTOPLASTIA",
+          "format": "Vídeo",
+          "campaign": "CP05 Venda Rino",
+          "creative_id": "2244228546404354",
+          "status": "Ativo",
+          "spend": 36.36,
+          "impressions": 1949,
+          "clicks": 16,
+          "ctr": 0.82,
+          "cpc": 2.27,
+          "conversions": 0,
+          "cost_per_conversion": 0,
+          "thumb_gradient": "linear-gradient(135deg,#5e7082,#b0bfcc)"
+        },
+        {
+          "id": "120241571414700261",
+          "ad_name": "AN519 - CRS RAZÕES PARA FAZER RINO",
+          "format": "Carrossel",
+          "campaign": "CP05 Venda Rino",
+          "creative_id": "937954759059222",
+          "status": "Ativo",
+          "spend": 38.26,
+          "impressions": 4713,
+          "clicks": 9,
+          "ctr": 0.19,
+          "cpc": 4.25,
+          "conversions": 0,
+          "cost_per_conversion": 0,
+          "thumb_gradient": "linear-gradient(135deg,#476382,#c9d5df)"
+        }
+      ]
+    },
+    "escola-pequeno-aprendiz": {
+      "client_slug": "escola-pequeno-aprendiz",
+      "client_name": "Escola Pequeno Aprendiz",
+      "account_id": "act_665886981393269",
+      "account_name": "CA Escola Pequeno Aprendiz",
+      "currency": "BRL",
+      "timezone": "America/Sao_Paulo",
+      "connected": true,
+      "last_synced_at": "2026-04-22T14:00:00Z",
+      "summary": {
+        "spend": 656.41,
+        "impressions": 162480,
+        "clicks": 501,
+        "reach": 102822,
+        "frequency": 1.58,
+        "ctr": 0.31,
+        "cpc": 1.31,
+        "cpm": 4.04,
+        "messaging_conversations": 44,
+        "link_clicks": 291,
+        "active_campaigns": 2
+      },
+      "campaigns": [
+        {
+          "id": "120236346410550763",
+          "name": "[ED] CP05 - CBO ENG WPP Matrículas 2026",
+          "short_name": "CP05 Matrículas",
+          "objective": "Engajamento",
+          "status": "Ativa",
+          "daily_budget": 25.00,
+          "metrics": {
+            "spend": 530.01,
+            "impressions": 50555,
+            "clicks": 375,
+            "reach": 16699,
+            "ctr": 0.74,
+            "cpc": 1.41,
+            "cpm": 10.48,
+            "conversions": 44,
+            "cost_per_conversion": 12.05
+          }
+        },
+        {
+          "id": "120235261828140763",
+          "name": "[ED] CP10 - Alcance Matrículas",
+          "short_name": "CP10 Alcance",
+          "objective": "Reconhecimento",
+          "status": "Ativa",
+          "daily_budget": 6.00,
+          "metrics": {
+            "spend": 126.40,
+            "impressions": 111925,
+            "clicks": 126,
+            "reach": 78277,
+            "ctr": 0.11,
+            "cpc": 1.00,
+            "cpm": 1.13,
+            "conversions": 0,
+            "cost_per_conversion": 0
+          }
+        }
+      ],
+      "placements": [
+        { "name": "Facebook", "spend": 441.84, "impressions": 127767, "pct_spend": 67.31 },
+        { "name": "Instagram", "spend": 160.59, "impressions": 31667, "pct_spend": 24.47 },
+        { "name": "Messenger", "spend": 53.82, "impressions": 2845, "pct_spend": 8.20 },
+        { "name": "Audience Network", "spend": 0.15, "impressions": 201, "pct_spend": 0.02 }
+      ],
+      "creatives": [
+        {
+          "id": "120237918707560763",
+          "ad_name": "AN531 - IMG1 2026",
+          "format": "Imagem",
+          "campaign": "CP05 Matrículas",
+          "creative_id": "1580334439642294",
+          "status": "Ativo",
+          "spend": 252.29,
+          "impressions": 22934,
+          "clicks": 168,
+          "ctr": 0.73,
+          "cpc": 1.50,
+          "conversions": 23,
+          "cost_per_conversion": 10.97,
+          "thumb_gradient": "linear-gradient(135deg,#1f3044,#6488ae)"
+        },
+        {
+          "id": "120237918707510763",
+          "ad_name": "AN532 - IMG2 2026",
+          "format": "Imagem",
+          "campaign": "CP05 Matrículas",
+          "creative_id": "2073246313496597",
+          "status": "Ativo",
+          "spend": 174.05,
+          "impressions": 17924,
+          "clicks": 125,
+          "ctr": 0.70,
+          "cpc": 1.39,
+          "conversions": 14,
+          "cost_per_conversion": 12.43,
+          "thumb_gradient": "linear-gradient(135deg,#2e4259,#8aa8c8)"
+        },
+        {
+          "id": "120235261828180763",
+          "ad_name": "AN 500 - Escola da Inteligência",
+          "format": "Imagem",
+          "campaign": "CP10 Alcance",
+          "creative_id": "666983286108559",
+          "status": "Ativo",
+          "spend": 126.40,
+          "impressions": 111925,
+          "clicks": 126,
+          "ctr": 0.11,
+          "cpc": 1.00,
+          "conversions": 0,
+          "cost_per_conversion": 0,
+          "thumb_gradient": "linear-gradient(135deg,#476382,#b0bfcc)"
+        },
+        {
+          "id": "120237918707530763",
+          "ad_name": "AN535 - IMG5 2026",
+          "format": "Imagem",
+          "campaign": "CP05 Matrículas",
+          "creative_id": "1597181241442567",
+          "status": "Ativo",
+          "spend": 60.67,
+          "impressions": 5878,
+          "clicks": 54,
+          "ctr": 0.92,
+          "cpc": 1.12,
+          "conversions": 7,
+          "cost_per_conversion": 8.67,
+          "thumb_gradient": "linear-gradient(135deg,#344b63,#9ba5aa)"
+        },
+        {
+          "id": "120237918707520763",
+          "ad_name": "AN536 - IMG6 2026",
+          "format": "Imagem",
+          "campaign": "CP05 Matrículas",
+          "creative_id": "1203519204967966",
+          "status": "Ativo",
+          "spend": 25.58,
+          "impressions": 1966,
+          "clicks": 17,
+          "ctr": 0.86,
+          "cpc": 1.50,
+          "conversions": 0,
+          "cost_per_conversion": 0,
+          "thumb_gradient": "linear-gradient(135deg,#5e7082,#c9d5df)"
+        }
+      ]
+    }
+  }
+}
