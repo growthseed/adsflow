@@ -10,7 +10,7 @@ import { useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 import {
   BarChart, Bar, CartesianGrid, ResponsiveContainer,
-  Tooltip, XAxis, YAxis, Cell,
+  Tooltip, XAxis, YAxis,
 } from 'recharts'
 import { PageHeader } from '@/components/canonical'
 import { getClientBySlug } from '@/services/adapters/clickupAdapter'
