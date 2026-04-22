@@ -25,8 +25,8 @@
   "crons": [
     { "path": "/api/sync/clickup",          "schedule": "0 7 * * *" },
     { "path": "/api/sync/performance",      "schedule": "0 8 * * *" },
-    { "path": "/api/crons/pacing-tick",     "schedule": "17 * * * *" },
-    { "path": "/api/crons/alerts-evaluate", "schedule": "23 * * * *" },
-    { "path": "/api/crons/reports-deliver", "schedule": "31 * * * *" }
+    { "path": "/api/crons/pacing-tick",     "schedule": "17 9 * * *" },
+    { "path": "/api/crons/alerts-evaluate", "schedule": "23 9 * * *" },
+    { "path": "/api/crons/reports-deliver", "schedule": "31 9 * * *" }
   ]
 }
