@@ -20,7 +20,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { createClient } from '@supabase/supabase-js'
 
-import { ENV, requireCronAuth } from '../../src/server/sync/config.js'
+import { ENV } from '../sync/config.js'
 
 interface PacingRule {
   id: string
@@ -76,8 +76,7 @@ function isInSuspendedRange(rangesRaw: string[] | null, now: Date): boolean {
   return false
 }
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
-  if (!requireCronAuth(req, res)) return
+export async function runPacingTick(_req: VercelRequest, res: VercelResponse) {
 
   const client = svc()
   const now = new Date()

@@ -18,7 +18,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { createClient } from '@supabase/supabase-js'
 
-import { ENV, requireCronAuth } from '../../src/server/sync/config.js'
+import { ENV } from '../sync/config.js'
 
 type Metric = 'cpl' | 'roas' | 'ctr' | 'leads' | 'spend' | 'cpm' | 'conversions' | 'freeze'
 type Operator = 'gt' | 'lt' | 'change_gt' | 'change_lt'
@@ -146,8 +146,7 @@ function evaluateCondition(observed: number | null, rule: AlertRule, baseline?: 
   return false
 }
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
-  if (!requireCronAuth(req, res)) return
+export async function runAlertsEvaluate(_req: VercelRequest, res: VercelResponse) {
 
   const client = svc()
   const now = new Date()

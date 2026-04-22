@@ -14,7 +14,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { createClient } from '@supabase/supabase-js'
 
-import { ENV, requireCronAuth } from '../../src/server/sync/config.js'
+import { ENV } from '../sync/config.js'
 
 interface Schedule {
   id: string
@@ -74,8 +74,7 @@ function resolveBaseUrl(req: VercelRequest): string {
   return host ? `${proto}://${host}` : 'http://localhost:3000'
 }
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
-  if (!requireCronAuth(req, res)) return
+export async function runReportsDeliver(req: VercelRequest, res: VercelResponse) {
 
   const client = svc()
   const now = new Date()
