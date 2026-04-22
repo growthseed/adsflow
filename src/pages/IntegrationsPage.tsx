@@ -62,6 +62,23 @@ import {
   type GoogleAccount,
   type GooglePlatform,
 } from '@/services/googleAuthService'
+import {
+  clickupAuthService,
+  clickupConfigsService,
+  type ClickUpConfig,
+} from '@/services/clickupAuthService'
+import {
+  kommoAuthService,
+  kommoConfigsService,
+  normalizeSubdomain,
+  type KommoConfig,
+} from '@/services/kommoAuthService'
+import ClickUpConnectModal, {
+  type ClickUpPrefill,
+} from '@/components/Integrations/ClickUpConnectModal'
+import KommoConnectModal, {
+  type KommoPrefill,
+} from '@/components/Integrations/KommoConnectModal'
 import { BrandLogo } from '@/components/canonical/BrandLogo'
 
 // =====================================================
@@ -1040,6 +1057,16 @@ export default function IntegrationsPage() {
 
   const hasFbApp = isFacebookConfigured()
 
+  // ClickUp state
+  const [showClickUpModal, setShowClickUpModal] = useState(false)
+  const [clickupPrefill, setClickUpPrefill] = useState<ClickUpPrefill | null>(null)
+  const [clickupConfigs, setClickUpConfigs] = useState<ClickUpConfig[]>([])
+
+  // Kommo state
+  const [showKommoModal, setShowKommoModal] = useState(false)
+  const [kommoPrefill, setKommoPrefill] = useState<KommoPrefill | null>(null)
+  const [kommoConfigs, setKommoConfigs] = useState<KommoConfig[]>([])
+
   // Google accounts state
   const [googleConnectedAccounts, setGoogleConnectedAccounts] = useState<GoogleAccount[]>([])
   const googleAdsConnected = googleConnectedAccounts.filter((a) => a.platform === 'google_ads').length
@@ -1071,24 +1098,32 @@ export default function IntegrationsPage() {
     fetchGoogleAccounts()
   }, [fetchGoogleAccounts])
 
-  // Handle Google OAuth callback (check URL for code param)
+  // Handle OAuth callback — routes to Google, ClickUp or Kommo based on state/params
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     const code = params.get('code')
     const stateParam = params.get('state')
+    // Kommo sends the user's subdomain via `referer` (e.g. "acme.kommo.com")
+    const referer = params.get('referer')
 
-    if (!code || !stateParam || !user) return
+    if (!code || !user) return
 
-    // Clear the URL params
+    // Peek at state provider, if any, to route
+    let stateObj: { provider?: string; platforms?: unknown; clientId?: string | null } | null = null
+    if (stateParam) {
+      try {
+        stateObj = JSON.parse(atob(stateParam))
+      } catch {
+        // ignore
+      }
+    }
+
+    // Clear the URL params so refresh doesn't re-trigger
     window.history.replaceState({}, '', window.location.pathname)
 
-    const handleCallback = async () => {
+    const runGoogle = async () => {
       try {
-        const state = JSON.parse(atob(stateParam))
         const tokens = await googleAuthService.exchangeCodeForTokens(code)
-
-        // For each platform in state, we need to discover accounts
-        // For now, create a placeholder account that will be populated on first sync
         const platformNames: Record<string, string> = {
           google_ads: 'Google Ads',
           ga4: 'Google Analytics 4',
@@ -1096,20 +1131,18 @@ export default function IntegrationsPage() {
           youtube: 'YouTube',
           gmb: 'Google Meu Negócio',
         }
-
-        for (const platform of (state.platforms as GooglePlatform[])) {
+        const platforms = (stateObj?.platforms as GooglePlatform[]) || []
+        for (const platform of platforms) {
           const accountName = platformNames[platform] || platform
-
           await googleAccountsService.connectAccount(
             user.id,
-            state.clientId || activeClient?.client_id || null,
+            stateObj?.clientId || activeClient?.client_id || null,
             platform,
             `pending_${platform}_${Date.now()}`,
             `${accountName} (${user.email || 'conta conectada'})`,
             tokens,
           )
         }
-
         toast.success('Google conectado com sucesso! Configure a conta na seção abaixo.')
         await fetchGoogleAccounts()
       } catch (err) {
@@ -1118,7 +1151,59 @@ export default function IntegrationsPage() {
       }
     }
 
-    handleCallback()
+    const runClickUp = async () => {
+      try {
+        const r = await clickupAuthService.exchangeCodeForToken(code)
+        if (r.teams.length === 0) {
+          toast.error('Nenhum workspace ClickUp encontrado para esta conta.')
+          return
+        }
+        setClickUpPrefill({
+          access_token: r.access_token,
+          teams: r.teams,
+          user: r.user,
+        })
+        setShowClickUpModal(true)
+      } catch (err) {
+        console.error('ClickUp OAuth callback error:', err)
+        toast.error(err instanceof Error ? err.message : 'Erro ao conectar ClickUp.')
+      }
+    }
+
+    const runKommo = async () => {
+      try {
+        // Kommo attaches the user's subdomain via ?referer=foo.kommo.com
+        const subdomain = normalizeSubdomain(referer || '')
+        if (!subdomain) {
+          toast.error('Kommo não devolveu o subdomínio. Tente conectar novamente.')
+          return
+        }
+        const r = await kommoAuthService.exchangeCodeForToken({ code, subdomain })
+        setKommoPrefill({
+          subdomain: r.subdomain,
+          accessToken: r.access_token,
+          refreshToken: r.refresh_token,
+          expiresIn: r.expires_in,
+          account: r.account,
+          pipelines: r.pipelines,
+        })
+        setShowKommoModal(true)
+      } catch (err) {
+        console.error('Kommo OAuth callback error:', err)
+        toast.error(err instanceof Error ? err.message : 'Erro ao conectar Kommo.')
+      }
+    }
+
+    // Route: Kommo uniquely ships a `referer` param; ClickUp sets provider in state;
+    // Google has `platforms` in state.
+    if (referer || stateObj?.provider === 'kommo') {
+      void runKommo()
+    } else if (stateObj?.provider === 'clickup') {
+      void runClickUp()
+    } else if (stateObj?.platforms) {
+      void runGoogle()
+    }
+    // else: unknown / stale callback — silently ignore
   }, [user])
 
   // Fetch accounts (filtered by active client when available)
@@ -1184,6 +1269,77 @@ export default function IntegrationsPage() {
     }
 
     await fetchAccounts()
+  }
+
+  // Fetch ClickUp + Kommo configs (scoped to active client when available)
+  const fetchClickUpConfigs = useCallback(async () => {
+    if (!user) return
+    try {
+      const data = activeClient?.client_id
+        ? await clickupConfigsService.listByClient(activeClient.client_id)
+        : await clickupConfigsService.list(user.id)
+      setClickUpConfigs(data)
+    } catch (err) {
+      console.error('Error fetching ClickUp configs:', err)
+    }
+  }, [user, activeClient?.client_id])
+
+  const fetchKommoConfigs = useCallback(async () => {
+    if (!user) return
+    try {
+      const data = activeClient?.client_id
+        ? await kommoConfigsService.listByClient(activeClient.client_id)
+        : await kommoConfigsService.list(user.id)
+      setKommoConfigs(data)
+    } catch (err) {
+      console.error('Error fetching Kommo configs:', err)
+    }
+  }, [user, activeClient?.client_id])
+
+  useEffect(() => {
+    fetchClickUpConfigs()
+    fetchKommoConfigs()
+  }, [fetchClickUpConfigs, fetchKommoConfigs])
+
+  // ClickUp connect save
+  const handleClickUpSave = async (data: {
+    apiToken: string
+    teamId: string
+    teamName: string
+    via: 'oauth' | 'api_key'
+  }) => {
+    if (!user) return
+    await clickupConfigsService.save({
+      userId: user.id,
+      clientId: activeClient?.client_id || null,
+      apiToken: data.apiToken,
+      teamId: data.teamId,
+      teamName: data.teamName,
+    })
+    toast.success(`ClickUp conectado: ${data.teamName}`)
+    setClickUpPrefill(null)
+    await fetchClickUpConfigs()
+  }
+
+  // Kommo connect save
+  const handleKommoSave = async (data: {
+    apiToken: string
+    subdomain: string
+    pipelineIds: string[]
+    via: 'oauth' | 'token'
+    refreshToken?: string
+  }) => {
+    if (!user) return
+    await kommoConfigsService.save({
+      userId: user.id,
+      clientId: activeClient?.client_id || null,
+      apiToken: data.apiToken,
+      subdomain: data.subdomain,
+      pipelineIds: data.pipelineIds,
+    })
+    toast.success(`Kommo conectado: ${data.subdomain}.kommo.com`)
+    setKommoPrefill(null)
+    await fetchKommoConfigs()
   }
 
   // Manual connect
@@ -1376,9 +1532,12 @@ export default function IntegrationsPage() {
       name: 'Kommo CRM',
       desc: 'Leads, Pipeline & Vendas',
       bgLight: 'bg-sky-50',
-      connected: 0,
+      connected: kommoConfigs.filter((c) => c.status === 'active').length,
       available: true,
-      onConnect: () => setShowManualModal(true),
+      onConnect: () => {
+        setKommoPrefill(null)
+        setShowKommoModal(true)
+      },
       features: ['Leads', 'Pipeline', 'Conversão', 'Vendedores'],
     },
     {
@@ -1398,9 +1557,12 @@ export default function IntegrationsPage() {
       name: 'ClickUp',
       desc: 'Projetos, Tarefas & Tempo',
       bgLight: 'bg-violet-50',
-      connected: 0,
+      connected: clickupConfigs.filter((c) => c.status === 'active').length,
       available: true,
-      onConnect: () => setShowManualModal(true),
+      onConnect: () => {
+        setClickUpPrefill(null)
+        setShowClickUpModal(true)
+      },
       features: ['Tarefas', 'Sprints', 'Goals', 'Time Tracking'],
     },
     {
@@ -1680,6 +1842,24 @@ export default function IntegrationsPage() {
         open={showManualModal}
         onClose={() => setShowManualModal(false)}
         onConnect={handleManualConnect}
+      />
+      <ClickUpConnectModal
+        open={showClickUpModal}
+        onClose={() => {
+          setShowClickUpModal(false)
+          setClickUpPrefill(null)
+        }}
+        prefill={clickupPrefill}
+        onSave={handleClickUpSave}
+      />
+      <KommoConnectModal
+        open={showKommoModal}
+        onClose={() => {
+          setShowKommoModal(false)
+          setKommoPrefill(null)
+        }}
+        prefill={kommoPrefill}
+        onSave={handleKommoSave}
       />
     </div>
   )
