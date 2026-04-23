@@ -1,208 +1,112 @@
 {
-  "captured_at": "2026-04-08T03:15:00Z",
+  "captured_at": "2026-04-23T10:30:00Z",
   "period": {
     "from": "2026-03-01",
     "to": "2026-03-31",
-    "label": "Março 2026"
+    "label": "Março 2026 (último mês fechado)"
   },
   "clients": {
-    "escola-pequeno-aprendiz": {
-      "client_slug": "escola-pequeno-aprendiz",
-      "client_name": "Escola Pequeno Aprendiz",
+    "isaac-newton": {
+      "client_slug": "isaac-newton",
+      "client_name": "Escola Isaac Newton Vila",
       "period": {
         "from": "2026-03-01",
         "to": "2026-03-31",
-        "label": "Março 2026"
+        "label": "Março 2026 (último mês fechado)"
       },
       "platforms": {
         "meta_ads": {
           "platform": "meta_ads",
-          "account_id": "act_665886981393269",
-          "account_name": "[CA] Escola Pequeno Aprendiz",
+          "account_id": "act_3482049598727995",
+          "account_name": "CA01 - Escola Isaac Newton Vila",
           "currency": "BRL",
           "timezone": "America/Sao_Paulo",
           "connected": true,
-          "last_synced_at": "2026-04-08T03:15:00Z",
+          "last_synced_at": "2026-04-23T10:30:00Z",
           "summary": {
-            "impressions": 306243,
-            "clicks": 1083,
-            "spend": 1656.01,
-            "conversions": 42,
+            "impressions": 56183,
+            "clicks": 659,
+            "spend": 1007.73,
+            "conversions": 87,
             "conversion_value": 0,
-            "ctr": 0.00354,
+            "ctr": 0.011699999999999999,
             "cpc": 1.53,
-            "cpm": 5.41,
-            "cost_per_conversion": 39.43,
+            "cpm": 17.94,
+            "cost_per_conversion": 11.583103448275862,
             "roas": 0,
-            "reach": 161886,
-            "frequency": 1.89,
-            "active_campaigns": 4,
-            "total_campaigns": 4
-          },
-          "campaigns": [
-            {
-              "id": "cmp-epa-1",
-              "name": "CA1 - Matrículas 2026 - Leads",
-              "status": "enabled",
-              "status_raw": "1",
-              "platform": "meta_ads",
-              "campaign_type": "LEAD_GENERATION",
-              "metrics": {
-                "impressions": 166891,
-                "clicks": 171,
-                "spend": 202.11,
-                "conversions": 8,
-                "conversion_value": 0,
-                "ctr": 0.00102,
-                "cpc": 1.18,
-                "cpm": 1.21,
-                "cost_per_conversion": 25.26,
-                "roas": 0
-              }
-            },
-            {
-              "id": "cmp-epa-2",
-              "name": "CA2 - Matrículas 2026 - Conversão",
-              "status": "enabled",
-              "status_raw": "1",
-              "platform": "meta_ads",
-              "campaign_type": "CONVERSIONS",
-              "metrics": {
-                "impressions": 33029,
-                "clicks": 101,
-                "spend": 154.65,
-                "conversions": 5,
-                "conversion_value": 0,
-                "ctr": 0.00306,
-                "cpc": 1.53,
-                "cpm": 4.68,
-                "cost_per_conversion": 30.93,
-                "roas": 0
-              }
-            },
-            {
-              "id": "cmp-epa-3",
-              "name": "CA3 - Open House Maio - Alcance",
-              "status": "enabled",
-              "status_raw": "1",
-              "platform": "meta_ads",
-              "campaign_type": "REACH",
-              "metrics": {
-                "impressions": 77505,
-                "clicks": 614,
-                "spend": 905.28,
-                "conversions": 22,
-                "conversion_value": 0,
-                "ctr": 0.00792,
-                "cpc": 1.47,
-                "cpm": 11.68,
-                "cost_per_conversion": 41.15,
-                "roas": 0
-              }
-            },
-            {
-              "id": "cmp-epa-4",
-              "name": "CA4 - Remarketing Leads Matrículas",
-              "status": "enabled",
-              "status_raw": "1",
-              "platform": "meta_ads",
-              "campaign_type": "CONVERSIONS",
-              "metrics": {
-                "impressions": 28818,
-                "clicks": 197,
-                "spend": 393.97,
-                "conversions": 7,
-                "conversion_value": 0,
-                "ctr": 0.00684,
-                "cpc": 2,
-                "cpm": 13.67,
-                "cost_per_conversion": 56.28,
-                "roas": 0
-              }
-            }
-          ],
-          "daily": []
-        },
-        "google_ads": {
-          "platform": "google_ads",
-          "account_id": "2302878546",
-          "account_name": "Escola Pequeno Aprendiz",
-          "currency": "BRL",
-          "timezone": "America/Sao_Paulo",
-          "connected": true,
-          "last_synced_at": "2026-04-08T03:15:00Z",
-          "summary": {
-            "impressions": 36,
-            "clicks": 0,
-            "spend": 0.51,
-            "conversions": 0,
-            "conversion_value": 0,
-            "ctr": 0,
-            "cpc": 0,
-            "cpm": 14.17,
-            "cost_per_conversion": 0,
-            "roas": 0,
+            "reach": 27028,
+            "frequency": 2.08,
             "active_campaigns": 2,
-            "total_campaigns": 16
+            "total_campaigns": 2
           },
-          "campaigns": [
-            {
-              "id": "23433466949",
-              "name": "CP5 - [PMAX] [LEAD] [WPP] [LP PA] - 06/01/26",
-              "status": "enabled",
-              "status_raw": "ENABLED",
-              "platform": "google_ads",
-              "campaign_type": "PERFORMANCE_MAX",
-              "metrics": {
-                "impressions": 31,
-                "clicks": 0,
-                "spend": 0.51,
-                "conversions": 0,
-                "conversion_value": 0,
-                "ctr": 0,
-                "cpc": 0,
-                "cpm": 16.34,
-                "cost_per_conversion": 0,
-                "roas": 0
-              }
-            },
-            {
-              "id": "23437948534",
-              "name": "CP4 - [SHCH] [LEAD] [WPP] [LP PA] - 06/01/26",
-              "status": "enabled",
-              "status_raw": "ENABLED",
-              "platform": "google_ads",
-              "campaign_type": "SEARCH",
-              "metrics": {
-                "impressions": 5,
-                "clicks": 0,
-                "spend": 0,
-                "conversions": 0,
-                "conversion_value": 0,
-                "ctr": 0,
-                "cpc": 0,
-                "cpm": 0,
-                "cost_per_conversion": 0,
-                "roas": 0
-              }
-            }
-          ],
+          "campaigns": [],
           "daily": []
         }
       },
       "blended": {
-        "total_spend": 1656.52,
-        "total_impressions": 306279,
-        "total_clicks": 1083,
-        "total_conversions": 42,
-        "total_reach": 161886,
-        "avg_ctr": 0.00354,
+        "total_spend": 1007.73,
+        "total_impressions": 56183,
+        "total_clicks": 659,
+        "total_conversions": 87,
+        "total_reach": 27028,
+        "avg_ctr": 0.011699999999999999,
         "avg_cpc": 1.53,
-        "avg_cpm": 5.41,
-        "cost_per_conversion": 39.44,
+        "avg_cpm": 17.94,
+        "cost_per_conversion": 11.583103448275862,
         "roas": 0
       },
-      "last_synced_at": "2026-04-08T03:15:00Z"
+      "last_synced_at": "2026-04-23T10:30:00Z"
+    },
+    "homero-reis": {
+      "client_slug": "homero-reis",
+      "client_name": "Homero Reis",
+      "period": {
+        "from": "2026-03-01",
+        "to": "2026-03-31",
+        "label": "Março 2026 (último mês fechado)"
+      },
+      "platforms": {
+        "meta_ads": {
+          "platform": "meta_ads",
+          "account_id": "act_720926888081448",
+          "account_name": "[CA] HR-RIC Oficial",
+          "currency": "BRL",
+          "timezone": "America/Sao_Paulo",
+          "connected": true,
+          "last_synced_at": "2026-04-23T10:30:00Z",
+          "summary": {
+            "impressions": 12630,
+            "clicks": 660,
+            "spend": 199.52,
+            "conversions": 1,
+            "conversion_value": 0,
+            "ctr": 0.052300000000000006,
+            "cpc": 0.3,
+            "cpm": 15.8,
+            "cost_per_conversion": 199.52,
+            "roas": 0,
+            "reach": 11360,
+            "frequency": 1.11,
+            "active_campaigns": 1,
+            "total_campaigns": 1
+          },
+          "campaigns": [],
+          "daily": []
+        }
+      },
+      "blended": {
+        "total_spend": 199.52,
+        "total_impressions": 12630,
+        "total_clicks": 660,
+        "total_conversions": 1,
+        "total_reach": 11360,
+        "avg_ctr": 0.052300000000000006,
+        "avg_cpc": 0.3,
+        "avg_cpm": 15.8,
+        "cost_per_conversion": 199.52,
+        "roas": 0
+      },
+      "last_synced_at": "2026-04-23T10:30:00Z"
     },
     "dr-euvaldo-tomaz": {
       "client_slug": "dr-euvaldo-tomaz",
@@ -210,7 +114,7 @@
       "period": {
         "from": "2026-03-01",
         "to": "2026-03-31",
-        "label": "Março 2026"
+        "label": "Março 2026 (último mês fechado)"
       },
       "platforms": {
         "meta_ads": {
@@ -220,65 +124,24 @@
           "currency": "BRL",
           "timezone": "America/Sao_Paulo",
           "connected": true,
-          "last_synced_at": "2026-04-08T03:15:00Z",
+          "last_synced_at": "2026-04-23T10:30:00Z",
           "summary": {
             "impressions": 34244,
             "clicks": 299,
             "spend": 811.19,
-            "conversions": 18,
+            "conversions": 38,
             "conversion_value": 0,
-            "ctr": 0.00873,
+            "ctr": 0.0087,
             "cpc": 2.71,
             "cpm": 23.69,
-            "cost_per_conversion": 45.07,
+            "cost_per_conversion": 21.347105263157896,
             "roas": 0,
             "reach": 18815,
             "frequency": 1.82,
             "active_campaigns": 2,
             "total_campaigns": 2
           },
-          "campaigns": [
-            {
-              "id": "cmp-det-1",
-              "name": "Oftalmologia - Catarata e Cirurgia",
-              "status": "enabled",
-              "status_raw": "1",
-              "platform": "meta_ads",
-              "campaign_type": "LEAD_GENERATION",
-              "metrics": {
-                "impressions": 21939,
-                "clicks": 213,
-                "spend": 580.03,
-                "conversions": 12,
-                "conversion_value": 0,
-                "ctr": 0.00971,
-                "cpc": 2.72,
-                "cpm": 26.44,
-                "cost_per_conversion": 48.34,
-                "roas": 0
-              }
-            },
-            {
-              "id": "cmp-det-2",
-              "name": "Consultas Eletivas",
-              "status": "enabled",
-              "status_raw": "1",
-              "platform": "meta_ads",
-              "campaign_type": "CONVERSIONS",
-              "metrics": {
-                "impressions": 12305,
-                "clicks": 86,
-                "spend": 231.16,
-                "conversions": 6,
-                "conversion_value": 0,
-                "ctr": 0.00699,
-                "cpc": 2.69,
-                "cpm": 18.79,
-                "cost_per_conversion": 38.53,
-                "roas": 0
-              }
-            }
-          ],
+          "campaigns": [],
           "daily": []
         }
       },
@@ -286,15 +149,168 @@
         "total_spend": 811.19,
         "total_impressions": 34244,
         "total_clicks": 299,
-        "total_conversions": 18,
+        "total_conversions": 38,
         "total_reach": 18815,
-        "avg_ctr": 0.00873,
+        "avg_ctr": 0.0087,
         "avg_cpc": 2.71,
         "avg_cpm": 23.69,
-        "cost_per_conversion": 45.07,
+        "cost_per_conversion": 21.347105263157896,
         "roas": 0
       },
-      "last_synced_at": "2026-04-08T03:15:00Z"
+      "last_synced_at": "2026-04-23T10:30:00Z"
+    },
+    "escola-pequeno-aprendiz": {
+      "client_slug": "escola-pequeno-aprendiz",
+      "client_name": "Escola Pequeno Aprendiz",
+      "period": {
+        "from": "2026-03-01",
+        "to": "2026-03-31",
+        "label": "Março 2026 (último mês fechado)"
+      },
+      "platforms": {
+        "meta_ads": {
+          "platform": "meta_ads",
+          "account_id": "act_665886981393269",
+          "account_name": "[CA] Escola Pequeno Aprendiz",
+          "currency": "BRL",
+          "timezone": "America/Sao_Paulo",
+          "connected": true,
+          "last_synced_at": "2026-04-23T10:30:00Z",
+          "summary": {
+            "impressions": 306243,
+            "clicks": 1083,
+            "spend": 1656.01,
+            "conversions": 124,
+            "conversion_value": 0,
+            "ctr": 0.0034999999999999996,
+            "cpc": 1.53,
+            "cpm": 5.41,
+            "cost_per_conversion": 13.35491935483871,
+            "roas": 0,
+            "reach": 161886,
+            "frequency": 1.89,
+            "active_campaigns": 4,
+            "total_campaigns": 4
+          },
+          "campaigns": [],
+          "daily": []
+        }
+      },
+      "blended": {
+        "total_spend": 1656.01,
+        "total_impressions": 306243,
+        "total_clicks": 1083,
+        "total_conversions": 124,
+        "total_reach": 161886,
+        "avg_ctr": 0.0034999999999999996,
+        "avg_cpc": 1.53,
+        "avg_cpm": 5.41,
+        "cost_per_conversion": 13.35491935483871,
+        "roas": 0
+      },
+      "last_synced_at": "2026-04-23T10:30:00Z"
+    },
+    "dra-luciana": {
+      "client_slug": "dra-luciana",
+      "client_name": "Dra. Luciana",
+      "period": {
+        "from": "2026-03-01",
+        "to": "2026-03-31",
+        "label": "Março 2026 (último mês fechado)"
+      },
+      "platforms": {
+        "meta_ads": {
+          "platform": "meta_ads",
+          "account_id": "act_726604442982185",
+          "account_name": "[CA] 01 Dra. Luciana Botelho",
+          "currency": "BRL",
+          "timezone": "America/Sao_Paulo",
+          "connected": true,
+          "last_synced_at": "2026-04-23T10:30:00Z",
+          "summary": {
+            "impressions": 25485,
+            "clicks": 746,
+            "spend": 728.79,
+            "conversions": 433,
+            "conversion_value": 0,
+            "ctr": 0.029300000000000003,
+            "cpc": 0.98,
+            "cpm": 28.6,
+            "cost_per_conversion": 1.6831177829099306,
+            "roas": 0,
+            "reach": 15417,
+            "frequency": 1.65,
+            "active_campaigns": 1,
+            "total_campaigns": 1
+          },
+          "campaigns": [],
+          "daily": []
+        }
+      },
+      "blended": {
+        "total_spend": 728.79,
+        "total_impressions": 25485,
+        "total_clicks": 746,
+        "total_conversions": 433,
+        "total_reach": 15417,
+        "avg_ctr": 0.029300000000000003,
+        "avg_cpc": 0.98,
+        "avg_cpm": 28.6,
+        "cost_per_conversion": 1.6831177829099306,
+        "roas": 0
+      },
+      "last_synced_at": "2026-04-23T10:30:00Z"
+    },
+    "ze-umberto": {
+      "client_slug": "ze-umberto",
+      "client_name": "Zé Umberto",
+      "period": {
+        "from": "2026-03-01",
+        "to": "2026-03-31",
+        "label": "Março 2026 (último mês fechado)"
+      },
+      "platforms": {
+        "meta_ads": {
+          "platform": "meta_ads",
+          "account_id": "act_1004143714622752",
+          "account_name": "CA Z1 - CARTÃO",
+          "currency": "BRL",
+          "timezone": "America/Sao_Paulo",
+          "connected": true,
+          "last_synced_at": "2026-04-23T10:30:00Z",
+          "summary": {
+            "impressions": 1739,
+            "clicks": 36,
+            "spend": 72.45,
+            "conversions": 1,
+            "conversion_value": 0,
+            "ctr": 0.0207,
+            "cpc": 2.01,
+            "cpm": 41.66,
+            "cost_per_conversion": 72.45,
+            "roas": 0,
+            "reach": 1580,
+            "frequency": 1.1,
+            "active_campaigns": 1,
+            "total_campaigns": 1
+          },
+          "campaigns": [],
+          "daily": []
+        }
+      },
+      "blended": {
+        "total_spend": 72.45,
+        "total_impressions": 1739,
+        "total_clicks": 36,
+        "total_conversions": 1,
+        "total_reach": 1580,
+        "avg_ctr": 0.0207,
+        "avg_cpc": 2.01,
+        "avg_cpm": 41.66,
+        "cost_per_conversion": 72.45,
+        "roas": 0
+      },
+      "last_synced_at": "2026-04-23T10:30:00Z"
     }
   }
 }

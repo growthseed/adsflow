@@ -80,6 +80,7 @@ import KommoConnectModal, {
   type KommoPrefill,
 } from '@/components/Integrations/KommoConnectModal'
 import { BrandLogo } from '@/components/canonical/BrandLogo'
+import { ClientIntegrationModal, type ProviderKey } from '@/pages/Integrations/ClientIntegrationModal'
 
 // =====================================================
 // META OAUTH CONNECT MODAL
@@ -1052,6 +1053,7 @@ export default function IntegrationsPage() {
   const [loading, setLoading] = useState(true)
   const [showOAuthModal, setShowOAuthModal] = useState(false)
   const [showManualModal, setShowManualModal] = useState(false)
+  const [providerModal, setProviderModal] = useState<ProviderKey | null>(null)
   const [syncingAccounts, setSyncingAccounts] = useState<Set<string>>(new Set())
   const [syncProgressMap, setSyncProgressMap] = useState<Record<string, SyncProgress>>({})
 
@@ -1548,7 +1550,7 @@ export default function IntegrationsPage() {
       bgLight: 'bg-[var(--color-brand-50)]',
       connected: 0,
       available: true,
-      onConnect: () => setShowManualModal(true),
+      onConnect: () => setProviderModal('linkedin'),
       features: ['Página', 'Seguidores', 'Posts', 'Engajamento'],
     },
     {
@@ -1573,7 +1575,7 @@ export default function IntegrationsPage() {
       bgLight: 'bg-green-50',
       connected: 0,
       available: true,
-      onConnect: () => setShowManualModal(true),
+      onConnect: () => setProviderModal('shopify'),
       features: ['Pedidos', 'Receita', 'Produtos', 'Clientes'],
     },
     {
@@ -1584,7 +1586,7 @@ export default function IntegrationsPage() {
       bgLight: 'bg-purple-50',
       connected: 0,
       available: true,
-      onConnect: () => setShowManualModal(true),
+      onConnect: () => setProviderModal('woocommerce'),
       features: ['Pedidos', 'Receita', 'Produtos', 'Cupons'],
     },
     {
@@ -1595,7 +1597,7 @@ export default function IntegrationsPage() {
       bgLight: 'bg-yellow-50',
       connected: 0,
       available: true,
-      onConnect: () => setShowManualModal(true),
+      onConnect: () => setProviderModal('mailchimp'),
       features: ['Listas', 'Campanhas', 'Aberturas', 'Cliques'],
     },
     {
@@ -1606,7 +1608,7 @@ export default function IntegrationsPage() {
       bgLight: 'bg-emerald-50',
       connected: 0,
       available: true,
-      onConnect: () => setShowManualModal(true),
+      onConnect: () => setProviderModal('brevo'),
       features: ['Campanhas', 'Contatos', 'Automações', 'SMS'],
     },
     {
@@ -1617,7 +1619,7 @@ export default function IntegrationsPage() {
       bgLight: 'bg-orange-50',
       connected: 0,
       available: true,
-      onConnect: () => setShowManualModal(true),
+      onConnect: () => setProviderModal('hotmart'),
       features: ['Vendas', 'Afiliados', 'Comissões', 'Produtos'],
     },
     {
@@ -1842,6 +1844,17 @@ export default function IntegrationsPage() {
         open={showManualModal}
         onClose={() => setShowManualModal(false)}
         onConnect={handleManualConnect}
+      />
+      <ClientIntegrationModal
+        open={providerModal !== null}
+        provider={providerModal}
+        onClose={() => setProviderModal(null)}
+        onSaved={() => {
+          toast.success('Integração conectada! Rode "Sincronizar" pra puxar os dados.')
+          void fetchAccounts()
+          void fetchClickUpConfigs()
+          void fetchKommoConfigs()
+        }}
       />
       <ClickUpConnectModal
         open={showClickUpModal}

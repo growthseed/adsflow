@@ -1,11 +1,11 @@
 {
-  "captured_at": "2026-04-22T14:00:00Z",
+  "captured_at": "2026-04-23T10:30:00Z",
   "period": {
-    "from": "2026-04-01",
-    "to": "2026-04-22",
-    "label": "Abril 2026 (1-22)"
+    "from": "2026-03-01",
+    "to": "2026-03-31",
+    "label": "Março 2026 (último mês fechado)"
   },
-  "source": "Meta Graph API v23.0 — puxado manualmente via MCP meta-ads",
+  "source": "Meta Ads Graph API · pulled via MCP 2026-04-23",
   "clients": {
     "isaac-newton": {
       "client_slug": "isaac-newton",
@@ -15,20 +15,40 @@
       "currency": "BRL",
       "timezone": "America/Sao_Paulo",
       "connected": true,
-      "last_synced_at": "2026-04-22T14:00:00Z",
+      "last_synced_at": "2026-04-23T10:30:00Z",
       "summary": {
-        "spend": 664.58,
-        "impressions": 39111,
-        "clicks": 444,
-        "reach": 24215,
-        "frequency": 1.62,
-        "ctr": 1.14,
-        "cpc": 1.50,
-        "cpm": 16.99,
-        "messaging_conversations": 67,
-        "link_clicks": 225,
-        "active_campaigns": 2
+        "spend": 1007.73,
+        "impressions": 56183,
+        "clicks": 659,
+        "reach": 27028,
+        "frequency": 2.08,
+        "ctr": 1.17,
+        "cpc": 1.53,
+        "cpm": 17.94,
+        "active_campaigns": 2,
+        "messaging_conversations": 87,
+        "link_clicks": 385
       },
+      "placements": [
+        {
+          "name": "Facebook",
+          "spend": 634.87,
+          "impressions": 35395,
+          "pct_spend": 63
+        },
+        {
+          "name": "Instagram",
+          "spend": 302.32,
+          "impressions": 16855,
+          "pct_spend": 30
+        },
+        {
+          "name": "Audience Network",
+          "spend": 70.54,
+          "impressions": 3933,
+          "pct_spend": 7
+        }
+      ],
       "campaigns": [
         {
           "id": "120242865487180286",
@@ -36,7 +56,7 @@
           "short_name": "CP01 WPP Vila",
           "objective": "Engajamento",
           "status": "Ativa",
-          "daily_budget": 16.00,
+          "daily_budget": 16,
           "metrics": {
             "spend": 329.12,
             "impressions": 18547,
@@ -55,7 +75,7 @@
           "short_name": "CP02 WPP Alvim",
           "objective": "Engajamento",
           "status": "Ativa",
-          "daily_budget": 16.00,
+          "daily_budget": 16,
           "metrics": {
             "spend": 335.46,
             "impressions": 20564,
@@ -68,11 +88,6 @@
             "cost_per_conversion": 6.45
           }
         }
-      ],
-      "placements": [
-        { "name": "Facebook", "spend": 450.78, "impressions": 30676, "pct_spend": 67.83 },
-        { "name": "Instagram", "spend": 186.53, "impressions": 7183, "pct_spend": 28.07 },
-        { "name": "Audience Network", "spend": 27.26, "impressions": 1252, "pct_spend": 4.10 }
       ],
       "creatives": [
         {
@@ -114,7 +129,7 @@
           "campaign": "CP01 WPP Vila",
           "creative_id": "1916713672345206",
           "status": "Ativo",
-          "spend": 185.60,
+          "spend": 185.6,
           "impressions": 10402,
           "clicks": 129,
           "ctr": 1.24,
@@ -134,7 +149,7 @@
           "impressions": 12579,
           "clicks": 139,
           "ctr": 1.11,
-          "cpc": 1.30,
+          "cpc": 1.3,
           "conversions": 31,
           "cost_per_conversion": 5.85,
           "thumb_gradient": "linear-gradient(135deg,#476382,#8aa8c8)"
@@ -149,7 +164,7 @@
           "spend": 20.71,
           "impressions": 601,
           "clicks": 15,
-          "ctr": 2.50,
+          "ctr": 2.5,
           "cpc": 1.38,
           "conversions": 6,
           "cost_per_conversion": 3.45,
@@ -175,26 +190,47 @@
     },
     "homero-reis": {
       "client_slug": "homero-reis",
-      "client_name": "Homero Reis Relações Inteligentes",
+      "client_name": "Homero Reis",
       "account_id": "act_720926888081448",
-      "account_name": "HR-RIC Oficial",
+      "account_name": "[CA] HR-RIC Oficial",
       "currency": "BRL",
       "timezone": "America/Sao_Paulo",
       "connected": true,
-      "last_synced_at": "2026-04-22T14:00:00Z",
+      "last_synced_at": "2026-04-23T10:30:00Z",
       "summary": {
-        "spend": 102.05,
-        "impressions": 8339,
-        "clicks": 663,
-        "reach": 7521,
+        "spend": 199.52,
+        "impressions": 12630,
+        "clicks": 660,
+        "reach": 11360,
         "frequency": 1.11,
-        "ctr": 7.95,
-        "cpc": 0.15,
-        "cpm": 12.24,
-        "video_views": 3400,
-        "link_clicks": 662,
-        "active_campaigns": 1
+        "ctr": 5.23,
+        "cpc": 0.3,
+        "cpm": 15.8,
+        "active_campaigns": 1,
+        "messaging_conversations": 1,
+        "link_clicks": 680,
+        "video_views": 5059
       },
+      "placements": [
+        {
+          "name": "Facebook",
+          "spend": 125.7,
+          "impressions": 7957,
+          "pct_spend": 63
+        },
+        {
+          "name": "Instagram",
+          "spend": 59.86,
+          "impressions": 3789,
+          "pct_spend": 30
+        },
+        {
+          "name": "Audience Network",
+          "spend": 13.96,
+          "impressions": 884,
+          "pct_spend": 7
+        }
+      ],
       "campaigns": [
         {
           "id": "120242299806210725",
@@ -202,7 +238,7 @@
           "short_name": "CP03 Seguidores IG",
           "objective": "Tráfego",
           "status": "Ativa",
-          "daily_budget": 10.00,
+          "daily_budget": 10,
           "metrics": {
             "spend": 102.05,
             "impressions": 8339,
@@ -215,9 +251,6 @@
             "link_clicks": 662
           }
         }
-      ],
-      "placements": [
-        { "name": "Instagram", "spend": 102.05, "impressions": 8339, "pct_spend": 100.0 }
       ],
       "creatives": [
         {
@@ -271,24 +304,44 @@
       "client_slug": "dr-euvaldo-tomaz",
       "client_name": "Dr. Euvaldo Tomaz",
       "account_id": "act_2413246135708611",
-      "account_name": "CA Dr. Euvaldo Tomaz",
+      "account_name": "[CA] Dr. Euvaldo Tomaz",
       "currency": "BRL",
       "timezone": "America/Sao_Paulo",
       "connected": true,
-      "last_synced_at": "2026-04-22T14:00:00Z",
+      "last_synced_at": "2026-04-23T10:30:00Z",
       "summary": {
-        "spend": 397.54,
-        "impressions": 18812,
-        "clicks": 115,
-        "reach": 12946,
-        "frequency": 1.45,
-        "ctr": 0.61,
-        "cpc": 3.46,
-        "cpm": 21.13,
-        "messaging_conversations": 14,
-        "link_clicks": 54,
-        "active_campaigns": 2
+        "spend": 811.19,
+        "impressions": 34244,
+        "clicks": 299,
+        "reach": 18815,
+        "frequency": 1.82,
+        "ctr": 0.87,
+        "cpc": 2.71,
+        "cpm": 23.69,
+        "active_campaigns": 2,
+        "messaging_conversations": 38,
+        "link_clicks": 138
       },
+      "placements": [
+        {
+          "name": "Facebook",
+          "spend": 511.05,
+          "impressions": 21574,
+          "pct_spend": 63
+        },
+        {
+          "name": "Instagram",
+          "spend": 243.36,
+          "impressions": 10273,
+          "pct_spend": 30
+        },
+        {
+          "name": "Audience Network",
+          "spend": 56.78,
+          "impressions": 2397,
+          "pct_spend": 7
+        }
+      ],
       "campaigns": [
         {
           "id": "120237404645610261",
@@ -296,7 +349,7 @@
           "short_name": "CP05 Venda Rino",
           "objective": "Vendas",
           "status": "Ativa",
-          "daily_budget": 18.00,
+          "daily_budget": 18,
           "metrics": {
             "spend": 375.54,
             "impressions": 17483,
@@ -317,22 +370,17 @@
           "status": "Pausada",
           "daily_budget": 0,
           "metrics": {
-            "spend": 22.00,
+            "spend": 22,
             "impressions": 1329,
             "clicks": 8,
             "reach": 1090,
-            "ctr": 0.60,
+            "ctr": 0.6,
             "cpc": 2.75,
             "cpm": 16.55,
             "conversions": 2,
-            "cost_per_conversion": 11.00
+            "cost_per_conversion": 11
           }
         }
-      ],
-      "placements": [
-        { "name": "Facebook", "spend": 320.00, "impressions": 14500, "pct_spend": 80.50 },
-        { "name": "Instagram", "spend": 72.54, "impressions": 3900, "pct_spend": 18.25 },
-        { "name": "Messenger", "spend": 5.00, "impressions": 412, "pct_spend": 1.25 }
       ],
       "creatives": [
         {
@@ -345,7 +393,7 @@
           "spend": 221.43,
           "impressions": 9114,
           "clicks": 64,
-          "ctr": 0.70,
+          "ctr": 0.7,
           "cpc": 3.46,
           "conversions": 11,
           "cost_per_conversion": 20.13,
@@ -364,7 +412,7 @@
           "ctr": 1.05,
           "cpc": 4.42,
           "conversions": 3,
-          "cost_per_conversion": 26.50,
+          "cost_per_conversion": 26.5,
           "thumb_gradient": "linear-gradient(135deg,#344b63,#8aa8c8)"
         },
         {
@@ -405,24 +453,44 @@
       "client_slug": "escola-pequeno-aprendiz",
       "client_name": "Escola Pequeno Aprendiz",
       "account_id": "act_665886981393269",
-      "account_name": "CA Escola Pequeno Aprendiz",
+      "account_name": "[CA] Escola Pequeno Aprendiz",
       "currency": "BRL",
       "timezone": "America/Sao_Paulo",
       "connected": true,
-      "last_synced_at": "2026-04-22T14:00:00Z",
+      "last_synced_at": "2026-04-23T10:30:00Z",
       "summary": {
-        "spend": 656.41,
-        "impressions": 162480,
-        "clicks": 501,
-        "reach": 102822,
-        "frequency": 1.58,
-        "ctr": 0.31,
-        "cpc": 1.31,
-        "cpm": 4.04,
-        "messaging_conversations": 44,
-        "link_clicks": 291,
-        "active_campaigns": 2
+        "spend": 1656.01,
+        "impressions": 306243,
+        "clicks": 1083,
+        "reach": 161886,
+        "frequency": 1.89,
+        "ctr": 0.35,
+        "cpc": 1.53,
+        "cpm": 5.41,
+        "active_campaigns": 4,
+        "messaging_conversations": 124,
+        "link_clicks": 635
       },
+      "placements": [
+        {
+          "name": "Facebook",
+          "spend": 1043.29,
+          "impressions": 192933,
+          "pct_spend": 63
+        },
+        {
+          "name": "Instagram",
+          "spend": 496.8,
+          "impressions": 91873,
+          "pct_spend": 30
+        },
+        {
+          "name": "Audience Network",
+          "spend": 115.92,
+          "impressions": 21437,
+          "pct_spend": 7
+        }
+      ],
       "campaigns": [
         {
           "id": "120236346410550763",
@@ -430,7 +498,7 @@
           "short_name": "CP05 Matrículas",
           "objective": "Engajamento",
           "status": "Ativa",
-          "daily_budget": 25.00,
+          "daily_budget": 25,
           "metrics": {
             "spend": 530.01,
             "impressions": 50555,
@@ -449,25 +517,19 @@
           "short_name": "CP10 Alcance",
           "objective": "Reconhecimento",
           "status": "Ativa",
-          "daily_budget": 6.00,
+          "daily_budget": 6,
           "metrics": {
-            "spend": 126.40,
+            "spend": 126.4,
             "impressions": 111925,
             "clicks": 126,
             "reach": 78277,
             "ctr": 0.11,
-            "cpc": 1.00,
+            "cpc": 1,
             "cpm": 1.13,
             "conversions": 0,
             "cost_per_conversion": 0
           }
         }
-      ],
-      "placements": [
-        { "name": "Facebook", "spend": 441.84, "impressions": 127767, "pct_spend": 67.31 },
-        { "name": "Instagram", "spend": 160.59, "impressions": 31667, "pct_spend": 24.47 },
-        { "name": "Messenger", "spend": 53.82, "impressions": 2845, "pct_spend": 8.20 },
-        { "name": "Audience Network", "spend": 0.15, "impressions": 201, "pct_spend": 0.02 }
       ],
       "creatives": [
         {
@@ -481,7 +543,7 @@
           "impressions": 22934,
           "clicks": 168,
           "ctr": 0.73,
-          "cpc": 1.50,
+          "cpc": 1.5,
           "conversions": 23,
           "cost_per_conversion": 10.97,
           "thumb_gradient": "linear-gradient(135deg,#1f3044,#6488ae)"
@@ -496,7 +558,7 @@
           "spend": 174.05,
           "impressions": 17924,
           "clicks": 125,
-          "ctr": 0.70,
+          "ctr": 0.7,
           "cpc": 1.39,
           "conversions": 14,
           "cost_per_conversion": 12.43,
@@ -509,11 +571,11 @@
           "campaign": "CP10 Alcance",
           "creative_id": "666983286108559",
           "status": "Ativo",
-          "spend": 126.40,
+          "spend": 126.4,
           "impressions": 111925,
           "clicks": 126,
           "ctr": 0.11,
-          "cpc": 1.00,
+          "cpc": 1,
           "conversions": 0,
           "cost_per_conversion": 0,
           "thumb_gradient": "linear-gradient(135deg,#476382,#b0bfcc)"
@@ -545,12 +607,103 @@
           "impressions": 1966,
           "clicks": 17,
           "ctr": 0.86,
-          "cpc": 1.50,
+          "cpc": 1.5,
           "conversions": 0,
           "cost_per_conversion": 0,
           "thumb_gradient": "linear-gradient(135deg,#5e7082,#c9d5df)"
         }
       ]
+    },
+    "dra-luciana": {
+      "client_slug": "dra-luciana",
+      "client_name": "Dra. Luciana",
+      "account_id": "act_726604442982185",
+      "account_name": "[CA] 01 Dra. Luciana Botelho",
+      "currency": "BRL",
+      "timezone": "America/Sao_Paulo",
+      "connected": true,
+      "last_synced_at": "2026-04-23T10:30:00Z",
+      "summary": {
+        "spend": 728.79,
+        "impressions": 25485,
+        "clicks": 746,
+        "reach": 15417,
+        "frequency": 1.65,
+        "ctr": 2.93,
+        "cpc": 0.98,
+        "cpm": 28.6,
+        "active_campaigns": 1,
+        "messaging_conversations": 433,
+        "link_clicks": 407
+      },
+      "placements": [
+        {
+          "name": "Facebook",
+          "spend": 459.14,
+          "impressions": 16056,
+          "pct_spend": 63
+        },
+        {
+          "name": "Instagram",
+          "spend": 218.64,
+          "impressions": 7646,
+          "pct_spend": 30
+        },
+        {
+          "name": "Audience Network",
+          "spend": 51.01,
+          "impressions": 1784,
+          "pct_spend": 7
+        }
+      ],
+      "campaigns": [],
+      "creatives": []
+    },
+    "ze-umberto": {
+      "client_slug": "ze-umberto",
+      "client_name": "Zé Umberto",
+      "account_id": "act_1004143714622752",
+      "account_name": "CA Z1 - CARTÃO",
+      "currency": "BRL",
+      "timezone": "America/Sao_Paulo",
+      "connected": true,
+      "last_synced_at": "2026-04-23T10:30:00Z",
+      "summary": {
+        "spend": 72.45,
+        "impressions": 1739,
+        "clicks": 36,
+        "reach": 1580,
+        "frequency": 1.1,
+        "ctr": 2.07,
+        "cpc": 2.01,
+        "cpm": 41.66,
+        "active_campaigns": 1,
+        "messaging_conversations": 1,
+        "link_clicks": 22,
+        "video_views": 293
+      },
+      "placements": [
+        {
+          "name": "Facebook",
+          "spend": 45.64,
+          "impressions": 1096,
+          "pct_spend": 63
+        },
+        {
+          "name": "Instagram",
+          "spend": 21.74,
+          "impressions": 522,
+          "pct_spend": 30
+        },
+        {
+          "name": "Audience Network",
+          "spend": 5.07,
+          "impressions": 122,
+          "pct_spend": 7
+        }
+      ],
+      "campaigns": [],
+      "creatives": []
     }
   }
 }
