@@ -13,7 +13,7 @@
 
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 
-import { applyCors, allowMethods } from '../_lib/security'
+import { applyCors, allowMethods } from '../../../api/_lib/security.js'
 
 const META_API_VERSION = process.env.VITE_META_API_VERSION || 'v23.0'
 const META_ACCESS_TOKEN = process.env.META_ACCESS_TOKEN || ''
@@ -35,7 +35,7 @@ interface GraphAdResponse {
   effective_status?: string
 }
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+export async function runMetaPreview(req: VercelRequest, res: VercelResponse) {
   if (!applyCors(req, res)) return
   if (!allowMethods(req, res, ['GET'])) return
 

@@ -15,7 +15,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { createClient } from '@supabase/supabase-js'
 
-import { allowMethods, applyCors, requireUserAuth } from '../_lib/security'
+import { allowMethods, applyCors, requireUserAuth } from '../../../api/_lib/security.js'
 
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL || ''
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || ''
@@ -30,7 +30,7 @@ const DEFAULT_LISTS = [
   'Relatórios enviados',
 ]
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+export async function runClickUpCreateFolder(req: VercelRequest, res: VercelResponse) {
   if (!applyCors(req, res)) return
   if (!allowMethods(req, res, ['POST'])) return
 

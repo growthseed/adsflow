@@ -89,7 +89,7 @@ export default function OnboardingPage() {
       try {
         const { data: session } = await supabase.auth.getSession()
         const token = session.session?.access_token
-        const cuResp = await fetch('/api/clickup/create-folder', {
+        const cuResp = await fetch('/api/integrations?op=clickup-create-folder', {
           method: 'POST',
           headers: {
             'content-type': 'application/json',

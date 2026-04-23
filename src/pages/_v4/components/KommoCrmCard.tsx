@@ -64,7 +64,7 @@ export function KommoCrmCard({ clientSlug }: Props) {
           setNote('Sessão expirada.')
           return
         }
-        const resp = await fetch(`/api/kommo/funnel?client_slug=${encodeURIComponent(clientSlug)}`, {
+        const resp = await fetch(`/api/integrations?op=kommo-funnel&client_slug=${encodeURIComponent(clientSlug)}`, {
           headers: { authorization: `Bearer ${token}` },
         })
         if (resp.status === 501) {

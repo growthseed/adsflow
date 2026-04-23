@@ -37,7 +37,7 @@ export function MetaCreativeModal({ creative, accountId, onClose }: Props) {
     setLive(null)
     setLiveError(null)
     setLiveLoading(true)
-    fetch(`/api/meta-ads/preview?ad_id=${encodeURIComponent(creative.id)}`)
+    fetch(`/api/integrations?op=meta-preview&ad_id=${encodeURIComponent(creative.id)}`)
       .then(async (r) => {
         if (r.status === 404 || r.status === 501) {
           const j = await r.json().catch(() => ({}))

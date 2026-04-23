@@ -16,7 +16,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { createClient } from '@supabase/supabase-js'
 
-import { allowMethods, applyCors, requireUserAuth } from '../_lib/security'
+import { allowMethods, applyCors, requireUserAuth } from '../../../api/_lib/security.js'
 
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL || ''
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || ''
@@ -56,7 +56,7 @@ function classifyStage(stage: KommoStage, mapHint?: Record<string, StageKind>): 
   return 'other'
 }
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+export async function runKommoFunnel(req: VercelRequest, res: VercelResponse) {
   if (!applyCors(req, res)) return
   if (!allowMethods(req, res, ['GET'])) return
 
@@ -129,17 +129,19 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(502).json({ error: `Kommo pipelines ${pipeResp.status}` })
     }
     const pipeJson = (await pipeResp.json()) as {
-      _embedded?: { pipelines?: Array<{ id: number; name: string; _embedded?: { statuses?: KommoStage[] } }> }
+      _embedded?: {
+        pipelines?: Array<{ id: number; name: string; _embedded?: { statuses?: KommoStage[] } }>
+        statuses?: KommoStage[]
+      }
       id?: number
       name?: string
-      _embedded_single?: { statuses?: KommoStage[] }
       [k: string]: unknown
     }
     let pipelineName = 'Pipeline'
     let stages: KommoStage[] = []
     if (pipelineId) {
       pipelineName = (pipeJson.name as string) || pipelineName
-      stages = (pipeJson._embedded?.statuses as KommoStage[] | undefined) ?? []
+      stages = pipeJson._embedded?.statuses ?? []
     } else {
       const first = pipeJson._embedded?.pipelines?.[0]
       pipelineName = first?.name ?? pipelineName
