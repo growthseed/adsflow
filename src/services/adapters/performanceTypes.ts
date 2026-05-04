@@ -79,6 +79,21 @@ export interface PlatformAccount {
   daily: DailyMetric[]
 }
 
+/** Histórico mensal — usado pra comparativo mês a mês no portal */
+export interface MonthlyHistoryItem {
+  month: string // ISO YYYY-MM
+  label: string // pt-BR ex: "Outubro/2025"
+  spend: number
+  impressions: number
+  clicks: number
+  conversions: number
+  ctr?: number
+  cpc?: number
+  cost_per_conversion?: number
+  /** True quando o mês ainda está rodando (parcial) */
+  partial?: boolean
+}
+
 /** Complete performance snapshot for one agency client */
 export interface ClientPerformance {
   client_slug: string
@@ -105,6 +120,10 @@ export interface ClientPerformance {
     cost_per_conversion: number
     roas: number
   }
+  /** Histórico mensal opcional pra comparativo no dashboard/portal */
+  monthly_history?: MonthlyHistoryItem[]
+  /** Notas operacionais opcionais (ex: motivo de queda, retomada) */
+  notes?: string[]
   last_synced_at: string
 }
 

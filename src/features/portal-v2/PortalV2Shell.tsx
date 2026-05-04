@@ -1,5 +1,4 @@
 import { useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
 
 import { useAuth } from '@/contexts/AuthContext'
 import { PortalHeader } from './components/PortalHeader'
@@ -11,6 +10,8 @@ import { PortalTimeline } from './components/PortalTimeline'
 import { PortalNextCallCard } from './components/PortalNextCall'
 import { PortalTabBar } from './components/PortalTabBar'
 import { PortalCommentsSheet } from './components/PortalCommentsSheet'
+import { PortalDadosView } from './components/PortalDadosView'
+import { PortalTarefasView } from './components/PortalTarefasView'
 import { usePortalConfig } from './hooks/usePortalConfig'
 import { usePortalData } from './hooks/usePortalData'
 import type { PortalViewKey } from './types'
@@ -70,7 +71,7 @@ export function PortalV2Shell({ clientSlug, clientId, readerMode = true, onExit 
       />
 
       {cfg?.showKpis && (
-        <PortalKpiStrip leads={leads} cpl={cpl} roas={null} />
+        <PortalKpiStrip leads={leads} cpl={cpl} roas={null} spend={data.spend} />
       )}
 
       <main className="px-4 pt-4 max-w-md mx-auto">
@@ -135,35 +136,18 @@ export function PortalV2Shell({ clientSlug, clientId, readerMode = true, onExit 
         )}
 
         {view === 'dados' && (
-          <div className="text-center py-10 text-xs text-neutral-500">
-            Visão detalhada de dados — em breve.
-            {!readerMode && (
-              <div className="mt-2">
-                <Link
-                  to={`/c/${clientSlug}/performance`}
-                  className="text-brand-700 font-semibold"
-                >
-                  Ver Performance →
-                </Link>
-              </div>
-            )}
-          </div>
+          <PortalDadosView
+            periodLabel={data.periodLabel}
+            spend={data.spend}
+            channels={data.channels}
+            campaigns={data.campaigns}
+            monthly={data.monthlyHistory}
+            notes={data.notes}
+          />
         )}
 
         {view === 'tarefas' && (
-          <div className="text-center py-10 text-xs text-neutral-500">
-            Roadmap completo — em breve.
-            {!readerMode && (
-              <div className="mt-2">
-                <Link
-                  to={`/c/${clientSlug}/projeto`}
-                  className="text-brand-700 font-semibold"
-                >
-                  Ver Demandas →
-                </Link>
-              </div>
-            )}
-          </div>
+          <PortalTarefasView tasks={data.tasks} stats={data.taskStats} />
         )}
 
         {view === 'chat' && cfg?.showChat && (

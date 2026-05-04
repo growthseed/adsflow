@@ -5,23 +5,31 @@ interface Props {
   leads: number
   cpl: number | null
   roas: number | null
+  /** Investimento do período — substitui ROAS no terceiro slot quando ROAS=null */
+  spend?: number | null
   leadsDelta?: number | null
   cplDelta?: number | null
   roasDelta?: number | null
+  spendDelta?: number | null
 }
 
 /**
- * KPI strip fixa do Portal mobile. Só 3 KPIs (Leads · CPL · ROAS)
- * por design — CTR, CPM etc. nunca aparecem no portal do cliente.
+ * KPI strip fixa do Portal mobile. Mostra 3 KPIs.
+ * Quando o cliente não tem ROAS configurado (vertical lead-gen,
+ * sem revenue tracking), o terceiro slot vira "Investimento".
  */
 export function PortalKpiStrip({
   leads,
   cpl,
   roas,
+  spend = null,
   leadsDelta = null,
   cplDelta = null,
   roasDelta = null,
+  spendDelta = null,
 }: Props) {
+  const showRoas = roas != null && roas > 0
+
   return (
     <div className="grid grid-cols-3 bg-white">
       <Cell label="Leads" value={leads.toLocaleString('pt-BR')} delta={leadsDelta} />
@@ -32,12 +40,21 @@ export function PortalKpiStrip({
         betterIs="lower"
         divider
       />
-      <Cell
-        label="ROAS"
-        value={roas != null ? `${roas.toFixed(1)}×` : '—'}
-        delta={roasDelta}
-        divider
-      />
+      {showRoas ? (
+        <Cell
+          label="ROAS"
+          value={`${roas.toFixed(1)}×`}
+          delta={roasDelta}
+          divider
+        />
+      ) : (
+        <Cell
+          label="Investimento"
+          value={spend != null ? formatMetric(spend, 'currency') : '—'}
+          delta={spendDelta}
+          divider
+        />
+      )}
     </div>
   )
 }
