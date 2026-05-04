@@ -9,6 +9,7 @@ import { salesFunnelTemplate } from './salesFunnel'
 import { enrollmentTemplate } from './enrollment'
 import { remarketingTemplate } from './remarketing'
 import { launchTemplate } from './launch'
+import { grupoM3Template } from './grupoM3'
 
 export const PLANNER_TEMPLATES: PlannerTemplate[] = [
   briefingTemplate,
@@ -16,6 +17,7 @@ export const PLANNER_TEMPLATES: PlannerTemplate[] = [
   salesFunnelTemplate,
   launchTemplate,
   remarketingTemplate,
+  grupoM3Template,
 ]
 
 export function getTemplate(id: string): PlannerTemplate | undefined {

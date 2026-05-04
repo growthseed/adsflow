@@ -311,6 +311,159 @@
         "roas": 0
       },
       "last_synced_at": "2026-04-23T10:30:00Z"
+    },
+    "grupo-m3": {
+      "client_slug": "grupo-m3",
+      "client_name": "Grupo M3",
+      "period": {
+        "from": "2026-04-04",
+        "to": "2026-05-03",
+        "label": "Últimos 30 dias (04/04 a 03/05)"
+      },
+      "platforms": {
+        "google_ads": {
+          "platform": "google_ads",
+          "account_id": "4989960017",
+          "account_name": "GRUPO M3",
+          "currency": "BRL",
+          "timezone": "America/Sao_Paulo",
+          "connected": true,
+          "last_synced_at": "2026-05-04T12:00:00Z",
+          "summary": {
+            "impressions": 3194,
+            "clicks": 531,
+            "spend": 793.52,
+            "conversions": 13,
+            "conversion_value": 0,
+            "ctr": 0.1662,
+            "cpc": 1.49,
+            "cpm": 248.44,
+            "cost_per_conversion": 61.04,
+            "roas": 0,
+            "reach": 0,
+            "frequency": 0,
+            "active_campaigns": 1,
+            "total_campaigns": 1
+          },
+          "campaigns": [
+            {
+              "id": "23628427438",
+              "name": "CP1 - [SHCH] [LEAD] [WPP] [SITE M3] - 04/03/2026",
+              "status": "enabled",
+              "status_raw": "ENABLED",
+              "platform": "google_ads",
+              "objective": "Leads",
+              "campaign_type": "SEARCH",
+              "budget_daily": 25,
+              "metrics": {
+                "impressions": 3194,
+                "clicks": 531,
+                "spend": 793.52,
+                "conversions": 13,
+                "conversion_value": 0,
+                "ctr": 0.1662,
+                "cpc": 1.49,
+                "cpm": 248.44,
+                "cost_per_conversion": 61.04,
+                "roas": 0
+              },
+              "ad_groups": [
+                {
+                  "id": "196968851194",
+                  "name": "GP13 - Serviços Operacionais",
+                  "impressions": 1010,
+                  "clicks": 223,
+                  "spend": 360.16,
+                  "conversions": 8
+                },
+                {
+                  "id": "199061240812",
+                  "name": "GP11 - Terceirização",
+                  "impressions": 1684,
+                  "clicks": 220,
+                  "spend": 302.42,
+                  "conversions": 4
+                },
+                {
+                  "id": "197451871081",
+                  "name": "GP12 - Facilities",
+                  "impressions": 500,
+                  "clicks": 88,
+                  "spend": 130.94,
+                  "conversions": 1
+                }
+              ]
+            }
+          ],
+          "daily": []
+        }
+      },
+      "blended": {
+        "total_spend": 793.52,
+        "total_impressions": 3194,
+        "total_clicks": 531,
+        "total_conversions": 13,
+        "total_reach": 0,
+        "avg_ctr": 0.1662,
+        "avg_cpc": 1.49,
+        "avg_cpm": 248.44,
+        "cost_per_conversion": 61.04,
+        "roas": 0
+      },
+      "monthly_history": [
+        {
+          "month": "2026-03",
+          "label": "Março/2026",
+          "spend": 618.98,
+          "impressions": 4618,
+          "clicks": 662,
+          "conversions": 156,
+          "ctr": 0.1434,
+          "cpc": 0.93,
+          "cost_per_conversion": 3.97
+        },
+        {
+          "month": "2026-04",
+          "label": "Abril/2026",
+          "spend": 761.29,
+          "impressions": 3298,
+          "clicks": 528,
+          "conversions": 12,
+          "ctr": 0.1601,
+          "cpc": 1.44,
+          "cost_per_conversion": 63.44
+        },
+        {
+          "month": "2026-05",
+          "label": "Maio/2026 (parcial)",
+          "spend": 86.86,
+          "impressions": 340,
+          "clicks": 64,
+          "conversions": 1,
+          "ctr": 0.1882,
+          "cpc": 1.36,
+          "cost_per_conversion": 86.86,
+          "partial": true
+        }
+      ],
+      "weekly_history": [
+        { "week_start": "2026-03-02", "spend": 145.16, "impressions": 507, "clicks": 91, "conversions": 21 },
+        { "week_start": "2026-03-09", "spend": 170.77, "impressions": 1033, "clicks": 182, "conversions": 51 },
+        { "week_start": "2026-03-16", "spend": 160.93, "impressions": 1373, "clicks": 191, "conversions": 60 },
+        { "week_start": "2026-03-23", "spend": 106.56, "impressions": 1367, "clicks": 153, "conversions": 24 },
+        { "week_start": "2026-03-30", "spend": 87.54, "impressions": 786, "clicks": 112, "conversions": 0 },
+        { "week_start": "2026-04-06", "spend": 192.38, "impressions": 890, "clicks": 137, "conversions": 7 },
+        { "week_start": "2026-04-13", "spend": 230.07, "impressions": 810, "clicks": 119, "conversions": 2 },
+        { "week_start": "2026-04-20", "spend": 188.26, "impressions": 731, "clicks": 148, "conversions": 2 },
+        { "week_start": "2026-04-27", "spend": 172.66, "impressions": 618, "clicks": 111, "conversions": 2 },
+        { "week_start": "2026-05-04", "spend": 12.78, "impressions": 141, "clicks": 10, "conversions": 0 }
+      ],
+      "notes": [
+        "Conversion tracking aparenta inconsistência: 156 conv em Março (CPL R$ 3.97) vs 12 conv em Abril (CPL R$ 63.44). Investigar conversion action no Google Ads.",
+        "Spend mensal subiu de R$ 619 (Mar) → R$ 761 (Abr), mas leads caíram drasticamente — provável reconfiguração de evento de conversão a partir de 30/03.",
+        "Operação 100% Search, 1 campanha (CP1) com 3 ad groups: Serviços Operacionais (melhor CPA), Terceirização (maior volume) e Facilities (menor performance)."
+      ],
+      "last_synced_at": "2026-05-04T12:00:00Z"
     }
   }
 }

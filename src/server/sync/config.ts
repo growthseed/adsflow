@@ -301,8 +301,9 @@ export const AGENCY_CLIENTS: AgencyClientMap[] = [
     clickup_folder_id: '90117264469',
     clickup_folder_name: 'CL17 - Grupo M3',
     avatar_gradient: 'from-slate-600 to-gray-800',
-    industry: 'Imobiliário',
+    industry: 'Facilities / Terceirização B2B',
     city: 'Brasília, DF',
+    google_ads_customer_id: '4989960017',
   },
   {
     slug: 'rharo',
