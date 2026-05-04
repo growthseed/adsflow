@@ -307,6 +307,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return;
     }
 
+    // Short-circuit: rotas públicas (/portal/:token, /p/:token) não precisam
+    // de profile/memberships. Se o usuário tem sessão de uma aba autenticada,
+    // o RLS bloqueia esses fetches no contexto público e o timeout de 5s
+    // por query atrasa o paint do portal pra cliente. Pula tudo aqui.
+    const isPublicRoute =
+      typeof window !== 'undefined' &&
+      (window.location.pathname.startsWith('/portal/') ||
+        window.location.pathname.startsWith('/p/'));
+
+    if (isPublicRoute) {
+      setLoading(false);
+      return;
+    }
+
     let mounted = true;
     let initDone = false;
 

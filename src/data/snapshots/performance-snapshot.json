@@ -392,7 +392,13 @@
               }
             }
           ],
-          "daily": []
+          "daily": [
+            { "date": "2026-04-29", "impressions": 3, "clicks": 0, "spend": 0, "conversions": 0, "ctr": 0, "cpc": 0, "cpm": 0 },
+            { "date": "2026-04-30", "impressions": 92, "clicks": 7, "spend": 81.79, "conversions": 0, "ctr": 0.076, "cpc": 11.68, "cpm": 889.02 },
+            { "date": "2026-05-01", "impressions": 88, "clicks": 7, "spend": 45.07, "conversions": 1, "ctr": 0.0795, "cpc": 6.44, "cpm": 512.16 },
+            { "date": "2026-05-02", "impressions": 165, "clicks": 5, "spend": 30.16, "conversions": 0, "ctr": 0.0303, "cpc": 6.03, "cpm": 182.79 },
+            { "date": "2026-05-03", "impressions": 36, "clicks": 1, "spend": 6.03, "conversions": 0, "ctr": 0.0278, "cpc": 6.03, "cpm": 167.50 }
+          ]
         }
       },
       "blended": {
@@ -509,7 +515,38 @@
               ]
             }
           ],
-          "daily": []
+          "daily": [
+            { "date": "2026-04-04", "impressions": 88, "clicks": 9, "spend": 6.22, "conversions": 0, "ctr": 0, "cpc": 0, "cpm": 0 },
+            { "date": "2026-04-05", "impressions": 57, "clicks": 7, "spend": 3.92, "conversions": 0, "ctr": 0, "cpc": 0, "cpm": 0 },
+            { "date": "2026-04-06", "impressions": 187, "clicks": 27, "spend": 50.00, "conversions": 1, "ctr": 0, "cpc": 0, "cpm": 0 },
+            { "date": "2026-04-07", "impressions": 218, "clicks": 29, "spend": 30.30, "conversions": 1, "ctr": 0, "cpc": 0, "cpm": 0 },
+            { "date": "2026-04-08", "impressions": 0, "clicks": 0, "spend": 0, "conversions": 0, "ctr": 0, "cpc": 0, "cpm": 0 },
+            { "date": "2026-04-09", "impressions": 0, "clicks": 0, "spend": 0, "conversions": 0, "ctr": 0, "cpc": 0, "cpm": 0 },
+            { "date": "2026-04-10", "impressions": 172, "clicks": 37, "spend": 49.99, "conversions": 3, "ctr": 0, "cpc": 0, "cpm": 0 },
+            { "date": "2026-04-11", "impressions": 134, "clicks": 12, "spend": 19.67, "conversions": 1, "ctr": 0, "cpc": 0, "cpm": 0 },
+            { "date": "2026-04-12", "impressions": 179, "clicks": 32, "spend": 42.43, "conversions": 1, "ctr": 0, "cpc": 0, "cpm": 0 },
+            { "date": "2026-04-13", "impressions": 156, "clicks": 29, "spend": 49.90, "conversions": 1, "ctr": 0, "cpc": 0, "cpm": 0 },
+            { "date": "2026-04-14", "impressions": 143, "clicks": 20, "spend": 49.98, "conversions": 0, "ctr": 0, "cpc": 0, "cpm": 0 },
+            { "date": "2026-04-15", "impressions": 118, "clicks": 15, "spend": 51.01, "conversions": 0, "ctr": 0, "cpc": 0, "cpm": 0 },
+            { "date": "2026-04-16", "impressions": 151, "clicks": 18, "spend": 32.38, "conversions": 0, "ctr": 0, "cpc": 0, "cpm": 0 },
+            { "date": "2026-04-17", "impressions": 140, "clicks": 20, "spend": 19.02, "conversions": 0, "ctr": 0, "cpc": 0, "cpm": 0 },
+            { "date": "2026-04-18", "impressions": 62, "clicks": 10, "spend": 17.27, "conversions": 1, "ctr": 0, "cpc": 0, "cpm": 0 },
+            { "date": "2026-04-19", "impressions": 40, "clicks": 7, "spend": 10.50, "conversions": 0, "ctr": 0, "cpc": 0, "cpm": 0 },
+            { "date": "2026-04-20", "impressions": 54, "clicks": 17, "spend": 14.94, "conversions": 0, "ctr": 0, "cpc": 0, "cpm": 0 },
+            { "date": "2026-04-21", "impressions": 80, "clicks": 14, "spend": 16.32, "conversions": 0, "ctr": 0, "cpc": 0, "cpm": 0 },
+            { "date": "2026-04-22", "impressions": 180, "clicks": 38, "spend": 40.43, "conversions": 1, "ctr": 0, "cpc": 0, "cpm": 0 },
+            { "date": "2026-04-23", "impressions": 116, "clicks": 18, "spend": 15.58, "conversions": 1, "ctr": 0, "cpc": 0, "cpm": 0 },
+            { "date": "2026-04-24", "impressions": 45, "clicks": 9, "spend": 27.78, "conversions": 0, "ctr": 0, "cpc": 0, "cpm": 0 },
+            { "date": "2026-04-25", "impressions": 133, "clicks": 23, "spend": 26.79, "conversions": 0, "ctr": 0, "cpc": 0, "cpm": 0 },
+            { "date": "2026-04-26", "impressions": 123, "clicks": 29, "spend": 46.42, "conversions": 0, "ctr": 0, "cpc": 0, "cpm": 0 },
+            { "date": "2026-04-27", "impressions": 119, "clicks": 16, "spend": 32.39, "conversions": 0, "ctr": 0, "cpc": 0, "cpm": 0 },
+            { "date": "2026-04-28", "impressions": 140, "clicks": 17, "spend": 22.68, "conversions": 1, "ctr": 0, "cpc": 0, "cpm": 0 },
+            { "date": "2026-04-29", "impressions": 92, "clicks": 15, "spend": 26.10, "conversions": 0, "ctr": 0, "cpc": 0, "cpm": 0 },
+            { "date": "2026-04-30", "impressions": 68, "clicks": 9, "spend": 17.41, "conversions": 0, "ctr": 0, "cpc": 0, "cpm": 0 },
+            { "date": "2026-05-01", "impressions": 86, "clicks": 25, "spend": 28.06, "conversions": 1, "ctr": 0, "cpc": 0, "cpm": 0 },
+            { "date": "2026-05-02", "impressions": 38, "clicks": 8, "spend": 24.53, "conversions": 0, "ctr": 0, "cpc": 0, "cpm": 0 },
+            { "date": "2026-05-03", "impressions": 75, "clicks": 21, "spend": 21.49, "conversions": 0, "ctr": 0, "cpc": 0, "cpm": 0 }
+          ]
         }
       },
       "blended": {
