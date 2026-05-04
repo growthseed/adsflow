@@ -175,21 +175,217 @@
       "clickup_folder_name": "CL10 - Blink Oftalmologia",
       "avatar_gradient": "from-sky-500 to-blue-600",
       "industry": "Saúde / Oftalmologia",
-      "city": "Macapá, AP",
-      "task_count": 34,
+      "city": "Brasília, DF",
+      "task_count": 54,
       "stats": {
-        "urgent": 2,
-        "in_progress": 11,
-        "review": 3,
-        "upcoming": 7,
-        "backlog": 4,
-        "done": 7,
-        "overdue": 2,
-        "total_active": 27
+        "urgent": 0,
+        "in_progress": 0,
+        "review": 0,
+        "upcoming": 0,
+        "backlog": 1,
+        "done": 53,
+        "overdue": 0,
+        "total_active": 1
       },
-      "upcoming_tasks": [],
-      "all_tasks": [],
-      "last_synced_at": "2026-04-08T02:30:00Z",
+      "all_tasks": [
+        {
+          "id": "868j9qq5v",
+          "title": "Card para Whatsapp Blink Oftalmologia",
+          "status_raw": "done",
+          "status": "done",
+          "priority": "urgent",
+          "due_date": "2026-04-15",
+          "due_date_label": "Concluída",
+          "days_late": null,
+          "assignees": [
+            { "id": "61037220", "username": "Vinicius Designer", "initial": "V", "color": "#10B981" }
+          ],
+          "list_id": "901110363196",
+          "list_name": "Gestão de Campanhas",
+          "list_color": "#4285F4",
+          "tags": [],
+          "url": "https://app.clickup.com/t/868j9qq5v"
+        },
+        {
+          "id": "868fymta6",
+          "title": "Relatórios Blink Oftalmologia - Outubro 2025",
+          "status_raw": "done",
+          "status": "done",
+          "priority": null,
+          "due_date": null,
+          "due_date_label": "Concluída",
+          "days_late": null,
+          "assignees": [],
+          "list_id": "901112043689",
+          "list_name": "Resultados",
+          "list_color": "#A855F7",
+          "tags": [],
+          "url": "https://app.clickup.com/t/868fymta6"
+        },
+        {
+          "id": "868fxnuac",
+          "title": "Capas para Reels Dra Karla",
+          "status_raw": "complete",
+          "status": "done",
+          "priority": "urgent",
+          "due_date": "2025-10-09",
+          "due_date_label": "Concluída",
+          "days_late": null,
+          "assignees": [
+            { "id": "61037220", "username": "Vinicius Designer", "initial": "V", "color": "#10B981" }
+          ],
+          "list_id": "901110363197",
+          "list_name": "Criação e Social Media",
+          "list_color": "#EC4899",
+          "tags": [],
+          "url": "https://app.clickup.com/t/868fxnuac"
+        },
+        {
+          "id": "868fwwmz3",
+          "title": "Elaborar os Criativos - Blink Oftalmologia - Out/25",
+          "status_raw": "complete",
+          "status": "done",
+          "priority": null,
+          "due_date": "2025-10-13",
+          "due_date_label": "Concluída",
+          "days_late": null,
+          "assignees": [
+            { "id": "61037220", "username": "Vinicius Designer", "initial": "V", "color": "#10B981" }
+          ],
+          "list_id": "901110363197",
+          "list_name": "Criação e Social Media",
+          "list_color": "#EC4899",
+          "tags": [],
+          "url": "https://app.clickup.com/t/868fwwmz3"
+        },
+        {
+          "id": "868fuz6dx",
+          "title": "Social Media Blink - Out/25",
+          "status_raw": "complete",
+          "status": "done",
+          "priority": null,
+          "due_date": "2025-10-07",
+          "due_date_label": "Concluída",
+          "days_late": null,
+          "assignees": [
+            { "id": "75377448", "username": "Ualiston Maia", "initial": "U", "color": "#595D66" },
+            { "id": "87335170", "username": "Fábio Philipe Martins", "initial": "F", "color": "#4466FF" },
+            { "id": "230699971", "username": "Felippe Xavier", "initial": "F", "color": "#3B82F6" }
+          ],
+          "list_id": "901110363197",
+          "list_name": "Criação e Social Media",
+          "list_color": "#EC4899",
+          "tags": [],
+          "url": "https://app.clickup.com/t/868fuz6dx"
+        },
+        {
+          "id": "868fpp2uu",
+          "title": "GADS - CP5 ESTRABISMO",
+          "status_raw": "done",
+          "status": "done",
+          "priority": null,
+          "due_date": null,
+          "due_date_label": "Concluída",
+          "days_late": null,
+          "assignees": [
+            { "id": "75475970", "username": "Italo Malta", "initial": "I", "color": "#006063" }
+          ],
+          "list_id": "901110363196",
+          "list_name": "Gestão de Campanhas",
+          "list_color": "#4285F4",
+          "tags": [],
+          "url": "https://app.clickup.com/t/868fpp2uu"
+        },
+        {
+          "id": "868fh9ht6",
+          "title": "Negativação de Palavras Chaves Campanhas Google Ads",
+          "status_raw": "done",
+          "status": "done",
+          "priority": null,
+          "due_date": null,
+          "due_date_label": "Concluída",
+          "days_late": null,
+          "assignees": [
+            { "id": "75475970", "username": "Italo Malta", "initial": "I", "color": "#006063" }
+          ],
+          "list_id": "901110363196",
+          "list_name": "Gestão de Campanhas",
+          "list_color": "#4285F4",
+          "tags": [],
+          "url": "https://app.clickup.com/t/868fh9ht6"
+        },
+        {
+          "id": "868fdx244",
+          "title": "Desenvolvimento da Landing Page Estrabismo",
+          "status_raw": "complete",
+          "status": "done",
+          "priority": "normal",
+          "due_date": "2025-09-25",
+          "due_date_label": "Concluída",
+          "days_late": null,
+          "assignees": [
+            { "id": "75401978", "username": "Natan da Silva", "initial": "N", "color": "#FF897F" }
+          ],
+          "list_id": "901111871131",
+          "list_name": "Web/Dev",
+          "list_color": "#0EA5E9",
+          "tags": [],
+          "url": "https://app.clickup.com/t/868fdx244"
+        },
+        {
+          "id": "868fq34ux",
+          "title": "Ajuste de Site da Blink",
+          "status_raw": "complete",
+          "status": "done",
+          "priority": "urgent",
+          "due_date": null,
+          "due_date_label": "Concluída",
+          "days_late": null,
+          "assignees": [
+            { "id": "75401978", "username": "Natan da Silva", "initial": "N", "color": "#FF897F" }
+          ],
+          "list_id": "901111871131",
+          "list_name": "Web/Dev",
+          "list_color": "#0EA5E9",
+          "tags": [],
+          "url": "https://app.clickup.com/t/868fq34ux"
+        },
+        {
+          "id": "868fdx47k",
+          "title": "Acessos Blink Oftalmologia",
+          "status_raw": "backlog",
+          "status": "backlog",
+          "priority": null,
+          "due_date": null,
+          "due_date_label": "Pendente",
+          "days_late": null,
+          "assignees": [],
+          "list_id": "901110363198",
+          "list_name": "Acessos & Info",
+          "list_color": "#64748B",
+          "tags": [],
+          "url": "https://app.clickup.com/t/868fdx47k"
+        }
+      ],
+      "upcoming_tasks": [
+        {
+          "id": "868fdx47k",
+          "title": "Acessos Blink Oftalmologia",
+          "status_raw": "backlog",
+          "status": "backlog",
+          "priority": null,
+          "due_date": null,
+          "due_date_label": "Pendente",
+          "days_late": null,
+          "assignees": [],
+          "list_id": "901110363198",
+          "list_name": "Acessos & Info",
+          "list_color": "#64748B",
+          "tags": [],
+          "url": "https://app.clickup.com/t/868fdx47k"
+        }
+      ],
+      "last_synced_at": "2026-05-04T18:50:00Z",
       "clickup_url": "https://app.clickup.com/9011123812/v/li/90116051703"
     },
     {
