@@ -556,9 +556,9 @@ const CLIENT_CONFIGS: ClientConfig[] = [
   { slug: 'homero-reis', name: 'Homero Reis', scope: 'sales_inside', tier: 'mid' },
   { slug: 'sindmpu', name: 'SINDMPU', scope: 'leads_b2b', tier: 'high' },
   { slug: 'grupo-m3', name: 'Grupo M3', scope: 'sales_inside', tier: 'mid' },
+  { slug: 'blink-oftalmologia', name: 'Blink Oftalmologia', scope: 'leads_b2b', tier: 'mid' },
 
   // ── INATIVOS (sem campanhas, sem projeto ativo) ──
-  { slug: 'blink-oftalmologia', name: 'Blink Oftalmologia', scope: 'pdv_local', tier: 'low', inactive: true },
   { slug: 'dra-diane-barranco', name: 'Dra. Diane Barranco', scope: 'leads_b2b', tier: 'low', inactive: true },
   { slug: 'dr-former', name: 'Dr. Former', scope: 'leads_b2b', tier: 'low', inactive: true },
   { slug: 'rharo', name: 'Rharo', scope: 'leads_b2b', tier: 'mid', inactive: true },
@@ -899,6 +899,110 @@ const REAL_DATA: Record<string, ClientDashboardSnapshot> = {
       top: [
         { name: 'CP4 [SEARCH] LP PA (DEAD)', channel: 'Google', spend: 0.12, impressions: 2, clicks: 1, leads: 0, cpl: 0 },
         { name: 'CP5 [PMAX] LP PA (DEAD)', channel: 'Google', spend: 0, impressions: 0, clicks: 0, leads: 0, cpl: 0 },
+      ],
+    },
+  },
+
+  // Blink Oftalmologia — pulled live via Google Ads API (CID 2699618496) on 2026-05-04
+  // Operação parou em Jan/2026 e RETOMOU em 29/04/2026 com a campanha
+  // "Blink | Catarata | Pesquisa" (CID 23646788863). Histórico Ago/25→Mai/26
+  // mostra a curva: pico em Out/25 (821 conv), declínio Nov-Dez, parada
+  // Jan-Mar, retomada gradual em Abr-Mai.
+  'blink-oftalmologia': {
+    slug: 'blink-oftalmologia',
+    name: 'Blink Oftalmologia',
+    scope: 'leads_b2b',
+    period: {
+      from: '2026-04-04',
+      to: '2026-05-03',
+      label: 'Últimos 30 dias (retomada 29/04)',
+      days: 30,
+    },
+    last_synced_at: '2026-05-04T12:00:00Z',
+    kpis: {
+      spend: kpi('spend', 'Investimento (Google)', 174.40, 0, { unit: 'currency', currency: 'BRL' }),
+      leads: kpi('leads', 'Conversões', 1, 0, { unit: 'number', goal: 30 }),
+      cpl: kpi('cpl', 'CPL', 174.40, 0, { unit: 'currency', currency: 'BRL', lowerIsBetter: true }),
+      qualified_rate: kpi('qualified_rate', 'CTR', 22 / 448, 0, { unit: 'percent' }),
+      pipeline: kpi('pipeline', 'Cliques', 22, 0, { unit: 'number' }),
+    },
+    timeseries: {
+      daily: [
+        { date: '2026-04-04', leads: 0, spend: 0 },
+        { date: '2026-04-05', leads: 0, spend: 0 },
+        { date: '2026-04-06', leads: 0, spend: 0 },
+        { date: '2026-04-07', leads: 0, spend: 0 },
+        { date: '2026-04-08', leads: 0, spend: 0 },
+        { date: '2026-04-09', leads: 0, spend: 0 },
+        { date: '2026-04-10', leads: 0, spend: 0 },
+        { date: '2026-04-11', leads: 0, spend: 0 },
+        { date: '2026-04-12', leads: 0, spend: 0 },
+        { date: '2026-04-13', leads: 0, spend: 0 },
+        { date: '2026-04-14', leads: 0, spend: 0 },
+        { date: '2026-04-15', leads: 0, spend: 0 },
+        { date: '2026-04-16', leads: 0, spend: 0 },
+        { date: '2026-04-17', leads: 0, spend: 0 },
+        { date: '2026-04-18', leads: 0, spend: 0 },
+        { date: '2026-04-19', leads: 0, spend: 0 },
+        { date: '2026-04-20', leads: 0, spend: 0 },
+        { date: '2026-04-21', leads: 0, spend: 0 },
+        { date: '2026-04-22', leads: 0, spend: 0 },
+        { date: '2026-04-23', leads: 0, spend: 0 },
+        { date: '2026-04-24', leads: 0, spend: 0 },
+        { date: '2026-04-25', leads: 0, spend: 0 },
+        { date: '2026-04-26', leads: 0, spend: 0 },
+        { date: '2026-04-27', leads: 0, spend: 0 },
+        { date: '2026-04-28', leads: 0, spend: 0 },
+        { date: '2026-04-29', leads: 0, spend: 0 },
+        { date: '2026-04-30', leads: 0, spend: 81.79 },
+        { date: '2026-05-01', leads: 1, spend: 45.07 },
+        { date: '2026-05-02', leads: 0, spend: 30.16 },
+        { date: '2026-05-03', leads: 0, spend: 6.03 },
+      ],
+      monthly: [
+        { month: 'Ago/25', spend: 2242.66, impressions: 390886, clicks: 1041, leads: 142 },
+        { month: 'Set/25', spend: 2834.15, impressions: 89048, clicks: 1745, leads: 485 },
+        { month: 'Out/25', spend: 1680.68, impressions: 26271, clicks: 2103, leads: 821 },
+        { month: 'Nov/25', spend: 844.84, impressions: 11085, clicks: 761, leads: 208 },
+        { month: 'Dez/25', spend: 1531.26, impressions: 33865, clicks: 867, leads: 82 },
+        { month: 'Jan/26', spend: 6.58, impressions: 29, clicks: 3, leads: 0 },
+        { month: 'Fev/26', spend: 0, impressions: 0, clicks: 0, leads: 0 },
+        { month: 'Mar/26', spend: 0, impressions: 0, clicks: 0, leads: 0 },
+        { month: 'Abr/26', spend: 81.79, impressions: 95, clicks: 7, leads: 0 },
+        { month: 'Mai/26 (parc.)', spend: 92.61, impressions: 353, clicks: 15, leads: 1 },
+      ],
+    },
+    channels: [
+      { label: 'Google Ads', value: 174, color: '#4285f4' },
+    ],
+    blended: { spend: 174.40, spend_formatted: BRL(174.40), conversions: 1 },
+    funnel: {
+      stages: [
+        { label: 'Impressões', value: 448, color: '#94a3b8' },
+        { label: 'Cliques', value: 22, color: '#3b82f6' },
+        { label: 'Conversões', value: 1, color: '#10b981' },
+      ],
+    },
+    campaigns: {
+      top: [
+        {
+          name: 'Blink | Catarata | Pesquisa (RETOMADA 29/04)',
+          channel: 'Google',
+          spend: 174.40,
+          impressions: 448,
+          clicks: 22,
+          leads: 1,
+          cpl: 174.40,
+        },
+        {
+          name: '[ED] CP5 - [SRCH] [ESTRABISMO] (ENABLED, sem gasto)',
+          channel: 'Google',
+          spend: 0,
+          impressions: 0,
+          clicks: 0,
+          leads: 0,
+          cpl: 0,
+        },
       ],
     },
   },

@@ -248,7 +248,8 @@ export const AGENCY_CLIENTS: AgencyClientMap[] = [
     clickup_folder_name: 'CL10 - Blink Oftalmologia',
     avatar_gradient: 'from-sky-500 to-blue-600',
     industry: 'Saúde / Oftalmologia',
-    city: 'Macapá, AP',
+    city: 'Brasília, DF',
+    google_ads_customer_id: '2699618496',
   },
   {
     slug: 'escola-pequeno-aprendiz',

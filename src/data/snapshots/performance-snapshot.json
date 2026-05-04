@@ -312,6 +312,120 @@
       },
       "last_synced_at": "2026-04-23T10:30:00Z"
     },
+    "blink-oftalmologia": {
+      "client_slug": "blink-oftalmologia",
+      "client_name": "Blink Oftalmologia",
+      "period": {
+        "from": "2026-04-04",
+        "to": "2026-05-03",
+        "label": "Últimos 30 dias (retomada 29/04)"
+      },
+      "platforms": {
+        "google_ads": {
+          "platform": "google_ads",
+          "account_id": "2699618496",
+          "account_name": "Blink Oftalmologia (Dra. Karla)",
+          "currency": "BRL",
+          "timezone": "America/Sao_Paulo",
+          "connected": true,
+          "last_synced_at": "2026-05-04T12:00:00Z",
+          "summary": {
+            "impressions": 448,
+            "clicks": 22,
+            "spend": 174.40,
+            "conversions": 1,
+            "conversion_value": 0,
+            "ctr": 0.0491,
+            "cpc": 7.93,
+            "cpm": 389.29,
+            "cost_per_conversion": 174.40,
+            "roas": 0,
+            "reach": 0,
+            "frequency": 0,
+            "active_campaigns": 1,
+            "total_campaigns": 19
+          },
+          "campaigns": [
+            {
+              "id": "23646788863",
+              "name": "Blink | Catarata | Pesquisa",
+              "status": "enabled",
+              "status_raw": "ENABLED",
+              "platform": "google_ads",
+              "objective": "Leads",
+              "campaign_type": "SEARCH",
+              "budget_daily": 40,
+              "metrics": {
+                "impressions": 448,
+                "clicks": 22,
+                "spend": 174.40,
+                "conversions": 1,
+                "conversion_value": 0,
+                "ctr": 0.0491,
+                "cpc": 7.93,
+                "cpm": 389.29,
+                "cost_per_conversion": 174.40,
+                "roas": 0
+              },
+              "started_at": "2026-04-29"
+            },
+            {
+              "id": "23051452525",
+              "name": "[ED] CP5 - [SRCH] [ESTRABISMO] - 23/09/25",
+              "status": "enabled",
+              "status_raw": "ENABLED",
+              "platform": "google_ads",
+              "objective": "Leads",
+              "campaign_type": "SEARCH",
+              "budget_daily": 20,
+              "metrics": {
+                "impressions": 0,
+                "clicks": 0,
+                "spend": 0,
+                "conversions": 0,
+                "conversion_value": 0,
+                "ctr": 0,
+                "cpc": 0,
+                "cpm": 0,
+                "cost_per_conversion": 0,
+                "roas": 0
+              }
+            }
+          ],
+          "daily": []
+        }
+      },
+      "blended": {
+        "total_spend": 174.40,
+        "total_impressions": 448,
+        "total_clicks": 22,
+        "total_conversions": 1,
+        "total_reach": 0,
+        "avg_ctr": 0.0491,
+        "avg_cpc": 7.93,
+        "avg_cpm": 389.29,
+        "cost_per_conversion": 174.40,
+        "roas": 0
+      },
+      "monthly_history": [
+        { "month": "2025-08", "label": "Ago/2025", "spend": 2242.66, "impressions": 390886, "clicks": 1041, "conversions": 142 },
+        { "month": "2025-09", "label": "Set/2025", "spend": 2834.15, "impressions": 89048, "clicks": 1745, "conversions": 485 },
+        { "month": "2025-10", "label": "Out/2025", "spend": 1680.68, "impressions": 26271, "clicks": 2103, "conversions": 821 },
+        { "month": "2025-11", "label": "Nov/2025", "spend": 844.84, "impressions": 11085, "clicks": 761, "conversions": 208 },
+        { "month": "2025-12", "label": "Dez/2025", "spend": 1531.26, "impressions": 33865, "clicks": 867, "conversions": 82 },
+        { "month": "2026-01", "label": "Jan/2026", "spend": 6.58, "impressions": 29, "clicks": 3, "conversions": 0 },
+        { "month": "2026-02", "label": "Fev/2026", "spend": 0, "impressions": 0, "clicks": 0, "conversions": 0 },
+        { "month": "2026-03", "label": "Mar/2026", "spend": 0, "impressions": 0, "clicks": 0, "conversions": 0 },
+        { "month": "2026-04", "label": "Abr/2026", "spend": 81.79, "impressions": 95, "clicks": 7, "conversions": 0 },
+        { "month": "2026-05", "label": "Mai/2026 (parcial)", "spend": 92.61, "impressions": 353, "clicks": 15, "conversions": 1, "partial": true }
+      ],
+      "notes": [
+        "Conta ficou parada Jan-Mar/2026 — retomada gradual em Abr e ativa de fato a partir de 29/04 com a campanha 'Blink | Catarata | Pesquisa'.",
+        "17 campanhas pausadas (histórico de testes Set/24-Set/25). Apenas 2 ENABLED hoje: Catarata (rodando) e Estrabismo (sem gasto/imp).",
+        "Pico histórico foi Out/2025 com 821 conversões em R$ 1.680. Reativação atual é cautelosa (R$ 40/dia na Catarata)."
+      ],
+      "last_synced_at": "2026-05-04T12:00:00Z"
+    },
     "grupo-m3": {
       "client_slug": "grupo-m3",
       "client_name": "Grupo M3",
