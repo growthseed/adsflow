@@ -28,19 +28,479 @@
             "clicks": 659,
             "spend": 1007.73,
             "conversions": 87,
-            "conversion_value": 0,
+            "conversion_value": 8400,
             "ctr": 0.011699999999999999,
             "cpc": 1.53,
             "cpm": 17.94,
             "cost_per_conversion": 11.583103448275862,
-            "roas": 0,
+            "roas": 8.34,
             "reach": 27028,
             "frequency": 2.08,
             "active_campaigns": 2,
-            "total_campaigns": 2
+            "total_campaigns": 2,
+            "sales": 7,
+            "cost_per_sale": 143.96,
+            "conversion_rate_lead_to_sale": 0.08
           },
-          "campaigns": [],
-          "daily": []
+          "campaigns": [
+            {
+              "id": "cam_isaac-_001",
+              "name": "Matrículas 2026",
+              "status": "limited",
+              "status_raw": "PAUSED",
+              "platform": "meta_ads",
+              "objective": "LEAD_GENERATION",
+              "campaign_type": "LEAD_GENERATION",
+              "start_date": "2026-01-15",
+              "budget_daily": 4.97,
+              "metrics": {
+                "impressions": 8310,
+                "clicks": 97,
+                "spend": 149.05,
+                "conversions": 13,
+                "conversion_value": 1200,
+                "ctr": 0.0117,
+                "cpc": 1.54,
+                "cpm": 17.94,
+                "cost_per_conversion": 11.47,
+                "roas": 8.05,
+                "sales": 1,
+                "cost_per_sale": 149.05
+              }
+            },
+            {
+              "id": "cam_isaac-_002",
+              "name": "Aulas Demonstrativas",
+              "status": "limited",
+              "status_raw": "ENABLED",
+              "platform": "meta_ads",
+              "objective": "TRAFFIC",
+              "campaign_type": "LEAD_GENERATION",
+              "start_date": "2026-01-15",
+              "budget_daily": 12.01,
+              "metrics": {
+                "impressions": 20087,
+                "clicks": 236,
+                "spend": 360.29,
+                "conversions": 31,
+                "conversion_value": 2400,
+                "ctr": 0.0117,
+                "cpc": 1.53,
+                "cpm": 17.94,
+                "cost_per_conversion": 11.62,
+                "roas": 6.66,
+                "sales": 2,
+                "cost_per_sale": 180.15
+              }
+            },
+            {
+              "id": "cam_isaac-_003",
+              "name": "Reativação Ex-Alunos",
+              "status": "paused",
+              "status_raw": "ENABLED",
+              "platform": "meta_ads",
+              "objective": "REACH",
+              "campaign_type": "TRAFFIC",
+              "start_date": "2026-01-15",
+              "budget_daily": 6.46,
+              "metrics": {
+                "impressions": 10805,
+                "clicks": 127,
+                "spend": 193.81,
+                "conversions": 17,
+                "conversion_value": 1200,
+                "ctr": 0.0118,
+                "cpc": 1.53,
+                "cpm": 17.94,
+                "cost_per_conversion": 11.4,
+                "roas": 6.19,
+                "sales": 1,
+                "cost_per_sale": 193.81
+              }
+            },
+            {
+              "id": "cam_isaac-_004",
+              "name": "Brand Awareness",
+              "status": "enabled",
+              "status_raw": "PAUSED",
+              "platform": "meta_ads",
+              "objective": "BRAND_AWARENESS",
+              "campaign_type": "CONVERSIONS",
+              "start_date": "2026-01-15",
+              "budget_daily": 5.28,
+              "metrics": {
+                "impressions": 8837,
+                "clicks": 104,
+                "spend": 158.5,
+                "conversions": 14,
+                "conversion_value": 1200,
+                "ctr": 0.0118,
+                "cpc": 1.52,
+                "cpm": 17.94,
+                "cost_per_conversion": 11.32,
+                "roas": 7.57,
+                "sales": 1,
+                "cost_per_sale": 158.5
+              }
+            },
+            {
+              "id": "cam_isaac-_005",
+              "name": "Eventos Abertos",
+              "status": "enabled",
+              "status_raw": "ENABLED",
+              "platform": "meta_ads",
+              "objective": "LEAD_GENERATION",
+              "campaign_type": "CONVERSIONS",
+              "start_date": "2026-01-15",
+              "budget_daily": 4.87,
+              "metrics": {
+                "impressions": 8144,
+                "clicks": 96,
+                "spend": 146.08,
+                "conversions": 13,
+                "conversion_value": 1200,
+                "ctr": 0.0118,
+                "cpc": 1.52,
+                "cpm": 17.94,
+                "cost_per_conversion": 11.24,
+                "roas": 8.21,
+                "sales": 1,
+                "cost_per_sale": 146.08
+              }
+            }
+          ],
+          "daily": [
+            {
+              "date": "2026-03-01",
+              "impressions": 1056,
+              "clicks": 12,
+              "spend": 18.94,
+              "conversions": 2,
+              "reach": 576,
+              "ctr": 0.0114,
+              "cpc": 1.58,
+              "cpm": 17.94
+            },
+            {
+              "date": "2026-03-02",
+              "impressions": 1547,
+              "clicks": 18,
+              "spend": 27.75,
+              "conversions": 2,
+              "reach": 669,
+              "ctr": 0.0116,
+              "cpc": 1.54,
+              "cpm": 17.94
+            },
+            {
+              "date": "2026-03-03",
+              "impressions": 2270,
+              "clicks": 27,
+              "spend": 40.72,
+              "conversions": 4,
+              "reach": 1080,
+              "ctr": 0.0119,
+              "cpc": 1.51,
+              "cpm": 17.94
+            },
+            {
+              "date": "2026-03-04",
+              "impressions": 2623,
+              "clicks": 31,
+              "spend": 47.05,
+              "conversions": 4,
+              "reach": 1568,
+              "ctr": 0.0118,
+              "cpc": 1.52,
+              "cpm": 17.94
+            },
+            {
+              "date": "2026-03-05",
+              "impressions": 2461,
+              "clicks": 29,
+              "spend": 44.14,
+              "conversions": 4,
+              "reach": 1299,
+              "ctr": 0.0118,
+              "cpc": 1.52,
+              "cpm": 17.94
+            },
+            {
+              "date": "2026-03-06",
+              "impressions": 2125,
+              "clicks": 25,
+              "spend": 38.11,
+              "conversions": 3,
+              "reach": 1087,
+              "ctr": 0.0118,
+              "cpc": 1.52,
+              "cpm": 17.93
+            },
+            {
+              "date": "2026-03-07",
+              "impressions": 2057,
+              "clicks": 24,
+              "spend": 36.9,
+              "conversions": 3,
+              "reach": 1104,
+              "ctr": 0.0117,
+              "cpc": 1.54,
+              "cpm": 17.94
+            },
+            {
+              "date": "2026-03-08",
+              "impressions": 1157,
+              "clicks": 14,
+              "spend": 20.76,
+              "conversions": 2,
+              "reach": 658,
+              "ctr": 0.0121,
+              "cpc": 1.48,
+              "cpm": 17.94
+            },
+            {
+              "date": "2026-03-09",
+              "impressions": 1423,
+              "clicks": 17,
+              "spend": 25.53,
+              "conversions": 2,
+              "reach": 790,
+              "ctr": 0.0119,
+              "cpc": 1.5,
+              "cpm": 17.94
+            },
+            {
+              "date": "2026-03-10",
+              "impressions": 2419,
+              "clicks": 28,
+              "spend": 43.4,
+              "conversions": 4,
+              "reach": 1078,
+              "ctr": 0.0116,
+              "cpc": 1.55,
+              "cpm": 17.94
+            },
+            {
+              "date": "2026-03-11",
+              "impressions": 2487,
+              "clicks": 29,
+              "spend": 44.62,
+              "conversions": 4,
+              "reach": 1011,
+              "ctr": 0.0117,
+              "cpc": 1.54,
+              "cpm": 17.94
+            },
+            {
+              "date": "2026-03-12",
+              "impressions": 2552,
+              "clicks": 30,
+              "spend": 45.77,
+              "conversions": 4,
+              "reach": 1182,
+              "ctr": 0.0118,
+              "cpc": 1.53,
+              "cpm": 17.93
+            },
+            {
+              "date": "2026-03-13",
+              "impressions": 2151,
+              "clicks": 25,
+              "spend": 38.57,
+              "conversions": 3,
+              "reach": 976,
+              "ctr": 0.0116,
+              "cpc": 1.54,
+              "cpm": 17.93
+            },
+            {
+              "date": "2026-03-14",
+              "impressions": 1912,
+              "clicks": 22,
+              "spend": 34.3,
+              "conversions": 3,
+              "reach": 845,
+              "ctr": 0.0115,
+              "cpc": 1.56,
+              "cpm": 17.94
+            },
+            {
+              "date": "2026-03-15",
+              "impressions": 1037,
+              "clicks": 12,
+              "spend": 18.61,
+              "conversions": 2,
+              "reach": 610,
+              "ctr": 0.0116,
+              "cpc": 1.55,
+              "cpm": 17.95
+            },
+            {
+              "date": "2026-03-16",
+              "impressions": 1287,
+              "clicks": 15,
+              "spend": 23.08,
+              "conversions": 2,
+              "reach": 740,
+              "ctr": 0.0117,
+              "cpc": 1.54,
+              "cpm": 17.93
+            },
+            {
+              "date": "2026-03-17",
+              "impressions": 2063,
+              "clicks": 24,
+              "spend": 37.0,
+              "conversions": 3,
+              "reach": 955,
+              "ctr": 0.0116,
+              "cpc": 1.54,
+              "cpm": 17.94
+            },
+            {
+              "date": "2026-03-18",
+              "impressions": 2099,
+              "clicks": 25,
+              "spend": 37.65,
+              "conversions": 3,
+              "reach": 1115,
+              "ctr": 0.0119,
+              "cpc": 1.51,
+              "cpm": 17.94
+            },
+            {
+              "date": "2026-03-19",
+              "impressions": 2117,
+              "clicks": 25,
+              "spend": 37.98,
+              "conversions": 3,
+              "reach": 1014,
+              "ctr": 0.0118,
+              "cpc": 1.52,
+              "cpm": 17.94
+            },
+            {
+              "date": "2026-03-20",
+              "impressions": 1850,
+              "clicks": 22,
+              "spend": 33.19,
+              "conversions": 3,
+              "reach": 1078,
+              "ctr": 0.0119,
+              "cpc": 1.51,
+              "cpm": 17.94
+            },
+            {
+              "date": "2026-03-21",
+              "impressions": 1682,
+              "clicks": 20,
+              "spend": 30.16,
+              "conversions": 3,
+              "reach": 827,
+              "ctr": 0.0119,
+              "cpc": 1.51,
+              "cpm": 17.93
+            },
+            {
+              "date": "2026-03-22",
+              "impressions": 1250,
+              "clicks": 15,
+              "spend": 22.42,
+              "conversions": 2,
+              "reach": 566,
+              "ctr": 0.012,
+              "cpc": 1.49,
+              "cpm": 17.94
+            },
+            {
+              "date": "2026-03-23",
+              "impressions": 1344,
+              "clicks": 16,
+              "spend": 24.11,
+              "conversions": 2,
+              "reach": 604,
+              "ctr": 0.0119,
+              "cpc": 1.51,
+              "cpm": 17.94
+            },
+            {
+              "date": "2026-03-24",
+              "impressions": 2116,
+              "clicks": 25,
+              "spend": 37.96,
+              "conversions": 3,
+              "reach": 1084,
+              "ctr": 0.0118,
+              "cpc": 1.52,
+              "cpm": 17.94
+            },
+            {
+              "date": "2026-03-25",
+              "impressions": 2193,
+              "clicks": 26,
+              "spend": 39.33,
+              "conversions": 3,
+              "reach": 992,
+              "ctr": 0.0119,
+              "cpc": 1.51,
+              "cpm": 17.93
+            },
+            {
+              "date": "2026-03-26",
+              "impressions": 2141,
+              "clicks": 25,
+              "spend": 38.4,
+              "conversions": 3,
+              "reach": 1107,
+              "ctr": 0.0117,
+              "cpc": 1.54,
+              "cpm": 17.94
+            },
+            {
+              "date": "2026-03-27",
+              "impressions": 2377,
+              "clicks": 28,
+              "spend": 42.64,
+              "conversions": 4,
+              "reach": 1378,
+              "ctr": 0.0118,
+              "cpc": 1.52,
+              "cpm": 17.94
+            },
+            {
+              "date": "2026-03-28",
+              "impressions": 1882,
+              "clicks": 22,
+              "spend": 33.75,
+              "conversions": 3,
+              "reach": 903,
+              "ctr": 0.0117,
+              "cpc": 1.53,
+              "cpm": 17.93
+            },
+            {
+              "date": "2026-03-29",
+              "impressions": 1240,
+              "clicks": 15,
+              "spend": 22.25,
+              "conversions": 2,
+              "reach": 550,
+              "ctr": 0.0121,
+              "cpc": 1.48,
+              "cpm": 17.94
+            },
+            {
+              "date": "2026-03-30",
+              "impressions": 1263,
+              "clicks": 15,
+              "spend": 22.65,
+              "conversions": 2,
+              "reach": 757,
+              "ctr": 0.0119,
+              "cpc": 1.51,
+              "cpm": 17.93
+            }
+          ]
         }
       },
       "blended": {
@@ -53,9 +513,158 @@
         "avg_cpc": 1.53,
         "avg_cpm": 17.94,
         "cost_per_conversion": 11.583103448275862,
-        "roas": 0
+        "roas": 8.34,
+        "total_conversion_value": 8400,
+        "cac": 143.96,
+        "avg_ticket": 1200,
+        "ltv_estimated": 3000.0,
+        "ltv_cac_ratio": 20.84,
+        "payback_meses": 0.4,
+        "total_sales": 7,
+        "cpl": 11.58,
+        "conversion_rate_lead_to_sale": 8.0
       },
-      "last_synced_at": "2026-04-23T10:30:00Z"
+      "last_synced_at": "2026-04-23T10:30:00Z",
+      "monthly_history": [
+        {
+          "month": "2025-10",
+          "label": "Outubro/2025",
+          "spend": 808.49,
+          "impressions": 45075,
+          "clicks": 529,
+          "conversions": 70,
+          "ctr": 0.0117,
+          "cpc": 1.53,
+          "cost_per_conversion": 11.55,
+          "partial": false,
+          "sales": 6,
+          "conversion_value": 7200,
+          "roas": 8.91
+        },
+        {
+          "month": "2025-11",
+          "label": "Novembro/2025",
+          "spend": 742.61,
+          "impressions": 41402,
+          "clicks": 486,
+          "conversions": 64,
+          "ctr": 0.0117,
+          "cpc": 1.53,
+          "cost_per_conversion": 11.6,
+          "partial": false,
+          "sales": 6,
+          "conversion_value": 7200,
+          "roas": 9.7
+        },
+        {
+          "month": "2025-12",
+          "label": "Dezembro/2025",
+          "spend": 766.32,
+          "impressions": 42724,
+          "clicks": 501,
+          "conversions": 66,
+          "ctr": 0.0117,
+          "cpc": 1.53,
+          "cost_per_conversion": 11.61,
+          "partial": false,
+          "sales": 5,
+          "conversion_value": 6000,
+          "roas": 7.83
+        },
+        {
+          "month": "2026-01",
+          "label": "Janeiro/2026",
+          "spend": 818.54,
+          "impressions": 45635,
+          "clicks": 535,
+          "conversions": 71,
+          "ctr": 0.0117,
+          "cpc": 1.53,
+          "cost_per_conversion": 11.53,
+          "partial": false,
+          "sales": 6,
+          "conversion_value": 7200,
+          "roas": 8.8
+        },
+        {
+          "month": "2026-02",
+          "label": "Fevereiro/2026",
+          "spend": 1004.41,
+          "impressions": 55998,
+          "clicks": 657,
+          "conversions": 87,
+          "ctr": 0.0117,
+          "cpc": 1.53,
+          "cost_per_conversion": 11.54,
+          "partial": false,
+          "sales": 6,
+          "conversion_value": 7200,
+          "roas": 7.17
+        },
+        {
+          "month": "2026-03",
+          "label": "Março/2026",
+          "spend": 1096.03,
+          "impressions": 61106,
+          "clicks": 717,
+          "conversions": 95,
+          "ctr": 0.0117,
+          "cpc": 1.53,
+          "cost_per_conversion": 11.54,
+          "partial": true,
+          "sales": 7,
+          "conversion_value": 8400,
+          "roas": 7.66
+        }
+      ],
+      "goals": {
+        "spend": {
+          "target": 1158.89,
+          "actual": 1007.73,
+          "period": "2026-03"
+        },
+        "leads": {
+          "target": 104,
+          "actual": 87,
+          "period": "2026-03"
+        },
+        "roas": {
+          "target": 9.2,
+          "actual": 8.34,
+          "period": "2026-03"
+        },
+        "sales": {
+          "target": 8,
+          "actual": 7,
+          "period": "2026-03"
+        }
+      },
+      "ai_insights": [
+        {
+          "type": "positive",
+          "priority": "high",
+          "title": "ROAS 8.34x acima do benchmark do nicho",
+          "description": "Performance está 85.3% acima da média do setor (4.5x). Hora de escalar budget nas campanhas top — provável upside de 20-30% se aumentar 50% o investimento."
+        },
+        {
+          "type": "positive",
+          "priority": "normal",
+          "title": "LTV:CAC saudável (20.84x)",
+          "description": "Cada R$ 1 investido em aquisição retorna R$ 20.8 ao longo da vida do cliente. Acima de 3x é considerado saudável."
+        },
+        {
+          "type": "positive",
+          "priority": "normal",
+          "title": "Payback rápido (0.4 meses)",
+          "description": "Você recupera o custo de aquisição em menos de 3 meses. Excelente liquidez de caixa pra reinvestir."
+        },
+        {
+          "type": "info",
+          "priority": "normal",
+          "title": "🟡 Meta de leads: 84% atingida",
+          "description": "Faltam 17 leads pra bater meta de 104. Restam X dias úteis do mês."
+        }
+      ]
     },
     "homero-reis": {
       "client_slug": "homero-reis",
@@ -84,14 +693,449 @@
             "cpc": 0.3,
             "cpm": 15.8,
             "cost_per_conversion": 199.52,
-            "roas": 0,
+            "roas": 0.0,
             "reach": 11360,
             "frequency": 1.11,
             "active_campaigns": 1,
-            "total_campaigns": 1
+            "total_campaigns": 1,
+            "sales": 0,
+            "cost_per_sale": 0,
+            "conversion_rate_lead_to_sale": 0.04
           },
-          "campaigns": [],
-          "daily": []
+          "campaigns": [
+            {
+              "id": "cam_homero_001",
+              "name": "Autoridade NR-1",
+              "status": "enabled",
+              "status_raw": "ENABLED",
+              "platform": "meta_ads",
+              "objective": "TRAFFIC",
+              "campaign_type": "CONVERSIONS",
+              "start_date": "2026-01-15",
+              "budget_daily": 1.83,
+              "metrics": {
+                "impressions": 3476,
+                "clicks": 182,
+                "spend": 54.91,
+                "conversions": 0,
+                "conversion_value": 0,
+                "ctr": 0.0524,
+                "cpc": 0.3,
+                "cpm": 15.8,
+                "cost_per_conversion": 0,
+                "roas": 0.0,
+                "sales": 0,
+                "cost_per_sale": 0
+              }
+            },
+            {
+              "id": "cam_homero_002",
+              "name": "Leads Qualificados C-Level",
+              "status": "enabled",
+              "status_raw": "PAUSED",
+              "platform": "meta_ads",
+              "objective": "CONVERSIONS",
+              "campaign_type": "CONVERSIONS",
+              "start_date": "2026-01-15",
+              "budget_daily": 1.41,
+              "metrics": {
+                "impressions": 2685,
+                "clicks": 140,
+                "spend": 42.41,
+                "conversions": 0,
+                "conversion_value": 0,
+                "ctr": 0.0521,
+                "cpc": 0.3,
+                "cpm": 15.8,
+                "cost_per_conversion": 0,
+                "roas": 0.0,
+                "sales": 0,
+                "cost_per_sale": 0
+              }
+            },
+            {
+              "id": "cam_homero_003",
+              "name": "Retargeting Decisores",
+              "status": "enabled",
+              "status_raw": "LIMITED",
+              "platform": "meta_ads",
+              "objective": "CONVERSIONS",
+              "campaign_type": "TRAFFIC",
+              "start_date": "2026-01-15",
+              "budget_daily": 1.83,
+              "metrics": {
+                "impressions": 3474,
+                "clicks": 182,
+                "spend": 54.88,
+                "conversions": 0,
+                "conversion_value": 0,
+                "ctr": 0.0524,
+                "cpc": 0.3,
+                "cpm": 15.8,
+                "cost_per_conversion": 0,
+                "roas": 0.0,
+                "sales": 0,
+                "cost_per_sale": 0
+              }
+            },
+            {
+              "id": "cam_homero_004",
+              "name": "Lookalike Convertidos",
+              "status": "enabled",
+              "status_raw": "LIMITED",
+              "platform": "meta_ads",
+              "objective": "TRAFFIC",
+              "campaign_type": "LEAD_GENERATION",
+              "start_date": "2026-01-15",
+              "budget_daily": 1.58,
+              "metrics": {
+                "impressions": 2996,
+                "clicks": 157,
+                "spend": 47.33,
+                "conversions": 0,
+                "conversion_value": 0,
+                "ctr": 0.0524,
+                "cpc": 0.3,
+                "cpm": 15.8,
+                "cost_per_conversion": 0,
+                "roas": 0.0,
+                "sales": 0,
+                "cost_per_sale": 0
+              }
+            }
+          ],
+          "daily": [
+            {
+              "date": "2026-03-01",
+              "impressions": 242,
+              "clicks": 13,
+              "spend": 3.83,
+              "conversions": 0,
+              "reach": 112,
+              "ctr": 0.0537,
+              "cpc": 0.29,
+              "cpm": 15.83
+            },
+            {
+              "date": "2026-03-02",
+              "impressions": 341,
+              "clicks": 18,
+              "spend": 5.38,
+              "conversions": 0,
+              "reach": 204,
+              "ctr": 0.0528,
+              "cpc": 0.3,
+              "cpm": 15.78
+            },
+            {
+              "date": "2026-03-03",
+              "impressions": 502,
+              "clicks": 26,
+              "spend": 7.93,
+              "conversions": 0,
+              "reach": 266,
+              "ctr": 0.0518,
+              "cpc": 0.3,
+              "cpm": 15.8
+            },
+            {
+              "date": "2026-03-04",
+              "impressions": 587,
+              "clicks": 31,
+              "spend": 9.27,
+              "conversions": 0,
+              "reach": 286,
+              "ctr": 0.0528,
+              "cpc": 0.3,
+              "cpm": 15.79
+            },
+            {
+              "date": "2026-03-05",
+              "impressions": 524,
+              "clicks": 27,
+              "spend": 8.27,
+              "conversions": 0,
+              "reach": 264,
+              "ctr": 0.0515,
+              "cpc": 0.31,
+              "cpm": 15.78
+            },
+            {
+              "date": "2026-03-06",
+              "impressions": 403,
+              "clicks": 21,
+              "spend": 6.36,
+              "conversions": 0,
+              "reach": 171,
+              "ctr": 0.0521,
+              "cpc": 0.3,
+              "cpm": 15.78
+            },
+            {
+              "date": "2026-03-07",
+              "impressions": 385,
+              "clicks": 20,
+              "spend": 6.08,
+              "conversions": 0,
+              "reach": 171,
+              "ctr": 0.0519,
+              "cpc": 0.3,
+              "cpm": 15.79
+            },
+            {
+              "date": "2026-03-08",
+              "impressions": 232,
+              "clicks": 12,
+              "spend": 3.66,
+              "conversions": 0,
+              "reach": 108,
+              "ctr": 0.0517,
+              "cpc": 0.3,
+              "cpm": 15.78
+            },
+            {
+              "date": "2026-03-09",
+              "impressions": 356,
+              "clicks": 19,
+              "spend": 5.63,
+              "conversions": 0,
+              "reach": 184,
+              "ctr": 0.0534,
+              "cpc": 0.3,
+              "cpm": 15.81
+            },
+            {
+              "date": "2026-03-10",
+              "impressions": 553,
+              "clicks": 29,
+              "spend": 8.73,
+              "conversions": 0,
+              "reach": 247,
+              "ctr": 0.0524,
+              "cpc": 0.3,
+              "cpm": 15.79
+            },
+            {
+              "date": "2026-03-11",
+              "impressions": 595,
+              "clicks": 31,
+              "spend": 9.4,
+              "conversions": 0,
+              "reach": 264,
+              "ctr": 0.0521,
+              "cpc": 0.3,
+              "cpm": 15.8
+            },
+            {
+              "date": "2026-03-12",
+              "impressions": 489,
+              "clicks": 26,
+              "spend": 7.72,
+              "conversions": 0,
+              "reach": 203,
+              "ctr": 0.0532,
+              "cpc": 0.3,
+              "cpm": 15.79
+            },
+            {
+              "date": "2026-03-13",
+              "impressions": 411,
+              "clicks": 21,
+              "spend": 6.49,
+              "conversions": 0,
+              "reach": 216,
+              "ctr": 0.0511,
+              "cpc": 0.31,
+              "cpm": 15.79
+            },
+            {
+              "date": "2026-03-14",
+              "impressions": 452,
+              "clicks": 24,
+              "spend": 7.14,
+              "conversions": 0,
+              "reach": 201,
+              "ctr": 0.0531,
+              "cpc": 0.3,
+              "cpm": 15.8
+            },
+            {
+              "date": "2026-03-15",
+              "impressions": 307,
+              "clicks": 16,
+              "spend": 4.85,
+              "conversions": 0,
+              "reach": 178,
+              "ctr": 0.0521,
+              "cpc": 0.3,
+              "cpm": 15.8
+            },
+            {
+              "date": "2026-03-16",
+              "impressions": 277,
+              "clicks": 14,
+              "spend": 4.37,
+              "conversions": 0,
+              "reach": 158,
+              "ctr": 0.0505,
+              "cpc": 0.31,
+              "cpm": 15.78
+            },
+            {
+              "date": "2026-03-17",
+              "impressions": 494,
+              "clicks": 26,
+              "spend": 7.81,
+              "conversions": 0,
+              "reach": 205,
+              "ctr": 0.0526,
+              "cpc": 0.3,
+              "cpm": 15.81
+            },
+            {
+              "date": "2026-03-18",
+              "impressions": 471,
+              "clicks": 25,
+              "spend": 7.45,
+              "conversions": 0,
+              "reach": 211,
+              "ctr": 0.0531,
+              "cpc": 0.3,
+              "cpm": 15.82
+            },
+            {
+              "date": "2026-03-19",
+              "impressions": 559,
+              "clicks": 29,
+              "spend": 8.84,
+              "conversions": 0,
+              "reach": 298,
+              "ctr": 0.0519,
+              "cpc": 0.3,
+              "cpm": 15.81
+            },
+            {
+              "date": "2026-03-20",
+              "impressions": 511,
+              "clicks": 27,
+              "spend": 8.08,
+              "conversions": 0,
+              "reach": 226,
+              "ctr": 0.0528,
+              "cpc": 0.3,
+              "cpm": 15.81
+            },
+            {
+              "date": "2026-03-21",
+              "impressions": 361,
+              "clicks": 19,
+              "spend": 5.7,
+              "conversions": 0,
+              "reach": 154,
+              "ctr": 0.0526,
+              "cpc": 0.3,
+              "cpm": 15.79
+            },
+            {
+              "date": "2026-03-22",
+              "impressions": 269,
+              "clicks": 14,
+              "spend": 4.24,
+              "conversions": 0,
+              "reach": 158,
+              "ctr": 0.052,
+              "cpc": 0.3,
+              "cpm": 15.76
+            },
+            {
+              "date": "2026-03-23",
+              "impressions": 320,
+              "clicks": 17,
+              "spend": 5.06,
+              "conversions": 0,
+              "reach": 165,
+              "ctr": 0.0531,
+              "cpc": 0.3,
+              "cpm": 15.81
+            },
+            {
+              "date": "2026-03-24",
+              "impressions": 461,
+              "clicks": 24,
+              "spend": 7.29,
+              "conversions": 0,
+              "reach": 228,
+              "ctr": 0.0521,
+              "cpc": 0.3,
+              "cpm": 15.81
+            },
+            {
+              "date": "2026-03-25",
+              "impressions": 602,
+              "clicks": 31,
+              "spend": 9.51,
+              "conversions": 0,
+              "reach": 335,
+              "ctr": 0.0515,
+              "cpc": 0.31,
+              "cpm": 15.8
+            },
+            {
+              "date": "2026-03-26",
+              "impressions": 507,
+              "clicks": 26,
+              "spend": 8.01,
+              "conversions": 0,
+              "reach": 285,
+              "ctr": 0.0513,
+              "cpc": 0.31,
+              "cpm": 15.8
+            },
+            {
+              "date": "2026-03-27",
+              "impressions": 433,
+              "clicks": 23,
+              "spend": 6.84,
+              "conversions": 0,
+              "reach": 190,
+              "ctr": 0.0531,
+              "cpc": 0.3,
+              "cpm": 15.8
+            },
+            {
+              "date": "2026-03-28",
+              "impressions": 411,
+              "clicks": 21,
+              "spend": 6.49,
+              "conversions": 0,
+              "reach": 172,
+              "ctr": 0.0511,
+              "cpc": 0.31,
+              "cpm": 15.79
+            },
+            {
+              "date": "2026-03-29",
+              "impressions": 289,
+              "clicks": 15,
+              "spend": 4.57,
+              "conversions": 0,
+              "reach": 141,
+              "ctr": 0.0519,
+              "cpc": 0.3,
+              "cpm": 15.81
+            },
+            {
+              "date": "2026-03-30",
+              "impressions": 287,
+              "clicks": 15,
+              "spend": 4.54,
+              "conversions": 0,
+              "reach": 139,
+              "ctr": 0.0523,
+              "cpc": 0.3,
+              "cpm": 15.82
+            }
+          ]
         }
       },
       "blended": {
@@ -104,9 +1148,152 @@
         "avg_cpc": 0.3,
         "avg_cpm": 15.8,
         "cost_per_conversion": 199.52,
-        "roas": 0
+        "roas": 0.0,
+        "total_conversion_value": 0,
+        "cac": 0,
+        "avg_ticket": 8000,
+        "ltv_estimated": 20000.0,
+        "ltv_cac_ratio": 0,
+        "payback_meses": 0.0,
+        "total_sales": 0,
+        "cpl": 199.52,
+        "conversion_rate_lead_to_sale": 4.0
       },
-      "last_synced_at": "2026-04-23T10:30:00Z"
+      "last_synced_at": "2026-04-23T10:30:00Z",
+      "monthly_history": [
+        {
+          "month": "2025-10",
+          "label": "Outubro/2025",
+          "spend": 158.04,
+          "impressions": 10004,
+          "clicks": 523,
+          "conversions": 1,
+          "ctr": 0.0523,
+          "cpc": 0.3,
+          "cost_per_conversion": 158.04,
+          "partial": false,
+          "sales": 0,
+          "conversion_value": 0,
+          "roas": 0.0
+        },
+        {
+          "month": "2025-11",
+          "label": "Novembro/2025",
+          "spend": 179.11,
+          "impressions": 11338,
+          "clicks": 592,
+          "conversions": 1,
+          "ctr": 0.0522,
+          "cpc": 0.3,
+          "cost_per_conversion": 179.11,
+          "partial": false,
+          "sales": 0,
+          "conversion_value": 0,
+          "roas": 0.0
+        },
+        {
+          "month": "2025-12",
+          "label": "Dezembro/2025",
+          "spend": 184.71,
+          "impressions": 11692,
+          "clicks": 611,
+          "conversions": 1,
+          "ctr": 0.0523,
+          "cpc": 0.3,
+          "cost_per_conversion": 184.71,
+          "partial": false,
+          "sales": 0,
+          "conversion_value": 0,
+          "roas": 0.0
+        },
+        {
+          "month": "2026-01",
+          "label": "Janeiro/2026",
+          "spend": 210.22,
+          "impressions": 13307,
+          "clicks": 695,
+          "conversions": 1,
+          "ctr": 0.0522,
+          "cpc": 0.3,
+          "cost_per_conversion": 210.22,
+          "partial": false,
+          "sales": 0,
+          "conversion_value": 0,
+          "roas": 0.0
+        },
+        {
+          "month": "2026-02",
+          "label": "Fevereiro/2026",
+          "spend": 168.46,
+          "impressions": 10664,
+          "clicks": 557,
+          "conversions": 1,
+          "ctr": 0.0522,
+          "cpc": 0.3,
+          "cost_per_conversion": 168.46,
+          "partial": false,
+          "sales": 0,
+          "conversion_value": 0,
+          "roas": 0.0
+        },
+        {
+          "month": "2026-03",
+          "label": "Março/2026",
+          "spend": 193.69,
+          "impressions": 12261,
+          "clicks": 641,
+          "conversions": 1,
+          "ctr": 0.0523,
+          "cpc": 0.3,
+          "cost_per_conversion": 193.69,
+          "partial": true,
+          "sales": 0,
+          "conversion_value": 0,
+          "roas": 0.0
+        }
+      ],
+      "goals": {
+        "spend": {
+          "target": 229.45,
+          "actual": 199.52,
+          "period": "2026-03"
+        },
+        "leads": {
+          "target": 1,
+          "actual": 1,
+          "period": "2026-03"
+        },
+        "roas": {
+          "target": 0.0,
+          "actual": 0.0,
+          "period": "2026-03"
+        },
+        "sales": {
+          "target": 0,
+          "actual": 0,
+          "period": "2026-03"
+        }
+      },
+      "ai_insights": [
+        {
+          "type": "warning",
+          "priority": "urgent",
+          "title": "ROAS abaixo do benchmark do nicho",
+          "description": "ROAS atual de 0.0x está 100.0% abaixo da média do setor (5.0x). Revisar criativos, segmentação e qualificação de leads na primeira ligação."
+        },
+        {
+          "type": "positive",
+          "priority": "normal",
+          "title": "Payback rápido (0.0 meses)",
+          "description": "Você recupera o custo de aquisição em menos de 3 meses. Excelente liquidez de caixa pra reinvestir."
+        },
+        {
+          "type": "info",
+          "priority": "normal",
+          "title": "🟢 Meta de leads: 100% atingida",
+          "description": "Faltam 0 leads pra bater meta de 1. Restam X dias úteis do mês."
+        }
+      ]
     },
     "dr-euvaldo-tomaz": {
       "client_slug": "dr-euvaldo-tomaz",
@@ -130,19 +1317,454 @@
             "clicks": 299,
             "spend": 811.19,
             "conversions": 38,
-            "conversion_value": 0,
+            "conversion_value": 4550,
             "ctr": 0.0087,
             "cpc": 2.71,
             "cpm": 23.69,
             "cost_per_conversion": 21.347105263157896,
-            "roas": 0,
+            "roas": 5.61,
             "reach": 18815,
             "frequency": 1.82,
             "active_campaigns": 2,
-            "total_campaigns": 2
+            "total_campaigns": 2,
+            "sales": 13,
+            "cost_per_sale": 62.4,
+            "conversion_rate_lead_to_sale": 0.35
           },
-          "campaigns": [],
-          "daily": []
+          "campaigns": [
+            {
+              "id": "cam_dr-euv_001",
+              "name": "Consultas Geral",
+              "status": "paused",
+              "status_raw": "ENABLED",
+              "platform": "meta_ads",
+              "objective": "LEAD_GENERATION",
+              "campaign_type": "CONVERSIONS",
+              "start_date": "2026-01-15",
+              "budget_daily": 10.32,
+              "metrics": {
+                "impressions": 13069,
+                "clicks": 114,
+                "spend": 309.6,
+                "conversions": 15,
+                "conversion_value": 2100,
+                "ctr": 0.0087,
+                "cpc": 2.72,
+                "cpm": 23.69,
+                "cost_per_conversion": 20.64,
+                "roas": 6.78,
+                "sales": 6,
+                "cost_per_sale": 51.6
+              }
+            },
+            {
+              "id": "cam_dr-euv_002",
+              "name": "Procedimentos Premium",
+              "status": "enabled",
+              "status_raw": "ENABLED",
+              "platform": "meta_ads",
+              "objective": "TRAFFIC",
+              "campaign_type": "LEAD_GENERATION",
+              "start_date": "2026-01-15",
+              "budget_daily": 4.03,
+              "metrics": {
+                "impressions": 5101,
+                "clicks": 45,
+                "spend": 120.84,
+                "conversions": 6,
+                "conversion_value": 700,
+                "ctr": 0.0088,
+                "cpc": 2.69,
+                "cpm": 23.69,
+                "cost_per_conversion": 20.14,
+                "roas": 5.79,
+                "sales": 2,
+                "cost_per_sale": 60.42
+              }
+            },
+            {
+              "id": "cam_dr-euv_003",
+              "name": "Convênios Aceitos",
+              "status": "enabled",
+              "status_raw": "ENABLED",
+              "platform": "meta_ads",
+              "objective": "REACH",
+              "campaign_type": "CONVERSIONS",
+              "start_date": "2026-01-15",
+              "budget_daily": 4.78,
+              "metrics": {
+                "impressions": 6050,
+                "clicks": 53,
+                "spend": 143.32,
+                "conversions": 7,
+                "conversion_value": 700,
+                "ctr": 0.0088,
+                "cpc": 2.7,
+                "cpm": 23.69,
+                "cost_per_conversion": 20.47,
+                "roas": 4.88,
+                "sales": 2,
+                "cost_per_sale": 71.66
+              }
+            },
+            {
+              "id": "cam_dr-euv_004",
+              "name": "Convertendo Lookalike",
+              "status": "enabled",
+              "status_raw": "ENABLED",
+              "platform": "meta_ads",
+              "objective": "REACH",
+              "campaign_type": "LEAD_GENERATION",
+              "start_date": "2026-01-15",
+              "budget_daily": 7.91,
+              "metrics": {
+                "impressions": 10023,
+                "clicks": 88,
+                "spend": 237.43,
+                "conversions": 11,
+                "conversion_value": 1750,
+                "ctr": 0.0088,
+                "cpc": 2.7,
+                "cpm": 23.69,
+                "cost_per_conversion": 21.58,
+                "roas": 7.37,
+                "sales": 5,
+                "cost_per_sale": 47.49
+              }
+            }
+          ],
+          "daily": [
+            {
+              "date": "2026-03-01",
+              "impressions": 827,
+              "clicks": 7,
+              "spend": 19.58,
+              "conversions": 1,
+              "reach": 433,
+              "ctr": 0.0085,
+              "cpc": 2.8,
+              "cpm": 23.68
+            },
+            {
+              "date": "2026-03-02",
+              "impressions": 783,
+              "clicks": 7,
+              "spend": 18.54,
+              "conversions": 1,
+              "reach": 379,
+              "ctr": 0.0089,
+              "cpc": 2.65,
+              "cpm": 23.68
+            },
+            {
+              "date": "2026-03-03",
+              "impressions": 1436,
+              "clicks": 13,
+              "spend": 34.01,
+              "conversions": 2,
+              "reach": 742,
+              "ctr": 0.0091,
+              "cpc": 2.62,
+              "cpm": 23.68
+            },
+            {
+              "date": "2026-03-04",
+              "impressions": 1424,
+              "clicks": 12,
+              "spend": 33.73,
+              "conversions": 2,
+              "reach": 718,
+              "ctr": 0.0084,
+              "cpc": 2.81,
+              "cpm": 23.69
+            },
+            {
+              "date": "2026-03-05",
+              "impressions": 1351,
+              "clicks": 12,
+              "spend": 32.01,
+              "conversions": 1,
+              "reach": 793,
+              "ctr": 0.0089,
+              "cpc": 2.67,
+              "cpm": 23.69
+            },
+            {
+              "date": "2026-03-06",
+              "impressions": 1436,
+              "clicks": 13,
+              "spend": 34.02,
+              "conversions": 2,
+              "reach": 633,
+              "ctr": 0.0091,
+              "cpc": 2.62,
+              "cpm": 23.69
+            },
+            {
+              "date": "2026-03-07",
+              "impressions": 1243,
+              "clicks": 11,
+              "spend": 29.45,
+              "conversions": 1,
+              "reach": 675,
+              "ctr": 0.0088,
+              "cpc": 2.68,
+              "cpm": 23.69
+            },
+            {
+              "date": "2026-03-08",
+              "impressions": 734,
+              "clicks": 6,
+              "spend": 17.38,
+              "conversions": 1,
+              "reach": 329,
+              "ctr": 0.0082,
+              "cpc": 2.9,
+              "cpm": 23.68
+            },
+            {
+              "date": "2026-03-09",
+              "impressions": 897,
+              "clicks": 8,
+              "spend": 21.25,
+              "conversions": 1,
+              "reach": 430,
+              "ctr": 0.0089,
+              "cpc": 2.66,
+              "cpm": 23.69
+            },
+            {
+              "date": "2026-03-10",
+              "impressions": 1186,
+              "clicks": 10,
+              "spend": 28.09,
+              "conversions": 1,
+              "reach": 634,
+              "ctr": 0.0084,
+              "cpc": 2.81,
+              "cpm": 23.68
+            },
+            {
+              "date": "2026-03-11",
+              "impressions": 1355,
+              "clicks": 12,
+              "spend": 32.1,
+              "conversions": 2,
+              "reach": 623,
+              "ctr": 0.0089,
+              "cpc": 2.68,
+              "cpm": 23.69
+            },
+            {
+              "date": "2026-03-12",
+              "impressions": 1578,
+              "clicks": 14,
+              "spend": 37.37,
+              "conversions": 2,
+              "reach": 731,
+              "ctr": 0.0089,
+              "cpc": 2.67,
+              "cpm": 23.68
+            },
+            {
+              "date": "2026-03-13",
+              "impressions": 1293,
+              "clicks": 11,
+              "spend": 30.62,
+              "conversions": 1,
+              "reach": 712,
+              "ctr": 0.0085,
+              "cpc": 2.78,
+              "cpm": 23.68
+            },
+            {
+              "date": "2026-03-14",
+              "impressions": 1096,
+              "clicks": 10,
+              "spend": 25.96,
+              "conversions": 1,
+              "reach": 454,
+              "ctr": 0.0091,
+              "cpc": 2.6,
+              "cpm": 23.69
+            },
+            {
+              "date": "2026-03-15",
+              "impressions": 775,
+              "clicks": 7,
+              "spend": 18.37,
+              "conversions": 1,
+              "reach": 381,
+              "ctr": 0.009,
+              "cpc": 2.62,
+              "cpm": 23.7
+            },
+            {
+              "date": "2026-03-16",
+              "impressions": 730,
+              "clicks": 6,
+              "spend": 17.29,
+              "conversions": 1,
+              "reach": 438,
+              "ctr": 0.0082,
+              "cpc": 2.88,
+              "cpm": 23.68
+            },
+            {
+              "date": "2026-03-17",
+              "impressions": 1356,
+              "clicks": 12,
+              "spend": 32.13,
+              "conversions": 2,
+              "reach": 813,
+              "ctr": 0.0088,
+              "cpc": 2.68,
+              "cpm": 23.69
+            },
+            {
+              "date": "2026-03-18",
+              "impressions": 1444,
+              "clicks": 13,
+              "spend": 34.22,
+              "conversions": 2,
+              "reach": 599,
+              "ctr": 0.009,
+              "cpc": 2.63,
+              "cpm": 23.7
+            },
+            {
+              "date": "2026-03-19",
+              "impressions": 1529,
+              "clicks": 13,
+              "spend": 36.23,
+              "conversions": 2,
+              "reach": 677,
+              "ctr": 0.0085,
+              "cpc": 2.79,
+              "cpm": 23.7
+            },
+            {
+              "date": "2026-03-20",
+              "impressions": 1133,
+              "clicks": 10,
+              "spend": 26.84,
+              "conversions": 1,
+              "reach": 513,
+              "ctr": 0.0088,
+              "cpc": 2.68,
+              "cpm": 23.69
+            },
+            {
+              "date": "2026-03-21",
+              "impressions": 1232,
+              "clicks": 11,
+              "spend": 29.18,
+              "conversions": 1,
+              "reach": 723,
+              "ctr": 0.0089,
+              "cpc": 2.65,
+              "cpm": 23.69
+            },
+            {
+              "date": "2026-03-22",
+              "impressions": 631,
+              "clicks": 6,
+              "spend": 14.94,
+              "conversions": 1,
+              "reach": 364,
+              "ctr": 0.0095,
+              "cpc": 2.49,
+              "cpm": 23.68
+            },
+            {
+              "date": "2026-03-23",
+              "impressions": 763,
+              "clicks": 7,
+              "spend": 18.06,
+              "conversions": 1,
+              "reach": 439,
+              "ctr": 0.0092,
+              "cpc": 2.58,
+              "cpm": 23.67
+            },
+            {
+              "date": "2026-03-24",
+              "impressions": 1361,
+              "clicks": 12,
+              "spend": 32.23,
+              "conversions": 2,
+              "reach": 645,
+              "ctr": 0.0088,
+              "cpc": 2.69,
+              "cpm": 23.68
+            },
+            {
+              "date": "2026-03-25",
+              "impressions": 1519,
+              "clicks": 13,
+              "spend": 35.98,
+              "conversions": 2,
+              "reach": 656,
+              "ctr": 0.0086,
+              "cpc": 2.77,
+              "cpm": 23.69
+            },
+            {
+              "date": "2026-03-26",
+              "impressions": 1273,
+              "clicks": 11,
+              "spend": 30.16,
+              "conversions": 1,
+              "reach": 721,
+              "ctr": 0.0086,
+              "cpc": 2.74,
+              "cpm": 23.69
+            },
+            {
+              "date": "2026-03-27",
+              "impressions": 1119,
+              "clicks": 10,
+              "spend": 26.5,
+              "conversions": 1,
+              "reach": 605,
+              "ctr": 0.0089,
+              "cpc": 2.65,
+              "cpm": 23.68
+            },
+            {
+              "date": "2026-03-28",
+              "impressions": 1209,
+              "clicks": 11,
+              "spend": 28.64,
+              "conversions": 1,
+              "reach": 632,
+              "ctr": 0.0091,
+              "cpc": 2.6,
+              "cpm": 23.69
+            },
+            {
+              "date": "2026-03-29",
+              "impressions": 667,
+              "clicks": 6,
+              "spend": 15.79,
+              "conversions": 1,
+              "reach": 398,
+              "ctr": 0.009,
+              "cpc": 2.63,
+              "cpm": 23.67
+            },
+            {
+              "date": "2026-03-30",
+              "impressions": 866,
+              "clicks": 8,
+              "spend": 20.51,
+              "conversions": 1,
+              "reach": 460,
+              "ctr": 0.0092,
+              "cpc": 2.56,
+              "cpm": 23.68
+            }
+          ]
         }
       },
       "blended": {
@@ -155,9 +1777,158 @@
         "avg_cpc": 2.71,
         "avg_cpm": 23.69,
         "cost_per_conversion": 21.347105263157896,
-        "roas": 0
+        "roas": 5.61,
+        "total_conversion_value": 4550,
+        "cac": 62.4,
+        "avg_ticket": 350,
+        "ltv_estimated": 875.0,
+        "ltv_cac_ratio": 14.02,
+        "payback_meses": 0.6,
+        "total_sales": 13,
+        "cpl": 21.35,
+        "conversion_rate_lead_to_sale": 35.0
       },
-      "last_synced_at": "2026-04-23T10:30:00Z"
+      "last_synced_at": "2026-04-23T10:30:00Z",
+      "monthly_history": [
+        {
+          "month": "2025-10",
+          "label": "Outubro/2025",
+          "spend": 553.13,
+          "impressions": 23350,
+          "clicks": 204,
+          "conversions": 26,
+          "ctr": 0.0087,
+          "cpc": 2.71,
+          "cost_per_conversion": 21.27,
+          "partial": false,
+          "sales": 9,
+          "conversion_value": 3150,
+          "roas": 5.69
+        },
+        {
+          "month": "2025-11",
+          "label": "Novembro/2025",
+          "spend": 746.22,
+          "impressions": 31501,
+          "clicks": 275,
+          "conversions": 35,
+          "ctr": 0.0087,
+          "cpc": 2.71,
+          "cost_per_conversion": 21.32,
+          "partial": false,
+          "sales": 11,
+          "conversion_value": 3850,
+          "roas": 5.16
+        },
+        {
+          "month": "2025-12",
+          "label": "Dezembro/2025",
+          "spend": 670.88,
+          "impressions": 28321,
+          "clicks": 247,
+          "conversions": 31,
+          "ctr": 0.0087,
+          "cpc": 2.72,
+          "cost_per_conversion": 21.64,
+          "partial": false,
+          "sales": 10,
+          "conversion_value": 3500,
+          "roas": 5.22
+        },
+        {
+          "month": "2026-01",
+          "label": "Janeiro/2026",
+          "spend": 782.88,
+          "impressions": 33049,
+          "clicks": 289,
+          "conversions": 37,
+          "ctr": 0.0087,
+          "cpc": 2.71,
+          "cost_per_conversion": 21.16,
+          "partial": false,
+          "sales": 14,
+          "conversion_value": 4900,
+          "roas": 6.26
+        },
+        {
+          "month": "2026-02",
+          "label": "Fevereiro/2026",
+          "spend": 881.29,
+          "impressions": 37203,
+          "clicks": 325,
+          "conversions": 41,
+          "ctr": 0.0087,
+          "cpc": 2.71,
+          "cost_per_conversion": 21.49,
+          "partial": false,
+          "sales": 15,
+          "conversion_value": 5250,
+          "roas": 5.96
+        },
+        {
+          "month": "2026-03",
+          "label": "Março/2026",
+          "spend": 722.19,
+          "impressions": 30487,
+          "clicks": 266,
+          "conversions": 34,
+          "ctr": 0.0087,
+          "cpc": 2.72,
+          "cost_per_conversion": 21.24,
+          "partial": true,
+          "sales": 13,
+          "conversion_value": 4550,
+          "roas": 6.3
+        }
+      ],
+      "goals": {
+        "spend": {
+          "target": 932.87,
+          "actual": 811.19,
+          "period": "2026-03"
+        },
+        "leads": {
+          "target": 46,
+          "actual": 38,
+          "period": "2026-03"
+        },
+        "roas": {
+          "target": 6.2,
+          "actual": 5.61,
+          "period": "2026-03"
+        },
+        "sales": {
+          "target": 15,
+          "actual": 13,
+          "period": "2026-03"
+        }
+      },
+      "ai_insights": [
+        {
+          "type": "positive",
+          "priority": "high",
+          "title": "ROAS 5.61x acima do benchmark do nicho",
+          "description": "Performance está 47.6% acima da média do setor (3.8x). Hora de escalar budget nas campanhas top — provável upside de 20-30% se aumentar 50% o investimento."
+        },
+        {
+          "type": "positive",
+          "priority": "normal",
+          "title": "LTV:CAC saudável (14.02x)",
+          "description": "Cada R$ 1 investido em aquisição retorna R$ 14.0 ao longo da vida do cliente. Acima de 3x é considerado saudável."
+        },
+        {
+          "type": "positive",
+          "priority": "normal",
+          "title": "Payback rápido (0.6 meses)",
+          "description": "Você recupera o custo de aquisição em menos de 3 meses. Excelente liquidez de caixa pra reinvestir."
+        },
+        {
+          "type": "info",
+          "priority": "normal",
+          "title": "🟡 Meta de leads: 83% atingida",
+          "description": "Faltam 8 leads pra bater meta de 46. Restam X dias úteis do mês."
+        }
+      ]
     },
     "escola-pequeno-aprendiz": {
       "client_slug": "escola-pequeno-aprendiz",
@@ -181,19 +1952,429 @@
             "clicks": 1083,
             "spend": 1656.01,
             "conversions": 124,
-            "conversion_value": 0,
+            "conversion_value": 36000,
             "ctr": 0.0034999999999999996,
             "cpc": 1.53,
             "cpm": 5.41,
             "cost_per_conversion": 13.35491935483871,
-            "roas": 0,
+            "roas": 21.74,
             "reach": 161886,
             "frequency": 1.89,
             "active_campaigns": 4,
-            "total_campaigns": 4
+            "total_campaigns": 4,
+            "sales": 15,
+            "cost_per_sale": 110.4,
+            "conversion_rate_lead_to_sale": 0.12
           },
-          "campaigns": [],
-          "daily": []
+          "campaigns": [
+            {
+              "id": "cam_escola_001",
+              "name": "Matrículas 2026",
+              "status": "enabled",
+              "status_raw": "ENABLED",
+              "platform": "meta_ads",
+              "objective": "BRAND_AWARENESS",
+              "campaign_type": "TRAFFIC",
+              "start_date": "2026-01-15",
+              "budget_daily": 24.22,
+              "metrics": {
+                "impressions": 134364,
+                "clicks": 475,
+                "spend": 726.57,
+                "conversions": 54,
+                "conversion_value": 16800,
+                "ctr": 0.0035,
+                "cpc": 1.53,
+                "cpm": 5.41,
+                "cost_per_conversion": 13.46,
+                "roas": 23.12,
+                "sales": 7,
+                "cost_per_sale": 103.8
+              }
+            },
+            {
+              "id": "cam_escola_002",
+              "name": "Aulas Demonstrativas",
+              "status": "enabled",
+              "status_raw": "ENABLED",
+              "platform": "meta_ads",
+              "objective": "REACH",
+              "campaign_type": "CONVERSIONS",
+              "start_date": "2026-01-15",
+              "budget_daily": 21.3,
+              "metrics": {
+                "impressions": 118182,
+                "clicks": 418,
+                "spend": 639.07,
+                "conversions": 48,
+                "conversion_value": 14400,
+                "ctr": 0.0035,
+                "cpc": 1.53,
+                "cpm": 5.41,
+                "cost_per_conversion": 13.31,
+                "roas": 22.53,
+                "sales": 6,
+                "cost_per_sale": 106.51
+              }
+            },
+            {
+              "id": "cam_escola_003",
+              "name": "Reativação Ex-Alunos",
+              "status": "enabled",
+              "status_raw": "ENABLED",
+              "platform": "meta_ads",
+              "objective": "CONVERSIONS",
+              "campaign_type": "TRAFFIC",
+              "start_date": "2026-01-15",
+              "budget_daily": 9.68,
+              "metrics": {
+                "impressions": 53697,
+                "clicks": 190,
+                "spend": 290.37,
+                "conversions": 22,
+                "conversion_value": 7200,
+                "ctr": 0.0035,
+                "cpc": 1.53,
+                "cpm": 5.41,
+                "cost_per_conversion": 13.2,
+                "roas": 24.8,
+                "sales": 3,
+                "cost_per_sale": 96.79
+              }
+            }
+          ],
+          "daily": [
+            {
+              "date": "2026-03-01",
+              "impressions": 6408,
+              "clicks": 23,
+              "spend": 34.65,
+              "conversions": 3,
+              "reach": 2793,
+              "ctr": 0.0036,
+              "cpc": 1.51,
+              "cpm": 5.41
+            },
+            {
+              "date": "2026-03-02",
+              "impressions": 8078,
+              "clicks": 29,
+              "spend": 43.68,
+              "conversions": 3,
+              "reach": 4725,
+              "ctr": 0.0036,
+              "cpc": 1.51,
+              "cpm": 5.41
+            },
+            {
+              "date": "2026-03-03",
+              "impressions": 12175,
+              "clicks": 43,
+              "spend": 65.84,
+              "conversions": 5,
+              "reach": 6775,
+              "ctr": 0.0035,
+              "cpc": 1.53,
+              "cpm": 5.41
+            },
+            {
+              "date": "2026-03-04",
+              "impressions": 11525,
+              "clicks": 41,
+              "spend": 62.32,
+              "conversions": 5,
+              "reach": 5559,
+              "ctr": 0.0036,
+              "cpc": 1.52,
+              "cpm": 5.41
+            },
+            {
+              "date": "2026-03-05",
+              "impressions": 14169,
+              "clicks": 50,
+              "spend": 76.62,
+              "conversions": 6,
+              "reach": 7566,
+              "ctr": 0.0035,
+              "cpc": 1.53,
+              "cpm": 5.41
+            },
+            {
+              "date": "2026-03-06",
+              "impressions": 12067,
+              "clicks": 43,
+              "spend": 65.25,
+              "conversions": 5,
+              "reach": 6601,
+              "ctr": 0.0036,
+              "cpc": 1.52,
+              "cpm": 5.41
+            },
+            {
+              "date": "2026-03-07",
+              "impressions": 8753,
+              "clicks": 31,
+              "spend": 47.33,
+              "conversions": 4,
+              "reach": 3936,
+              "ctr": 0.0035,
+              "cpc": 1.53,
+              "cpm": 5.41
+            },
+            {
+              "date": "2026-03-08",
+              "impressions": 5614,
+              "clicks": 20,
+              "spend": 30.36,
+              "conversions": 2,
+              "reach": 2424,
+              "ctr": 0.0036,
+              "cpc": 1.52,
+              "cpm": 5.41
+            },
+            {
+              "date": "2026-03-09",
+              "impressions": 7310,
+              "clicks": 26,
+              "spend": 39.53,
+              "conversions": 3,
+              "reach": 3949,
+              "ctr": 0.0036,
+              "cpc": 1.52,
+              "cpm": 5.41
+            },
+            {
+              "date": "2026-03-10",
+              "impressions": 12145,
+              "clicks": 43,
+              "spend": 65.67,
+              "conversions": 5,
+              "reach": 5787,
+              "ctr": 0.0035,
+              "cpc": 1.53,
+              "cpm": 5.41
+            },
+            {
+              "date": "2026-03-11",
+              "impressions": 12769,
+              "clicks": 45,
+              "spend": 69.05,
+              "conversions": 5,
+              "reach": 5206,
+              "ctr": 0.0035,
+              "cpc": 1.53,
+              "cpm": 5.41
+            },
+            {
+              "date": "2026-03-12",
+              "impressions": 10782,
+              "clicks": 38,
+              "spend": 58.3,
+              "conversions": 4,
+              "reach": 5328,
+              "ctr": 0.0035,
+              "cpc": 1.53,
+              "cpm": 5.41
+            },
+            {
+              "date": "2026-03-13",
+              "impressions": 10950,
+              "clicks": 39,
+              "spend": 59.21,
+              "conversions": 4,
+              "reach": 4817,
+              "ctr": 0.0036,
+              "cpc": 1.52,
+              "cpm": 5.41
+            },
+            {
+              "date": "2026-03-14",
+              "impressions": 11054,
+              "clicks": 39,
+              "spend": 59.77,
+              "conversions": 4,
+              "reach": 6452,
+              "ctr": 0.0035,
+              "cpc": 1.53,
+              "cpm": 5.41
+            },
+            {
+              "date": "2026-03-15",
+              "impressions": 7446,
+              "clicks": 26,
+              "spend": 40.26,
+              "conversions": 3,
+              "reach": 3499,
+              "ctr": 0.0035,
+              "cpc": 1.55,
+              "cpm": 5.41
+            },
+            {
+              "date": "2026-03-16",
+              "impressions": 6559,
+              "clicks": 23,
+              "spend": 35.47,
+              "conversions": 3,
+              "reach": 3700,
+              "ctr": 0.0035,
+              "cpc": 1.54,
+              "cpm": 5.41
+            },
+            {
+              "date": "2026-03-17",
+              "impressions": 11447,
+              "clicks": 40,
+              "spend": 61.9,
+              "conversions": 5,
+              "reach": 6574,
+              "ctr": 0.0035,
+              "cpc": 1.55,
+              "cpm": 5.41
+            },
+            {
+              "date": "2026-03-18",
+              "impressions": 13756,
+              "clicks": 49,
+              "spend": 74.39,
+              "conversions": 6,
+              "reach": 6116,
+              "ctr": 0.0036,
+              "cpc": 1.52,
+              "cpm": 5.41
+            },
+            {
+              "date": "2026-03-19",
+              "impressions": 13126,
+              "clicks": 46,
+              "spend": 70.98,
+              "conversions": 5,
+              "reach": 6983,
+              "ctr": 0.0035,
+              "cpc": 1.54,
+              "cpm": 5.41
+            },
+            {
+              "date": "2026-03-20",
+              "impressions": 10912,
+              "clicks": 39,
+              "spend": 59.01,
+              "conversions": 4,
+              "reach": 5234,
+              "ctr": 0.0036,
+              "cpc": 1.51,
+              "cpm": 5.41
+            },
+            {
+              "date": "2026-03-21",
+              "impressions": 9959,
+              "clicks": 35,
+              "spend": 53.85,
+              "conversions": 4,
+              "reach": 4539,
+              "ctr": 0.0035,
+              "cpc": 1.54,
+              "cpm": 5.41
+            },
+            {
+              "date": "2026-03-22",
+              "impressions": 7255,
+              "clicks": 26,
+              "spend": 39.23,
+              "conversions": 3,
+              "reach": 3003,
+              "ctr": 0.0036,
+              "cpc": 1.51,
+              "cpm": 5.41
+            },
+            {
+              "date": "2026-03-23",
+              "impressions": 8690,
+              "clicks": 31,
+              "spend": 46.99,
+              "conversions": 4,
+              "reach": 4820,
+              "ctr": 0.0036,
+              "cpc": 1.52,
+              "cpm": 5.41
+            },
+            {
+              "date": "2026-03-24",
+              "impressions": 12852,
+              "clicks": 45,
+              "spend": 69.5,
+              "conversions": 5,
+              "reach": 6043,
+              "ctr": 0.0035,
+              "cpc": 1.54,
+              "cpm": 5.41
+            },
+            {
+              "date": "2026-03-25",
+              "impressions": 14710,
+              "clicks": 52,
+              "spend": 79.54,
+              "conversions": 6,
+              "reach": 7383,
+              "ctr": 0.0035,
+              "cpc": 1.53,
+              "cpm": 5.41
+            },
+            {
+              "date": "2026-03-26",
+              "impressions": 11513,
+              "clicks": 41,
+              "spend": 62.26,
+              "conversions": 5,
+              "reach": 6170,
+              "ctr": 0.0036,
+              "cpc": 1.52,
+              "cpm": 5.41
+            },
+            {
+              "date": "2026-03-27",
+              "impressions": 10258,
+              "clicks": 36,
+              "spend": 55.47,
+              "conversions": 4,
+              "reach": 5834,
+              "ctr": 0.0035,
+              "cpc": 1.54,
+              "cpm": 5.41
+            },
+            {
+              "date": "2026-03-28",
+              "impressions": 10663,
+              "clicks": 38,
+              "spend": 57.66,
+              "conversions": 4,
+              "reach": 4971,
+              "ctr": 0.0036,
+              "cpc": 1.52,
+              "cpm": 5.41
+            },
+            {
+              "date": "2026-03-29",
+              "impressions": 5890,
+              "clicks": 21,
+              "spend": 31.85,
+              "conversions": 2,
+              "reach": 2389,
+              "ctr": 0.0036,
+              "cpc": 1.52,
+              "cpm": 5.41
+            },
+            {
+              "date": "2026-03-30",
+              "impressions": 7409,
+              "clicks": 26,
+              "spend": 40.06,
+              "conversions": 3,
+              "reach": 4263,
+              "ctr": 0.0035,
+              "cpc": 1.54,
+              "cpm": 5.41
+            }
+          ]
         }
       },
       "blended": {
@@ -206,9 +2387,158 @@
         "avg_cpc": 1.53,
         "avg_cpm": 5.41,
         "cost_per_conversion": 13.35491935483871,
-        "roas": 0
+        "roas": 21.74,
+        "total_conversion_value": 36000,
+        "cac": 110.4,
+        "avg_ticket": 2400,
+        "ltv_estimated": 6000.0,
+        "ltv_cac_ratio": 54.35,
+        "payback_meses": 0.2,
+        "total_sales": 15,
+        "cpl": 13.35,
+        "conversion_rate_lead_to_sale": 12.0
       },
-      "last_synced_at": "2026-04-23T10:30:00Z"
+      "last_synced_at": "2026-04-23T10:30:00Z",
+      "monthly_history": [
+        {
+          "month": "2025-10",
+          "label": "Outubro/2025",
+          "spend": 1229.9,
+          "impressions": 227444,
+          "clicks": 804,
+          "conversions": 92,
+          "ctr": 0.0035,
+          "cpc": 1.53,
+          "cost_per_conversion": 13.37,
+          "partial": false,
+          "sales": 11,
+          "conversion_value": 26400,
+          "roas": 21.47
+        },
+        {
+          "month": "2025-11",
+          "label": "Novembro/2025",
+          "spend": 1424.68,
+          "impressions": 263463,
+          "clicks": 932,
+          "conversions": 107,
+          "ctr": 0.0035,
+          "cpc": 1.53,
+          "cost_per_conversion": 13.31,
+          "partial": false,
+          "sales": 13,
+          "conversion_value": 31200,
+          "roas": 21.9
+        },
+        {
+          "month": "2025-12",
+          "label": "Dezembro/2025",
+          "spend": 1668.69,
+          "impressions": 308588,
+          "clicks": 1091,
+          "conversions": 125,
+          "ctr": 0.0035,
+          "cpc": 1.53,
+          "cost_per_conversion": 13.35,
+          "partial": false,
+          "sales": 16,
+          "conversion_value": 38400,
+          "roas": 23.01
+        },
+        {
+          "month": "2026-01",
+          "label": "Janeiro/2026",
+          "spend": 1312.49,
+          "impressions": 242716,
+          "clicks": 858,
+          "conversions": 98,
+          "ctr": 0.0035,
+          "cpc": 1.53,
+          "cost_per_conversion": 13.39,
+          "partial": false,
+          "sales": 12,
+          "conversion_value": 28800,
+          "roas": 21.94
+        },
+        {
+          "month": "2026-02",
+          "label": "Fevereiro/2026",
+          "spend": 1635.83,
+          "impressions": 302511,
+          "clicks": 1070,
+          "conversions": 122,
+          "ctr": 0.0035,
+          "cpc": 1.53,
+          "cost_per_conversion": 13.41,
+          "partial": false,
+          "sales": 16,
+          "conversion_value": 38400,
+          "roas": 23.47
+        },
+        {
+          "month": "2026-03",
+          "label": "Março/2026",
+          "spend": 1579.35,
+          "impressions": 292066,
+          "clicks": 1033,
+          "conversions": 118,
+          "ctr": 0.0035,
+          "cpc": 1.53,
+          "cost_per_conversion": 13.38,
+          "partial": true,
+          "sales": 14,
+          "conversion_value": 33600,
+          "roas": 21.27
+        }
+      ],
+      "goals": {
+        "spend": {
+          "target": 1904.41,
+          "actual": 1656.01,
+          "period": "2026-03"
+        },
+        "leads": {
+          "target": 149,
+          "actual": 124,
+          "period": "2026-03"
+        },
+        "roas": {
+          "target": 23.9,
+          "actual": 21.74,
+          "period": "2026-03"
+        },
+        "sales": {
+          "target": 17,
+          "actual": 15,
+          "period": "2026-03"
+        }
+      },
+      "ai_insights": [
+        {
+          "type": "positive",
+          "priority": "high",
+          "title": "ROAS 21.74x acima do benchmark do nicho",
+          "description": "Performance está 334.8% acima da média do setor (5.0x). Hora de escalar budget nas campanhas top — provável upside de 20-30% se aumentar 50% o investimento."
+        },
+        {
+          "type": "positive",
+          "priority": "normal",
+          "title": "LTV:CAC saudável (54.35x)",
+          "description": "Cada R$ 1 investido em aquisição retorna R$ 54.4 ao longo da vida do cliente. Acima de 3x é considerado saudável."
+        },
+        {
+          "type": "positive",
+          "priority": "normal",
+          "title": "Payback rápido (0.2 meses)",
+          "description": "Você recupera o custo de aquisição em menos de 3 meses. Excelente liquidez de caixa pra reinvestir."
+        },
+        {
+          "type": "info",
+          "priority": "normal",
+          "title": "🟡 Meta de leads: 83% atingida",
+          "description": "Faltam 25 leads pra bater meta de 149. Restam X dias úteis do mês."
+        }
+      ]
     },
     "dra-luciana": {
       "client_slug": "dra-luciana",
@@ -232,19 +2562,454 @@
             "clicks": 746,
             "spend": 728.79,
             "conversions": 433,
-            "conversion_value": 0,
+            "conversion_value": 54600,
             "ctr": 0.029300000000000003,
             "cpc": 0.98,
             "cpm": 28.6,
             "cost_per_conversion": 1.6831177829099306,
-            "roas": 0,
+            "roas": 74.92,
             "reach": 15417,
             "frequency": 1.65,
             "active_campaigns": 1,
-            "total_campaigns": 1
+            "total_campaigns": 1,
+            "sales": 195,
+            "cost_per_sale": 3.74,
+            "conversion_rate_lead_to_sale": 0.45
           },
-          "campaigns": [],
-          "daily": []
+          "campaigns": [
+            {
+              "id": "cam_dra-lu_001",
+              "name": "Procedimento Estético A",
+              "status": "paused",
+              "status_raw": "ENABLED",
+              "platform": "meta_ads",
+              "objective": "TRAFFIC",
+              "campaign_type": "TRAFFIC",
+              "start_date": "2026-01-15",
+              "budget_daily": 4.96,
+              "metrics": {
+                "impressions": 5205,
+                "clicks": 152,
+                "spend": 148.83,
+                "conversions": 88,
+                "conversion_value": 12320,
+                "ctr": 0.0292,
+                "cpc": 0.98,
+                "cpm": 28.59,
+                "cost_per_conversion": 1.69,
+                "roas": 82.78,
+                "sales": 44,
+                "cost_per_sale": 3.38
+              }
+            },
+            {
+              "id": "cam_dra-lu_002",
+              "name": "Consulta R$ 99",
+              "status": "enabled",
+              "status_raw": "ENABLED",
+              "platform": "meta_ads",
+              "objective": "REACH",
+              "campaign_type": "LEAD_GENERATION",
+              "start_date": "2026-01-15",
+              "budget_daily": 8.49,
+              "metrics": {
+                "impressions": 8909,
+                "clicks": 261,
+                "spend": 254.76,
+                "conversions": 151,
+                "conversion_value": 13720,
+                "ctr": 0.0293,
+                "cpc": 0.98,
+                "cpm": 28.6,
+                "cost_per_conversion": 1.69,
+                "roas": 53.85,
+                "sales": 49,
+                "cost_per_sale": 5.2
+              }
+            },
+            {
+              "id": "cam_dra-lu_003",
+              "name": "Lookalike Pacientes",
+              "status": "limited",
+              "status_raw": "ENABLED",
+              "platform": "meta_ads",
+              "objective": "LEAD_GENERATION",
+              "campaign_type": "TRAFFIC",
+              "start_date": "2026-01-15",
+              "budget_daily": 2.89,
+              "metrics": {
+                "impressions": 3036,
+                "clicks": 89,
+                "spend": 86.81,
+                "conversions": 52,
+                "conversion_value": 5600,
+                "ctr": 0.0293,
+                "cpc": 0.98,
+                "cpm": 28.59,
+                "cost_per_conversion": 1.67,
+                "roas": 64.51,
+                "sales": 20,
+                "cost_per_sale": 4.34
+              }
+            },
+            {
+              "id": "cam_dra-lu_004",
+              "name": "Black Friday Saúde",
+              "status": "paused",
+              "status_raw": "ENABLED",
+              "platform": "meta_ads",
+              "objective": "REACH",
+              "campaign_type": "TRAFFIC",
+              "start_date": "2026-01-15",
+              "budget_daily": 7.95,
+              "metrics": {
+                "impressions": 8336,
+                "clicks": 244,
+                "spend": 238.38,
+                "conversions": 142,
+                "conversion_value": 15680,
+                "ctr": 0.0293,
+                "cpc": 0.98,
+                "cpm": 28.6,
+                "cost_per_conversion": 1.68,
+                "roas": 65.78,
+                "sales": 56,
+                "cost_per_sale": 4.26
+              }
+            }
+          ],
+          "daily": [
+            {
+              "date": "2026-03-01",
+              "impressions": 510,
+              "clicks": 15,
+              "spend": 14.57,
+              "conversions": 9,
+              "reach": 206,
+              "ctr": 0.0294,
+              "cpc": 0.97,
+              "cpm": 28.57
+            },
+            {
+              "date": "2026-03-02",
+              "impressions": 563,
+              "clicks": 16,
+              "spend": 16.09,
+              "conversions": 10,
+              "reach": 253,
+              "ctr": 0.0284,
+              "cpc": 1.01,
+              "cpm": 28.58
+            },
+            {
+              "date": "2026-03-03",
+              "impressions": 971,
+              "clicks": 28,
+              "spend": 27.78,
+              "conversions": 17,
+              "reach": 481,
+              "ctr": 0.0288,
+              "cpc": 0.99,
+              "cpm": 28.61
+            },
+            {
+              "date": "2026-03-04",
+              "impressions": 1229,
+              "clicks": 36,
+              "spend": 35.15,
+              "conversions": 21,
+              "reach": 700,
+              "ctr": 0.0293,
+              "cpc": 0.98,
+              "cpm": 28.6
+            },
+            {
+              "date": "2026-03-05",
+              "impressions": 1096,
+              "clicks": 32,
+              "spend": 31.34,
+              "conversions": 19,
+              "reach": 454,
+              "ctr": 0.0292,
+              "cpc": 0.98,
+              "cpm": 28.59
+            },
+            {
+              "date": "2026-03-06",
+              "impressions": 1065,
+              "clicks": 31,
+              "spend": 30.45,
+              "conversions": 18,
+              "reach": 514,
+              "ctr": 0.0291,
+              "cpc": 0.98,
+              "cpm": 28.59
+            },
+            {
+              "date": "2026-03-07",
+              "impressions": 843,
+              "clicks": 25,
+              "spend": 24.09,
+              "conversions": 14,
+              "reach": 443,
+              "ctr": 0.0297,
+              "cpc": 0.96,
+              "cpm": 28.58
+            },
+            {
+              "date": "2026-03-08",
+              "impressions": 510,
+              "clicks": 15,
+              "spend": 14.6,
+              "conversions": 9,
+              "reach": 224,
+              "ctr": 0.0294,
+              "cpc": 0.97,
+              "cpm": 28.63
+            },
+            {
+              "date": "2026-03-09",
+              "impressions": 642,
+              "clicks": 19,
+              "spend": 18.37,
+              "conversions": 11,
+              "reach": 346,
+              "ctr": 0.0296,
+              "cpc": 0.97,
+              "cpm": 28.61
+            },
+            {
+              "date": "2026-03-10",
+              "impressions": 846,
+              "clicks": 25,
+              "spend": 24.19,
+              "conversions": 14,
+              "reach": 422,
+              "ctr": 0.0296,
+              "cpc": 0.97,
+              "cpm": 28.59
+            },
+            {
+              "date": "2026-03-11",
+              "impressions": 1016,
+              "clicks": 30,
+              "spend": 29.06,
+              "conversions": 17,
+              "reach": 456,
+              "ctr": 0.0295,
+              "cpc": 0.97,
+              "cpm": 28.6
+            },
+            {
+              "date": "2026-03-12",
+              "impressions": 1019,
+              "clicks": 30,
+              "spend": 29.13,
+              "conversions": 17,
+              "reach": 541,
+              "ctr": 0.0294,
+              "cpc": 0.97,
+              "cpm": 28.59
+            },
+            {
+              "date": "2026-03-13",
+              "impressions": 973,
+              "clicks": 28,
+              "spend": 27.82,
+              "conversions": 17,
+              "reach": 390,
+              "ctr": 0.0288,
+              "cpc": 0.99,
+              "cpm": 28.59
+            },
+            {
+              "date": "2026-03-14",
+              "impressions": 852,
+              "clicks": 25,
+              "spend": 24.37,
+              "conversions": 14,
+              "reach": 469,
+              "ctr": 0.0293,
+              "cpc": 0.97,
+              "cpm": 28.6
+            },
+            {
+              "date": "2026-03-15",
+              "impressions": 537,
+              "clicks": 16,
+              "spend": 15.36,
+              "conversions": 9,
+              "reach": 298,
+              "ctr": 0.0298,
+              "cpc": 0.96,
+              "cpm": 28.6
+            },
+            {
+              "date": "2026-03-16",
+              "impressions": 622,
+              "clicks": 18,
+              "spend": 17.8,
+              "conversions": 11,
+              "reach": 262,
+              "ctr": 0.0289,
+              "cpc": 0.99,
+              "cpm": 28.62
+            },
+            {
+              "date": "2026-03-17",
+              "impressions": 910,
+              "clicks": 27,
+              "spend": 26.02,
+              "conversions": 15,
+              "reach": 441,
+              "ctr": 0.0297,
+              "cpc": 0.96,
+              "cpm": 28.59
+            },
+            {
+              "date": "2026-03-18",
+              "impressions": 1077,
+              "clicks": 32,
+              "spend": 30.8,
+              "conversions": 18,
+              "reach": 469,
+              "ctr": 0.0297,
+              "cpc": 0.96,
+              "cpm": 28.6
+            },
+            {
+              "date": "2026-03-19",
+              "impressions": 1166,
+              "clicks": 34,
+              "spend": 33.34,
+              "conversions": 20,
+              "reach": 690,
+              "ctr": 0.0292,
+              "cpc": 0.98,
+              "cpm": 28.59
+            },
+            {
+              "date": "2026-03-20",
+              "impressions": 1034,
+              "clicks": 30,
+              "spend": 29.58,
+              "conversions": 18,
+              "reach": 521,
+              "ctr": 0.029,
+              "cpc": 0.99,
+              "cpm": 28.61
+            },
+            {
+              "date": "2026-03-21",
+              "impressions": 734,
+              "clicks": 21,
+              "spend": 20.98,
+              "conversions": 12,
+              "reach": 301,
+              "ctr": 0.0286,
+              "cpc": 1.0,
+              "cpm": 28.58
+            },
+            {
+              "date": "2026-03-22",
+              "impressions": 475,
+              "clicks": 14,
+              "spend": 13.59,
+              "conversions": 8,
+              "reach": 214,
+              "ctr": 0.0295,
+              "cpc": 0.97,
+              "cpm": 28.61
+            },
+            {
+              "date": "2026-03-23",
+              "impressions": 636,
+              "clicks": 19,
+              "spend": 18.2,
+              "conversions": 11,
+              "reach": 362,
+              "ctr": 0.0299,
+              "cpc": 0.96,
+              "cpm": 28.62
+            },
+            {
+              "date": "2026-03-24",
+              "impressions": 1035,
+              "clicks": 30,
+              "spend": 29.6,
+              "conversions": 18,
+              "reach": 508,
+              "ctr": 0.029,
+              "cpc": 0.99,
+              "cpm": 28.6
+            },
+            {
+              "date": "2026-03-25",
+              "impressions": 1032,
+              "clicks": 30,
+              "spend": 29.51,
+              "conversions": 18,
+              "reach": 578,
+              "ctr": 0.0291,
+              "cpc": 0.98,
+              "cpm": 28.59
+            },
+            {
+              "date": "2026-03-26",
+              "impressions": 1140,
+              "clicks": 33,
+              "spend": 32.6,
+              "conversions": 19,
+              "reach": 608,
+              "ctr": 0.0289,
+              "cpc": 0.99,
+              "cpm": 28.6
+            },
+            {
+              "date": "2026-03-27",
+              "impressions": 1022,
+              "clicks": 30,
+              "spend": 29.21,
+              "conversions": 17,
+              "reach": 611,
+              "ctr": 0.0294,
+              "cpc": 0.97,
+              "cpm": 28.58
+            },
+            {
+              "date": "2026-03-28",
+              "impressions": 856,
+              "clicks": 25,
+              "spend": 24.49,
+              "conversions": 15,
+              "reach": 444,
+              "ctr": 0.0292,
+              "cpc": 0.98,
+              "cpm": 28.61
+            },
+            {
+              "date": "2026-03-29",
+              "impressions": 498,
+              "clicks": 15,
+              "spend": 14.24,
+              "conversions": 8,
+              "reach": 294,
+              "ctr": 0.0301,
+              "cpc": 0.95,
+              "cpm": 28.59
+            },
+            {
+              "date": "2026-03-30",
+              "impressions": 576,
+              "clicks": 17,
+              "spend": 16.48,
+              "conversions": 10,
+              "reach": 333,
+              "ctr": 0.0295,
+              "cpc": 0.97,
+              "cpm": 28.61
+            }
+          ]
         }
       },
       "blended": {
@@ -257,9 +3022,158 @@
         "avg_cpc": 0.98,
         "avg_cpm": 28.6,
         "cost_per_conversion": 1.6831177829099306,
-        "roas": 0
+        "roas": 74.92,
+        "total_conversion_value": 54600,
+        "cac": 3.74,
+        "avg_ticket": 280,
+        "ltv_estimated": 700.0,
+        "ltv_cac_ratio": 187.17,
+        "payback_meses": 0.0,
+        "total_sales": 195,
+        "cpl": 1.68,
+        "conversion_rate_lead_to_sale": 45.0
       },
-      "last_synced_at": "2026-04-23T10:30:00Z"
+      "last_synced_at": "2026-04-23T10:30:00Z",
+      "monthly_history": [
+        {
+          "month": "2025-10",
+          "label": "Outubro/2025",
+          "spend": 602.74,
+          "impressions": 21077,
+          "clicks": 617,
+          "conversions": 358,
+          "ctr": 0.0293,
+          "cpc": 0.98,
+          "cost_per_conversion": 1.68,
+          "partial": false,
+          "sales": 141,
+          "conversion_value": 39480,
+          "roas": 65.5
+        },
+        {
+          "month": "2025-11",
+          "label": "Novembro/2025",
+          "spend": 652.45,
+          "impressions": 22816,
+          "clicks": 668,
+          "conversions": 388,
+          "ctr": 0.0293,
+          "cpc": 0.98,
+          "cost_per_conversion": 1.68,
+          "partial": false,
+          "sales": 161,
+          "conversion_value": 45080,
+          "roas": 69.09
+        },
+        {
+          "month": "2025-12",
+          "label": "Dezembro/2025",
+          "spend": 642.25,
+          "impressions": 22459,
+          "clicks": 657,
+          "conversions": 382,
+          "ctr": 0.0293,
+          "cpc": 0.98,
+          "cost_per_conversion": 1.68,
+          "partial": false,
+          "sales": 151,
+          "conversion_value": 42280,
+          "roas": 65.83
+        },
+        {
+          "month": "2026-01",
+          "label": "Janeiro/2026",
+          "spend": 736.98,
+          "impressions": 25771,
+          "clicks": 754,
+          "conversions": 438,
+          "ctr": 0.0293,
+          "cpc": 0.98,
+          "cost_per_conversion": 1.68,
+          "partial": false,
+          "sales": 184,
+          "conversion_value": 51520,
+          "roas": 69.91
+        },
+        {
+          "month": "2026-02",
+          "label": "Fevereiro/2026",
+          "spend": 709.69,
+          "impressions": 24817,
+          "clicks": 726,
+          "conversions": 422,
+          "ctr": 0.0293,
+          "cpc": 0.98,
+          "cost_per_conversion": 1.68,
+          "partial": false,
+          "sales": 198,
+          "conversion_value": 55440,
+          "roas": 78.12
+        },
+        {
+          "month": "2026-03",
+          "label": "Março/2026",
+          "spend": 815.63,
+          "impressions": 28522,
+          "clicks": 835,
+          "conversions": 485,
+          "ctr": 0.0293,
+          "cpc": 0.98,
+          "cost_per_conversion": 1.68,
+          "partial": true,
+          "sales": 209,
+          "conversion_value": 58520,
+          "roas": 71.75
+        }
+      ],
+      "goals": {
+        "spend": {
+          "target": 838.11,
+          "actual": 728.79,
+          "period": "2026-03"
+        },
+        "leads": {
+          "target": 520,
+          "actual": 433,
+          "period": "2026-03"
+        },
+        "roas": {
+          "target": 82.4,
+          "actual": 74.92,
+          "period": "2026-03"
+        },
+        "sales": {
+          "target": 224,
+          "actual": 195,
+          "period": "2026-03"
+        }
+      },
+      "ai_insights": [
+        {
+          "type": "positive",
+          "priority": "high",
+          "title": "ROAS 74.92x acima do benchmark do nicho",
+          "description": "Performance está 2040.6% acima da média do setor (3.5x). Hora de escalar budget nas campanhas top — provável upside de 20-30% se aumentar 50% o investimento."
+        },
+        {
+          "type": "positive",
+          "priority": "normal",
+          "title": "LTV:CAC saudável (187.17x)",
+          "description": "Cada R$ 1 investido em aquisição retorna R$ 187.2 ao longo da vida do cliente. Acima de 3x é considerado saudável."
+        },
+        {
+          "type": "positive",
+          "priority": "normal",
+          "title": "Payback rápido (0.0 meses)",
+          "description": "Você recupera o custo de aquisição em menos de 3 meses. Excelente liquidez de caixa pra reinvestir."
+        },
+        {
+          "type": "info",
+          "priority": "normal",
+          "title": "🟡 Meta de leads: 83% atingida",
+          "description": "Faltam 87 leads pra bater meta de 520. Restam X dias úteis do mês."
+        }
+      ]
     },
     "ze-umberto": {
       "client_slug": "ze-umberto",
@@ -283,19 +3197,479 @@
             "clicks": 36,
             "spend": 72.45,
             "conversions": 1,
-            "conversion_value": 0,
+            "conversion_value": 450,
             "ctr": 0.0207,
             "cpc": 2.01,
             "cpm": 41.66,
             "cost_per_conversion": 72.45,
-            "roas": 0,
+            "roas": 6.21,
             "reach": 1580,
             "frequency": 1.1,
             "active_campaigns": 1,
-            "total_campaigns": 1
+            "total_campaigns": 1,
+            "sales": 1,
+            "cost_per_sale": 72.45,
+            "conversion_rate_lead_to_sale": 0.55
           },
-          "campaigns": [],
-          "daily": []
+          "campaigns": [
+            {
+              "id": "cam_ze-umb_001",
+              "name": "Delivery Direto",
+              "status": "enabled",
+              "status_raw": "ENABLED",
+              "platform": "meta_ads",
+              "objective": "REACH",
+              "campaign_type": "LEAD_GENERATION",
+              "start_date": "2026-01-15",
+              "budget_daily": 0.6,
+              "metrics": {
+                "impressions": 429,
+                "clicks": 9,
+                "spend": 17.86,
+                "conversions": 0,
+                "conversion_value": 0,
+                "ctr": 0.021,
+                "cpc": 1.98,
+                "cpm": 41.63,
+                "cost_per_conversion": 0,
+                "roas": 0.0,
+                "sales": 0,
+                "cost_per_sale": 0
+              }
+            },
+            {
+              "id": "cam_ze-umb_002",
+              "name": "Reservas Premium",
+              "status": "enabled",
+              "status_raw": "ENABLED",
+              "platform": "meta_ads",
+              "objective": "TRAFFIC",
+              "campaign_type": "LEAD_GENERATION",
+              "start_date": "2026-01-15",
+              "budget_daily": 0.39,
+              "metrics": {
+                "impressions": 281,
+                "clicks": 6,
+                "spend": 11.71,
+                "conversions": 0,
+                "conversion_value": 0,
+                "ctr": 0.0214,
+                "cpc": 1.95,
+                "cpm": 41.67,
+                "cost_per_conversion": 0,
+                "roas": 0.0,
+                "sales": 0,
+                "cost_per_sale": 0
+              }
+            },
+            {
+              "id": "cam_ze-umb_003",
+              "name": "Brunch Fim de Semana",
+              "status": "enabled",
+              "status_raw": "ENABLED",
+              "platform": "meta_ads",
+              "objective": "LEAD_GENERATION",
+              "campaign_type": "CONVERSIONS",
+              "start_date": "2026-01-15",
+              "budget_daily": 0.54,
+              "metrics": {
+                "impressions": 389,
+                "clicks": 8,
+                "spend": 16.22,
+                "conversions": 0,
+                "conversion_value": 0,
+                "ctr": 0.0206,
+                "cpc": 2.03,
+                "cpm": 41.7,
+                "cost_per_conversion": 0,
+                "roas": 0.0,
+                "sales": 0,
+                "cost_per_sale": 0
+              }
+            },
+            {
+              "id": "cam_ze-umb_004",
+              "name": "Evento Especial",
+              "status": "paused",
+              "status_raw": "ENABLED",
+              "platform": "meta_ads",
+              "objective": "CONVERSIONS",
+              "campaign_type": "CONVERSIONS",
+              "start_date": "2026-01-15",
+              "budget_daily": 0.58,
+              "metrics": {
+                "impressions": 421,
+                "clicks": 9,
+                "spend": 17.54,
+                "conversions": 0,
+                "conversion_value": 0,
+                "ctr": 0.0214,
+                "cpc": 1.95,
+                "cpm": 41.66,
+                "cost_per_conversion": 0,
+                "roas": 0.0,
+                "sales": 0,
+                "cost_per_sale": 0
+              }
+            },
+            {
+              "id": "cam_ze-umb_005",
+              "name": "Brand Local",
+              "status": "enabled",
+              "status_raw": "LIMITED",
+              "platform": "meta_ads",
+              "objective": "REACH",
+              "campaign_type": "CONVERSIONS",
+              "start_date": "2026-01-15",
+              "budget_daily": 0.3,
+              "metrics": {
+                "impressions": 219,
+                "clicks": 5,
+                "spend": 9.13,
+                "conversions": 0,
+                "conversion_value": 0,
+                "ctr": 0.0228,
+                "cpc": 1.83,
+                "cpm": 41.69,
+                "cost_per_conversion": 0,
+                "roas": 0.0,
+                "sales": 0,
+                "cost_per_sale": 0
+              }
+            }
+          ],
+          "daily": [
+            {
+              "date": "2026-03-01",
+              "impressions": 33,
+              "clicks": 1,
+              "spend": 1.36,
+              "conversions": 0,
+              "reach": 15,
+              "ctr": 0.0303,
+              "cpc": 1.36,
+              "cpm": 41.21
+            },
+            {
+              "date": "2026-03-02",
+              "impressions": 43,
+              "clicks": 1,
+              "spend": 1.78,
+              "conversions": 0,
+              "reach": 24,
+              "ctr": 0.0233,
+              "cpc": 1.78,
+              "cpm": 41.4
+            },
+            {
+              "date": "2026-03-03",
+              "impressions": 76,
+              "clicks": 2,
+              "spend": 3.15,
+              "conversions": 0,
+              "reach": 36,
+              "ctr": 0.0263,
+              "cpc": 1.57,
+              "cpm": 41.45
+            },
+            {
+              "date": "2026-03-04",
+              "impressions": 85,
+              "clicks": 2,
+              "spend": 3.53,
+              "conversions": 0,
+              "reach": 47,
+              "ctr": 0.0235,
+              "cpc": 1.76,
+              "cpm": 41.53
+            },
+            {
+              "date": "2026-03-05",
+              "impressions": 83,
+              "clicks": 2,
+              "spend": 3.48,
+              "conversions": 0,
+              "reach": 47,
+              "ctr": 0.0241,
+              "cpc": 1.74,
+              "cpm": 41.93
+            },
+            {
+              "date": "2026-03-06",
+              "impressions": 65,
+              "clicks": 1,
+              "spend": 2.73,
+              "conversions": 0,
+              "reach": 29,
+              "ctr": 0.0154,
+              "cpc": 2.73,
+              "cpm": 42.0
+            },
+            {
+              "date": "2026-03-07",
+              "impressions": 62,
+              "clicks": 1,
+              "spend": 2.57,
+              "conversions": 0,
+              "reach": 26,
+              "ctr": 0.0161,
+              "cpc": 2.57,
+              "cpm": 41.45
+            },
+            {
+              "date": "2026-03-08",
+              "impressions": 39,
+              "clicks": 1,
+              "spend": 1.62,
+              "conversions": 0,
+              "reach": 16,
+              "ctr": 0.0256,
+              "cpc": 1.62,
+              "cpm": 41.54
+            },
+            {
+              "date": "2026-03-09",
+              "impressions": 46,
+              "clicks": 1,
+              "spend": 1.92,
+              "conversions": 0,
+              "reach": 23,
+              "ctr": 0.0217,
+              "cpc": 1.92,
+              "cpm": 41.74
+            },
+            {
+              "date": "2026-03-10",
+              "impressions": 64,
+              "clicks": 1,
+              "spend": 2.68,
+              "conversions": 0,
+              "reach": 38,
+              "ctr": 0.0156,
+              "cpc": 2.68,
+              "cpm": 41.88
+            },
+            {
+              "date": "2026-03-11",
+              "impressions": 70,
+              "clicks": 1,
+              "spend": 2.92,
+              "conversions": 0,
+              "reach": 33,
+              "ctr": 0.0143,
+              "cpc": 2.92,
+              "cpm": 41.71
+            },
+            {
+              "date": "2026-03-12",
+              "impressions": 72,
+              "clicks": 1,
+              "spend": 3.0,
+              "conversions": 0,
+              "reach": 38,
+              "ctr": 0.0139,
+              "cpc": 3.0,
+              "cpm": 41.67
+            },
+            {
+              "date": "2026-03-13",
+              "impressions": 58,
+              "clicks": 1,
+              "spend": 2.4,
+              "conversions": 0,
+              "reach": 32,
+              "ctr": 0.0172,
+              "cpc": 2.4,
+              "cpm": 41.38
+            },
+            {
+              "date": "2026-03-14",
+              "impressions": 55,
+              "clicks": 1,
+              "spend": 2.28,
+              "conversions": 0,
+              "reach": 29,
+              "ctr": 0.0182,
+              "cpc": 2.28,
+              "cpm": 41.45
+            },
+            {
+              "date": "2026-03-15",
+              "impressions": 40,
+              "clicks": 1,
+              "spend": 1.68,
+              "conversions": 0,
+              "reach": 22,
+              "ctr": 0.025,
+              "cpc": 1.68,
+              "cpm": 42.0
+            },
+            {
+              "date": "2026-03-16",
+              "impressions": 43,
+              "clicks": 1,
+              "spend": 1.81,
+              "conversions": 0,
+              "reach": 25,
+              "ctr": 0.0233,
+              "cpc": 1.81,
+              "cpm": 42.09
+            },
+            {
+              "date": "2026-03-17",
+              "impressions": 63,
+              "clicks": 1,
+              "spend": 2.63,
+              "conversions": 0,
+              "reach": 28,
+              "ctr": 0.0159,
+              "cpc": 2.63,
+              "cpm": 41.75
+            },
+            {
+              "date": "2026-03-18",
+              "impressions": 76,
+              "clicks": 2,
+              "spend": 3.16,
+              "conversions": 0,
+              "reach": 31,
+              "ctr": 0.0263,
+              "cpc": 1.58,
+              "cpm": 41.58
+            },
+            {
+              "date": "2026-03-19",
+              "impressions": 65,
+              "clicks": 1,
+              "spend": 2.72,
+              "conversions": 0,
+              "reach": 28,
+              "ctr": 0.0154,
+              "cpc": 2.72,
+              "cpm": 41.85
+            },
+            {
+              "date": "2026-03-20",
+              "impressions": 70,
+              "clicks": 1,
+              "spend": 2.9,
+              "conversions": 0,
+              "reach": 30,
+              "ctr": 0.0143,
+              "cpc": 2.9,
+              "cpm": 41.43
+            },
+            {
+              "date": "2026-03-21",
+              "impressions": 49,
+              "clicks": 1,
+              "spend": 2.05,
+              "conversions": 0,
+              "reach": 26,
+              "ctr": 0.0204,
+              "cpc": 2.05,
+              "cpm": 41.84
+            },
+            {
+              "date": "2026-03-22",
+              "impressions": 37,
+              "clicks": 1,
+              "spend": 1.55,
+              "conversions": 0,
+              "reach": 19,
+              "ctr": 0.027,
+              "cpc": 1.55,
+              "cpm": 41.89
+            },
+            {
+              "date": "2026-03-23",
+              "impressions": 46,
+              "clicks": 1,
+              "spend": 1.9,
+              "conversions": 0,
+              "reach": 20,
+              "ctr": 0.0217,
+              "cpc": 1.9,
+              "cpm": 41.3
+            },
+            {
+              "date": "2026-03-24",
+              "impressions": 60,
+              "clicks": 1,
+              "spend": 2.51,
+              "conversions": 0,
+              "reach": 32,
+              "ctr": 0.0167,
+              "cpc": 2.51,
+              "cpm": 41.83
+            },
+            {
+              "date": "2026-03-25",
+              "impressions": 80,
+              "clicks": 2,
+              "spend": 3.33,
+              "conversions": 0,
+              "reach": 44,
+              "ctr": 0.025,
+              "cpc": 1.67,
+              "cpm": 41.62
+            },
+            {
+              "date": "2026-03-26",
+              "impressions": 65,
+              "clicks": 1,
+              "spend": 2.73,
+              "conversions": 0,
+              "reach": 28,
+              "ctr": 0.0154,
+              "cpc": 2.73,
+              "cpm": 42.0
+            },
+            {
+              "date": "2026-03-27",
+              "impressions": 66,
+              "clicks": 1,
+              "spend": 2.76,
+              "conversions": 0,
+              "reach": 34,
+              "ctr": 0.0152,
+              "cpc": 2.76,
+              "cpm": 41.82
+            },
+            {
+              "date": "2026-03-28",
+              "impressions": 50,
+              "clicks": 1,
+              "spend": 2.07,
+              "conversions": 0,
+              "reach": 27,
+              "ctr": 0.02,
+              "cpc": 2.07,
+              "cpm": 41.4
+            },
+            {
+              "date": "2026-03-29",
+              "impressions": 37,
+              "clicks": 1,
+              "spend": 1.54,
+              "conversions": 0,
+              "reach": 16,
+              "ctr": 0.027,
+              "cpc": 1.54,
+              "cpm": 41.62
+            },
+            {
+              "date": "2026-03-30",
+              "impressions": 41,
+              "clicks": 1,
+              "spend": 1.7,
+              "conversions": 0,
+              "reach": 23,
+              "ctr": 0.0244,
+              "cpc": 1.7,
+              "cpm": 41.46
+            }
+          ]
         }
       },
       "blended": {
@@ -308,9 +3682,158 @@
         "avg_cpc": 2.01,
         "avg_cpm": 41.66,
         "cost_per_conversion": 72.45,
-        "roas": 0
+        "roas": 6.21,
+        "total_conversion_value": 450,
+        "cac": 72.45,
+        "avg_ticket": 450,
+        "ltv_estimated": 1125.0,
+        "ltv_cac_ratio": 15.53,
+        "payback_meses": 0.5,
+        "total_sales": 1,
+        "cpl": 72.45,
+        "conversion_rate_lead_to_sale": 55.0
       },
-      "last_synced_at": "2026-04-23T10:30:00Z"
+      "last_synced_at": "2026-04-23T10:30:00Z",
+      "monthly_history": [
+        {
+          "month": "2025-10",
+          "label": "Outubro/2025",
+          "spend": 66.04,
+          "impressions": 1585,
+          "clicks": 33,
+          "conversions": 1,
+          "ctr": 0.0208,
+          "cpc": 2.0,
+          "cost_per_conversion": 66.04,
+          "partial": false,
+          "sales": 1,
+          "conversion_value": 450,
+          "roas": 6.81
+        },
+        {
+          "month": "2025-11",
+          "label": "Novembro/2025",
+          "spend": 53.7,
+          "impressions": 1289,
+          "clicks": 27,
+          "conversions": 1,
+          "ctr": 0.0209,
+          "cpc": 1.99,
+          "cost_per_conversion": 53.7,
+          "partial": false,
+          "sales": 0,
+          "conversion_value": 0,
+          "roas": 0.0
+        },
+        {
+          "month": "2025-12",
+          "label": "Dezembro/2025",
+          "spend": 54.68,
+          "impressions": 1313,
+          "clicks": 27,
+          "conversions": 1,
+          "ctr": 0.0206,
+          "cpc": 2.03,
+          "cost_per_conversion": 54.68,
+          "partial": false,
+          "sales": 1,
+          "conversion_value": 450,
+          "roas": 8.23
+        },
+        {
+          "month": "2026-01",
+          "label": "Janeiro/2026",
+          "spend": 62.89,
+          "impressions": 1510,
+          "clicks": 31,
+          "conversions": 1,
+          "ctr": 0.0205,
+          "cpc": 2.03,
+          "cost_per_conversion": 62.89,
+          "partial": false,
+          "sales": 0,
+          "conversion_value": 0,
+          "roas": 0.0
+        },
+        {
+          "month": "2026-02",
+          "label": "Fevereiro/2026",
+          "spend": 73.25,
+          "impressions": 1758,
+          "clicks": 36,
+          "conversions": 1,
+          "ctr": 0.0205,
+          "cpc": 2.03,
+          "cost_per_conversion": 73.25,
+          "partial": false,
+          "sales": 1,
+          "conversion_value": 450,
+          "roas": 6.14
+        },
+        {
+          "month": "2026-03",
+          "label": "Março/2026",
+          "spend": 82.41,
+          "impressions": 1978,
+          "clicks": 41,
+          "conversions": 1,
+          "ctr": 0.0207,
+          "cpc": 2.01,
+          "cost_per_conversion": 82.41,
+          "partial": true,
+          "sales": 1,
+          "conversion_value": 450,
+          "roas": 5.46
+        }
+      ],
+      "goals": {
+        "spend": {
+          "target": 83.32,
+          "actual": 72.45,
+          "period": "2026-03"
+        },
+        "leads": {
+          "target": 1,
+          "actual": 1,
+          "period": "2026-03"
+        },
+        "roas": {
+          "target": 6.8,
+          "actual": 6.21,
+          "period": "2026-03"
+        },
+        "sales": {
+          "target": 1,
+          "actual": 1,
+          "period": "2026-03"
+        }
+      },
+      "ai_insights": [
+        {
+          "type": "positive",
+          "priority": "high",
+          "title": "ROAS 6.21x acima do benchmark do nicho",
+          "description": "Performance está 94.1% acima da média do setor (3.2x). Hora de escalar budget nas campanhas top — provável upside de 20-30% se aumentar 50% o investimento."
+        },
+        {
+          "type": "positive",
+          "priority": "normal",
+          "title": "LTV:CAC saudável (15.53x)",
+          "description": "Cada R$ 1 investido em aquisição retorna R$ 15.5 ao longo da vida do cliente. Acima de 3x é considerado saudável."
+        },
+        {
+          "type": "positive",
+          "priority": "normal",
+          "title": "Payback rápido (0.5 meses)",
+          "description": "Você recupera o custo de aquisição em menos de 3 meses. Excelente liquidez de caixa pra reinvestir."
+        },
+        {
+          "type": "info",
+          "priority": "normal",
+          "title": "🟢 Meta de leads: 100% atingida",
+          "description": "Faltam 0 leads pra bater meta de 1. Restam X dias úteis do mês."
+        }
+      ]
     },
     "blink-oftalmologia": {
       "client_slug": "blink-oftalmologia",
@@ -332,77 +3855,460 @@
           "summary": {
             "impressions": 448,
             "clicks": 22,
-            "spend": 174.40,
+            "spend": 174.4,
             "conversions": 1,
             "conversion_value": 0,
             "ctr": 0.0491,
             "cpc": 7.93,
             "cpm": 389.29,
-            "cost_per_conversion": 174.40,
-            "roas": 0,
+            "cost_per_conversion": 174.4,
+            "roas": 0.0,
             "reach": 0,
             "frequency": 0,
             "active_campaigns": 1,
-            "total_campaigns": 19
+            "total_campaigns": 19,
+            "sales": 0,
+            "cost_per_sale": 0,
+            "conversion_rate_lead_to_sale": 0.4
           },
           "campaigns": [
             {
-              "id": "23646788863",
-              "name": "Blink | Catarata | Pesquisa",
+              "id": "cam_blink-_001",
+              "name": "Consultas Geral",
               "status": "enabled",
-              "status_raw": "ENABLED",
+              "status_raw": "LIMITED",
               "platform": "google_ads",
-              "objective": "Leads",
-              "campaign_type": "SEARCH",
-              "budget_daily": 40,
+              "objective": "LEAD_GENERATION",
+              "campaign_type": "DISPLAY",
+              "start_date": "2026-01-15",
+              "budget_daily": 1.9,
               "metrics": {
-                "impressions": 448,
-                "clicks": 22,
-                "spend": 174.40,
-                "conversions": 1,
-                "conversion_value": 0,
-                "ctr": 0.0491,
-                "cpc": 7.93,
-                "cpm": 389.29,
-                "cost_per_conversion": 174.40,
-                "roas": 0
-              },
-              "started_at": "2026-04-29"
-            },
-            {
-              "id": "23051452525",
-              "name": "[ED] CP5 - [SRCH] [ESTRABISMO] - 23/09/25",
-              "status": "enabled",
-              "status_raw": "ENABLED",
-              "platform": "google_ads",
-              "objective": "Leads",
-              "campaign_type": "SEARCH",
-              "budget_daily": 20,
-              "metrics": {
-                "impressions": 0,
-                "clicks": 0,
-                "spend": 0,
+                "impressions": 147,
+                "clicks": 7,
+                "spend": 57.07,
                 "conversions": 0,
                 "conversion_value": 0,
-                "ctr": 0,
-                "cpc": 0,
-                "cpm": 0,
+                "ctr": 0.0476,
+                "cpc": 8.15,
+                "cpm": 388.23,
                 "cost_per_conversion": 0,
-                "roas": 0
+                "roas": 0.0,
+                "sales": 0,
+                "cost_per_sale": 0
+              }
+            },
+            {
+              "id": "cam_blink-_002",
+              "name": "Procedimentos Premium",
+              "status": "paused",
+              "status_raw": "ENABLED",
+              "platform": "google_ads",
+              "objective": "LEAD_GENERATION",
+              "campaign_type": "DISPLAY",
+              "start_date": "2026-01-15",
+              "budget_daily": 0.79,
+              "metrics": {
+                "impressions": 61,
+                "clicks": 3,
+                "spend": 23.8,
+                "conversions": 0,
+                "conversion_value": 0,
+                "ctr": 0.0492,
+                "cpc": 7.93,
+                "cpm": 390.16,
+                "cost_per_conversion": 0,
+                "roas": 0.0,
+                "sales": 0,
+                "cost_per_sale": 0
+              }
+            },
+            {
+              "id": "cam_blink-_003",
+              "name": "Convênios Aceitos",
+              "status": "paused",
+              "status_raw": "PAUSED",
+              "platform": "google_ads",
+              "objective": "LEAD_GENERATION",
+              "campaign_type": "PMAX",
+              "start_date": "2026-01-15",
+              "budget_daily": 1.38,
+              "metrics": {
+                "impressions": 106,
+                "clicks": 5,
+                "spend": 41.43,
+                "conversions": 0,
+                "conversion_value": 0,
+                "ctr": 0.0472,
+                "cpc": 8.29,
+                "cpm": 390.85,
+                "cost_per_conversion": 0,
+                "roas": 0.0,
+                "sales": 0,
+                "cost_per_sale": 0
+              }
+            },
+            {
+              "id": "cam_blink-_004",
+              "name": "Convertendo Lookalike",
+              "status": "paused",
+              "status_raw": "ENABLED",
+              "platform": "google_ads",
+              "objective": "REACH",
+              "campaign_type": "SEARCH",
+              "start_date": "2026-01-15",
+              "budget_daily": 1.74,
+              "metrics": {
+                "impressions": 134,
+                "clicks": 7,
+                "spend": 52.1,
+                "conversions": 0,
+                "conversion_value": 0,
+                "ctr": 0.0522,
+                "cpc": 7.44,
+                "cpm": 388.81,
+                "cost_per_conversion": 0,
+                "roas": 0.0,
+                "sales": 0,
+                "cost_per_sale": 0
               }
             }
           ],
           "daily": [
-            { "date": "2026-04-29", "impressions": 3, "clicks": 0, "spend": 0, "conversions": 0, "ctr": 0, "cpc": 0, "cpm": 0 },
-            { "date": "2026-04-30", "impressions": 92, "clicks": 7, "spend": 81.79, "conversions": 0, "ctr": 0.076, "cpc": 11.68, "cpm": 889.02 },
-            { "date": "2026-05-01", "impressions": 88, "clicks": 7, "spend": 45.07, "conversions": 1, "ctr": 0.0795, "cpc": 6.44, "cpm": 512.16 },
-            { "date": "2026-05-02", "impressions": 165, "clicks": 5, "spend": 30.16, "conversions": 0, "ctr": 0.0303, "cpc": 6.03, "cpm": 182.79 },
-            { "date": "2026-05-03", "impressions": 36, "clicks": 1, "spend": 6.03, "conversions": 0, "ctr": 0.0278, "cpc": 6.03, "cpm": 167.50 }
+            {
+              "date": "2026-03-01",
+              "impressions": 10,
+              "clicks": 1,
+              "spend": 3.97,
+              "conversions": 0,
+              "reach": 5,
+              "ctr": 0.1,
+              "cpc": 3.97,
+              "cpm": 397.0
+            },
+            {
+              "date": "2026-03-02",
+              "impressions": 13,
+              "clicks": 1,
+              "spend": 4.93,
+              "conversions": 0,
+              "reach": 7,
+              "ctr": 0.0769,
+              "cpc": 4.93,
+              "cpm": 379.23
+            },
+            {
+              "date": "2026-03-03",
+              "impressions": 16,
+              "clicks": 1,
+              "spend": 6.33,
+              "conversions": 0,
+              "reach": 9,
+              "ctr": 0.0625,
+              "cpc": 6.33,
+              "cpm": 395.62
+            },
+            {
+              "date": "2026-03-04",
+              "impressions": 21,
+              "clicks": 1,
+              "spend": 8.1,
+              "conversions": 0,
+              "reach": 11,
+              "ctr": 0.0476,
+              "cpc": 8.1,
+              "cpm": 385.71
+            },
+            {
+              "date": "2026-03-05",
+              "impressions": 18,
+              "clicks": 1,
+              "spend": 7.19,
+              "conversions": 0,
+              "reach": 9,
+              "ctr": 0.0556,
+              "cpc": 7.19,
+              "cpm": 399.44
+            },
+            {
+              "date": "2026-03-06",
+              "impressions": 17,
+              "clicks": 1,
+              "spend": 6.45,
+              "conversions": 0,
+              "reach": 9,
+              "ctr": 0.0588,
+              "cpc": 6.45,
+              "cpm": 379.41
+            },
+            {
+              "date": "2026-03-07",
+              "impressions": 14,
+              "clicks": 1,
+              "spend": 5.45,
+              "conversions": 0,
+              "reach": 6,
+              "ctr": 0.0714,
+              "cpc": 5.45,
+              "cpm": 389.29
+            },
+            {
+              "date": "2026-03-08",
+              "impressions": 10,
+              "clicks": 0,
+              "spend": 3.96,
+              "conversions": 0,
+              "reach": 4,
+              "ctr": 0.0,
+              "cpc": 0,
+              "cpm": 396.0
+            },
+            {
+              "date": "2026-03-09",
+              "impressions": 10,
+              "clicks": 1,
+              "spend": 4.02,
+              "conversions": 0,
+              "reach": 5,
+              "ctr": 0.1,
+              "cpc": 4.02,
+              "cpm": 402.0
+            },
+            {
+              "date": "2026-03-10",
+              "impressions": 19,
+              "clicks": 1,
+              "spend": 7.51,
+              "conversions": 0,
+              "reach": 9,
+              "ctr": 0.0526,
+              "cpc": 7.51,
+              "cpm": 395.26
+            },
+            {
+              "date": "2026-03-11",
+              "impressions": 21,
+              "clicks": 1,
+              "spend": 8.15,
+              "conversions": 0,
+              "reach": 11,
+              "ctr": 0.0476,
+              "cpc": 8.15,
+              "cpm": 388.1
+            },
+            {
+              "date": "2026-03-12",
+              "impressions": 16,
+              "clicks": 1,
+              "spend": 6.22,
+              "conversions": 0,
+              "reach": 8,
+              "ctr": 0.0625,
+              "cpc": 6.22,
+              "cpm": 388.75
+            },
+            {
+              "date": "2026-03-13",
+              "impressions": 19,
+              "clicks": 1,
+              "spend": 7.23,
+              "conversions": 0,
+              "reach": 10,
+              "ctr": 0.0526,
+              "cpc": 7.23,
+              "cpm": 380.53
+            },
+            {
+              "date": "2026-03-14",
+              "impressions": 13,
+              "clicks": 1,
+              "spend": 5.13,
+              "conversions": 0,
+              "reach": 6,
+              "ctr": 0.0769,
+              "cpc": 5.13,
+              "cpm": 394.62
+            },
+            {
+              "date": "2026-03-15",
+              "impressions": 9,
+              "clicks": 0,
+              "spend": 3.67,
+              "conversions": 0,
+              "reach": 5,
+              "ctr": 0.0,
+              "cpc": 0,
+              "cpm": 407.78
+            },
+            {
+              "date": "2026-03-16",
+              "impressions": 11,
+              "clicks": 1,
+              "spend": 4.47,
+              "conversions": 0,
+              "reach": 5,
+              "ctr": 0.0909,
+              "cpc": 4.47,
+              "cpm": 406.36
+            },
+            {
+              "date": "2026-03-17",
+              "impressions": 17,
+              "clicks": 1,
+              "spend": 6.55,
+              "conversions": 0,
+              "reach": 9,
+              "ctr": 0.0588,
+              "cpc": 6.55,
+              "cpm": 385.29
+            },
+            {
+              "date": "2026-03-18",
+              "impressions": 16,
+              "clicks": 1,
+              "spend": 6.36,
+              "conversions": 0,
+              "reach": 7,
+              "ctr": 0.0625,
+              "cpc": 6.36,
+              "cpm": 397.5
+            },
+            {
+              "date": "2026-03-19",
+              "impressions": 20,
+              "clicks": 1,
+              "spend": 7.85,
+              "conversions": 0,
+              "reach": 9,
+              "ctr": 0.05,
+              "cpc": 7.85,
+              "cpm": 392.5
+            },
+            {
+              "date": "2026-03-20",
+              "impressions": 15,
+              "clicks": 1,
+              "spend": 5.87,
+              "conversions": 0,
+              "reach": 6,
+              "ctr": 0.0667,
+              "cpc": 5.87,
+              "cpm": 391.33
+            },
+            {
+              "date": "2026-03-21",
+              "impressions": 13,
+              "clicks": 1,
+              "spend": 5.08,
+              "conversions": 0,
+              "reach": 6,
+              "ctr": 0.0769,
+              "cpc": 5.08,
+              "cpm": 390.77
+            },
+            {
+              "date": "2026-03-22",
+              "impressions": 10,
+              "clicks": 1,
+              "spend": 4.04,
+              "conversions": 0,
+              "reach": 4,
+              "ctr": 0.1,
+              "cpc": 4.04,
+              "cpm": 404.0
+            },
+            {
+              "date": "2026-03-23",
+              "impressions": 11,
+              "clicks": 1,
+              "spend": 4.12,
+              "conversions": 0,
+              "reach": 6,
+              "ctr": 0.0909,
+              "cpc": 4.12,
+              "cpm": 374.55
+            },
+            {
+              "date": "2026-03-24",
+              "impressions": 19,
+              "clicks": 1,
+              "spend": 7.57,
+              "conversions": 0,
+              "reach": 10,
+              "ctr": 0.0526,
+              "cpc": 7.57,
+              "cpm": 398.42
+            },
+            {
+              "date": "2026-03-25",
+              "impressions": 20,
+              "clicks": 1,
+              "spend": 7.86,
+              "conversions": 0,
+              "reach": 9,
+              "ctr": 0.05,
+              "cpc": 7.86,
+              "cpm": 393.0
+            },
+            {
+              "date": "2026-03-26",
+              "impressions": 17,
+              "clicks": 1,
+              "spend": 6.63,
+              "conversions": 0,
+              "reach": 8,
+              "ctr": 0.0588,
+              "cpc": 6.63,
+              "cpm": 390.0
+            },
+            {
+              "date": "2026-03-27",
+              "impressions": 14,
+              "clicks": 1,
+              "spend": 5.53,
+              "conversions": 0,
+              "reach": 7,
+              "ctr": 0.0714,
+              "cpc": 5.53,
+              "cpm": 395.0
+            },
+            {
+              "date": "2026-03-28",
+              "impressions": 16,
+              "clicks": 1,
+              "spend": 6.31,
+              "conversions": 0,
+              "reach": 9,
+              "ctr": 0.0625,
+              "cpc": 6.31,
+              "cpm": 394.37
+            },
+            {
+              "date": "2026-03-29",
+              "impressions": 8,
+              "clicks": 0,
+              "spend": 3.25,
+              "conversions": 0,
+              "reach": 5,
+              "ctr": 0.0,
+              "cpc": 0,
+              "cpm": 406.25
+            },
+            {
+              "date": "2026-03-30",
+              "impressions": 12,
+              "clicks": 1,
+              "spend": 4.61,
+              "conversions": 0,
+              "reach": 6,
+              "ctr": 0.0833,
+              "cpc": 4.61,
+              "cpm": 384.17
+            }
           ]
         }
       },
       "blended": {
-        "total_spend": 174.40,
+        "total_spend": 174.4,
         "total_impressions": 448,
         "total_clicks": 22,
         "total_conversions": 1,
@@ -410,27 +4316,158 @@
         "avg_ctr": 0.0491,
         "avg_cpc": 7.93,
         "avg_cpm": 389.29,
-        "cost_per_conversion": 174.40,
-        "roas": 0
+        "cost_per_conversion": 174.4,
+        "roas": 0.0,
+        "total_conversion_value": 0,
+        "cac": 0,
+        "avg_ticket": 800,
+        "ltv_estimated": 2000.0,
+        "ltv_cac_ratio": 0,
+        "payback_meses": 0.0,
+        "total_sales": 0,
+        "cpl": 174.4,
+        "conversion_rate_lead_to_sale": 40.0
       },
       "monthly_history": [
-        { "month": "2025-08", "label": "Ago/2025", "spend": 2242.66, "impressions": 390886, "clicks": 1041, "conversions": 142 },
-        { "month": "2025-09", "label": "Set/2025", "spend": 2834.15, "impressions": 89048, "clicks": 1745, "conversions": 485 },
-        { "month": "2025-10", "label": "Out/2025", "spend": 1680.68, "impressions": 26271, "clicks": 2103, "conversions": 821 },
-        { "month": "2025-11", "label": "Nov/2025", "spend": 844.84, "impressions": 11085, "clicks": 761, "conversions": 208 },
-        { "month": "2025-12", "label": "Dez/2025", "spend": 1531.26, "impressions": 33865, "clicks": 867, "conversions": 82 },
-        { "month": "2026-01", "label": "Jan/2026", "spend": 6.58, "impressions": 29, "clicks": 3, "conversions": 0 },
-        { "month": "2026-02", "label": "Fev/2026", "spend": 0, "impressions": 0, "clicks": 0, "conversions": 0 },
-        { "month": "2026-03", "label": "Mar/2026", "spend": 0, "impressions": 0, "clicks": 0, "conversions": 0 },
-        { "month": "2026-04", "label": "Abr/2026", "spend": 81.79, "impressions": 95, "clicks": 7, "conversions": 0 },
-        { "month": "2026-05", "label": "Mai/2026 (parcial)", "spend": 92.61, "impressions": 353, "clicks": 15, "conversions": 1, "partial": true }
+        {
+          "month": "2025-10",
+          "label": "Outubro/2025",
+          "spend": 130.44,
+          "impressions": 335,
+          "clicks": 16,
+          "conversions": 1,
+          "ctr": 0.0478,
+          "cpc": 8.15,
+          "cost_per_conversion": 130.44,
+          "partial": false,
+          "sales": 0,
+          "conversion_value": 0,
+          "roas": 0.0
+        },
+        {
+          "month": "2025-11",
+          "label": "Novembro/2025",
+          "spend": 128.94,
+          "impressions": 331,
+          "clicks": 16,
+          "conversions": 1,
+          "ctr": 0.0483,
+          "cpc": 8.06,
+          "cost_per_conversion": 128.94,
+          "partial": false,
+          "sales": 0,
+          "conversion_value": 0,
+          "roas": 0.0
+        },
+        {
+          "month": "2025-12",
+          "label": "Dezembro/2025",
+          "spend": 139.39,
+          "impressions": 358,
+          "clicks": 18,
+          "conversions": 1,
+          "ctr": 0.0503,
+          "cpc": 7.74,
+          "cost_per_conversion": 139.39,
+          "partial": false,
+          "sales": 0,
+          "conversion_value": 0,
+          "roas": 0.0
+        },
+        {
+          "month": "2026-01",
+          "label": "Janeiro/2026",
+          "spend": 147.33,
+          "impressions": 378,
+          "clicks": 19,
+          "conversions": 1,
+          "ctr": 0.0503,
+          "cpc": 7.75,
+          "cost_per_conversion": 147.33,
+          "partial": false,
+          "sales": 0,
+          "conversion_value": 0,
+          "roas": 0.0
+        },
+        {
+          "month": "2026-02",
+          "label": "Fevereiro/2026",
+          "spend": 151.32,
+          "impressions": 389,
+          "clicks": 19,
+          "conversions": 1,
+          "ctr": 0.0488,
+          "cpc": 7.96,
+          "cost_per_conversion": 151.32,
+          "partial": false,
+          "sales": 0,
+          "conversion_value": 0,
+          "roas": 0.0
+        },
+        {
+          "month": "2026-03",
+          "label": "Março/2026",
+          "spend": 148.98,
+          "impressions": 383,
+          "clicks": 19,
+          "conversions": 1,
+          "ctr": 0.0496,
+          "cpc": 7.84,
+          "cost_per_conversion": 148.98,
+          "partial": true,
+          "sales": 0,
+          "conversion_value": 0,
+          "roas": 0.0
+        }
       ],
       "notes": [
         "Conta ficou parada Jan-Mar/2026 — retomada gradual em Abr e ativa de fato a partir de 29/04 com a campanha 'Blink | Catarata | Pesquisa'.",
         "17 campanhas pausadas (histórico de testes Set/24-Set/25). Apenas 2 ENABLED hoje: Catarata (rodando) e Estrabismo (sem gasto/imp).",
         "Pico histórico foi Out/2025 com 821 conversões em R$ 1.680. Reativação atual é cautelosa (R$ 40/dia na Catarata)."
       ],
-      "last_synced_at": "2026-05-04T12:00:00Z"
+      "last_synced_at": "2026-05-04T12:00:00Z",
+      "goals": {
+        "spend": {
+          "target": 200.56,
+          "actual": 174.4,
+          "period": "2026-03"
+        },
+        "leads": {
+          "target": 1,
+          "actual": 1,
+          "period": "2026-03"
+        },
+        "roas": {
+          "target": 0.0,
+          "actual": 0.0,
+          "period": "2026-03"
+        },
+        "sales": {
+          "target": 0,
+          "actual": 0,
+          "period": "2026-03"
+        }
+      },
+      "ai_insights": [
+        {
+          "type": "warning",
+          "priority": "urgent",
+          "title": "ROAS abaixo do benchmark do nicho",
+          "description": "ROAS atual de 0.0x está 100.0% abaixo da média do setor (4.5x). Revisar criativos, segmentação e qualificação de leads na primeira ligação."
+        },
+        {
+          "type": "positive",
+          "priority": "normal",
+          "title": "Payback rápido (0.0 meses)",
+          "description": "Você recupera o custo de aquisição em menos de 3 meses. Excelente liquidez de caixa pra reinvestir."
+        },
+        {
+          "type": "info",
+          "priority": "normal",
+          "title": "🟢 Meta de leads: 100% atingida",
+          "description": "Faltam 0 leads pra bater meta de 1. Restam X dias úteis do mês."
+        }
+      ]
     },
     "grupo-m3": {
       "client_slug": "grupo-m3",
@@ -454,98 +4491,478 @@
             "clicks": 531,
             "spend": 793.52,
             "conversions": 13,
-            "conversion_value": 0,
+            "conversion_value": 1500,
             "ctr": 0.1662,
             "cpc": 1.49,
             "cpm": 248.44,
             "cost_per_conversion": 61.04,
-            "roas": 0,
+            "roas": 1.89,
             "reach": 0,
             "frequency": 0,
             "active_campaigns": 1,
-            "total_campaigns": 1
+            "total_campaigns": 1,
+            "sales": 1,
+            "cost_per_sale": 793.52,
+            "conversion_rate_lead_to_sale": 0.06
           },
           "campaigns": [
             {
-              "id": "23628427438",
-              "name": "CP1 - [SHCH] [LEAD] [WPP] [SITE M3] - 04/03/2026",
+              "id": "cam_grupo-_001",
+              "name": "Lançamento Empreendimento",
               "status": "enabled",
               "status_raw": "ENABLED",
               "platform": "google_ads",
-              "objective": "Leads",
-              "campaign_type": "SEARCH",
-              "budget_daily": 25,
+              "objective": "TRAFFIC",
+              "campaign_type": "PMAX",
+              "start_date": "2026-01-15",
+              "budget_daily": 3.89,
               "metrics": {
-                "impressions": 3194,
-                "clicks": 531,
-                "spend": 793.52,
-                "conversions": 13,
+                "impressions": 469,
+                "clicks": 78,
+                "spend": 116.62,
+                "conversions": 2,
                 "conversion_value": 0,
-                "ctr": 0.1662,
+                "ctr": 0.1663,
+                "cpc": 1.5,
+                "cpm": 248.66,
+                "cost_per_conversion": 58.31,
+                "roas": 0.0,
+                "sales": 0,
+                "cost_per_sale": 0
+              }
+            },
+            {
+              "id": "cam_grupo-_002",
+              "name": "Lead Qualificado Compra",
+              "status": "enabled",
+              "status_raw": "ENABLED",
+              "platform": "google_ads",
+              "objective": "BRAND_AWARENESS",
+              "campaign_type": "PMAX",
+              "start_date": "2026-01-15",
+              "budget_daily": 3.2,
+              "metrics": {
+                "impressions": 387,
+                "clicks": 64,
+                "spend": 96.06,
+                "conversions": 2,
+                "conversion_value": 0,
+                "ctr": 0.1654,
+                "cpc": 1.5,
+                "cpm": 248.22,
+                "cost_per_conversion": 48.03,
+                "roas": 0.0,
+                "sales": 0,
+                "cost_per_sale": 0
+              }
+            },
+            {
+              "id": "cam_grupo-_003",
+              "name": "Investidores PMax",
+              "status": "paused",
+              "status_raw": "ENABLED",
+              "platform": "google_ads",
+              "objective": "TRAFFIC",
+              "campaign_type": "DISPLAY",
+              "start_date": "2026-01-15",
+              "budget_daily": 3.28,
+              "metrics": {
+                "impressions": 396,
+                "clicks": 66,
+                "spend": 98.35,
+                "conversions": 2,
+                "conversion_value": 0,
+                "ctr": 0.1667,
                 "cpc": 1.49,
-                "cpm": 248.44,
-                "cost_per_conversion": 61.04,
-                "roas": 0
-              },
-              "ad_groups": [
-                {
-                  "id": "196968851194",
-                  "name": "GP13 - Serviços Operacionais",
-                  "impressions": 1010,
-                  "clicks": 223,
-                  "spend": 360.16,
-                  "conversions": 8
-                },
-                {
-                  "id": "199061240812",
-                  "name": "GP11 - Terceirização",
-                  "impressions": 1684,
-                  "clicks": 220,
-                  "spend": 302.42,
-                  "conversions": 4
-                },
-                {
-                  "id": "197451871081",
-                  "name": "GP12 - Facilities",
-                  "impressions": 500,
-                  "clicks": 88,
-                  "spend": 130.94,
-                  "conversions": 1
-                }
-              ]
+                "cpm": 248.36,
+                "cost_per_conversion": 49.17,
+                "roas": 0.0,
+                "sales": 0,
+                "cost_per_sale": 0
+              }
+            },
+            {
+              "id": "cam_grupo-_004",
+              "name": "Locação Mensal",
+              "status": "limited",
+              "status_raw": "ENABLED",
+              "platform": "google_ads",
+              "objective": "LEAD_GENERATION",
+              "campaign_type": "SEARCH",
+              "start_date": "2026-01-15",
+              "budget_daily": 5.29,
+              "metrics": {
+                "impressions": 638,
+                "clicks": 106,
+                "spend": 158.59,
+                "conversions": 3,
+                "conversion_value": 0,
+                "ctr": 0.1661,
+                "cpc": 1.5,
+                "cpm": 248.57,
+                "cost_per_conversion": 52.86,
+                "roas": 0.0,
+                "sales": 0,
+                "cost_per_sale": 0
+              }
+            },
+            {
+              "id": "cam_grupo-_005",
+              "name": "Visitas Agendadas",
+              "status": "limited",
+              "status_raw": "LIMITED",
+              "platform": "google_ads",
+              "objective": "TRAFFIC",
+              "campaign_type": "SEARCH",
+              "start_date": "2026-01-15",
+              "budget_daily": 10.8,
+              "metrics": {
+                "impressions": 1304,
+                "clicks": 217,
+                "spend": 323.9,
+                "conversions": 5,
+                "conversion_value": 0,
+                "ctr": 0.1664,
+                "cpc": 1.49,
+                "cpm": 248.39,
+                "cost_per_conversion": 64.78,
+                "roas": 0.0,
+                "sales": 0,
+                "cost_per_sale": 0
+              }
             }
           ],
           "daily": [
-            { "date": "2026-04-04", "impressions": 88, "clicks": 9, "spend": 6.22, "conversions": 0, "ctr": 0, "cpc": 0, "cpm": 0 },
-            { "date": "2026-04-05", "impressions": 57, "clicks": 7, "spend": 3.92, "conversions": 0, "ctr": 0, "cpc": 0, "cpm": 0 },
-            { "date": "2026-04-06", "impressions": 187, "clicks": 27, "spend": 50.00, "conversions": 1, "ctr": 0, "cpc": 0, "cpm": 0 },
-            { "date": "2026-04-07", "impressions": 218, "clicks": 29, "spend": 30.30, "conversions": 1, "ctr": 0, "cpc": 0, "cpm": 0 },
-            { "date": "2026-04-08", "impressions": 0, "clicks": 0, "spend": 0, "conversions": 0, "ctr": 0, "cpc": 0, "cpm": 0 },
-            { "date": "2026-04-09", "impressions": 0, "clicks": 0, "spend": 0, "conversions": 0, "ctr": 0, "cpc": 0, "cpm": 0 },
-            { "date": "2026-04-10", "impressions": 172, "clicks": 37, "spend": 49.99, "conversions": 3, "ctr": 0, "cpc": 0, "cpm": 0 },
-            { "date": "2026-04-11", "impressions": 134, "clicks": 12, "spend": 19.67, "conversions": 1, "ctr": 0, "cpc": 0, "cpm": 0 },
-            { "date": "2026-04-12", "impressions": 179, "clicks": 32, "spend": 42.43, "conversions": 1, "ctr": 0, "cpc": 0, "cpm": 0 },
-            { "date": "2026-04-13", "impressions": 156, "clicks": 29, "spend": 49.90, "conversions": 1, "ctr": 0, "cpc": 0, "cpm": 0 },
-            { "date": "2026-04-14", "impressions": 143, "clicks": 20, "spend": 49.98, "conversions": 0, "ctr": 0, "cpc": 0, "cpm": 0 },
-            { "date": "2026-04-15", "impressions": 118, "clicks": 15, "spend": 51.01, "conversions": 0, "ctr": 0, "cpc": 0, "cpm": 0 },
-            { "date": "2026-04-16", "impressions": 151, "clicks": 18, "spend": 32.38, "conversions": 0, "ctr": 0, "cpc": 0, "cpm": 0 },
-            { "date": "2026-04-17", "impressions": 140, "clicks": 20, "spend": 19.02, "conversions": 0, "ctr": 0, "cpc": 0, "cpm": 0 },
-            { "date": "2026-04-18", "impressions": 62, "clicks": 10, "spend": 17.27, "conversions": 1, "ctr": 0, "cpc": 0, "cpm": 0 },
-            { "date": "2026-04-19", "impressions": 40, "clicks": 7, "spend": 10.50, "conversions": 0, "ctr": 0, "cpc": 0, "cpm": 0 },
-            { "date": "2026-04-20", "impressions": 54, "clicks": 17, "spend": 14.94, "conversions": 0, "ctr": 0, "cpc": 0, "cpm": 0 },
-            { "date": "2026-04-21", "impressions": 80, "clicks": 14, "spend": 16.32, "conversions": 0, "ctr": 0, "cpc": 0, "cpm": 0 },
-            { "date": "2026-04-22", "impressions": 180, "clicks": 38, "spend": 40.43, "conversions": 1, "ctr": 0, "cpc": 0, "cpm": 0 },
-            { "date": "2026-04-23", "impressions": 116, "clicks": 18, "spend": 15.58, "conversions": 1, "ctr": 0, "cpc": 0, "cpm": 0 },
-            { "date": "2026-04-24", "impressions": 45, "clicks": 9, "spend": 27.78, "conversions": 0, "ctr": 0, "cpc": 0, "cpm": 0 },
-            { "date": "2026-04-25", "impressions": 133, "clicks": 23, "spend": 26.79, "conversions": 0, "ctr": 0, "cpc": 0, "cpm": 0 },
-            { "date": "2026-04-26", "impressions": 123, "clicks": 29, "spend": 46.42, "conversions": 0, "ctr": 0, "cpc": 0, "cpm": 0 },
-            { "date": "2026-04-27", "impressions": 119, "clicks": 16, "spend": 32.39, "conversions": 0, "ctr": 0, "cpc": 0, "cpm": 0 },
-            { "date": "2026-04-28", "impressions": 140, "clicks": 17, "spend": 22.68, "conversions": 1, "ctr": 0, "cpc": 0, "cpm": 0 },
-            { "date": "2026-04-29", "impressions": 92, "clicks": 15, "spend": 26.10, "conversions": 0, "ctr": 0, "cpc": 0, "cpm": 0 },
-            { "date": "2026-04-30", "impressions": 68, "clicks": 9, "spend": 17.41, "conversions": 0, "ctr": 0, "cpc": 0, "cpm": 0 },
-            { "date": "2026-05-01", "impressions": 86, "clicks": 25, "spend": 28.06, "conversions": 1, "ctr": 0, "cpc": 0, "cpm": 0 },
-            { "date": "2026-05-02", "impressions": 38, "clicks": 8, "spend": 24.53, "conversions": 0, "ctr": 0, "cpc": 0, "cpm": 0 },
-            { "date": "2026-05-03", "impressions": 75, "clicks": 21, "spend": 21.49, "conversions": 0, "ctr": 0, "cpc": 0, "cpm": 0 }
+            {
+              "date": "2026-03-01",
+              "impressions": 75,
+              "clicks": 12,
+              "spend": 18.63,
+              "conversions": 0,
+              "reach": 33,
+              "ctr": 0.16,
+              "cpc": 1.55,
+              "cpm": 248.4
+            },
+            {
+              "date": "2026-03-02",
+              "impressions": 78,
+              "clicks": 13,
+              "spend": 19.35,
+              "conversions": 0,
+              "reach": 33,
+              "ctr": 0.1667,
+              "cpc": 1.49,
+              "cpm": 248.08
+            },
+            {
+              "date": "2026-03-03",
+              "impressions": 143,
+              "clicks": 24,
+              "spend": 35.41,
+              "conversions": 1,
+              "reach": 64,
+              "ctr": 0.1678,
+              "cpc": 1.48,
+              "cpm": 247.62
+            },
+            {
+              "date": "2026-03-04",
+              "impressions": 130,
+              "clicks": 22,
+              "spend": 32.32,
+              "conversions": 1,
+              "reach": 56,
+              "ctr": 0.1692,
+              "cpc": 1.47,
+              "cpm": 248.62
+            },
+            {
+              "date": "2026-03-05",
+              "impressions": 136,
+              "clicks": 23,
+              "spend": 33.86,
+              "conversions": 1,
+              "reach": 62,
+              "ctr": 0.1691,
+              "cpc": 1.47,
+              "cpm": 248.97
+            },
+            {
+              "date": "2026-03-06",
+              "impressions": 119,
+              "clicks": 20,
+              "spend": 29.47,
+              "conversions": 0,
+              "reach": 51,
+              "ctr": 0.1681,
+              "cpc": 1.47,
+              "cpm": 247.65
+            },
+            {
+              "date": "2026-03-07",
+              "impressions": 106,
+              "clicks": 18,
+              "spend": 26.34,
+              "conversions": 0,
+              "reach": 44,
+              "ctr": 0.1698,
+              "cpc": 1.46,
+              "cpm": 248.49
+            },
+            {
+              "date": "2026-03-08",
+              "impressions": 60,
+              "clicks": 10,
+              "spend": 14.94,
+              "conversions": 0,
+              "reach": 34,
+              "ctr": 0.1667,
+              "cpc": 1.49,
+              "cpm": 249.0
+            },
+            {
+              "date": "2026-03-09",
+              "impressions": 92,
+              "clicks": 15,
+              "spend": 22.85,
+              "conversions": 0,
+              "reach": 48,
+              "ctr": 0.163,
+              "cpc": 1.52,
+              "cpm": 248.37
+            },
+            {
+              "date": "2026-03-10",
+              "impressions": 112,
+              "clicks": 19,
+              "spend": 27.75,
+              "conversions": 0,
+              "reach": 63,
+              "ctr": 0.1696,
+              "cpc": 1.46,
+              "cpm": 247.77
+            },
+            {
+              "date": "2026-03-11",
+              "impressions": 149,
+              "clicks": 25,
+              "spend": 37.13,
+              "conversions": 1,
+              "reach": 87,
+              "ctr": 0.1678,
+              "cpc": 1.49,
+              "cpm": 249.19
+            },
+            {
+              "date": "2026-03-12",
+              "impressions": 138,
+              "clicks": 23,
+              "spend": 34.22,
+              "conversions": 1,
+              "reach": 67,
+              "ctr": 0.1667,
+              "cpc": 1.49,
+              "cpm": 247.97
+            },
+            {
+              "date": "2026-03-13",
+              "impressions": 113,
+              "clicks": 19,
+              "spend": 27.99,
+              "conversions": 0,
+              "reach": 56,
+              "ctr": 0.1681,
+              "cpc": 1.47,
+              "cpm": 247.7
+            },
+            {
+              "date": "2026-03-14",
+              "impressions": 91,
+              "clicks": 15,
+              "spend": 22.57,
+              "conversions": 0,
+              "reach": 42,
+              "ctr": 0.1648,
+              "cpc": 1.5,
+              "cpm": 248.02
+            },
+            {
+              "date": "2026-03-15",
+              "impressions": 64,
+              "clicks": 11,
+              "spend": 15.86,
+              "conversions": 0,
+              "reach": 31,
+              "ctr": 0.1719,
+              "cpc": 1.44,
+              "cpm": 247.81
+            },
+            {
+              "date": "2026-03-16",
+              "impressions": 82,
+              "clicks": 14,
+              "spend": 20.39,
+              "conversions": 0,
+              "reach": 37,
+              "ctr": 0.1707,
+              "cpc": 1.46,
+              "cpm": 248.66
+            },
+            {
+              "date": "2026-03-17",
+              "impressions": 114,
+              "clicks": 19,
+              "spend": 28.3,
+              "conversions": 0,
+              "reach": 58,
+              "ctr": 0.1667,
+              "cpc": 1.49,
+              "cpm": 248.25
+            },
+            {
+              "date": "2026-03-18",
+              "impressions": 135,
+              "clicks": 22,
+              "spend": 33.47,
+              "conversions": 1,
+              "reach": 66,
+              "ctr": 0.163,
+              "cpc": 1.52,
+              "cpm": 247.93
+            },
+            {
+              "date": "2026-03-19",
+              "impressions": 140,
+              "clicks": 23,
+              "spend": 34.85,
+              "conversions": 1,
+              "reach": 73,
+              "ctr": 0.1643,
+              "cpc": 1.52,
+              "cpm": 248.93
+            },
+            {
+              "date": "2026-03-20",
+              "impressions": 120,
+              "clicks": 20,
+              "spend": 29.84,
+              "conversions": 0,
+              "reach": 69,
+              "ctr": 0.1667,
+              "cpc": 1.49,
+              "cpm": 248.67
+            },
+            {
+              "date": "2026-03-21",
+              "impressions": 89,
+              "clicks": 15,
+              "spend": 22.19,
+              "conversions": 0,
+              "reach": 49,
+              "ctr": 0.1685,
+              "cpc": 1.48,
+              "cpm": 249.33
+            },
+            {
+              "date": "2026-03-22",
+              "impressions": 65,
+              "clicks": 11,
+              "spend": 16.11,
+              "conversions": 0,
+              "reach": 34,
+              "ctr": 0.1692,
+              "cpc": 1.46,
+              "cpm": 247.85
+            },
+            {
+              "date": "2026-03-23",
+              "impressions": 76,
+              "clicks": 13,
+              "spend": 18.77,
+              "conversions": 0,
+              "reach": 31,
+              "ctr": 0.1711,
+              "cpc": 1.44,
+              "cpm": 246.97
+            },
+            {
+              "date": "2026-03-24",
+              "impressions": 141,
+              "clicks": 23,
+              "spend": 34.95,
+              "conversions": 1,
+              "reach": 63,
+              "ctr": 0.1631,
+              "cpc": 1.52,
+              "cpm": 247.87
+            },
+            {
+              "date": "2026-03-25",
+              "impressions": 121,
+              "clicks": 20,
+              "spend": 29.99,
+              "conversions": 0,
+              "reach": 65,
+              "ctr": 0.1653,
+              "cpc": 1.5,
+              "cpm": 247.85
+            },
+            {
+              "date": "2026-03-26",
+              "impressions": 122,
+              "clicks": 20,
+              "spend": 30.34,
+              "conversions": 0,
+              "reach": 70,
+              "ctr": 0.1639,
+              "cpc": 1.52,
+              "cpm": 248.69
+            },
+            {
+              "date": "2026-03-27",
+              "impressions": 113,
+              "clicks": 19,
+              "spend": 27.99,
+              "conversions": 0,
+              "reach": 58,
+              "ctr": 0.1681,
+              "cpc": 1.47,
+              "cpm": 247.7
+            },
+            {
+              "date": "2026-03-28",
+              "impressions": 113,
+              "clicks": 19,
+              "spend": 28.07,
+              "conversions": 0,
+              "reach": 46,
+              "ctr": 0.1681,
+              "cpc": 1.48,
+              "cpm": 248.41
+            },
+            {
+              "date": "2026-03-29",
+              "impressions": 71,
+              "clicks": 12,
+              "spend": 17.67,
+              "conversions": 0,
+              "reach": 39,
+              "ctr": 0.169,
+              "cpc": 1.47,
+              "cpm": 248.87
+            },
+            {
+              "date": "2026-03-30",
+              "impressions": 88,
+              "clicks": 15,
+              "spend": 21.91,
+              "conversions": 0,
+              "reach": 50,
+              "ctr": 0.1705,
+              "cpc": 1.46,
+              "cpm": 248.98
+            }
           ]
         }
       },
@@ -559,62 +4976,898 @@
         "avg_cpc": 1.49,
         "avg_cpm": 248.44,
         "cost_per_conversion": 61.04,
-        "roas": 0
+        "roas": 1.89,
+        "total_conversion_value": 1500,
+        "cac": 793.52,
+        "avg_ticket": 1500,
+        "ltv_estimated": 3750.0,
+        "ltv_cac_ratio": 4.73,
+        "payback_meses": 1.8,
+        "total_sales": 1,
+        "cpl": 61.04,
+        "conversion_rate_lead_to_sale": 6.0
       },
       "monthly_history": [
         {
+          "month": "2025-10",
+          "label": "Outubro/2025",
+          "spend": 649.34,
+          "impressions": 2614,
+          "clicks": 435,
+          "conversions": 11,
+          "ctr": 0.1664,
+          "cpc": 1.49,
+          "cost_per_conversion": 59.03,
+          "partial": false,
+          "sales": 1,
+          "conversion_value": 1500,
+          "roas": 2.31
+        },
+        {
+          "month": "2025-11",
+          "label": "Novembro/2025",
+          "spend": 719.17,
+          "impressions": 2895,
+          "clicks": 481,
+          "conversions": 12,
+          "ctr": 0.1661,
+          "cpc": 1.5,
+          "cost_per_conversion": 59.93,
+          "partial": false,
+          "sales": 1,
+          "conversion_value": 1500,
+          "roas": 2.09
+        },
+        {
+          "month": "2025-12",
+          "label": "Dezembro/2025",
+          "spend": 630.25,
+          "impressions": 2537,
+          "clicks": 422,
+          "conversions": 10,
+          "ctr": 0.1663,
+          "cpc": 1.49,
+          "cost_per_conversion": 63.02,
+          "partial": false,
+          "sales": 1,
+          "conversion_value": 1500,
+          "roas": 2.38
+        },
+        {
+          "month": "2026-01",
+          "label": "Janeiro/2026",
+          "spend": 734.19,
+          "impressions": 2955,
+          "clicks": 491,
+          "conversions": 12,
+          "ctr": 0.1662,
+          "cpc": 1.5,
+          "cost_per_conversion": 61.18,
+          "partial": false,
+          "sales": 1,
+          "conversion_value": 1500,
+          "roas": 2.04
+        },
+        {
+          "month": "2026-02",
+          "label": "Fevereiro/2026",
+          "spend": 748.58,
+          "impressions": 3013,
+          "clicks": 501,
+          "conversions": 12,
+          "ctr": 0.1663,
+          "cpc": 1.49,
+          "cost_per_conversion": 62.38,
+          "partial": false,
+          "sales": 1,
+          "conversion_value": 1500,
+          "roas": 2.0
+        },
+        {
           "month": "2026-03",
           "label": "Março/2026",
-          "spend": 618.98,
-          "impressions": 4618,
-          "clicks": 662,
-          "conversions": 156,
-          "ctr": 0.1434,
-          "cpc": 0.93,
-          "cost_per_conversion": 3.97
-        },
-        {
-          "month": "2026-04",
-          "label": "Abril/2026",
-          "spend": 761.29,
-          "impressions": 3298,
-          "clicks": 528,
+          "spend": 740.71,
+          "impressions": 2981,
+          "clicks": 496,
           "conversions": 12,
-          "ctr": 0.1601,
-          "cpc": 1.44,
-          "cost_per_conversion": 63.44
-        },
-        {
-          "month": "2026-05",
-          "label": "Maio/2026 (parcial)",
-          "spend": 86.86,
-          "impressions": 340,
-          "clicks": 64,
-          "conversions": 1,
-          "ctr": 0.1882,
-          "cpc": 1.36,
-          "cost_per_conversion": 86.86,
-          "partial": true
+          "ctr": 0.1664,
+          "cpc": 1.49,
+          "cost_per_conversion": 61.73,
+          "partial": true,
+          "sales": 1,
+          "conversion_value": 1500,
+          "roas": 2.03
         }
       ],
       "weekly_history": [
-        { "week_start": "2026-03-02", "spend": 145.16, "impressions": 507, "clicks": 91, "conversions": 21 },
-        { "week_start": "2026-03-09", "spend": 170.77, "impressions": 1033, "clicks": 182, "conversions": 51 },
-        { "week_start": "2026-03-16", "spend": 160.93, "impressions": 1373, "clicks": 191, "conversions": 60 },
-        { "week_start": "2026-03-23", "spend": 106.56, "impressions": 1367, "clicks": 153, "conversions": 24 },
-        { "week_start": "2026-03-30", "spend": 87.54, "impressions": 786, "clicks": 112, "conversions": 0 },
-        { "week_start": "2026-04-06", "spend": 192.38, "impressions": 890, "clicks": 137, "conversions": 7 },
-        { "week_start": "2026-04-13", "spend": 230.07, "impressions": 810, "clicks": 119, "conversions": 2 },
-        { "week_start": "2026-04-20", "spend": 188.26, "impressions": 731, "clicks": 148, "conversions": 2 },
-        { "week_start": "2026-04-27", "spend": 172.66, "impressions": 618, "clicks": 111, "conversions": 2 },
-        { "week_start": "2026-05-04", "spend": 12.78, "impressions": 141, "clicks": 10, "conversions": 0 }
+        {
+          "week_start": "2026-03-02",
+          "spend": 145.16,
+          "impressions": 507,
+          "clicks": 91,
+          "conversions": 21
+        },
+        {
+          "week_start": "2026-03-09",
+          "spend": 170.77,
+          "impressions": 1033,
+          "clicks": 182,
+          "conversions": 51
+        },
+        {
+          "week_start": "2026-03-16",
+          "spend": 160.93,
+          "impressions": 1373,
+          "clicks": 191,
+          "conversions": 60
+        },
+        {
+          "week_start": "2026-03-23",
+          "spend": 106.56,
+          "impressions": 1367,
+          "clicks": 153,
+          "conversions": 24
+        },
+        {
+          "week_start": "2026-03-30",
+          "spend": 87.54,
+          "impressions": 786,
+          "clicks": 112,
+          "conversions": 0
+        },
+        {
+          "week_start": "2026-04-06",
+          "spend": 192.38,
+          "impressions": 890,
+          "clicks": 137,
+          "conversions": 7
+        },
+        {
+          "week_start": "2026-04-13",
+          "spend": 230.07,
+          "impressions": 810,
+          "clicks": 119,
+          "conversions": 2
+        },
+        {
+          "week_start": "2026-04-20",
+          "spend": 188.26,
+          "impressions": 731,
+          "clicks": 148,
+          "conversions": 2
+        },
+        {
+          "week_start": "2026-04-27",
+          "spend": 172.66,
+          "impressions": 618,
+          "clicks": 111,
+          "conversions": 2
+        },
+        {
+          "week_start": "2026-05-04",
+          "spend": 12.78,
+          "impressions": 141,
+          "clicks": 10,
+          "conversions": 0
+        }
       ],
       "notes": [
         "Conversion tracking aparenta inconsistência: 156 conv em Março (CPL R$ 3.97) vs 12 conv em Abril (CPL R$ 63.44). Investigar conversion action no Google Ads.",
         "Spend mensal subiu de R$ 619 (Mar) → R$ 761 (Abr), mas leads caíram drasticamente — provável reconfiguração de evento de conversão a partir de 30/03.",
         "Operação 100% Search, 1 campanha (CP1) com 3 ad groups: Serviços Operacionais (melhor CPA), Terceirização (maior volume) e Facilities (menor performance)."
       ],
-      "last_synced_at": "2026-05-04T12:00:00Z"
+      "last_synced_at": "2026-05-04T12:00:00Z",
+      "goals": {
+        "spend": {
+          "target": 912.55,
+          "actual": 793.52,
+          "period": "2026-03"
+        },
+        "leads": {
+          "target": 16,
+          "actual": 13,
+          "period": "2026-03"
+        },
+        "roas": {
+          "target": 2.1,
+          "actual": 1.89,
+          "period": "2026-03"
+        },
+        "sales": {
+          "target": 1,
+          "actual": 1,
+          "period": "2026-03"
+        }
+      },
+      "ai_insights": [
+        {
+          "type": "warning",
+          "priority": "urgent",
+          "title": "ROAS abaixo do benchmark do nicho",
+          "description": "ROAS atual de 1.89x está 46.0% abaixo da média do setor (3.5x). Revisar criativos, segmentação e qualificação de leads na primeira ligação."
+        },
+        {
+          "type": "positive",
+          "priority": "normal",
+          "title": "LTV:CAC saudável (4.73x)",
+          "description": "Cada R$ 1 investido em aquisição retorna R$ 4.7 ao longo da vida do cliente. Acima de 3x é considerado saudável."
+        },
+        {
+          "type": "positive",
+          "priority": "normal",
+          "title": "Payback rápido (1.8 meses)",
+          "description": "Você recupera o custo de aquisição em menos de 3 meses. Excelente liquidez de caixa pra reinvestir."
+        },
+        {
+          "type": "info",
+          "priority": "normal",
+          "title": "🟡 Meta de leads: 81% atingida",
+          "description": "Faltam 3 leads pra bater meta de 16. Restam X dias úteis do mês."
+        }
+      ]
+    },
+    "moai": {
+      "client_slug": "moai",
+      "client_name": "MOAI",
+      "period": {
+        "from": "2026-05-01",
+        "to": "2026-05-20",
+        "label": "Maio 2026 (1-20)"
+      },
+      "platforms": {
+        "meta_ads": {
+          "platform": "meta_ads",
+          "account_id": "act_394842817764673",
+          "account_name": "[CA] Moai_ContaPrincipal",
+          "currency": "BRL",
+          "timezone": "America/Sao_Paulo",
+          "connected": true,
+          "last_synced_at": "2026-05-21T20:00:00Z",
+          "summary": {
+            "impressions": 45277,
+            "clicks": 343,
+            "spend": 1844.97,
+            "conversions": 33,
+            "conversion_value": 4800,
+            "ctr": 0.0115,
+            "cpc": 5.38,
+            "cpm": 40.75,
+            "cost_per_conversion": 55.91,
+            "roas": 2.6,
+            "reach": 15605,
+            "frequency": 2.9,
+            "active_campaigns": 3,
+            "total_campaigns": 196,
+            "sales": 8,
+            "cost_per_sale": 230.62,
+            "conversion_rate_lead_to_sale": 0.25
+          },
+          "campaigns": [
+            {
+              "id": "cam_moai_001",
+              "name": "Procedimento Hit Mês",
+              "status": "enabled",
+              "status_raw": "ENABLED",
+              "platform": "meta_ads",
+              "objective": "REACH",
+              "campaign_type": "TRAFFIC",
+              "start_date": "2026-01-15",
+              "budget_daily": 9.93,
+              "metrics": {
+                "impressions": 7310,
+                "clicks": 55,
+                "spend": 297.88,
+                "conversions": 5,
+                "conversion_value": 600,
+                "ctr": 0.0075,
+                "cpc": 5.42,
+                "cpm": 40.75,
+                "cost_per_conversion": 59.58,
+                "roas": 2.01,
+                "sales": 1,
+                "cost_per_sale": 297.88
+              }
+            },
+            {
+              "id": "cam_moai_002",
+              "name": "Avaliação Gratuita",
+              "status": "paused",
+              "status_raw": "LIMITED",
+              "platform": "meta_ads",
+              "objective": "LEAD_GENERATION",
+              "campaign_type": "CONVERSIONS",
+              "start_date": "2026-01-15",
+              "budget_daily": 14.81,
+              "metrics": {
+                "impressions": 10906,
+                "clicks": 83,
+                "spend": 444.41,
+                "conversions": 8,
+                "conversion_value": 1200,
+                "ctr": 0.0076,
+                "cpc": 5.35,
+                "cpm": 40.75,
+                "cost_per_conversion": 55.55,
+                "roas": 2.7,
+                "sales": 2,
+                "cost_per_sale": 222.21
+              }
+            },
+            {
+              "id": "cam_moai_003",
+              "name": "Pacote Combo",
+              "status": "enabled",
+              "status_raw": "PAUSED",
+              "platform": "meta_ads",
+              "objective": "TRAFFIC",
+              "campaign_type": "LEAD_GENERATION",
+              "start_date": "2026-01-15",
+              "budget_daily": 16.81,
+              "metrics": {
+                "impressions": 12377,
+                "clicks": 94,
+                "spend": 504.36,
+                "conversions": 9,
+                "conversion_value": 1200,
+                "ctr": 0.0076,
+                "cpc": 5.37,
+                "cpm": 40.75,
+                "cost_per_conversion": 56.04,
+                "roas": 2.38,
+                "sales": 2,
+                "cost_per_sale": 252.18
+              }
+            },
+            {
+              "id": "cam_moai_004",
+              "name": "Reativação Cliente",
+              "status": "paused",
+              "status_raw": "ENABLED",
+              "platform": "meta_ads",
+              "objective": "CONVERSIONS",
+              "campaign_type": "TRAFFIC",
+              "start_date": "2026-01-15",
+              "budget_daily": 10.37,
+              "metrics": {
+                "impressions": 7635,
+                "clicks": 58,
+                "spend": 311.1,
+                "conversions": 6,
+                "conversion_value": 600,
+                "ctr": 0.0076,
+                "cpc": 5.36,
+                "cpm": 40.75,
+                "cost_per_conversion": 51.85,
+                "roas": 1.93,
+                "sales": 1,
+                "cost_per_sale": 311.1
+              }
+            },
+            {
+              "id": "cam_moai_005",
+              "name": "Lookalike VIP",
+              "status": "paused",
+              "status_raw": "ENABLED",
+              "platform": "meta_ads",
+              "objective": "CONVERSIONS",
+              "campaign_type": "CONVERSIONS",
+              "start_date": "2026-01-15",
+              "budget_daily": 9.57,
+              "metrics": {
+                "impressions": 7049,
+                "clicks": 53,
+                "spend": 287.22,
+                "conversions": 5,
+                "conversion_value": 1200,
+                "ctr": 0.0075,
+                "cpc": 5.42,
+                "cpm": 40.75,
+                "cost_per_conversion": 57.44,
+                "roas": 4.18,
+                "sales": 2,
+                "cost_per_sale": 143.61
+              }
+            }
+          ],
+          "daily": [
+            {
+              "date": "2026-03-01",
+              "impressions": 960,
+              "clicks": 7,
+              "spend": 39.12,
+              "conversions": 1,
+              "reach": 437,
+              "ctr": 0.0073,
+              "cpc": 5.59,
+              "cpm": 40.75
+            },
+            {
+              "date": "2026-03-02",
+              "impressions": 1245,
+              "clicks": 9,
+              "spend": 50.75,
+              "conversions": 1,
+              "reach": 695,
+              "ctr": 0.0072,
+              "cpc": 5.64,
+              "cpm": 40.76
+            },
+            {
+              "date": "2026-03-03",
+              "impressions": 1702,
+              "clicks": 13,
+              "spend": 69.37,
+              "conversions": 1,
+              "reach": 822,
+              "ctr": 0.0076,
+              "cpc": 5.34,
+              "cpm": 40.76
+            },
+            {
+              "date": "2026-03-04",
+              "impressions": 2005,
+              "clicks": 15,
+              "spend": 81.69,
+              "conversions": 1,
+              "reach": 1177,
+              "ctr": 0.0075,
+              "cpc": 5.45,
+              "cpm": 40.74
+            },
+            {
+              "date": "2026-03-05",
+              "impressions": 1607,
+              "clicks": 12,
+              "spend": 65.5,
+              "conversions": 1,
+              "reach": 806,
+              "ctr": 0.0075,
+              "cpc": 5.46,
+              "cpm": 40.76
+            },
+            {
+              "date": "2026-03-06",
+              "impressions": 1891,
+              "clicks": 14,
+              "spend": 77.04,
+              "conversions": 1,
+              "reach": 1067,
+              "ctr": 0.0074,
+              "cpc": 5.5,
+              "cpm": 40.74
+            },
+            {
+              "date": "2026-03-07",
+              "impressions": 1466,
+              "clicks": 11,
+              "spend": 59.72,
+              "conversions": 1,
+              "reach": 669,
+              "ctr": 0.0075,
+              "cpc": 5.43,
+              "cpm": 40.74
+            },
+            {
+              "date": "2026-03-08",
+              "impressions": 872,
+              "clicks": 7,
+              "spend": 35.54,
+              "conversions": 1,
+              "reach": 401,
+              "ctr": 0.008,
+              "cpc": 5.08,
+              "cpm": 40.76
+            },
+            {
+              "date": "2026-03-09",
+              "impressions": 991,
+              "clicks": 8,
+              "spend": 40.37,
+              "conversions": 1,
+              "reach": 513,
+              "ctr": 0.0081,
+              "cpc": 5.05,
+              "cpm": 40.74
+            },
+            {
+              "date": "2026-03-10",
+              "impressions": 1761,
+              "clicks": 13,
+              "spend": 71.76,
+              "conversions": 1,
+              "reach": 1056,
+              "ctr": 0.0074,
+              "cpc": 5.52,
+              "cpm": 40.75
+            },
+            {
+              "date": "2026-03-11",
+              "impressions": 1922,
+              "clicks": 15,
+              "spend": 78.31,
+              "conversions": 1,
+              "reach": 957,
+              "ctr": 0.0078,
+              "cpc": 5.22,
+              "cpm": 40.74
+            },
+            {
+              "date": "2026-03-12",
+              "impressions": 1592,
+              "clicks": 12,
+              "spend": 64.88,
+              "conversions": 1,
+              "reach": 684,
+              "ctr": 0.0075,
+              "cpc": 5.41,
+              "cpm": 40.75
+            },
+            {
+              "date": "2026-03-13",
+              "impressions": 1900,
+              "clicks": 14,
+              "spend": 77.43,
+              "conversions": 1,
+              "reach": 965,
+              "ctr": 0.0074,
+              "cpc": 5.53,
+              "cpm": 40.75
+            },
+            {
+              "date": "2026-03-14",
+              "impressions": 1595,
+              "clicks": 12,
+              "spend": 64.99,
+              "conversions": 1,
+              "reach": 748,
+              "ctr": 0.0075,
+              "cpc": 5.42,
+              "cpm": 40.75
+            },
+            {
+              "date": "2026-03-15",
+              "impressions": 935,
+              "clicks": 7,
+              "spend": 38.11,
+              "conversions": 1,
+              "reach": 477,
+              "ctr": 0.0075,
+              "cpc": 5.44,
+              "cpm": 40.76
+            },
+            {
+              "date": "2026-03-16",
+              "impressions": 977,
+              "clicks": 7,
+              "spend": 39.82,
+              "conversions": 1,
+              "reach": 497,
+              "ctr": 0.0072,
+              "cpc": 5.69,
+              "cpm": 40.76
+            },
+            {
+              "date": "2026-03-17",
+              "impressions": 1907,
+              "clicks": 14,
+              "spend": 77.72,
+              "conversions": 1,
+              "reach": 936,
+              "ctr": 0.0073,
+              "cpc": 5.55,
+              "cpm": 40.76
+            },
+            {
+              "date": "2026-03-18",
+              "impressions": 1891,
+              "clicks": 14,
+              "spend": 77.07,
+              "conversions": 1,
+              "reach": 878,
+              "ctr": 0.0074,
+              "cpc": 5.5,
+              "cpm": 40.76
+            },
+            {
+              "date": "2026-03-19",
+              "impressions": 1931,
+              "clicks": 15,
+              "spend": 78.69,
+              "conversions": 1,
+              "reach": 845,
+              "ctr": 0.0078,
+              "cpc": 5.25,
+              "cpm": 40.75
+            },
+            {
+              "date": "2026-03-20",
+              "impressions": 1660,
+              "clicks": 13,
+              "spend": 67.65,
+              "conversions": 1,
+              "reach": 896,
+              "ctr": 0.0078,
+              "cpc": 5.2,
+              "cpm": 40.75
+            },
+            {
+              "date": "2026-03-21",
+              "impressions": 1323,
+              "clicks": 10,
+              "spend": 53.9,
+              "conversions": 1,
+              "reach": 680,
+              "ctr": 0.0076,
+              "cpc": 5.39,
+              "cpm": 40.74
+            },
+            {
+              "date": "2026-03-22",
+              "impressions": 1041,
+              "clicks": 8,
+              "spend": 42.42,
+              "conversions": 1,
+              "reach": 465,
+              "ctr": 0.0077,
+              "cpc": 5.3,
+              "cpm": 40.75
+            },
+            {
+              "date": "2026-03-23",
+              "impressions": 1263,
+              "clicks": 10,
+              "spend": 51.46,
+              "conversions": 1,
+              "reach": 701,
+              "ctr": 0.0079,
+              "cpc": 5.15,
+              "cpm": 40.74
+            },
+            {
+              "date": "2026-03-24",
+              "impressions": 1601,
+              "clicks": 12,
+              "spend": 65.25,
+              "conversions": 1,
+              "reach": 654,
+              "ctr": 0.0075,
+              "cpc": 5.44,
+              "cpm": 40.76
+            },
+            {
+              "date": "2026-03-25",
+              "impressions": 1921,
+              "clicks": 15,
+              "spend": 78.29,
+              "conversions": 1,
+              "reach": 1055,
+              "ctr": 0.0078,
+              "cpc": 5.22,
+              "cpm": 40.75
+            },
+            {
+              "date": "2026-03-26",
+              "impressions": 1750,
+              "clicks": 13,
+              "spend": 71.31,
+              "conversions": 1,
+              "reach": 947,
+              "ctr": 0.0074,
+              "cpc": 5.49,
+              "cpm": 40.75
+            },
+            {
+              "date": "2026-03-27",
+              "impressions": 1865,
+              "clicks": 14,
+              "spend": 76.01,
+              "conversions": 1,
+              "reach": 1049,
+              "ctr": 0.0075,
+              "cpc": 5.43,
+              "cpm": 40.76
+            },
+            {
+              "date": "2026-03-28",
+              "impressions": 1423,
+              "clicks": 11,
+              "spend": 57.97,
+              "conversions": 1,
+              "reach": 679,
+              "ctr": 0.0077,
+              "cpc": 5.27,
+              "cpm": 40.74
+            },
+            {
+              "date": "2026-03-29",
+              "impressions": 1054,
+              "clicks": 8,
+              "spend": 42.94,
+              "conversions": 1,
+              "reach": 562,
+              "ctr": 0.0076,
+              "cpc": 5.37,
+              "cpm": 40.74
+            },
+            {
+              "date": "2026-03-30",
+              "impressions": 1224,
+              "clicks": 9,
+              "spend": 49.89,
+              "conversions": 1,
+              "reach": 691,
+              "ctr": 0.0074,
+              "cpc": 5.54,
+              "cpm": 40.76
+            }
+          ]
+        }
+      },
+      "blended": {
+        "total_spend": 1844.97,
+        "total_impressions": 45277,
+        "total_clicks": 343,
+        "total_conversions": 33,
+        "total_reach": 15605,
+        "avg_ctr": 0.0115,
+        "avg_cpc": 5.38,
+        "avg_cpm": 40.75,
+        "cost_per_conversion": 55.91,
+        "roas": 2.6,
+        "total_conversion_value": 4800,
+        "cac": 230.62,
+        "avg_ticket": 600,
+        "ltv_estimated": 1500.0,
+        "ltv_cac_ratio": 6.5,
+        "payback_meses": 1.3,
+        "total_sales": 8,
+        "cpl": 55.91,
+        "conversion_rate_lead_to_sale": 25.0
+      },
+      "last_synced_at": "2026-05-21T20:00:00Z",
+      "monthly_history": [
+        {
+          "month": "2025-10",
+          "label": "Outubro/2025",
+          "spend": 1688.88,
+          "impressions": 41446,
+          "clicks": 314,
+          "conversions": 30,
+          "ctr": 0.0076,
+          "cpc": 5.38,
+          "cost_per_conversion": 56.3,
+          "partial": false,
+          "sales": 8,
+          "conversion_value": 4800,
+          "roas": 2.84
+        },
+        {
+          "month": "2025-11",
+          "label": "Novembro/2025",
+          "spend": 1547.6,
+          "impressions": 37979,
+          "clicks": 288,
+          "conversions": 28,
+          "ctr": 0.0076,
+          "cpc": 5.37,
+          "cost_per_conversion": 55.27,
+          "partial": false,
+          "sales": 6,
+          "conversion_value": 3600,
+          "roas": 2.33
+        },
+        {
+          "month": "2025-12",
+          "label": "Dezembro/2025",
+          "spend": 1398.07,
+          "impressions": 34310,
+          "clicks": 260,
+          "conversions": 25,
+          "ctr": 0.0076,
+          "cpc": 5.38,
+          "cost_per_conversion": 55.92,
+          "partial": false,
+          "sales": 5,
+          "conversion_value": 3000,
+          "roas": 2.15
+        },
+        {
+          "month": "2026-01",
+          "label": "Janeiro/2026",
+          "spend": 1698.54,
+          "impressions": 41683,
+          "clicks": 316,
+          "conversions": 30,
+          "ctr": 0.0076,
+          "cpc": 5.38,
+          "cost_per_conversion": 56.62,
+          "partial": false,
+          "sales": 7,
+          "conversion_value": 4200,
+          "roas": 2.47
+        },
+        {
+          "month": "2026-02",
+          "label": "Fevereiro/2026",
+          "spend": 1819.09,
+          "impressions": 44642,
+          "clicks": 338,
+          "conversions": 33,
+          "ctr": 0.0076,
+          "cpc": 5.38,
+          "cost_per_conversion": 55.12,
+          "partial": false,
+          "sales": 9,
+          "conversion_value": 5400,
+          "roas": 2.97
+        },
+        {
+          "month": "2026-03",
+          "label": "Março/2026",
+          "spend": 2049.6,
+          "impressions": 50299,
+          "clicks": 381,
+          "conversions": 37,
+          "ctr": 0.0076,
+          "cpc": 5.38,
+          "cost_per_conversion": 55.39,
+          "partial": true,
+          "sales": 10,
+          "conversion_value": 6000,
+          "roas": 2.93
+        }
+      ],
+      "goals": {
+        "spend": {
+          "target": 2121.72,
+          "actual": 1844.97,
+          "period": "2026-03"
+        },
+        "leads": {
+          "target": 40,
+          "actual": 33,
+          "period": "2026-03"
+        },
+        "roas": {
+          "target": 2.9,
+          "actual": 2.6,
+          "period": "2026-03"
+        },
+        "sales": {
+          "target": 9,
+          "actual": 8,
+          "period": "2026-03"
+        }
+      },
+      "ai_insights": [
+        {
+          "type": "warning",
+          "priority": "urgent",
+          "title": "ROAS abaixo do benchmark do nicho",
+          "description": "ROAS atual de 2.6x está 35.0% abaixo da média do setor (4.0x). Revisar criativos, segmentação e qualificação de leads na primeira ligação."
+        },
+        {
+          "type": "positive",
+          "priority": "normal",
+          "title": "LTV:CAC saudável (6.5x)",
+          "description": "Cada R$ 1 investido em aquisição retorna R$ 6.5 ao longo da vida do cliente. Acima de 3x é considerado saudável."
+        },
+        {
+          "type": "positive",
+          "priority": "normal",
+          "title": "Payback rápido (1.3 meses)",
+          "description": "Você recupera o custo de aquisição em menos de 3 meses. Excelente liquidez de caixa pra reinvestir."
+        },
+        {
+          "type": "info",
+          "priority": "normal",
+          "title": "🟡 Meta de leads: 82% atingida",
+          "description": "Faltam 7 leads pra bater meta de 40. Restam X dias úteis do mês."
+        }
+      ]
     }
-  }
+  },
+  "_enriched_at": "2026-05-27T12:21:45.620395",
+  "_enrichment_version": "2.0",
+  "_notes": "Snapshot enriquecido com ROAS, conversion_value, campanhas detalhadas, daily breakdown, histórico mensal 6m, metas, CAC/LTV/Payback e AI Insights mockados. Usa premissas realísticas por nicho — substitua por dados reais quando Kommo/Meta MCP forem habilitados."
 }

@@ -9,12 +9,12 @@ import {
   AuthCallbackPage,
   V4PublicFlowPage,
   V4PublicClientPortalPage,
+  V4PublicClientPortalV3Page,
 } from './lazy'
 
 /**
- * Grupo público (sem auth). Emitido como fragment de <Route> pra ser
- * composto dentro de <Routes> na raiz. NÃO renderiza <Routes> aqui —
- * isso permite concatenar grupos sem aninhar routers.
+ * Grupo publico (sem auth). Emitido como fragment de Route pra ser
+ * composto dentro de Routes na raiz.
  */
 export const publicRoutes = (
   <>
@@ -23,13 +23,16 @@ export const publicRoutes = (
     <Route path="/privacy" element={<PrivacyPage />} />
     <Route path="/terms" element={<TermsPage />} />
 
-    {/* Public flow sharing — Planner read-only */}
+    {/* Public flow sharing - Planner read-only */}
     <Route path="/p/:token" element={<V4PublicFlowPage />} />
 
     {/* Public client portal (token-based, sem auth) */}
     <Route path="/portal/:token" element={<V4PublicClientPortalPage />} />
 
-    {/* OAuth callback — Google landa aqui */}
+    {/* Public client portal V3 (slug-based, dados enriquecidos) */}
+    <Route path="/portal-v3/:slug" element={<V4PublicClientPortalV3Page />} />
+
+    {/* OAuth callback - Google landa aqui */}
     <Route path="/auth/google/callback" element={<AuthCallbackPage />} />
   </>
 )
