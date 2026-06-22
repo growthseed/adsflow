@@ -151,7 +151,17 @@ export default function OfensoresPage({ clientSlugOverride, embedded = false }: 
 
   const { data, loading, note, error } = useCompare(clientSlug, preset)
 
-  if (!client) return <Navigate to="/_v4/operations" replace />
+  if (!client) {
+    if (embedded) {
+      return (
+        <div className="rounded-lg border border-dashed border-[#DDE3EA] bg-white p-8 text-center">
+          <p className="text-sm font-semibold text-[#152033]">Sem dados de ofensores</p>
+          <p className="mt-1 text-xs text-gray-500">A sincronização via n8n ainda não populou estes dados no período.</p>
+        </div>
+      )
+    }
+    return <Navigate to="/_v4/operations" replace />
+  }
 
   // ---- Constrói waterfall data ----
   const waterfall = useMemo(() => {

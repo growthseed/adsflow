@@ -18,6 +18,11 @@ import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { runClickUpCreateFolder } from '../src/server/integrations/clickup-create-folder.js'
 import { runKommoFunnel }         from '../src/server/integrations/kommo-funnel.js'
 import { runMetaPreview }         from '../src/server/integrations/meta-preview.js'
+import { runMetaAdsDetail }       from '../src/server/integrations/meta-ads-detail.js'
+import { runMetaAdsCompare }      from '../src/server/integrations/meta-ads-compare.js'
+import { runMetaAdInspect }       from '../src/server/integrations/meta-ad-inspect.js'
+import { runGoogleAdsDetail }     from '../src/server/integrations/google-ads-detail.js'
+import { runClintFunnel }         from '../src/server/integrations/clint-funnel.js'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const op = String(req.query.op || '').trim()
@@ -28,10 +33,24 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return runKommoFunnel(req, res)
     case 'meta-preview':
       return runMetaPreview(req, res)
+    case 'meta-ads-detail':
+      return runMetaAdsDetail(req, res)
+    case 'meta-ads-compare':
+      return runMetaAdsCompare(req, res)
+    case 'meta-ad-inspect':
+      return runMetaAdInspect(req, res)
+    case 'google-ads-detail':
+      return runGoogleAdsDetail(req, res)
+    case 'clint-funnel':
+      return runClintFunnel(req, res)
     default:
       return res.status(400).json({
         error: `unknown op "${op}"`,
-        valid: ['clickup-create-folder', 'kommo-funnel', 'meta-preview'],
+        valid: [
+          'clickup-create-folder', 'kommo-funnel', 'meta-preview',
+          'meta-ads-detail', 'meta-ads-compare', 'meta-ad-inspect',
+          'google-ads-detail', 'clint-funnel',
+        ],
       })
   }
 }
