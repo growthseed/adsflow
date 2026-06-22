@@ -6,6 +6,7 @@ import { publicRoutes } from './publicRoutes'
 import { agencyRoutes } from './agencyRoutes'
 import { clientRoutes } from './clientRoutes'
 import { settingsRoutes } from './settingsRoutes'
+import { moaiRoutes } from './moaiRoutes'
 import { NotFoundPage } from './lazy'
 
 const PageLoader = () => <LoadingScreen variant="inline" />
@@ -20,6 +21,7 @@ export function AppRoutes() {
     <Suspense fallback={<PageLoader />}>
       <Routes>
         {publicRoutes}
+        {moaiRoutes}
         {agencyRoutes}
         {clientRoutes}
         {settingsRoutes}
