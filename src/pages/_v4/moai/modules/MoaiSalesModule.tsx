@@ -4,9 +4,11 @@
  */
 
 import { Routes, Route } from 'react-router-dom'
-import { AlertTriangle, ArrowUpRight, CheckCircle2, Database, Filter, LineChart, Radio, Target, Users } from 'lucide-react'
+import { AlertTriangle, ArrowUpRight, CheckCircle2, Database, Filter, LineChart, Radio, RefreshCw, Target, Users } from 'lucide-react'
 import { MoaiModuleShell, StubBadge } from './MoaiModuleShell'
 import ClintCohortAnalysis from './ClintCohortAnalysis'
+import { useMoaiSalesByPeriod } from '@/hooks/useMoaiSales'
+import { useMoaiPeriod } from '@/contexts/MoaiPeriodContext'
 
 const fmtBRL = (v: number) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 }).format(v)
 const fmtNum = (v: number) => v.toLocaleString('pt-BR')
@@ -114,33 +116,60 @@ export default function MoaiSalesModule() {
 }
 
 function SalesOverview() {
+  const { kpis: live, loading, error, refetch } = useMoaiSalesByPeriod()
+  const { presetLabel: periodLabel } = useMoaiPeriod()
+
+  const won = live?.won ?? 0
+  const lost = live?.lost ?? 0
+  const leadsCreated = live?.leads_created ?? 0
+  const revenue = live?.revenue_won ?? 0
+  const winRate = live?.win_rate ?? 0
+  const ticket = live?.ticket_medio ?? 0
+  const openCurrent = live?.open_current ?? kpis.open
+  const totalPeriod = won + lost + leadsCreated
+
   return (
     <div className="space-y-5">
+      {/* Barra de período e atualização */}
+      <div className="flex items-center justify-between gap-3 rounded-lg border border-[#DDE3EA] bg-white px-4 py-2.5">
+        <div className="flex items-center gap-2 text-xs text-gray-500">
+          <Database size={13} className="text-[#0F766E]" />
+          <span>Clint API · filtrando por <strong className="text-[#152033]">{periodLabel}</strong></span>
+          {loading && <span className="text-[11px] text-amber-600">carregando…</span>}
+          {error && <span className="text-[11px] text-red-600" title={error}>erro ao buscar</span>}
+        </div>
+        <button type="button" onClick={() => void refetch()} className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-gray-500 hover:text-[#152033]">
+          <RefreshCw size={12} className={loading ? 'animate-spin' : ''} /> Atualizar
+        </button>
+      </div>
+
       <section className="overflow-hidden rounded-lg border border-[#DDE3EA] bg-white">
         <div className="grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr]">
           <div className="relative bg-[#101828] p-5 text-white">
             <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-wider text-white/55">
-              <Database size={13} /> Clint snapshot 2026-06-06
+              <Database size={13} /> {periodLabel}
             </div>
-            <h2 className="mt-3 text-2xl font-bold leading-tight">Receita esta concentrada no Seller; volume esta preso em reativacao e comunidade.</h2>
+            <h2 className="mt-3 text-2xl font-bold leading-tight">
+              {won > 0 ? `${fmtNum(won)} vendas · ${fmtBRL(revenue)} em receita no período.` : 'Nenhuma venda fechada neste período.'}
+            </h2>
             <p className="mt-3 max-w-2xl text-sm leading-6 text-white/68">
-              A leitura de BI fica clara quando separamos volume, conversao, receita e qualidade de cadastro. Paid ainda aparece sem receita porque falta ingestao diaria Meta Ads por campanha/adset/ad.
+              Dados filtrados pelo período selecionado acima — WON e LOST contam por data de fechamento; leads criados contam por data de entrada no funil.
             </p>
             <div className="mt-6 grid grid-cols-3 gap-2">
-              <Signal label="Deals" value={fmtNum(kpis.totalDeals)} />
-              <Signal label="Open" value={fmtNum(kpis.open)} />
-              <Signal label="Empocados" value={fmtNum(kpis.empocados)} />
+              <Signal label="Leads criados" value={loading ? '…' : fmtNum(leadsCreated)} />
+              <Signal label="Open total" value={loading ? '…' : fmtNum(openCurrent)} />
+              <Signal label="Total período" value={loading ? '…' : fmtNum(totalPeriod)} />
             </div>
           </div>
           <div className="grid grid-cols-2 gap-px bg-[#DDE3EA] md:grid-cols-4">
-            <KpiCard label="Receita WON" value={fmtBRL(kpis.receita)} tone="green" detail="seller concentra 100%" />
-            <KpiCard label="Win rate" value={fmtPct(kpis.winRate)} tone="green" detail="WON / WON+LOST" />
-            <KpiCard label="Vendas" value={fmtNum(kpis.won)} detail={`${fmtNum(kpis.lost)} perdas`} />
-            <KpiCard label="Ticket medio" value={fmtBRL(kpis.ticket)} detail="receita / WON" />
-            <KpiCard label="Pipeline OPEN" value={fmtNum(kpis.open)} tone="amber" detail="92,7% da base" />
-            <KpiCard label="Empocados +30d" value={fmtNum(kpis.empocados)} tone="red" detail="prioridade operacional" />
-            <KpiCard label="Paid reportavel" value={fmtNum(213)} tone="amber" detail="sem Meta Ads diario" />
-            <KpiCard label="Campos criticos" value="7" tone="red" detail="aba Qualidade CRM" />
+            <KpiCard label="Receita WON" value={loading ? '…' : fmtBRL(revenue)} tone={revenue > 0 ? 'green' : undefined} detail="fechamentos no período" />
+            <KpiCard label="Win rate" value={loading ? '…' : fmtPct(winRate)} tone={winRate > 25 ? 'green' : winRate > 0 ? undefined : undefined} detail="WON / (WON + LOST)" />
+            <KpiCard label="Vendas WON" value={loading ? '…' : fmtNum(won)} detail={`${fmtNum(lost)} perdas no período`} />
+            <KpiCard label="Ticket médio" value={loading ? '…' : (ticket > 0 ? fmtBRL(ticket) : '—')} detail="receita / WON no período" />
+            <KpiCard label="Pipeline OPEN" value={loading ? '…' : fmtNum(openCurrent)} tone="amber" detail="total atual (todos os períodos)" />
+            <KpiCard label="Empocados +30d" value={fmtNum(kpis.empocados)} tone="red" detail="snapshot histórico" />
+            <KpiCard label="Paid reportável" value={fmtNum(213)} tone="amber" detail="sem Meta Ads diário" />
+            <KpiCard label="Campos críticos" value="7" tone="red" detail="aba Qualidade CRM" />
           </div>
         </div>
       </section>
@@ -156,28 +185,33 @@ function SalesOverview() {
           </div>
         ))}
       </section>
+
       <section className="grid grid-cols-1 gap-4 xl:grid-cols-[1.1fr_0.9fr]">
-        <Panel title="Funil por status" icon={<Filter size={15} />}>
+        <Panel title="Funil no período" icon={<Filter size={15} />}>
           <div className="space-y-3">
-            <StatusBar label="OPEN" value={kpis.open} total={kpis.totalDeals} tone="amber" />
-            <StatusBar label="LOST" value={kpis.lost} total={kpis.totalDeals} tone="red" />
-            <StatusBar label="WON" value={kpis.won} total={kpis.totalDeals} tone="green" />
+            {loading
+              ? <div className="h-16 animate-pulse rounded bg-gray-100" />
+              : <>
+                  <StatusBar label="Leads criados" value={leadsCreated} total={Math.max(leadsCreated, 1)} tone="amber" />
+                  <StatusBar label="LOST" value={lost} total={Math.max(leadsCreated, 1)} tone="red" />
+                  <StatusBar label="WON" value={won} total={Math.max(leadsCreated, 1)} tone="green" />
+                </>}
           </div>
         </Panel>
-        <Panel title="Decisoes de crescimento" icon={<Target size={15} />}>
+        <Panel title="Decisões de crescimento" icon={<Target size={15} />}>
           <div className="grid gap-3 sm:grid-cols-3 xl:grid-cols-1">
-            <Decision title="1. Corrigir base" text="Etapa, origem reportavel, email, IG, CNPJ, faturamento e cargo precisam voltar estruturados ao Clint." />
-            <Decision title="2. Fechar loop Ads" text="Paid so entra no report quando Meta Ads diario trouxer campanha, conjunto, anuncio, custo, clique e lead." />
+            <Decision title="1. Corrigir base" text="Etapa, origem reportável, email, IG, CNPJ, faturamento e cargo precisam voltar estruturados ao Clint." />
+            <Decision title="2. Fechar loop Ads" text="Paid só entra no report quando Meta Ads diário trouxer campanha, conjunto, anúncio, custo, clique e lead." />
             <Decision title="3. Acionar BOFU" text="Priorizar Alavanca, engajados IG, evento/comunidade e client+advocate com status de social selling." />
           </div>
         </Panel>
       </section>
 
       <section className="grid grid-cols-1 gap-4 xl:grid-cols-2">
-        <Panel title="Canais reportaveis" icon={<Radio size={15} />}>
+        <Panel title="Canais reportáveis (histórico completo)" icon={<Radio size={15} />}>
           <ChannelMini rows={channels} />
         </Panel>
-        <Panel title="Top origens nomeadas" icon={<LineChart size={15} />}>
+        <Panel title="Top origens nomeadas (histórico completo)" icon={<LineChart size={15} />}>
           <OriginsTable rows={origins.slice(0, 6)} />
         </Panel>
       </section>
