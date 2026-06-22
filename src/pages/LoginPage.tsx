@@ -78,10 +78,16 @@ export default function LoginPage() {
           // Falls back to agency operations view for regular users.
           const { data: { user: authUser } } = await supabase.auth.getUser()
           let destination = '/_v4/operations'
-          if (authUser) {
-            const { data: moaiAccess } = await supabase.rpc('resolve_moai_access', { p_user_id: authUser.id })
-            const moaiRole = Array.isArray(moaiAccess) ? moaiAccess[0]?.role : moaiAccess?.role
-            if (moaiRole) destination = '/moai'
+          if (authUser?.id) {
+            try {
+              const resp = await fetch('/api/moai-access-check', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId: authUser.id }),
+              })
+              const { role } = await resp.json()
+              if (role) destination = '/moai'
+            } catch { /* sem acesso MOAI, continua p/ operations */ }
           }
           navigate(destination)
         } else {
