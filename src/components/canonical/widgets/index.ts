@@ -25,3 +25,24 @@ export { default as TableWidget } from './TableWidget'
 export type { TableColumn, TableWidgetProps } from './TableWidget'
 
 export { default as WidgetRenderer } from './WidgetRenderer'
+
+// v3 advanced widgets (Portal Publico v3)
+export { default as HeroBigNumberWidget } from './HeroBigNumberWidget'
+export type { HeroBigNumberProps } from './HeroBigNumberWidget'
+
+export { default as GoalRingWidget } from './GoalRingWidget'
+export type { GoalRingProps } from './GoalRingWidget'
+
+export { default as KpiCardAdvancedWidget } from './KpiCardAdvancedWidget'
+export type { KpiCardAdvancedProps } from './KpiCardAdvancedWidget'
+
+export { default as AIInsightWidget } from './AIInsightWidget'
+export type {
+  AIInsight,
+  AIInsightType,
+  AIInsightPriority,
+  AIInsightWidgetProps,
+} from './AIInsightWidget'
+
+export { default as AttributionDonutWidget } from './AttributionDonutWidget'
+export type { AttributionItem, AttributionDonutProps } from './AttributionDonutWidget'

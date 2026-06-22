@@ -1,0 +1,111 @@
+{
+  "client_id": "cl16-homero-reis",
+  "client_name": "Homero Reis — Inteligência Relacional",
+  "client_slug": "homero-reis",
+  "generated_at": "2026-05-27T02:19:02.941304",
+  "source": "ClickUp MCP (live data)",
+  "tasks_summary": {
+    "total": 85,
+    "by_status": {
+      "completa/complete": 53,
+      "solicitação (pendentes)": 26,
+      "done (concluído IR)": 6,
+      "backlog": 1
+    },
+    "by_list": {
+      "Inbound IR — Estratégia Global": 47,
+      "Criação e Social Media": 22,
+      "Onboarding": 12,
+      "Gestão de Campanhas": 3,
+      "Acessos & Info": 1
+    },
+    "completion_rate_pct": 69.4
+  },
+  "team": [
+    {
+      "name": "Johnathan Martins",
+      "tasks": 4,
+      "role": "Gestor"
+    },
+    {
+      "name": "Vinicius Designer",
+      "tasks": 12,
+      "role": "Designer"
+    },
+    {
+      "name": "Nicole Camily",
+      "tasks": 2,
+      "role": "Edição"
+    },
+    {
+      "name": "Natan Silva",
+      "tasks": 1,
+      "role": "Conteúdo"
+    },
+    {
+      "name": "Mirtes Damares",
+      "tasks": 1,
+      "role": "Social Media"
+    }
+  ],
+  "media_plan": {
+    "campaigns_planned": [
+      {
+        "id": "ads-1",
+        "nome": "AUTORIDADE Video Views",
+        "plataforma": "Meta",
+        "orcamento_mes": 1500,
+        "status": "planejada",
+        "prioridade": "high"
+      },
+      {
+        "id": "ads-2",
+        "nome": "NR1 URGÊNCIA Lead Gen",
+        "plataforma": "Meta",
+        "orcamento_mes": 2000,
+        "status": "planejada",
+        "prioridade": "urgent"
+      },
+      {
+        "id": "ads-3-4",
+        "nome": "Lead Magnet + Retargeting",
+        "plataforma": "Meta",
+        "orcamento_mes": 3000,
+        "status": "planejada",
+        "prioridade": "normal"
+      },
+      {
+        "id": "ads-5-6",
+        "nome": "LinkedIn Sponsor + InMail Ads",
+        "plataforma": "LinkedIn",
+        "orcamento_mes": 3000,
+        "status": "planejada",
+        "prioridade": "high"
+      },
+      {
+        "id": "ads-7-8",
+        "nome": "Lookalike + Maestria Jul",
+        "plataforma": "Meta",
+        "orcamento_mes": 4000,
+        "status": "planejada",
+        "prioridade": "normal"
+      }
+    ],
+    "monthly_budget_total_brl": 13500,
+    "active_campaigns": 0,
+    "note": "Plano completo identificado nas tasks Inbound IR. Aguarda ativação."
+  },
+  "next_actions": [
+    "InMail GOV-RH: Programa Desenvolvimento [ÓRGÃO]",
+    "InMail NR1-Empresas: Adequação NR1 para [EMPRESA]",
+    "Kommo Etapa 1: REATIVAÇÃO base assessments",
+    "Email NR1 #1 (D0): NR1 em vigor",
+    "Ads #2: NR1 URGÊNCIA — Lead Gen"
+  ],
+  "missing_data": {
+    "kommo": "BLOQUEADO — tools desabilitados em Cowork settings",
+    "meta_ads": "BLOQUEADO — tools desabilitados em Cowork settings",
+    "google_ads": "Não tentado ainda",
+    "impacto": "Sem investimento real, CPL, leads, vendas, ROAS, atribuição"
+  }
+}
