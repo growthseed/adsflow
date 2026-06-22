@@ -74,11 +74,15 @@ export default function LoginPage() {
       if (mode === 'login') {
         const success = await login(formData.email, formData.password)
         if (success) {
-          // /dashboard is now a legacy redirect; go straight to the agency
-          // operations overview. ProtectedRoute will bounce portal-only
-          // users (globalRole=user + activeClientRole=viewer) to their
-          // own /c/:slug/portal.
-          navigate('/_v4/operations')
+          // Check if this user has MOAI portal access → redirect there.
+          // Falls back to agency operations view for regular users.
+          const { data: { user: authUser } } = await supabase.auth.getUser()
+          let destination = '/_v4/operations'
+          if (authUser) {
+            const { data: moaiAccess } = await supabase.rpc('resolve_moai_access', { p_user_id: authUser.id })
+            if (moaiAccess?.role) destination = '/moai'
+          }
+          navigate(destination)
         } else {
           setError('Email ou senha incorretos.')
         }
