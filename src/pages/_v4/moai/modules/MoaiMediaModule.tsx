@@ -8,7 +8,6 @@ import ComparativoPage from '@/pages/_v4/ComparativoPage'
 import OfensoresPage from '@/pages/_v4/OfensoresPage'
 import { useMoaiMediaReport, type MediaRow } from '@/hooks/useMoaiMediaReport'
 import { useMoaiSnapshot } from '@/hooks/useMoaiSnapshot'
-import { MetaAdInspector } from '@/pages/_v4/components/MetaAdInspector'
 import { MoaiModuleShell } from './MoaiModuleShell'
 import supabase from '@/lib/supabase'
 
@@ -289,29 +288,55 @@ function MediaOverview() {
 
 function MetaCreativesInline() {
   const [ads, setAds] = useState<InlineAd[]>([])
-  const [accountId, setAccountId] = useState('')
   const [loading, setLoading] = useState(true)
   const [note, setNote] = useState<string | null>(null)
-  const [inspectId, setInspectId] = useState<string | null>(null)
 
   useEffect(() => {
     let cancelled = false
     ;(async () => {
       try {
-        const { data: sessionData } = await supabase.auth.getSession()
-        const token = sessionData.session?.access_token
-        if (!token) { setNote('Faça login para ver os criativos.'); setLoading(false); return }
-        const resp = await fetch('/api/integrations?op=meta-ads-detail&client_slug=moai&preset=last_30d&limit=8', {
-          headers: { authorization: `Bearer ${token}` },
-        })
-        if (resp.status === 501) {
-          const j = (await resp.json()) as { note?: string }
-          if (!cancelled) { setNote(j.note ?? 'Integração Meta não configurada para MOAI.'); setLoading(false) }
+        // Fonte: tabela alimentada via n8n (moai_paid_media_daily), NÃO a
+        // Graph API direta — MOAI não tem conta Meta conectada na agência.
+        const { data, error } = await supabase
+          .from('moai_paid_media_daily')
+          .select('ad_id, ad_name, account_id, spend, impressions, clicks, leads')
+          .eq('client_slug', 'moai')
+          .eq('source', 'meta_ads')
+        if (error) throw error
+
+        type Row = { ad_id: string | null; ad_name: string | null; account_id: string | null; spend: number; impressions: number; clicks: number; leads: number }
+        const rows = (data ?? []) as Row[]
+        if (rows.length === 0) {
+          if (!cancelled) {
+            setNote('Sem criativos sincronizados ainda. Os dados de Meta Ads aparecem aqui assim que o n8n popular a base.')
+            setLoading(false)
+          }
           return
         }
-        if (!resp.ok) throw new Error(`HTTP ${resp.status}`)
-        const body = (await resp.json()) as { ads?: InlineAd[]; account_id?: string }
-        if (!cancelled) { setAds((body.ads ?? []).slice(0, 8)); setAccountId(body.account_id ?? ''); setLoading(false) }
+
+        // Agrega por anúncio
+        const byAd = new Map<string, InlineAd>()
+        for (const r of rows) {
+          const id = r.ad_id || r.ad_name || 'sem-id'
+          const cur = byAd.get(id) ?? {
+            id, name: r.ad_name || id, effective_status: 'ACTIVE',
+            creative: { thumbnail_url: null, image_url: null, video_id: null, cta: null },
+            metrics: { spend: 0, impressions: 0, clicks: 0, ctr: 0, cpc: 0, leads: 0, cost_per_lead: 0 },
+          }
+          cur.metrics.spend += Number(r.spend) || 0
+          cur.metrics.impressions += Number(r.impressions) || 0
+          cur.metrics.clicks += Number(r.clicks) || 0
+          cur.metrics.leads += Number(r.leads) || 0
+          byAd.set(id, cur)
+        }
+        const ads = Array.from(byAd.values()).map((a) => {
+          a.metrics.ctr = a.metrics.impressions > 0 ? (a.metrics.clicks / a.metrics.impressions) * 100 : 0
+          a.metrics.cpc = a.metrics.clicks > 0 ? a.metrics.spend / a.metrics.clicks : 0
+          a.metrics.cost_per_lead = a.metrics.leads > 0 ? a.metrics.spend / a.metrics.leads : 0
+          return a
+        }).sort((x, y) => y.metrics.spend - x.metrics.spend).slice(0, 8)
+
+        if (!cancelled) { setAds(ads); setLoading(false) }
       } catch (e) {
         if (!cancelled) { setNote(e instanceof Error ? e.message : 'Falha ao carregar criativos.'); setLoading(false) }
       }
@@ -325,7 +350,7 @@ function MetaCreativesInline() {
         <div className="flex items-center justify-between border-b border-[#DDE3EA] px-4 py-3">
           <div>
             <h2 className="text-sm font-bold text-[#152033]">Criativos Meta Ads</h2>
-            <p className="text-xs text-gray-500">CTR, CPL e investimento sem abrir o painel. Clique para inspecionar.</p>
+            <p className="text-xs text-gray-500">CTR, CPL e investimento por anúncio — dados sincronizados via n8n.</p>
           </div>
           <Link to="meta" className="inline-flex items-center gap-1 text-xs font-semibold text-[#0F766E] hover:underline">
             Ver todos <ExternalLink size={12} />
@@ -333,7 +358,7 @@ function MetaCreativesInline() {
         </div>
 
         {loading && (
-          <div className="px-4 py-8 text-center text-sm text-gray-500">Buscando criativos via Meta Graph API…</div>
+          <div className="px-4 py-8 text-center text-sm text-gray-500">Carregando criativos sincronizados…</div>
         )}
         {!loading && note && (
           <div className="px-4 py-6 text-center text-sm text-amber-700">{note}</div>
@@ -343,19 +368,10 @@ function MetaCreativesInline() {
         )}
         {!loading && !note && ads.length > 0 && (
           <div className="grid grid-cols-2 gap-px bg-[#DDE3EA] sm:grid-cols-3 lg:grid-cols-4">
-            {ads.map((ad) => <InlineCreativeCard key={ad.id} ad={ad} onInspect={setInspectId} />)}
+            {ads.map((ad) => <InlineCreativeCard key={ad.id} ad={ad} onInspect={() => {}} />)}
           </div>
         )}
       </section>
-
-      {accountId && (
-        <MetaAdInspector
-          clientSlug="moai"
-          adId={inspectId}
-          accountId={accountId}
-          onClose={() => setInspectId(null)}
-        />
-      )}
     </>
   )
 }

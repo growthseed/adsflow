@@ -184,7 +184,17 @@ export default function ClientPlannerPage({ clientSlugOverride, embedded = false
     }
   }, [loadFlows])
 
-  if (!client) return <Navigate to="/_v4/operations" replace />
+  if (!client) {
+    if (embedded) {
+      return (
+        <div className="rounded-lg border border-dashed border-[#DDE3EA] bg-white p-8 text-center">
+          <p className="text-sm font-semibold text-[#152033]">Planner de Growth</p>
+          <p className="mt-1 text-xs text-gray-500">Os mapas de campanha do MOAI aparecem aqui. Nenhum flow criado para este workspace ainda.</p>
+        </div>
+      )
+    }
+    return <Navigate to="/_v4/operations" replace />
+  }
 
   return (
     <div className="min-h-screen bg-[var(--surface-page)]">
