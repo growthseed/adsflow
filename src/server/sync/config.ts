@@ -366,7 +366,7 @@ export const AGENCY_CLIENTS: AgencyClientMap[] = [
 // =============================================================
 
 export interface SnapshotInsert {
-  kind: 'clickup' | 'performance' | 'combined'
+  kind: 'clickup' | 'performance' | 'combined' | 'moai'
   period_from?: string
   period_to?: string
   data: unknown

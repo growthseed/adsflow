@@ -16,8 +16,8 @@
  */
 
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { requireCronAuth, setCommonHeaders, insertSnapshot } from '../../src/server/sync/config.js'
-import { buildMoaiSnapshot } from '../../src/server/sync/moaiSnapshotBuilder.js'
+import { requireCronAuth, setCommonHeaders, insertSnapshot } from './config.js'
+import { buildMoaiSnapshot } from './moaiSnapshotBuilder.js'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   setCommonHeaders(res)
