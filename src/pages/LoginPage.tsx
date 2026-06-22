@@ -80,7 +80,8 @@ export default function LoginPage() {
           let destination = '/_v4/operations'
           if (authUser) {
             const { data: moaiAccess } = await supabase.rpc('resolve_moai_access', { p_user_id: authUser.id })
-            if (moaiAccess?.role) destination = '/moai'
+            const moaiRole = Array.isArray(moaiAccess) ? moaiAccess[0]?.role : moaiAccess?.role
+            if (moaiRole) destination = '/moai'
           }
           navigate(destination)
         } else {
