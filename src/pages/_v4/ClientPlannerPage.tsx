@@ -144,8 +144,15 @@ type ViewState =
   | { mode: 'picker' }
   | { mode: 'editor'; flowId: string }
 
-export default function ClientPlannerPage() {
-  const { clientSlug } = useParams<{ clientSlug: string }>()
+interface ClientPlannerPageProps {
+  clientSlugOverride?: string
+  embedded?: boolean
+}
+
+export default function ClientPlannerPage({ clientSlugOverride, embedded = false }: ClientPlannerPageProps = {}) {
+  const params = useParams<{ clientSlug: string }>()
+  const clientSlug = clientSlugOverride ?? params.clientSlug
+  void embedded
   const client = useMemo(
     () => (clientSlug ? getClientBySlug(clientSlug) : undefined),
     [clientSlug],

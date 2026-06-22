@@ -223,8 +223,15 @@ function EmptyState({ clientName }: { clientName: string }) {
   )
 }
 
-export default function MetaAdsPage() {
-  const { clientSlug } = useParams<{ clientSlug: string }>()
+interface MetaAdsPageProps {
+  clientSlugOverride?: string
+  embedded?: boolean
+}
+
+export default function MetaAdsPage({ clientSlugOverride, embedded = false }: MetaAdsPageProps = {}) {
+  const params = useParams<{ clientSlug: string }>()
+  const clientSlug = clientSlugOverride ?? params.clientSlug
+  void embedded
   const client = useMemo(() => clientSlug ? getClientBySlug(clientSlug) : undefined, [clientSlug])
   const data = useMemo(() => clientSlug ? getMetaAdsSnapshot(clientSlug) : null, [clientSlug])
   const period = getMetaAdsPeriod()

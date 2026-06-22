@@ -33,6 +33,16 @@ export type WidgetType =
   | 'funnel_chart'
   | 'gauge'
   | 'table'
+  // MOAI advanced widgets
+  | 'cohort_matrix'
+  | 'scatter_chart'
+  | 'pivot_hierarchical'
+  | 'calendar_heatmap'
+  | 'waterfall_chart'
+  | 'nps_gauge'
+  | 'temperature_scale'
+  | 'health_radar'
+  | 'metric_switcher'
 
 export interface BaseWidget {
   id: string
@@ -118,6 +128,26 @@ export interface TableWidget extends BaseWidget {
   defaultSortDir?: 'asc' | 'desc'
 }
 
+/**
+ * MOAI advanced widgets (cohort matrix, scatter, pivot, heatmap, etc).
+ * Config fields vary per widget, so we keep an open shape on top of the
+ * common BaseWidget contract instead of a strict per-type interface.
+ */
+export interface MoaiAdvancedWidget extends BaseWidget {
+  type:
+    | 'cohort_matrix'
+    | 'scatter_chart'
+    | 'pivot_hierarchical'
+    | 'calendar_heatmap'
+    | 'waterfall_chart'
+    | 'nps_gauge'
+    | 'temperature_scale'
+    | 'health_radar'
+    | 'metric_switcher'
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any
+}
+
 export type Widget =
   | KpiStripWidget
   | LineChartWidget
@@ -127,6 +157,7 @@ export type Widget =
   | FunnelChartWidget
   | GaugeWidget
   | TableWidget
+  | MoaiAdvancedWidget
 
 // =============================================================
 // TEMPLATE

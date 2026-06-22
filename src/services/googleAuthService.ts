@@ -418,4 +418,30 @@ export const googleAccountsService = {
 
     if (error) throw error
   },
+
+  /**
+   * Persist the set of sub-assets (e.g. customer accounts under an MCC)
+   * the user picked for a connected google_accounts row. Replaces the
+   * previous selection for that account.
+   */
+  async saveSelectedAssets(
+    accountId: string,
+    assets: { account_id: string; account_name: string }[],
+  ): Promise<void> {
+    if (!isSupabaseConfigured) return
+
+    await supabase.from('google_selected_assets').delete().eq('account_id', accountId)
+
+    if (assets.length === 0) return
+
+    const { error } = await supabase.from('google_selected_assets').insert(
+      assets.map((a) => ({
+        account_id: accountId,
+        asset_account_id: a.account_id,
+        asset_account_name: a.account_name,
+      })),
+    )
+
+    if (error) throw error
+  },
 }

@@ -46,3 +46,14 @@ export type {
 
 export { default as AttributionDonutWidget } from './AttributionDonutWidget'
 export type { AttributionItem, AttributionDonutProps } from './AttributionDonutWidget'
+
+// MOAI advanced widgets
+export { default as NPSGaugeWidget } from './NPSGaugeWidget'
+export { default as TemperatureScaleWidget } from './TemperatureScaleWidget'
+export { default as HealthRadarWidget } from './HealthRadarWidget'
+export { default as CohortMatrixWidget } from './CohortMatrixWidget'
+export { default as ScatterChartWidget } from './ScatterChartWidget'
+export { default as PivotHierarchicalWidget } from './PivotHierarchicalWidget'
+export { default as CalendarHeatmapWidget } from './CalendarHeatmapWidget'
+export { default as WaterfallChartWidget } from './WaterfallChartWidget'
+export { default as MetricSwitcherWidget } from './MetricSwitcherWidget'
