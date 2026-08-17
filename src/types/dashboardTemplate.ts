@@ -33,7 +33,7 @@ export type WidgetType =
   | 'funnel_chart'
   | 'gauge'
   | 'table'
-  // MOAI advanced widgets
+  // Advanced widgets
   | 'cohort_matrix'
   | 'scatter_chart'
   | 'pivot_hierarchical'
@@ -129,11 +129,11 @@ export interface TableWidget extends BaseWidget {
 }
 
 /**
- * MOAI advanced widgets (cohort matrix, scatter, pivot, heatmap, etc).
+ * Advanced widgets (cohort matrix, scatter, pivot, heatmap, etc).
  * Config fields vary per widget, so we keep an open shape on top of the
  * common BaseWidget contract instead of a strict per-type interface.
  */
-export interface MoaiAdvancedWidget extends BaseWidget {
+export interface AdvancedWidget extends BaseWidget {
   type:
     | 'cohort_matrix'
     | 'scatter_chart'
@@ -157,7 +157,7 @@ export type Widget =
   | FunnelChartWidget
   | GaugeWidget
   | TableWidget
-  | MoaiAdvancedWidget
+  | AdvancedWidget
 
 // =============================================================
 // TEMPLATE

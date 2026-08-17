@@ -189,7 +189,7 @@ export default function ClientPlannerPage({ clientSlugOverride, embedded = false
       return (
         <div className="rounded-lg border border-dashed border-[#DDE3EA] bg-white p-8 text-center">
           <p className="text-sm font-semibold text-[#152033]">Planner de Growth</p>
-          <p className="mt-1 text-xs text-gray-500">Os mapas de campanha do MOAI aparecem aqui. Nenhum flow criado para este workspace ainda.</p>
+          <p className="mt-1 text-xs text-gray-500">Os mapas de campanha aparecem aqui. Nenhum flow criado para este workspace ainda.</p>
         </div>
       )
     }

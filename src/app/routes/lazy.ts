@@ -62,25 +62,6 @@ export const V4CrmFunnelPage = lazyRetry(() => import('@/pages/_v4/CrmFunnelPage
 export const V4CrmLossesPage = lazyRetry(() => import('@/pages/_v4/CrmLossesPage'))
 export const V4MetaAdsPage = lazyRetry(() => import('@/pages/_v4/MetaAdsPage'))
 
-/* MOAI Intelligence OS */
-export const MoaiAppShell = lazyRetry(() => import('@/pages/_v4/moai/MoaiAppShell'))
-export const MoaiCockpitModule = lazyRetry(() => import('@/pages/_v4/moai/modules/MoaiCockpitModule'))
-export const MoaiEstrategiaModule = lazyRetry(() => import('@/pages/_v4/moai/modules/MoaiEstrategiaModule'))
-export const MoaiPlannerModule = lazyRetry(() => import('@/pages/_v4/moai/modules/MoaiPlannerModule'))
-export const MoaiMediaModule = lazyRetry(() => import('@/pages/_v4/moai/modules/MoaiMediaModule'))
-export const MoaiSalesModule = lazyRetry(() => import('@/pages/_v4/moai/modules/MoaiSalesModule'))
-export const MoaiConteudoModule = lazyRetry(() => import('@/pages/_v4/moai/modules/MoaiConteudoModule'))
-export const MoaiParceriasModule = lazyRetry(() => import('@/pages/_v4/moai/modules/MoaiParceriasModule'))
-export const MoaiMembrosModule = lazyRetry(() => import('@/pages/_v4/moai/modules/MoaiMembrosModule'))
-export const MoaiCxModule = lazyRetry(() => import('@/pages/_v4/moai/modules/MoaiCxModule'))
-export const MoaiConselhosModule = lazyRetry(() => import('@/pages/_v4/moai/modules/MoaiConselhosModule'))
-export const MoaiFinanceiroModule = lazyRetry(() => import('@/pages/_v4/moai/modules/MoaiFinanceiroModule'))
-export const MoaiOperacoesModule = lazyRetry(() => import('@/pages/_v4/moai/modules/MoaiOperacoesModule'))
-export const MoaiTimeModule = lazyRetry(() => import('@/pages/_v4/moai/modules/MoaiTimeModule'))
-export const MoaiTurnLabModule = lazyRetry(() => import('@/pages/_v4/moai/modules/MoaiTurnLabModule'))
-export const MoaiIAModule = lazyRetry(() => import('@/pages/_v4/moai/modules/MoaiIAModule'))
-export const MoaiAdminModule = lazyRetry(() => import('@/pages/_v4/moai/modules/MoaiAdminModule'))
-
 /* V2 novas features (Levas 1-4) */
 export const PacingPage = lazyRetry(() => import('@/features/pacing/PacingPage'))
 export const ReportsPage = lazyRetry(() => import('@/features/reports/ReportsPage'))

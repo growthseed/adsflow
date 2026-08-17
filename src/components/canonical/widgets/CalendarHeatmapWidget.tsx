@@ -1,7 +1,7 @@
 /**
  * <CalendarHeatmapWidget> — densidade de eventos por dia (GitHub-style).
  *
- * Útil pra Cronograma de Conteúdo MOAI: visualiza quais dias têm post
+ * Útil pra cronograma de conteúdo: visualiza quais dias têm post
  * agendado, quais estão vazios, e onde está o pico.
  *
  * Input: [{ date: 'YYYY-MM-DD', count: number, items?: string[] }]

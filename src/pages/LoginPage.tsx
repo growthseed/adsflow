@@ -74,18 +74,7 @@ export default function LoginPage() {
       if (mode === 'login') {
         const success = await login(formData.email, formData.password)
         if (success) {
-          // Check if this user has MOAI portal access → redirect there.
-          // Falls back to agency operations view for regular users.
-          const { data: { user: authUser } } = await supabase.auth.getUser()
-          let destination = '/_v4/operations'
-          if (authUser?.id) {
-            try {
-              const { data: moaiAccess } = await supabase.rpc('resolve_moai_access', { p_user_id: authUser.id })
-              const moaiRole = Array.isArray(moaiAccess) ? moaiAccess[0]?.role : moaiAccess?.role
-              if (moaiRole) destination = '/moai'
-            } catch { /* sem acesso MOAI, continua p/ operations */ }
-          }
-          navigate(destination)
+          navigate('/_v4/operations')
         } else {
           setError('Email ou senha incorretos.')
         }

@@ -47,7 +47,7 @@ export type {
 export { default as AttributionDonutWidget } from './AttributionDonutWidget'
 export type { AttributionItem, AttributionDonutProps } from './AttributionDonutWidget'
 
-// MOAI advanced widgets
+// Advanced widgets
 export { default as NPSGaugeWidget } from './NPSGaugeWidget'
 export { default as TemperatureScaleWidget } from './TemperatureScaleWidget'
 export { default as HealthRadarWidget } from './HealthRadarWidget'

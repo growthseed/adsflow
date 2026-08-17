@@ -1,7 +1,7 @@
 /**
  * <PivotHierarchicalWidget> — tabela com hierarquia expandível.
  * Padrão MidiaHub "Meta Ads": Campanha → Conjunto → Anúncio × métricas.
- * Pra MOAI também: Mentor → Conselho → Membro.
+ * Também serve hierarquias de pessoas: Gestor → Time → Membro.
  *
  * Input flat: array de records. A hierarquia é uma lista de keys.
  * Internamente agrupa e calcula totais por nível.
