@@ -8,6 +8,7 @@
  *   clickup-create-folder  (POST) — cria folder no ClickUp Operações
  *   kommo-funnel           (GET)  — pipeline + MQL/SQL do cliente
  *   meta-preview           (GET)  — preview real de criativo via Graph
+ *   meta-oauth-*           — troca/custódia do token Meta por cliente
  *
  * Os handlers reais vivem em src/server/integrations/*.ts como named
  * exports — este arquivo só faz o roteamento.
@@ -23,6 +24,11 @@ import { runMetaAdsCompare }      from '../src/server/integrations/meta-ads-comp
 import { runMetaAdInspect }       from '../src/server/integrations/meta-ad-inspect.js'
 import { runGoogleAdsDetail }     from '../src/server/integrations/google-ads-detail.js'
 import { runClintFunnel }         from '../src/server/integrations/clint-funnel.js'
+import {
+  runMetaOAuthExchange,
+  runMetaOAuthAccounts,
+  runMetaOAuthSelect,
+} from '../src/server/integrations/meta-oauth.js'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const op = String(req.query.op || '').trim()
@@ -43,6 +49,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return runGoogleAdsDetail(req, res)
     case 'clint-funnel':
       return runClintFunnel(req, res)
+    case 'meta-oauth-exchange':
+      return runMetaOAuthExchange(req, res)
+    case 'meta-oauth-accounts':
+      return runMetaOAuthAccounts(req, res)
+    case 'meta-oauth-select':
+      return runMetaOAuthSelect(req, res)
     default:
       return res.status(400).json({
         error: `unknown op "${op}"`,
@@ -50,6 +62,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           'clickup-create-folder', 'kommo-funnel', 'meta-preview',
           'meta-ads-detail', 'meta-ads-compare', 'meta-ad-inspect',
           'google-ads-detail', 'clint-funnel',
+          'meta-oauth-exchange', 'meta-oauth-accounts', 'meta-oauth-select',
         ],
       })
   }

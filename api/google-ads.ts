@@ -24,6 +24,12 @@ import {
   requireUserAuth,
   requireClientMembership,
 } from './_lib/security'
+import {
+  getIntegrationCredentials,
+  markIntegrationError,
+  persistIntegration,
+  type Provider,
+} from './_lib/integrations'
 
 // =====================================================
 // CONFIG
@@ -62,28 +68,49 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   const { action, client_slug, ...body } = req.body || {}
 
-  // OAuth endpoints (exchange/refresh) only need an authenticated user —
-  // they don't act on a specific tenant's data, so no client_slug required.
-  const tenantScopedActions = new Set([
-    'campaigns',
-    'insights',
-    'keywords',
-    'youtube-channel',
-    'youtube-analytics',
-    'youtube-videos',
-    'gmb-locations',
-    'gmb-reviews',
-    'gmb-metrics',
-    'ga4-properties',
-    'ga4-traffic',
-    'ga4-conversions',
-    'gsc-sites',
-    'gsc-analytics',
-  ])
+  // Cada acao consome uma superficie diferente do Google, e cada superficie
+  // e um provider proprio em client_integrations. O token sai daqui — nunca
+  // do corpo da request.
+  const ACTION_PROVIDER: Record<string, Provider> = {
+    campaigns: 'google_ads',
+    insights: 'google_ads',
+    keywords: 'google_ads',
+    'youtube-channel': 'youtube',
+    'youtube-analytics': 'youtube',
+    'youtube-videos': 'youtube',
+    'gmb-locations': 'google_my_business',
+    'gmb-reviews': 'google_my_business',
+    'gmb-metrics': 'google_my_business',
+    'ga4-properties': 'google_analytics',
+    'ga4-traffic': 'google_analytics',
+    'ga4-conversions': 'google_analytics',
+    'gsc-sites': 'search_console',
+    'gsc-analytics': 'search_console',
+  }
 
-  if (tenantScopedActions.has(action)) {
+  // exchange e set-account agem sobre o cliente mas ainda nao tem token.
+  const needsClient = action in ACTION_PROVIDER || action === 'exchange' || action === 'set-account'
+
+  let resolvedClientId: string | null = null
+  if (needsClient) {
     const client = await requireClientMembership(auth, client_slug, res)
     if (!client) return
+    resolvedClientId = client.id
+  }
+
+  // Injeta o access_token resolvido do banco (com refresh automatico).
+  if (action in ACTION_PROVIDER && resolvedClientId) {
+    const provider = ACTION_PROVIDER[action]
+    try {
+      body.access_token = await resolveAccessToken(
+        auth.serviceClient,
+        resolvedClientId,
+        provider,
+      )
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Unknown error'
+      return res.status(409).json({ error: message, provider, needs_reconnect: true })
+    }
   }
 
   try {
@@ -94,10 +121,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         return res.json(await fetchInsights(body))
       case 'keywords':
         return res.json(await fetchKeywords(body))
-      case 'refresh':
-        return res.json(await refreshToken(body))
       case 'exchange':
-        return res.json(await exchangeCode(body))
+        return res.json(
+          await exchangeAndPersist(auth.serviceClient, resolvedClientId!, auth.user.id, body),
+        )
+      case 'set-account':
+        return res.json(
+          await setAccount(auth.serviceClient, resolvedClientId!, body),
+        )
 
       // YouTube
       case 'youtube-channel':
@@ -386,6 +417,191 @@ async function fetchKeywords(body: {
   }))
 
   return { keywords }
+}
+
+// =====================================================
+// RESOLUCAO DE TOKEN (server-side)
+// =====================================================
+
+/** Margem antes do vencimento — evita usar token que expira no meio da chamada. */
+const TOKEN_SKEW_MS = 60_000
+
+/**
+ * Devolve um access_token valido para (cliente, provider), lendo de
+ * client_integrations e renovando via refresh_token quando necessario.
+ *
+ * Lanca com mensagem acionavel quando nao ha integracao ou quando o refresh
+ * falha — o handler traduz isso em 409 + needs_reconnect para a UI oferecer
+ * "reconectar" em vez de mostrar erro cru.
+ */
+async function resolveAccessToken(
+  serviceClient: Parameters<typeof getIntegrationCredentials>[0],
+  clientId: string,
+  provider: Provider,
+): Promise<string> {
+  const creds = await getIntegrationCredentials(serviceClient, clientId, provider)
+  if (!creds) {
+    throw new Error(`Nenhuma integração ${provider} conectada para este cliente.`)
+  }
+
+  const expiresAt = creds.tokenExpiresAt ? Date.parse(creds.tokenExpiresAt) : 0
+  const stillValid = creds.accessToken && expiresAt - TOKEN_SKEW_MS > Date.now()
+  if (stillValid) return creds.accessToken as string
+
+  if (!creds.refreshToken) {
+    throw new Error(
+      `Integração ${provider} sem refresh_token — é preciso reconectar a conta Google.`,
+    )
+  }
+
+  let refreshed: { access_token?: string; expires_in?: number }
+  try {
+    refreshed = await refreshToken({ refresh_token: creds.refreshToken })
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'refresh falhou'
+    await markIntegrationError(serviceClient, creds.id, message)
+    throw new Error(`Integração ${provider} expirada: ${message}`)
+  }
+
+  if (!refreshed.access_token) {
+    await markIntegrationError(serviceClient, creds.id, 'refresh sem access_token')
+    throw new Error(`Integração ${provider} expirada — reconecte a conta Google.`)
+  }
+
+  await persistIntegration(serviceClient, {
+    clientId,
+    provider,
+    externalAccountId: creds.externalAccountId,
+    accessToken: refreshed.access_token,
+    // Google nao reemite refresh_token no refresh; persistIntegration preserva o antigo.
+    refreshToken: null,
+    expiresInSeconds: refreshed.expires_in ?? 3600,
+    metadata: creds.metadata,
+  })
+
+  return refreshed.access_token
+}
+
+/**
+ * Troca o code por tokens e GRAVA no servidor. O browser recebe so o
+ * resultado sanitizado — o token nunca transita pelo front.
+ *
+ * O consentimento Google e por usuario, e as contas (property GA4, site do
+ * Search Console, customer do Ads) sao recursos abaixo dele. Por isso a
+ * identidade inicial e o e-mail da conta Google; a conta especifica e
+ * definida depois via action 'set-account'.
+ */
+async function exchangeAndPersist(
+  serviceClient: Parameters<typeof getIntegrationCredentials>[0],
+  clientId: string,
+  userId: string,
+  body: { code: string; redirect_uri: string; platforms?: string[] },
+) {
+  const tokens = (await exchangeCode(body)) as {
+    access_token?: string
+    refresh_token?: string
+    expires_in?: number
+    scope?: string
+  }
+
+  if (!tokens.access_token) throw new Error('Google não devolveu access_token.')
+
+  // Identidade do grant: e-mail da conta Google que autorizou.
+  const userInfoResp = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
+    headers: { Authorization: `Bearer ${tokens.access_token}` },
+  })
+  const userInfo = userInfoResp.ok
+    ? ((await userInfoResp.json()) as { email?: string; name?: string })
+    : {}
+  const googleEmail = userInfo.email || `google-user-${clientId.slice(0, 8)}`
+
+  // Um escopo concedido pode alimentar varias superficies. Grava uma linha
+  // por provider realmente autorizado, para o revoke ser granular depois.
+  const granted = (tokens.scope || '').split(' ')
+  const SCOPE_PROVIDER: Array<[string, Provider]> = [
+    ['https://www.googleapis.com/auth/adwords', 'google_ads'],
+    ['https://www.googleapis.com/auth/analytics.readonly', 'google_analytics'],
+    ['https://www.googleapis.com/auth/webmasters.readonly', 'search_console'],
+    ['https://www.googleapis.com/auth/youtube.readonly', 'youtube'],
+    ['https://www.googleapis.com/auth/yt-analytics.readonly', 'youtube'],
+    ['https://www.googleapis.com/auth/business.manage', 'google_my_business'],
+  ]
+
+  const providers = Array.from(
+    new Set(
+      SCOPE_PROVIDER.filter(([scope]) => granted.includes(scope)).map(([, p]) => p),
+    ),
+  )
+
+  if (providers.length === 0) {
+    throw new Error(
+      'Nenhum escopo reconhecido no consentimento. Verifique os escopos habilitados na tela de consentimento do Google Cloud.',
+    )
+  }
+
+  const integrations = []
+  for (const provider of providers) {
+    integrations.push(
+      await persistIntegration(serviceClient, {
+        clientId,
+        provider,
+        externalAccountId: googleEmail,
+        externalAccountName: userInfo.name || googleEmail,
+        accessToken: tokens.access_token,
+        refreshToken: tokens.refresh_token ?? null,
+        expiresInSeconds: tokens.expires_in ?? 3600,
+        metadata: {
+          connected_by: userId,
+          google_email: googleEmail,
+          granted_scopes: granted,
+          pending_account_selection: true,
+        },
+      }),
+    )
+  }
+
+  return { integrations, google_email: googleEmail, providers }
+}
+
+/**
+ * Fixa qual conta/property/site o cliente usa num provider Google, depois
+ * que a UI listou as opcoes (ga4-properties, gsc-sites, etc).
+ */
+async function setAccount(
+  serviceClient: Parameters<typeof getIntegrationCredentials>[0],
+  clientId: string,
+  body: { provider?: Provider; account_id?: string; account_name?: string },
+) {
+  const { provider, account_id, account_name } = body
+  if (!provider || !account_id) {
+    throw new Error('`provider` e `account_id` são obrigatórios.')
+  }
+
+  const creds = await getIntegrationCredentials(serviceClient, clientId, provider)
+  if (!creds) throw new Error(`Nenhuma integração ${provider} para este cliente.`)
+
+  const integration = await persistIntegration(serviceClient, {
+    clientId,
+    provider,
+    externalAccountId: account_id,
+    externalAccountName: account_name ?? account_id,
+    accessToken: creds.accessToken,
+    refreshToken: creds.refreshToken,
+    expiresAt: creds.tokenExpiresAt,
+    metadata: { ...creds.metadata, pending_account_selection: false },
+  })
+
+  // Remove a linha antiga (identificada pelo e-mail) se a conta mudou de id.
+  if (creds.externalAccountId !== account_id) {
+    await serviceClient
+      .from('client_integrations')
+      .delete()
+      .eq('client_id', clientId)
+      .eq('provider', provider)
+      .eq('external_account_id', creds.externalAccountId)
+  }
+
+  return { integration }
 }
 
 // =====================================================

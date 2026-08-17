@@ -4,20 +4,31 @@
  * Server-side proxy for Kommo OAuth 2.0. Holds the KOMMO_CLIENT_SECRET.
  *
  * Two actions:
- *   { action: 'exchange', code, subdomain, redirect_uri }
- *     → returns { access_token, refresh_token, expires_in, subdomain, account, pipelines }
+ *   { action: 'exchange', code, subdomain, redirect_uri, client_slug }
+ *     → { integration, account, pipelines }   (nunca o token)
  *
- *   { action: 'refresh', refresh_token, subdomain, redirect_uri }
- *     → returns { access_token, refresh_token, expires_in, token_type }
+ *   { action: 'refresh', subdomain, redirect_uri, client_slug }
+ *     → { integration }
+ *     O refresh_token vem do banco, NAO do browser.
  *
  * Kommo token endpoint lives on the account's own subdomain:
  *   POST https://{subdomain}.kommo.com/oauth2/access_token
  *
- * Auth: Supabase JWT.
+ * Auth: Supabase JWT + membership no client_slug.
  */
 
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { allowMethods, applyCors, requireUserAuth } from '../_lib/security'
+import {
+  allowMethods,
+  applyCors,
+  requireClientMembership,
+  requireUserAuth,
+} from '../_lib/security'
+import {
+  getIntegrationCredentials,
+  markIntegrationError,
+  persistIntegration,
+} from '../_lib/integrations'
 
 const KOMMO_CLIENT_ID = process.env.KOMMO_CLIENT_ID || ''
 const KOMMO_CLIENT_SECRET = process.env.KOMMO_CLIENT_SECRET || ''
@@ -72,10 +83,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const body = (req.body || {}) as {
     action?: string
     code?: string
-    refresh_token?: string
     subdomain?: string
     redirect_uri?: string
+    client_slug?: string
   }
+
+  const client = await requireClientMembership(auth, body.client_slug, res)
+  if (!client) return
 
   const subdomain = cleanSubdomain(body.subdomain || '')
   if (!subdomain) {
@@ -128,46 +142,74 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         pipelines = p._embedded?.pipelines ?? []
       }
 
-      return res.status(200).json({
-        access_token: accessToken,
-        refresh_token: payload.refresh_token,
-        expires_in: payload.expires_in ?? 86400,
-        subdomain,
-        account,
-        pipelines,
+      const accountName =
+        (account as { name?: string } | null)?.name || subdomain
+
+      const integration = await persistIntegration(auth.serviceClient, {
+        clientId: client.id,
+        provider: 'kommo',
+        externalAccountId: subdomain,
+        externalAccountName: accountName,
+        accessToken,
+        refreshToken: payload.refresh_token,
+        expiresInSeconds: payload.expires_in ?? 86400,
+        metadata: {
+          connected_by: auth.user.id,
+          subdomain,
+          redirect_uri: body.redirect_uri,
+          pipeline_ids: (pipelines as Array<{ id?: number }>).
+            map((p) => p?.id).filter(Boolean),
+        },
       })
+
+      return res.status(200).json({ integration, account, pipelines })
     }
 
     // ==========================
     // REFRESH via refresh_token
     // ==========================
     if (body.action === 'refresh') {
-      if (!body.refresh_token) {
-        return res.status(400).json({ error: '`refresh_token` is required.' })
+      // O refresh_token sai do banco. O browser nao ve nem envia credencial.
+      const stored = await getIntegrationCredentials(
+        auth.serviceClient,
+        client.id,
+        'kommo',
+      )
+      if (!stored?.refreshToken) {
+        return res.status(404).json({
+          error: 'Nenhuma integração Kommo com refresh_token para este cliente.',
+        })
       }
 
       const { ok, status, payload } = await kommoTokenCall(subdomain, {
         client_id: KOMMO_CLIENT_ID,
         client_secret: KOMMO_CLIENT_SECRET,
         grant_type: 'refresh_token',
-        refresh_token: body.refresh_token,
+        refresh_token: stored.refreshToken,
         redirect_uri: body.redirect_uri,
       })
 
       if (!ok || !payload.access_token) {
+        const detail = payload.title || payload.hint || 'unknown'
+        await markIntegrationError(auth.serviceClient, stored.id, detail)
         return res.status(status || 502).json({
-          error: `Kommo refresh falhou: ${
-            payload.title || payload.hint || 'unknown'
-          }`,
+          error: `Kommo refresh falhou: ${detail}`,
         })
       }
 
-      return res.status(200).json({
-        access_token: payload.access_token,
-        refresh_token: payload.refresh_token ?? body.refresh_token,
-        expires_in: payload.expires_in ?? 86400,
-        token_type: payload.token_type ?? 'Bearer',
+      const integration = await persistIntegration(auth.serviceClient, {
+        clientId: client.id,
+        provider: 'kommo',
+        externalAccountId: stored.externalAccountId,
+        externalAccountName:
+          (stored.metadata.account_name as string | undefined) ?? subdomain,
+        accessToken: payload.access_token,
+        refreshToken: payload.refresh_token ?? stored.refreshToken,
+        expiresInSeconds: payload.expires_in ?? 86400,
+        metadata: { ...stored.metadata, refreshed_by: auth.user.id },
       })
+
+      return res.status(200).json({ integration })
     }
 
     return res.status(400).json({ error: `Unknown action: ${body.action}` })

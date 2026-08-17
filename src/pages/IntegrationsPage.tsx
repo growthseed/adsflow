@@ -1079,7 +1079,11 @@ export default function IntegrationsPage() {
 
   // Google OAuth connect handler
   const handleGoogleConnect = (platforms: GooglePlatform[]) => {
-    const authUrl = googleAuthService.getAuthUrl(platforms, activeClient?.client_id || undefined)
+    const authUrl = googleAuthService.getAuthUrl(
+      platforms,
+      activeClient?.client_id || undefined,
+      activeClient?.client?.slug || undefined,
+    )
     window.location.href = authUrl
   }
 
@@ -1111,7 +1115,12 @@ export default function IntegrationsPage() {
     if (!code || !user) return
 
     // Peek at state provider, if any, to route
-    let stateObj: { provider?: string; platforms?: unknown; clientId?: string | null } | null = null
+    let stateObj: {
+      provider?: string
+      platforms?: unknown
+      clientId?: string | null
+      clientSlug?: string | null
+    } | null = null
     if (stateParam) {
       try {
         stateObj = JSON.parse(atob(stateParam))
@@ -1125,31 +1134,24 @@ export default function IntegrationsPage() {
 
     const runGoogle = async () => {
       try {
-        const tokens = await googleAuthService.exchangeCodeForTokens(code)
-        const platformNames: Record<string, string> = {
-          google_ads: 'Google Ads',
-          ga4: 'Google Analytics 4',
-          search_console: 'Search Console',
-          youtube: 'YouTube',
-          gmb: 'Google Meu Negócio',
+        const slug = stateObj?.clientSlug || activeClient?.client?.slug
+        if (!slug) {
+          toast.error('Selecione um cliente antes de conectar o Google.')
+          return
         }
         const platforms = (stateObj?.platforms as GooglePlatform[]) || []
-        for (const platform of platforms) {
-          const accountName = platformNames[platform] || platform
-          await googleAccountsService.connectAccount(
-            user.id,
-            stateObj?.clientId || activeClient?.client_id || null,
-            platform,
-            `pending_${platform}_${Date.now()}`,
-            `${accountName} (${user.email || 'conta conectada'})`,
-            tokens,
-          )
-        }
-        toast.success('Google conectado com sucesso! Configure a conta na seção abaixo.')
+        // O servidor troca o code, grava em client_integrations e devolve
+        // so o resultado sanitizado. Nenhum token passa por aqui.
+        const result = await googleAuthService.connect(code, slug, platforms)
+        toast.success(
+          `Google conectado como ${result.google_email}. Configure a conta na seção abaixo.`,
+        )
         await fetchGoogleAccounts()
       } catch (err) {
         console.error('Google OAuth callback error:', err)
-        toast.error('Erro ao conectar com Google. Tente novamente.')
+        toast.error(
+          err instanceof Error ? err.message : 'Erro ao conectar com Google. Tente novamente.',
+        )
       }
     }
 

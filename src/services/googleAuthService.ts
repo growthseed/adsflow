@@ -29,6 +29,21 @@ const USE_DIRECT_API = import.meta.env.VITE_GOOGLE_ADS_DIRECT !== 'false'
 // TYPES
 // =====================================================
 
+/** Retorno sanitizado do connect() — sem nenhuma credencial. */
+export interface GoogleConnectResult {
+  integrations: Array<{
+    id: string
+    provider: string
+    external_account_id: string
+    external_account_name: string | null
+    status: string
+    has_access_token: boolean
+    has_refresh_token: boolean
+  }>
+  google_email: string
+  providers: string[]
+}
+
 export type GooglePlatform = 'google_ads' | 'ga4' | 'search_console' | 'youtube' | 'gmb'
 
 export interface GoogleAccount {
@@ -109,12 +124,17 @@ export const googleAuthService = {
   getAuthUrl(
     platforms: GooglePlatform[],
     clientId?: string,
+    clientSlug?: string,
   ): string {
     const scopes = getScopesForPlatforms(platforms)
 
+    // clientSlug e o que o servidor usa para checar membership e gravar a
+    // integracao. clientId continua no state so por compatibilidade com
+    // links de consentimento ja emitidos.
     const state = JSON.stringify({
       platforms,
       clientId: clientId || null,
+      clientSlug: clientSlug || null,
       ts: Date.now(),
     })
 
@@ -133,49 +153,77 @@ export const googleAuthService = {
   },
 
   /**
-   * Exchange the authorization code for tokens.
-   * Uses Vercel /api/google-ads proxy (preferred) with N8N fallback.
-   * NEVER expose client_secret in frontend.
+   * Entrega o authorization code ao servidor, que troca por tokens, grava em
+   * client_integrations e devolve so o resultado sanitizado.
+   *
+   * O token NAO volta para o browser — era exatamente o achado da auditoria
+   * ("access_token trafegando pelo frontend") que ficou aberto ate agora.
    */
-  async exchangeCodeForTokens(code: string): Promise<GoogleTokenResponse> {
-    // Try Vercel proxy first. The hardened proxy requires a Supabase JWT.
-    if (USE_DIRECT_API) {
-      try {
-        const { data: sessionData } = await supabase.auth.getSession()
-        const jwt = sessionData.session?.access_token
-        if (!jwt) throw new Error('no-supabase-session')
-
-        const response = await fetch(VERCEL_API_URL, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${jwt}`,
-          },
-          body: JSON.stringify({
-            action: 'exchange',
-            code,
-            redirect_uri: GOOGLE_REDIRECT_URI,
-          }),
-        })
-        if (response.ok) return response.json()
-      } catch {
-        console.warn('[googleAuth] Direct API unavailable for exchange, falling back to N8N')
-      }
+  async connect(
+    code: string,
+    clientSlug: string,
+    platforms: GooglePlatform[],
+  ): Promise<GoogleConnectResult> {
+    const { data: sessionData } = await supabase.auth.getSession()
+    const jwt = sessionData.session?.access_token
+    if (!jwt) {
+      throw new Error('Sessão expirada — faça login novamente antes de conectar o Google.')
     }
 
-    // Fallback: N8N
-    const response = await fetch(`${N8N_BASE_URL}/adsflow/google-token-exchange`, {
+    const response = await fetch(VERCEL_API_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ code, redirect_uri: GOOGLE_REDIRECT_URI }),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${jwt}`,
+      },
+      body: JSON.stringify({
+        action: 'exchange',
+        code,
+        redirect_uri: GOOGLE_REDIRECT_URI,
+        client_slug: clientSlug,
+        platforms,
+      }),
     })
 
+    const payload = await response.json().catch(() => ({}))
     if (!response.ok) {
-      const error = await response.json().catch(() => ({}))
-      throw new Error(`Google token exchange failed: ${error.message || error.error || response.statusText}`)
+      throw new Error(payload.error || `Falha ao conectar Google: ${response.statusText}`)
     }
+    return payload as GoogleConnectResult
+  },
 
-    return response.json()
+  /**
+   * Fixa qual property/site/customer o cliente usa, depois que a UI listou
+   * as opcoes disponiveis.
+   */
+  async setAccount(
+    clientSlug: string,
+    provider: string,
+    accountId: string,
+    accountName?: string,
+  ): Promise<void> {
+    const { data: sessionData } = await supabase.auth.getSession()
+    const jwt = sessionData.session?.access_token
+    if (!jwt) throw new Error('Sessão expirada.')
+
+    const response = await fetch(VERCEL_API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${jwt}`,
+      },
+      body: JSON.stringify({
+        action: 'set-account',
+        client_slug: clientSlug,
+        provider,
+        account_id: accountId,
+        account_name: accountName,
+      }),
+    })
+    if (!response.ok) {
+      const payload = await response.json().catch(() => ({}))
+      throw new Error(payload.error || 'Falha ao definir a conta.')
+    }
   },
 
   /**
