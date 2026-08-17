@@ -70,10 +70,30 @@ export default function ClientContextGuard({ children }: ClientContextGuardProps
   }, [matchingMembership, activeClient, setActiveClient])
 
   // --- Guards ---
+  //
+  // IMPORTANT: `/_v4/operations` is the AGENCY zone. Non-staff (anyone who
+  // isn't admin/super_admin) must never be bounced there — that's exactly
+  // the "salada" bug where a client user's session hiccup dropped them into
+  // internal agency nav. Non-staff always fall back to their own client
+  // portal (or /login if we don't even know who they are).
+  const nonStaffFallback = () => {
+    const ownSlug = activeClient?.client.slug
+    // IMPORTANT: nunca /login para um usuário já autenticado — /login está
+    // dentro de PublicRoute, que redireciona qualquer `user` de volta pra
+    // /dashboard → /_v4/operations → AgencyRoute → (sem ownSlug) → aqui de
+    // novo. Isso é exatamente o loop de "Maximum update depth exceeded" +
+    // throttling de navegação visto em produção. /no-access é terminal.
+    return ownSlug
+      ? <Navigate to={`/c/${ownSlug}/portal`} replace />
+      : <Navigate to="/no-access" replace />
+  }
+  const bounceOut = () => (isGlobalAdmin
+    ? <Navigate to="/_v4/operations" replace />
+    : nonStaffFallback())
 
   if (!clientSlug) {
     // Shouldn't happen (route always has :clientSlug) but be safe
-    return <Navigate to="/_v4/operations" replace />
+    return bounceOut()
   }
 
   // Slug doesn't exist in the local AgencyClient snapshot — bail.
@@ -81,7 +101,7 @@ export default function ClientContextGuard({ children }: ClientContextGuardProps
   // is structurally invalid (no matching snapshot at all).
   const knownClient = getClientBySlug(clientSlug)
   if (!knownClient) {
-    return <Navigate to="/_v4/operations" replace />
+    return bounceOut()
   }
 
   // Portal-only users can ONLY visit their own client. Any other
@@ -97,7 +117,7 @@ export default function ClientContextGuard({ children }: ClientContextGuardProps
   // Staff (admin/super_admin) can access any client even without an
   // explicit client_members row. End-users must have a membership.
   if (!isGlobalAdmin && !matchingMembership) {
-    return <Navigate to="/_v4/operations" replace />
+    return nonStaffFallback()
   }
 
   return <>{children}</>

@@ -10,23 +10,28 @@ import type { ComponentType } from 'react'
 type Importer = () => Promise<{ default: ComponentType }>
 
 function lazyRetry(factory: Importer, retries = 2) {
-  return lazy(() =>
-    factory().catch((err) => {
-      if (retries > 0) {
-        return new Promise<{ default: ComponentType }>((resolve) => {
-          setTimeout(
-            () =>
-              resolve(lazyRetry(factory, retries - 1) as unknown as Promise<{
-                default: ComponentType
-              }>),
-            500,
-          )
+  // Importante: `lazy()` só pode ser chamado UMA vez por componente — o
+  // retry precisa reexecutar `factory()` (o import puro) e resolver com o
+  // MESMO formato `{ default: Component }`, nunca com outro `lazy(...)`.
+  // Bug anterior: o catch resolvia com `lazyRetry(...)` (um componente lazy,
+  // objeto `{ $$typeof: Symbol(react.lazy), ... }`) em vez de um módulo —
+  // React então derrubava com "lazy: Expected the result of a dynamic
+  // import() call. Instead received: [object Object]" a cada retry.
+  function importWithRetry(attemptsLeft: number): Promise<{ default: ComponentType }> {
+    return factory().catch((err) => {
+      if (attemptsLeft > 0) {
+        return new Promise<{ default: ComponentType }>((resolve, reject) => {
+          setTimeout(() => {
+            importWithRetry(attemptsLeft - 1).then(resolve, reject)
+          }, 500)
         })
       }
       window.location.reload()
       throw err
-    }),
-  )
+    })
+  }
+
+  return lazy(() => importWithRetry(retries))
 }
 
 /* Publicas */
@@ -35,6 +40,7 @@ export const LoginPage = lazyRetry(() => import('@/pages/LoginPage'))
 export const PrivacyPage = lazyRetry(() => import('@/pages/PrivacyPage'))
 export const TermsPage = lazyRetry(() => import('@/pages/TermsPage'))
 export const NotFoundPage = lazyRetry(() => import('@/pages/NotFoundPage'))
+export const NoAccessPage = lazyRetry(() => import('@/pages/NoAccessPage'))
 export const AuthCallbackPage = lazyRetry(() => import('@/pages/AuthCallbackPage'))
 
 /* Configuracoes da agencia */

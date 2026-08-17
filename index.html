@@ -8,6 +8,16 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/favicon.svg" />
     <link rel="manifest" href="/manifest.json" />
+
+    <!-- Preconnect ao Supabase — abre DNS+TCP+TLS em paralelo com o carregamento
+         do bundle, em vez de só na primeira query do AuthContext. Sem isso, a
+         PRIMEIRA request da sessão paga o handshake completo sozinha, o que
+         mediu 6-12s+ em rede mais lenta e estourava o timeout de auth (o
+         mesmo servidor responde em <1ms e queries manuais depois do boot
+         levam ~150ms — confirmado em 2026-08-17, não é lentidão de banco). -->
+    <link rel="preconnect" href="https://sdtyynzyfvxigwfmzayk.supabase.co" crossorigin />
+    <link rel="dns-prefetch" href="https://sdtyynzyfvxigwfmzayk.supabase.co" />
+
     <title>Ads Flow | Efeito Digital</title>
   </head>
   <body>

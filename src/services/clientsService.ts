@@ -246,7 +246,7 @@ export const membersService = {
         role,
         invited_by,
         joined_at:created_at,
-        user:users!client_members_user_id_fkey (
+        user:users!client_members_user_id_public_fkey (
           id,
           email,
           name,

@@ -10,6 +10,7 @@ import {
   V4PublicFlowPage,
   V4PublicClientPortalPage,
   V4PublicClientPortalV3Page,
+  NoAccessPage,
 } from './lazy'
 
 /**
@@ -20,6 +21,12 @@ export const publicRoutes = (
   <>
     <Route path="/" element={<PublicRoute><LandingPage /></PublicRoute>} />
     <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
+
+    {/* Destino terminal para usuário autenticado sem cliente/role resolvido.
+        NÃO envolver em PublicRoute — ela redireciona qualquer usuário
+        autenticado pra /dashboard, o que recriava o loop que essa página
+        existe pra quebrar. Ver AgencyRoute/PortalRoute/ClientContextGuard. */}
+    <Route path="/no-access" element={<NoAccessPage />} />
     <Route path="/privacy" element={<PrivacyPage />} />
     <Route path="/terms" element={<TermsPage />} />
 

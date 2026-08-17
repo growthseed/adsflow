@@ -61,6 +61,11 @@ END $$;
 -- a de origem é (user_id, platform, account_id). Dois usuários com a mesma
 -- conta do mesmo cliente colapsam em uma linha só — o DISTINCT ON escolhe
 -- deterministicamente a melhor candidata: com token, ativa, mais recente.
+--
+-- ad_accounts.client_id é TEXT (inconsistente com o resto do schema, que usa
+-- UUID) — daí o cast explícito ::uuid abaixo. Verificado em produção em
+-- 2026-08-17: tabela vazia (0 linhas) e nenhum valor inválido, então o cast
+-- é seguro, mas fica registrado caso a tabela ganhe dados no futuro.
 
 INSERT INTO public.client_integrations (
   client_id, provider, external_account_id, external_account_name,
@@ -68,7 +73,7 @@ INSERT INTO public.client_integrations (
   status, last_synced_at, last_error, metadata
 )
 SELECT DISTINCT ON (a.client_id, a.platform, a.account_id)
-  a.client_id,
+  a.client_id::uuid,
   a.platform,
   a.account_id,
   a.account_name,

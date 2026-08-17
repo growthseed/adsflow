@@ -187,9 +187,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // ---- Fetch profile + clients (PARALLEL with per-query timeout) ----
   const fetchUserData = useCallback(async (userId: string) => {
-    // Wrap any Supabase query in a 5s timeout race so one slow query
-    // doesn't block the entire auth flow.
-    const withTimeout = <T,>(p: PromiseLike<T>, label: string, ms = 5000): Promise<T> =>
+    // Wrap any Supabase query in a timeout race so one slow query doesn't
+    // block the entire auth flow. On timeout, retry ONCE — a cold
+    // connection (first request of the session: DNS + TLS handshake) can
+    // eat the whole budget on its own even though the query itself runs in
+    // under a millisecond once connected (confirmed via EXPLAIN ANALYZE in
+    // producao em 2026-08-17). Sem retry, esse cold-start sozinho já
+    // derrubava profile+memberships pra vazio e mandava o usuário pra
+    // /no-access mesmo com os dados chegando milissegundos depois.
+    const raceTimeout = <T,>(p: PromiseLike<T>, label: string, ms: number): Promise<T> =>
       Promise.race([
         Promise.resolve(p),
         new Promise<T>((_, reject) =>
@@ -197,10 +203,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         ),
       ]);
 
+    const withTimeout = <T,>(factory: () => PromiseLike<T>, label: string, ms = 6000): Promise<T> =>
+      raceTimeout(factory(), label, ms).catch((err) => {
+        console.warn(`[auth] ${label} timeout na 1a tentativa, retentando...`, err?.message);
+        return raceTimeout(factory(), `${label} (retry)`, ms);
+      });
+
     try {
       // Run profile + memberships in PARALLEL with independent timeouts
       const profilePromise = withTimeout(
-        supabase
+        () => supabase
           .from('users')
           .select('id, email, name, avatar_url, phone, role, is_active, last_login_at, created_at')
           .eq('id', userId)
@@ -210,7 +222,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       // Simpler membership query — no nested join, avoids recursive RLS
       const membershipsPromise = withTimeout(
-        supabase
+        () => supabase
           .from('client_members')
           .select('client_id, role')
           .eq('user_id', userId),
@@ -234,7 +246,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         if (memberships.length > 0) {
           const clientIds = memberships.map((m: { client_id: string }) => m.client_id)
           const clientsResult = await withTimeout(
-            supabase
+            () => supabase
               .from('clients')
               .select('id, name, slug, logo_url, status, industry, service_tier, active_scope, portal_token')
               .in('id', clientIds),
@@ -324,14 +336,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     let mounted = true;
     let initDone = false;
 
-    // Safety timeout: 20s (each query has its own 5s timeout via withTimeout,
-    // so reaching 20s here means multiple queries + session recovery all stalled)
+    // Safety timeout: 30s. Cada query individual tem 6s + 1 retry (12s), e
+    // fetchClients roda depois de memberships resolver — pior caso é
+    // ~24s. 30s dá margem sem deixar o usuário preso numa tela de loading
+    // eterna se sessão + rede realmente travarem.
     const timeout = setTimeout(() => {
       if (mounted && !initDone) {
-        console.warn('⚠️ Auth timeout (20s). Forçando loading=false — sessão ainda pode resolver em background.');
+        console.warn('⚠️ Auth timeout (30s). Forçando loading=false — sessão ainda pode resolver em background.');
         setLoading(false);
       }
-    }, 20000);
+    }, 30000);
 
     const initSession = async () => {
       try {
