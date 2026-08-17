@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { supabase } from '@/lib/supabase'
+import { PLANNER_LAYOUT } from '@/lib/canvasLayout'
 
 interface MetaCampaignData {
   id: string
@@ -56,7 +57,7 @@ export function useMetaSync() {
     const campaignNode = {
       id: `campaign-${campaign.id}`,
       type: 'campaign',
-      position: { x: 250, y: 150 },
+      position: PLANNER_LAYOUT.campaign,
       data: {
         label: campaign.name,
         icon: 'meta',
@@ -92,7 +93,7 @@ export function useMetaSync() {
       const adSetNode = {
         id: `adset-${adSet.id}`,
         type: 'ad_set',
-        position: { x: 250, y: 350 + (index * 200) },
+        position: { x: PLANNER_LAYOUT.adSet.x, y: PLANNER_LAYOUT.adSet.yStart + (index * PLANNER_LAYOUT.rowGap) },
         data: {
           label: adSet.name,
           icon: 'target',
@@ -134,15 +135,15 @@ export function useMetaSync() {
       const adSetAds = adsByAdSet.get(adSet.id) || []
       
       adSetAds.forEach((ad, localIndex) => {
-        const xOffset = localIndex * 250
-        const baseX = 100 + xOffset
-        
+        const xOffset = localIndex * PLANNER_LAYOUT.colGap
+        const baseX = PLANNER_LAYOUT.ad.xStart + xOffset
+
         const adNode = {
           id: `ad-${ad.id}`,
           type: 'ad',
-          position: { 
-            x: baseX, 
-            y: 550 + (globalAdIndex * 200) 
+          position: {
+            x: baseX,
+            y: PLANNER_LAYOUT.ad.yStart + (globalAdIndex * PLANNER_LAYOUT.rowGap)
           },
           data: {
             label: ad.name,
@@ -181,7 +182,7 @@ export function useMetaSync() {
       tags: ['meta-ads', 'synced', campaign.status.toLowerCase()],
       nodes,
       edges,
-      viewport: { x: 0, y: 0, zoom: 0.8 }
+      viewport: { x: 0, y: 0, zoom: PLANNER_LAYOUT.initialZoom }
     }
   }
 

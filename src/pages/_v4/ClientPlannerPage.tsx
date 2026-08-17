@@ -79,6 +79,9 @@ import GoalNode from '@/components/Nodes/GoalNode'
 import LeadJourneyNode from '@/components/Nodes/LeadJourneyNode'
 import NodesSidebar from '@/components/Planner/NodesSidebar'
 import NodeEditPanel from '@/components/Planner/NodeEditPanel'
+// Aresta com métricas (taxa de conversão / contagem) estilo Funnelytics — existia no
+// código mas nunca era registrada em `edgeTypes`, então nunca renderizava de fato.
+import ConversionEdge from '@/components/Edges/ConversionEdge'
 
 /**
  * Wraps any ReactFlow node component so that when `data.liveMetrics`
@@ -137,6 +140,12 @@ const nodeTypes = {
   // Goal tracking
   goal: GoalNode,
   leadJourney: LeadJourneyNode,
+}
+
+// Arestas customizadas — `conversionEdge` mostra taxa/contagem centralizadas na
+// linha (estilo Funnelytics) e some graciosamente quando não há dado ainda.
+const edgeTypes = {
+  conversionEdge: ConversionEdge,
 }
 
 type ViewState =
@@ -1073,8 +1082,9 @@ function FlowEditor({
           onDragOver={onDragOver}
           onDrop={onDrop}
           nodeTypes={nodeTypes}
+          edgeTypes={edgeTypes}
           defaultEdgeOptions={{
-            type: 'smoothstep',
+            type: 'conversionEdge',
             animated: true,
             style: { stroke: '#94a3b8', strokeWidth: 2 },
           }}

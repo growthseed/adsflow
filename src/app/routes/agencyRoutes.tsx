@@ -1,7 +1,7 @@
 import { Navigate, Route } from 'react-router-dom'
 
 import AppLayout from '@/components/Layout/AppLayout'
-import { ProtectedRoute } from './guards'
+import { AgencyRoute } from './guards'
 import {
   V4AgencyOverviewPage,
   ClientsPage,
@@ -20,9 +20,9 @@ import {
  * e as novas features V2 (Pacing, Relatórios, Alertas, AI, Onboarding).
  */
 const withAgency = (page: React.ReactNode) => (
-  <ProtectedRoute>
+  <AgencyRoute>
     <AppLayout>{page}</AppLayout>
-  </ProtectedRoute>
+  </AgencyRoute>
 )
 
 export const agencyRoutes = (

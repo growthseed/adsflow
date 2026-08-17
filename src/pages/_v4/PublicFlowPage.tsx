@@ -37,6 +37,21 @@ import {
   PageNode as FunnelPageNode,
   ActionNode as FunnelActionNode,
 } from '@/components/Nodes/Funnelytics'
+import ConversionEdge from '@/components/Edges/ConversionEdge'
+// Faltavam aqui — um flow salvo com esses tipos quebrava visualmente na
+// visão pública, porque só ClientPlannerPage.tsx os registrava.
+import BrandNode from '@/components/Nodes/BrandNode'
+import VisualCampaignNode from '@/components/Nodes/VisualCampaignNode'
+import VisualAudienceNode from '@/components/Nodes/VisualAudienceNode'
+import VisualCreativeNode from '@/components/Nodes/VisualCreativeNode'
+import ChannelNode from '@/components/Nodes/ChannelNode'
+import IconNode from '@/components/Nodes/IconNode'
+import GoalNode from '@/components/Nodes/GoalNode'
+import LeadJourneyNode from '@/components/Nodes/LeadJourneyNode'
+
+const edgeTypes = {
+  conversionEdge: ConversionEdge,
+}
 
 const nodeTypes = {
   trafficSource: TrafficSourceNode,
@@ -53,6 +68,14 @@ const nodeTypes = {
   funnelSource: FunnelSourceNode,
   funnelPage: FunnelPageNode,
   funnelAction: FunnelActionNode,
+  brand: BrandNode,
+  visualCampaign: VisualCampaignNode,
+  visualAudience: VisualAudienceNode,
+  visualCreative: VisualCreativeNode,
+  channel: ChannelNode,
+  icon: IconNode,
+  goal: GoalNode,
+  leadJourney: LeadJourneyNode,
 }
 
 interface SharedFlow {
@@ -170,6 +193,7 @@ export default function PublicFlowPage() {
               return cleaned
             })}
             nodeTypes={nodeTypes}
+            edgeTypes={edgeTypes}
             defaultViewport={flow.viewport || undefined}
             fitView={!flow.viewport}
             fitViewOptions={{ padding: 0.2 }}

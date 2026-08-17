@@ -92,9 +92,11 @@ const ChannelNode = ({ data, selected }: NodeProps<ChannelNodeData>) => {
         />
 
         <div className="p-4">
-          {/* Header */}
-          <div className="flex items-center gap-2 mb-2">
-            <span className="text-2xl">{config.emoji}</span>
+          {/* Header — emoji dentro de um badge consistente com a família "core" (p-2.5, cantos arredondados) */}
+          <div className="flex items-center gap-3 mb-2">
+            <div className="p-2.5 bg-white bg-opacity-20 backdrop-blur-sm rounded-lg flex items-center justify-center">
+              <span className="text-2xl leading-none">{config.emoji}</span>
+            </div>
             <div className="flex-1">
               <div className={`text-xs font-semibold uppercase ${config.text} opacity-80`}>
                 Canal de Conversão

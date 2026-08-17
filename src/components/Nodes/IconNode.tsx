@@ -79,9 +79,9 @@ function IconNode({ data, selected }: NodeProps<IconNodeData>) {
 
       {/* Conteúdo */}
       <div className="p-6 flex flex-col items-center gap-4">
-        {/* Ícone REAL da Marca com cores oficiais */}
+        {/* Ícone REAL da Marca com cores oficiais — círculo, mesmo padrão dos demais nós visuais */}
         <div className={`
-          w-24 h-24 rounded-2xl
+          w-20 h-20 rounded-full
           flex items-center justify-center
           shadow-lg group-hover:scale-110 transition-transform duration-200
           bg-white p-4

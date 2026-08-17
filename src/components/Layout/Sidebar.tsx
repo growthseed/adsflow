@@ -38,6 +38,7 @@ import {
   TrendingDown,
   Moon,
   Sun,
+  ArrowLeft,
 } from 'lucide-react'
 
 // ========== NAV CONFIG ==========
@@ -121,7 +122,7 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ collapsed, setCollapsed, mobileOpen = false, onMobileClose }: SidebarProps) {
-  const { user, clients, activeClient, setActiveClient, hasClientRole, isSuperAdmin, signOut } = useAuth()
+  const { user, clients, activeClient, setActiveClient, hasClientRole, isSuperAdmin, isGlobalAdmin, signOut } = useAuth()
   const location = useLocation()
   const navigate = useNavigate()
   const [clientDropdownOpen, setClientDropdownOpen] = useState(false)
@@ -167,10 +168,12 @@ export default function Sidebar({ collapsed, setCollapsed, mobileOpen = false, o
   const currentClientSlug = clientMatch?.[1]
   const clientSections = currentClientSlug ? getClientSections(currentClientSlug) : []
 
-  // Compose nav sections: client sections first (when inside a client), then agency
-  const NAV_SECTIONS: NavSection[] = currentClientSlug
-    ? [...clientSections, ...AGENCY_SECTIONS]
-    : AGENCY_SECTIONS
+  // Zone split (Cliente vs Agência): dentro de um cliente, mostra SÓ os
+  // módulos daquele cliente — nunca a navegação inteira da agência junto.
+  // Isso é a correção do bug "salada" (clicar em Relatórios/Clientes de
+  // dentro de um cliente te tirava do contexto sem aviso, porque as duas
+  // listas apareciam juntas no mesmo menu).
+  const NAV_SECTIONS: NavSection[] = currentClientSlug ? clientSections : AGENCY_SECTIONS
 
   const canSeeItem = (item: NavItem): boolean => {
     if (item.superAdminOnly) return isSuperAdmin
@@ -273,6 +276,21 @@ export default function Sidebar({ collapsed, setCollapsed, mobileOpen = false, o
               )}
             </div>
           )}
+        </div>
+      )}
+
+      {/* ── Voltar à Agência ── só pra staff, só quando dentro de um cliente.
+          É a ÚNICA ponte entre as duas zonas — nunca um item de menu solto. */}
+      {currentClientSlug && isGlobalAdmin && (
+        <div className="px-3 pt-2.5 shrink-0">
+          <Link
+            to="/_v4/operations"
+            title={collapsed ? 'Voltar à Agência' : undefined}
+            className={`flex items-center gap-2.5 px-2.5 py-[7px] rounded-lg text-[13px] text-[var(--color-neutral-500)] hover:bg-[var(--color-neutral-50)] hover:text-[var(--text-primary)] transition-colors ${collapsed ? 'justify-center' : ''}`}
+          >
+            <ArrowLeft className="w-[16px] h-[16px] shrink-0" />
+            {!collapsed && <span>Voltar à Agência</span>}
+          </Link>
         </div>
       )}
 

@@ -271,7 +271,40 @@ export function getAgencyClients(): AgencyClient[] {
   return loadSnapshot().clients
 }
 
+/**
+ * Cliente fictício de demonstração comercial — não existe pasta real no
+ * ClickUp pra ele, então precisa desse fallback sintético pra rota
+ * `/c/clinica-modelo/...` não ser barrada pelo ClientContextGuard como
+ * "slug desconhecido". Ver `isDemo` em `clientDashboardSnapshots.ts`.
+ */
+const DEMO_CLIENT: AgencyClient = {
+  slug: 'clinica-modelo',
+  name: 'Clínica Modelo (Demo)',
+  short_name: 'CM',
+  clickup_folder_id: '',
+  clickup_folder_name: '',
+  avatar_gradient: 'from-teal-500 to-cyan-600',
+  industry: 'Demonstração comercial',
+  city: '',
+  task_count: 0,
+  stats: {
+    urgent: 0,
+    in_progress: 0,
+    review: 0,
+    upcoming: 0,
+    backlog: 0,
+    done: 0,
+    overdue: 0,
+    total_active: 0,
+  },
+  upcoming_tasks: [],
+  all_tasks: [],
+  last_synced_at: new Date(0).toISOString(),
+  clickup_url: '',
+}
+
 export function getClientBySlug(slug: string): AgencyClient | undefined {
+  if (slug === DEMO_CLIENT.slug) return DEMO_CLIENT
   return getAgencyClients().find((c) => c.slug === slug)
 }
 

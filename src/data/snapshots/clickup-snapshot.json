@@ -3,11 +3,11 @@
   "workspace_id": "9011123812",
   "operations_space_id": "90113696605",
   "aggregate": {
-    "total_clients": 15,
-    "total_active_tasks": 187,
-    "total_overdue": 43,
-    "total_done_week": 28,
-    "on_time_rate": 0.89
+    "total_clients": 12,
+    "total_active_tasks": 223,
+    "total_overdue": 28,
+    "total_done_week": 40,
+    "on_time_rate": 0.87
   },
   "clients": [
     {
@@ -41,12 +41,19 @@
           "due_date_label": "Em 4 dias",
           "days_late": null,
           "assignees": [
-            { "id": "81928284", "username": "Johnathan Martins", "initial": "J", "color": "#3B82F6" }
+            {
+              "id": "81928284",
+              "username": "Johnathan Martins",
+              "initial": "J",
+              "color": "#3B82F6"
+            }
           ],
           "list_id": "901110363184",
           "list_name": "Gestão de Campanhas",
           "list_color": "#4285F4",
-          "tags": ["otimização"],
+          "tags": [
+            "otimização"
+          ],
           "url": "https://app.clickup.com/t/868j5t6mp"
         }
       ],
@@ -85,8 +92,18 @@
           "due_date_label": "Em 11 dias",
           "days_late": null,
           "assignees": [
-            { "id": "75401978", "username": "Natan da Silva", "initial": "N", "color": "#3B82F6" },
-            { "id": "81928284", "username": "Johnathan Martins", "initial": "J", "color": "#EC4899" }
+            {
+              "id": "75401978",
+              "username": "Natan da Silva",
+              "initial": "N",
+              "color": "#3B82F6"
+            },
+            {
+              "id": "81928284",
+              "username": "Johnathan Martins",
+              "initial": "J",
+              "color": "#EC4899"
+            }
           ],
           "list_id": "901112375171",
           "list_name": "Criação e Social Media",
@@ -104,12 +121,19 @@
           "due_date_label": "Em 8 dias",
           "days_late": null,
           "assignees": [
-            { "id": "81928284", "username": "Johnathan Martins", "initial": "J", "color": "#3B82F6" }
+            {
+              "id": "81928284",
+              "username": "Johnathan Martins",
+              "initial": "J",
+              "color": "#3B82F6"
+            }
           ],
           "list_id": "901112375171",
           "list_name": "Criação e Social Media",
           "list_color": "#EC4899",
-          "tags": ["ia"],
+          "tags": [
+            "ia"
+          ],
           "url": "https://app.clickup.com/t/868j5h7vb"
         }
       ],
@@ -168,227 +192,6 @@
       "clickup_url": "https://app.clickup.com/9011123812/v/li/90116940873"
     },
     {
-      "slug": "blink-oftalmologia",
-      "name": "Blink Oftalmologia",
-      "short_name": "BL",
-      "clickup_folder_id": "90116051703",
-      "clickup_folder_name": "CL10 - Blink Oftalmologia",
-      "avatar_gradient": "from-sky-500 to-blue-600",
-      "industry": "Saúde / Oftalmologia",
-      "city": "Brasília, DF",
-      "task_count": 54,
-      "stats": {
-        "urgent": 0,
-        "in_progress": 0,
-        "review": 0,
-        "upcoming": 0,
-        "backlog": 1,
-        "done": 53,
-        "overdue": 0,
-        "total_active": 1
-      },
-      "all_tasks": [
-        {
-          "id": "868j9qq5v",
-          "title": "Card para Whatsapp Blink Oftalmologia",
-          "status_raw": "done",
-          "status": "done",
-          "priority": "urgent",
-          "due_date": "2026-04-15",
-          "due_date_label": "Concluída",
-          "days_late": null,
-          "assignees": [
-            { "id": "61037220", "username": "Vinicius Designer", "initial": "V", "color": "#10B981" }
-          ],
-          "list_id": "901110363196",
-          "list_name": "Gestão de Campanhas",
-          "list_color": "#4285F4",
-          "tags": [],
-          "url": "https://app.clickup.com/t/868j9qq5v"
-        },
-        {
-          "id": "868fymta6",
-          "title": "Relatórios Blink Oftalmologia - Outubro 2025",
-          "status_raw": "done",
-          "status": "done",
-          "priority": null,
-          "due_date": null,
-          "due_date_label": "Concluída",
-          "days_late": null,
-          "assignees": [],
-          "list_id": "901112043689",
-          "list_name": "Resultados",
-          "list_color": "#A855F7",
-          "tags": [],
-          "url": "https://app.clickup.com/t/868fymta6"
-        },
-        {
-          "id": "868fxnuac",
-          "title": "Capas para Reels Dra Karla",
-          "status_raw": "complete",
-          "status": "done",
-          "priority": "urgent",
-          "due_date": "2025-10-09",
-          "due_date_label": "Concluída",
-          "days_late": null,
-          "assignees": [
-            { "id": "61037220", "username": "Vinicius Designer", "initial": "V", "color": "#10B981" }
-          ],
-          "list_id": "901110363197",
-          "list_name": "Criação e Social Media",
-          "list_color": "#EC4899",
-          "tags": [],
-          "url": "https://app.clickup.com/t/868fxnuac"
-        },
-        {
-          "id": "868fwwmz3",
-          "title": "Elaborar os Criativos - Blink Oftalmologia - Out/25",
-          "status_raw": "complete",
-          "status": "done",
-          "priority": null,
-          "due_date": "2025-10-13",
-          "due_date_label": "Concluída",
-          "days_late": null,
-          "assignees": [
-            { "id": "61037220", "username": "Vinicius Designer", "initial": "V", "color": "#10B981" }
-          ],
-          "list_id": "901110363197",
-          "list_name": "Criação e Social Media",
-          "list_color": "#EC4899",
-          "tags": [],
-          "url": "https://app.clickup.com/t/868fwwmz3"
-        },
-        {
-          "id": "868fuz6dx",
-          "title": "Social Media Blink - Out/25",
-          "status_raw": "complete",
-          "status": "done",
-          "priority": null,
-          "due_date": "2025-10-07",
-          "due_date_label": "Concluída",
-          "days_late": null,
-          "assignees": [
-            { "id": "75377448", "username": "Ualiston Maia", "initial": "U", "color": "#595D66" },
-            { "id": "87335170", "username": "Fábio Philipe Martins", "initial": "F", "color": "#4466FF" },
-            { "id": "230699971", "username": "Felippe Xavier", "initial": "F", "color": "#3B82F6" }
-          ],
-          "list_id": "901110363197",
-          "list_name": "Criação e Social Media",
-          "list_color": "#EC4899",
-          "tags": [],
-          "url": "https://app.clickup.com/t/868fuz6dx"
-        },
-        {
-          "id": "868fpp2uu",
-          "title": "GADS - CP5 ESTRABISMO",
-          "status_raw": "done",
-          "status": "done",
-          "priority": null,
-          "due_date": null,
-          "due_date_label": "Concluída",
-          "days_late": null,
-          "assignees": [
-            { "id": "75475970", "username": "Italo Malta", "initial": "I", "color": "#006063" }
-          ],
-          "list_id": "901110363196",
-          "list_name": "Gestão de Campanhas",
-          "list_color": "#4285F4",
-          "tags": [],
-          "url": "https://app.clickup.com/t/868fpp2uu"
-        },
-        {
-          "id": "868fh9ht6",
-          "title": "Negativação de Palavras Chaves Campanhas Google Ads",
-          "status_raw": "done",
-          "status": "done",
-          "priority": null,
-          "due_date": null,
-          "due_date_label": "Concluída",
-          "days_late": null,
-          "assignees": [
-            { "id": "75475970", "username": "Italo Malta", "initial": "I", "color": "#006063" }
-          ],
-          "list_id": "901110363196",
-          "list_name": "Gestão de Campanhas",
-          "list_color": "#4285F4",
-          "tags": [],
-          "url": "https://app.clickup.com/t/868fh9ht6"
-        },
-        {
-          "id": "868fdx244",
-          "title": "Desenvolvimento da Landing Page Estrabismo",
-          "status_raw": "complete",
-          "status": "done",
-          "priority": "normal",
-          "due_date": "2025-09-25",
-          "due_date_label": "Concluída",
-          "days_late": null,
-          "assignees": [
-            { "id": "75401978", "username": "Natan da Silva", "initial": "N", "color": "#FF897F" }
-          ],
-          "list_id": "901111871131",
-          "list_name": "Web/Dev",
-          "list_color": "#0EA5E9",
-          "tags": [],
-          "url": "https://app.clickup.com/t/868fdx244"
-        },
-        {
-          "id": "868fq34ux",
-          "title": "Ajuste de Site da Blink",
-          "status_raw": "complete",
-          "status": "done",
-          "priority": "urgent",
-          "due_date": null,
-          "due_date_label": "Concluída",
-          "days_late": null,
-          "assignees": [
-            { "id": "75401978", "username": "Natan da Silva", "initial": "N", "color": "#FF897F" }
-          ],
-          "list_id": "901111871131",
-          "list_name": "Web/Dev",
-          "list_color": "#0EA5E9",
-          "tags": [],
-          "url": "https://app.clickup.com/t/868fq34ux"
-        },
-        {
-          "id": "868fdx47k",
-          "title": "Acessos Blink Oftalmologia",
-          "status_raw": "backlog",
-          "status": "backlog",
-          "priority": null,
-          "due_date": null,
-          "due_date_label": "Pendente",
-          "days_late": null,
-          "assignees": [],
-          "list_id": "901110363198",
-          "list_name": "Acessos & Info",
-          "list_color": "#64748B",
-          "tags": [],
-          "url": "https://app.clickup.com/t/868fdx47k"
-        }
-      ],
-      "upcoming_tasks": [
-        {
-          "id": "868fdx47k",
-          "title": "Acessos Blink Oftalmologia",
-          "status_raw": "backlog",
-          "status": "backlog",
-          "priority": null,
-          "due_date": null,
-          "due_date_label": "Pendente",
-          "days_late": null,
-          "assignees": [],
-          "list_id": "901110363198",
-          "list_name": "Acessos & Info",
-          "list_color": "#64748B",
-          "tags": [],
-          "url": "https://app.clickup.com/t/868fdx47k"
-        }
-      ],
-      "last_synced_at": "2026-05-04T18:50:00Z",
-      "clickup_url": "https://app.clickup.com/9011123812/v/li/90116051703"
-    },
-    {
       "slug": "escola-pequeno-aprendiz",
       "name": "Escola Pequeno Aprendiz",
       "short_name": "PA",
@@ -419,7 +222,12 @@
           "due_date_label": "Atrasada 1 dia",
           "days_late": 1,
           "assignees": [
-            { "id": "278518887", "username": "Digital ao Quadrado", "initial": "D", "color": "#3B82F6" }
+            {
+              "id": "278518887",
+              "username": "Digital ao Quadrado",
+              "initial": "D",
+              "color": "#3B82F6"
+            }
           ],
           "list_id": "901113100568",
           "list_name": "Gestão de Campanhas",
@@ -456,31 +264,6 @@
       "all_tasks": [],
       "last_synced_at": "2026-04-08T02:30:00Z",
       "clickup_url": "https://app.clickup.com/9011123812/v/li/90117061437"
-    },
-    {
-      "slug": "dr-former",
-      "name": "Dr. Former",
-      "short_name": "DF",
-      "clickup_folder_id": "90117643529",
-      "clickup_folder_name": "CL12 - Dr. Former",
-      "avatar_gradient": "from-red-500 to-orange-600",
-      "industry": "Saúde",
-      "city": "Macapá, AP",
-      "task_count": 9,
-      "stats": {
-        "urgent": 0,
-        "in_progress": 3,
-        "review": 1,
-        "upcoming": 2,
-        "backlog": 2,
-        "done": 1,
-        "overdue": 0,
-        "total_active": 8
-      },
-      "upcoming_tasks": [],
-      "all_tasks": [],
-      "last_synced_at": "2026-04-08T02:30:00Z",
-      "clickup_url": "https://app.clickup.com/9011123812/v/li/90117643529"
     },
     {
       "slug": "homero-reis",
@@ -545,7 +328,12 @@
           "due_date_label": "Atrasada 20 dias",
           "days_late": 20,
           "assignees": [
-            { "id": "81928284", "username": "Johnathan Martins", "initial": "J", "color": "#3B82F6" }
+            {
+              "id": "81928284",
+              "username": "Johnathan Martins",
+              "initial": "J",
+              "color": "#3B82F6"
+            }
           ],
           "list_id": "901113100568",
           "list_name": "Gestão de Campanhas",
@@ -563,7 +351,12 @@
           "due_date_label": "Atrasada 3 dias",
           "days_late": 3,
           "assignees": [
-            { "id": "81928284", "username": "Johnathan Martins", "initial": "J", "color": "#3B82F6" }
+            {
+              "id": "81928284",
+              "username": "Johnathan Martins",
+              "initial": "J",
+              "color": "#3B82F6"
+            }
           ],
           "list_id": "901113100568",
           "list_name": "Gestão de Campanhas",
@@ -623,7 +416,12 @@
           "due_date_label": "Atrasada 8 dias",
           "days_late": 8,
           "assignees": [
-            { "id": "87390392", "username": "Julie Sink", "initial": "J", "color": "#F59E0B" }
+            {
+              "id": "87390392",
+              "username": "Julie Sink",
+              "initial": "J",
+              "color": "#F59E0B"
+            }
           ],
           "list_id": "901113073543",
           "list_name": "Sucesso do Cliente",
@@ -667,7 +465,12 @@
           "due_date_label": "Atrasada 2 dias",
           "days_late": 2,
           "assignees": [
-            { "id": "61037220", "username": "Vinicius Designer", "initial": "V", "color": "#3B82F6" }
+            {
+              "id": "61037220",
+              "username": "Vinicius Designer",
+              "initial": "V",
+              "color": "#3B82F6"
+            }
           ],
           "list_id": "901112546561",
           "list_name": "Criação e Social Media",
@@ -679,31 +482,6 @@
       "all_tasks": [],
       "last_synced_at": "2026-04-08T02:30:00Z",
       "clickup_url": "https://app.clickup.com/9011123812/v/li/90117344470"
-    },
-    {
-      "slug": "vip",
-      "name": "V.I.P",
-      "short_name": "VI",
-      "clickup_folder_id": "90117471958",
-      "clickup_folder_name": "CL19 - V.I.P",
-      "avatar_gradient": "from-yellow-500 to-amber-600",
-      "industry": "Serviços",
-      "city": "Macapá, AP",
-      "task_count": 11,
-      "stats": {
-        "urgent": 0,
-        "in_progress": 4,
-        "review": 1,
-        "upcoming": 3,
-        "backlog": 2,
-        "done": 1,
-        "overdue": 0,
-        "total_active": 10
-      },
-      "upcoming_tasks": [],
-      "all_tasks": [],
-      "last_synced_at": "2026-04-08T02:30:00Z",
-      "clickup_url": "https://app.clickup.com/9011123812/v/li/90117471958"
     },
     {
       "slug": "uniao-norte-nordeste",

@@ -77,25 +77,24 @@ const ConversionEdge: React.FC<ConversionEdgeProps> = ({
             }}
             className="nodrag nopan"
           >
-            <div
-              className={`
-                px-2 py-1 rounded-full text-xs font-medium shadow-sm
-                border border-white/50 backdrop-blur-sm
-                ${getBadgeColor()}
-              `}
-            >
+            {/* Duas "pílulas" coladas — rótulo pequeno em cima, valor em negrito embaixo,
+                mesmo padrão visual do Funnelytics (chips de Rate/People sobre a aresta) */}
+            <div className="flex items-stretch rounded-md overflow-hidden shadow-sm border border-white/60 backdrop-blur-sm divide-x divide-white/40">
               {data?.conversionRate !== undefined && (
-                <span className="font-bold">
-                  {formatPercentage(data.conversionRate)}
-                </span>
-              )}
-              {data?.conversions !== undefined && data?.conversionRate !== undefined && (
-                <span className="mx-1 opacity-50">|</span>
+                <div className={`px-2 py-1 flex flex-col items-center leading-none ${getBadgeColor()}`}>
+                  <span className="text-[9px] uppercase tracking-wide opacity-70">Taxa</span>
+                  <span className="text-xs font-bold mt-0.5">
+                    {formatPercentage(data.conversionRate)}
+                  </span>
+                </div>
               )}
               {data?.conversions !== undefined && (
-                <span className="opacity-75">
-                  {formatNumber(data.conversions)}
-                </span>
+                <div className="px-2 py-1 flex flex-col items-center leading-none bg-white/85 text-gray-700">
+                  <span className="text-[9px] uppercase tracking-wide opacity-60">Pessoas</span>
+                  <span className="text-xs font-bold mt-0.5">
+                    {formatNumber(data.conversions)}
+                  </span>
+                </div>
               )}
             </div>
 

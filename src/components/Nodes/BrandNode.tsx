@@ -236,35 +236,44 @@ const BrandNode = memo(({ data, selected }: NodeProps<BrandNodeData>) => {
   return (
     <>
       <NodeResizer isVisible={selected} minWidth={60} minHeight={60} />
-      <div className="relative">
-        <Handle
-          type="target"
-          position={Position.Left}
-          className="w-3 h-3 !bg-blue-500 border-2 border-white"
-        />
+      <div className="flex flex-col items-center gap-2 px-2 py-1">
+        {data.label && (
+          <div className="text-xs font-semibold text-gray-700 bg-white/80 backdrop-blur-sm px-2 py-0.5 rounded-full shadow-sm whitespace-nowrap">
+            {data.label}
+          </div>
+        )}
 
-        {/* Círculo com logo da marca — mesmo formato do VisualCampaignNode */}
-        <div
-          className={`
-            w-16 h-16 rounded-full flex items-center justify-center
-            ${brandConfig.color} ${brandConfig.textColor}
-            ${brandConfig.shadow}
-            hover:scale-110 hover:shadow-xl
-            transition-all duration-300 cursor-pointer
-          `}
-        >
-          <BrandIcon
-            name={data.brand}
-            size={32}
-            className={brandConfig.textColor}
+        {/* Wrapper relative separado — garante que os Handles fiquem centrados no círculo, não no card inteiro */}
+        <div className="relative">
+          <Handle
+            type="target"
+            position={Position.Left}
+            className="w-3 h-3 !bg-blue-500 border-2 border-white"
+          />
+
+          {/* Círculo com logo da marca — mesmo formato dos demais nós visuais */}
+          <div
+            className={`
+              w-20 h-20 rounded-full flex items-center justify-center
+              ${brandConfig.color} ${brandConfig.textColor}
+              ${brandConfig.shadow}
+              hover:scale-110 hover:shadow-xl
+              transition-all duration-300 cursor-pointer
+            `}
+          >
+            <BrandIcon
+              name={data.brand}
+              size={40}
+              className={brandConfig.textColor}
+            />
+          </div>
+
+          <Handle
+            type="source"
+            position={Position.Right}
+            className="w-3 h-3 !bg-blue-500 border-2 border-white"
           />
         </div>
-
-        <Handle
-          type="source"
-          position={Position.Right}
-          className="w-3 h-3 !bg-blue-500 border-2 border-white"
-        />
       </div>
     </>
   )
