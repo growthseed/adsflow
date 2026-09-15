@@ -12,7 +12,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 // Register PWA service worker (only in production — skip during `vite dev`)
 if ('serviceWorker' in navigator && import.meta.env.PROD) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js').catch((err) => {
+    navigator.serviceWorker.register('/sw.js?v=20260915-2').catch((err) => {
       console.warn('[sw] registration failed:', err)
     })
   })

@@ -13,7 +13,7 @@
  * ============================================
  */
 
-const CACHE_VERSION = 'adsflow-v1'
+const CACHE_VERSION = 'adsflow-v2'
 const SHELL_URLS = ['/', '/manifest.json', '/favicon.svg']
 
 self.addEventListener('install', (event) => {
@@ -59,19 +59,18 @@ self.addEventListener('fetch', (event) => {
     return
   }
 
-  // Static asset — stale-while-revalidate
+  // Static assets — network-first. Hashed filenames already provide cache
+  // safety; network-first also prevents an old service-worker shell from
+  // keeping a previous deployment alive after a hard refresh.
   if (/\.(?:js|css|svg|png|jpg|jpeg|webp|woff2?)$/.test(url.pathname)) {
     event.respondWith(
       caches.open(CACHE_VERSION).then((cache) =>
-        cache.match(request).then((cached) => {
-          const fetchPromise = fetch(request)
-            .then((res) => {
-              if (res && res.status === 200) cache.put(request, res.clone())
-              return res
-            })
-            .catch(() => cached)
-          return cached || fetchPromise
-        }),
+        fetch(request)
+          .then((res) => {
+            if (res && res.status === 200) cache.put(request, res.clone())
+            return res
+          })
+          .catch(() => cache.match(request)),
       ),
     )
   }
