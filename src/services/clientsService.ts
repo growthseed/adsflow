@@ -78,8 +78,47 @@ export const clientsService = {
   /**
    * Lista clientes do usuário (via client_members)
    */
-  async list(userId: string): Promise<(Client & { member_count: number; my_role: ClientRole })[]> {
-    // Buscar IDs dos clientes onde o usuário é membro
+  async list(
+    userId: string,
+    options: { includeAllActive?: boolean } = {},
+  ): Promise<(Client & { member_count: number; my_role: ClientRole })[]> {
+    let clientIds: string[]
+    let roleMap: Map<string, ClientRole>
+
+    if (options.includeAllActive) {
+      // Agency admins need the complete client catalog even when a newly
+      // created client has not received a client_members row yet.
+      const { data: clients, error: clientError } = await supabase
+        .from('clients')
+        .select('*')
+        .eq('status', 'active')
+        .order('name')
+
+      if (clientError) throw clientError
+      clientIds = (clients || []).map((client) => client.id)
+
+      const { data: memberships, error: memError } = await supabase
+        .from('client_members')
+        .select('client_id, role')
+        .in('client_id', clientIds)
+
+      if (memError) throw memError
+      // Global admins are allowed to manage the catalog without being a
+      // tenant member. Existing memberships still preserve their real role.
+      roleMap = new Map(
+        (memberships || []).map((membership) => [
+          membership.client_id,
+          membership.role as ClientRole,
+        ]),
+      )
+      for (const clientId of clientIds) {
+        if (!roleMap.has(clientId)) roleMap.set(clientId, 'admin')
+      }
+
+      return this.withMemberCounts(clients || [], clientIds, roleMap)
+    }
+
+    // Client users only see the tenants they belong to.
     const { data: memberships, error: memError } = await supabase
       .from('client_members')
       .select('client_id, role')
@@ -88,10 +127,9 @@ export const clientsService = {
     if (memError) throw memError
     if (!memberships || memberships.length === 0) return []
 
-    const clientIds = memberships.map((m) => m.client_id)
-    const roleMap = new Map(memberships.map((m) => [m.client_id, m.role as ClientRole]))
+    clientIds = memberships.map((m) => m.client_id)
+    roleMap = new Map(memberships.map((m) => [m.client_id, m.role as ClientRole]))
 
-    // Buscar dados dos clientes
     const { data: clients, error: clientError } = await supabase
       .from('clients')
       .select('*')
@@ -99,6 +137,16 @@ export const clientsService = {
       .order('name')
 
     if (clientError) throw clientError
+
+    return this.withMemberCounts(clients || [], clientIds, roleMap)
+  },
+
+  /** Shared member-count enrichment for both tenant and agency listings. */
+  async withMemberCounts(
+    clients: Client[],
+    clientIds: string[],
+    roleMap: Map<string, ClientRole>,
+  ): Promise<(Client & { member_count: number; my_role: ClientRole })[]> {
 
     // Buscar contagem de membros por cliente
     const { data: counts, error: countError } = await supabase
@@ -113,7 +161,7 @@ export const clientsService = {
       countMap.set(c.client_id, (countMap.get(c.client_id) || 0) + 1)
     }
 
-    return (clients || []).map((c) => ({
+    return clients.map((c) => ({
       ...c,
       member_count: countMap.get(c.id) || 0,
       my_role: roleMap.get(c.id) || 'viewer',

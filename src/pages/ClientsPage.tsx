@@ -635,7 +635,9 @@ export default function ClientsPage() {
   const loadClients = useCallback(async () => {
     if (!user) return
     try {
-      const data = await clientsService.list(user.id)
+      const data = await clientsService.list(user.id, {
+        includeAllActive: isGlobalAdmin,
+      })
 
       // Buscar ad_account counts em paralelo
       const withCounts = await Promise.all(
@@ -651,7 +653,7 @@ export default function ClientsPage() {
     } finally {
       setLoading(false)
     }
-  }, [user])
+  }, [user, isGlobalAdmin])
 
   useEffect(() => {
     loadClients()
