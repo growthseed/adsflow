@@ -23,12 +23,12 @@ import {
   applyCors,
   requireClientMembership,
   requireUserAuth,
-} from '../_lib/security'
+} from '../_lib/security.js'
 import {
   getIntegrationCredentials,
   markIntegrationError,
   persistIntegration,
-} from '../_lib/integrations'
+} from '../_lib/integrations.js'
 
 const KOMMO_CLIENT_ID = process.env.KOMMO_CLIENT_ID || ''
 const KOMMO_CLIENT_SECRET = process.env.KOMMO_CLIENT_SECRET || ''

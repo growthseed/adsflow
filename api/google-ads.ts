@@ -23,13 +23,13 @@ import {
   allowMethods,
   requireUserAuth,
   requireClientMembership,
-} from './_lib/security'
+} from './_lib/security.js'
 import {
   getIntegrationCredentials,
   markIntegrationError,
   persistIntegration,
   type Provider,
-} from './_lib/integrations'
+} from './_lib/integrations.js'
 
 // =====================================================
 // CONFIG

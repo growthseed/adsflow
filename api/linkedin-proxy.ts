@@ -18,7 +18,7 @@ import {
   allowMethods,
   requireUserAuth,
   requireClientMembership,
-} from './_lib/security'
+} from './_lib/security.js'
 
 const CLIENT_ID = process.env.LINKEDIN_CLIENT_ID || ''
 const CLIENT_SECRET = process.env.LINKEDIN_CLIENT_SECRET || ''

@@ -26,7 +26,7 @@
 
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 
-import { allowMethods, applyCors, requireUserAuth } from '../_lib/security'
+import { allowMethods, applyCors, requireUserAuth } from '../_lib/security.js'
 
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY || ''
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY || ''

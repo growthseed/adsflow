@@ -8,7 +8,7 @@
  * ============================================
  */
 
-import { ENV, loadAgencyClients } from './config.ts'
+import { ENV, loadAgencyClients } from './config.js'
 
 const CLICKUP_API = 'https://api.clickup.com/api/v2'
 

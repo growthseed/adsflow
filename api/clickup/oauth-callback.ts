@@ -20,8 +20,8 @@ import {
   applyCors,
   requireClientMembership,
   requireUserAuth,
-} from '../_lib/security'
-import { persistIntegration, sanitize } from '../_lib/integrations'
+} from '../_lib/security.js'
+import { persistIntegration, sanitize } from '../_lib/integrations.js'
 
 const CLICKUP_CLIENT_ID = process.env.CLICKUP_CLIENT_ID || ''
 const CLICKUP_CLIENT_SECRET = process.env.CLICKUP_CLIENT_SECRET || ''

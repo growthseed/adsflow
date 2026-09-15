@@ -13,7 +13,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { createClient } from '@supabase/supabase-js'
 
-import { allowMethods, applyCors, requireUserAuth } from '../_lib/security'
+import { allowMethods, applyCors, requireUserAuth } from '../_lib/security.js'
 import { renderReportPdf, type ReportRenderContext } from '../../src/server/pdf/renderBlocks.js'
 
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL || ''

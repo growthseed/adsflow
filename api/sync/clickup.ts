@@ -10,8 +10,8 @@
  */
 
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { requireCronAuth, setCommonHeaders, insertSnapshot } from '../../src/server/sync/config.ts'
-import { fetchClickUpSnapshot } from '../../src/server/sync/clickupFetcher.ts'
+import { requireCronAuth, setCommonHeaders, insertSnapshot } from '../../src/server/sync/config.js'
+import { fetchClickUpSnapshot } from '../../src/server/sync/clickupFetcher.js'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   setCommonHeaders(res)

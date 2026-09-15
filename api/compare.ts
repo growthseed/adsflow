@@ -31,7 +31,7 @@ import {
   allowMethods,
   applyCors,
   requireUserAuth,
-} from './_lib/security'
+} from './_lib/security.js'
 
 type BetterIs = 'higher' | 'lower'
 type MetricUnit = 'currency' | 'count' | 'percent' | 'ratio'
