@@ -341,6 +341,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     let mounted = true;
     let initDone = false;
+    let dataLoadTimer: ReturnType<typeof setTimeout> | null = null;
 
     // Safety timeout: 30s. Cada query individual tem 6s + 1 retry (12s), e
     // fetchClients roda depois de memberships resolver — pior caso é
@@ -411,31 +412,45 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     initSession();
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       if (!mounted) return;
 
       const currentUser = session?.user ?? null;
       setSupabaseUser(currentUser);
 
-      // Skip if initSession already handled this (dedup INITIAL_SESSION)
-      if (!initDone && _event === 'INITIAL_SESSION') return;
+      // INITIAL_SESSION is handled by initSession above. Never await
+      // Supabase queries inside this callback: auth holds an internal lock
+      // while notifying listeners, and profile/membership reads can deadlock
+      // during a hard refresh. TOKEN_REFRESHED only changes the JWT; the
+      // user's profile and memberships do not need to be reloaded for every
+      // silent token renewal.
+      if (_event === 'INITIAL_SESSION' || _event === 'TOKEN_REFRESHED') return;
 
-      if (currentUser) {
-        await fetchUserData(currentUser.id);
-      } else {
+      if (!currentUser) {
         // Clear state on logout
         setProfile(null);
         setClients([]);
         setActiveClientId(null);
         localStorage.removeItem(ACTIVE_CLIENT_KEY);
+        setLoading(false);
+        return;
       }
 
-      setLoading(false);
+      if (_event === 'SIGNED_IN' || _event === 'USER_UPDATED') {
+        setLoading(true);
+        if (dataLoadTimer) clearTimeout(dataLoadTimer);
+        dataLoadTimer = setTimeout(() => {
+          void fetchUserData(currentUser.id).finally(() => {
+            if (mounted) setLoading(false);
+          });
+        }, 0);
+      }
     });
 
     return () => {
       mounted = false;
       clearTimeout(timeout);
+      if (dataLoadTimer) clearTimeout(dataLoadTimer);
       subscription.unsubscribe();
     };
   }, [fetchUserData]);
