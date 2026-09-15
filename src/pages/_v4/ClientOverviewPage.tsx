@@ -20,7 +20,7 @@
 
 import { useMemo } from 'react'
 import { useParams, useNavigate, Navigate } from 'react-router-dom'
-import { ArrowRight, TrendingUp, Layout, Briefcase } from 'lucide-react'
+import { ArrowRight, FileText, TrendingUp, Layout, Briefcase } from 'lucide-react'
 
 import {
   PageHeader,
@@ -31,9 +31,9 @@ import {
   FunnelChartWidget,
   GaugeWidget,
 } from '@/components/canonical'
-import { getClientBySlug } from '@/services/adapters/clickupAdapter'
 import { getClientSnapshot } from '@/data/clientDashboardSnapshots'
 import { useClientGoals } from '@/hooks/useClientGoals'
+import { useResolvedAgencyClient } from '@/hooks/useResolvedAgencyClient'
 import { humanizeSnapshot } from '@/lib/humanizeSnapshot'
 import { useAuth } from '@/contexts/AuthContext'
 import type { SnapshotKPI } from '@/types/clientDashboardSnapshot'
@@ -45,10 +45,7 @@ export default function ClientOverviewPage() {
   const navigate = useNavigate()
   const { activeClient } = useAuth()
 
-  const client = useMemo(
-    () => (clientSlug ? getClientBySlug(clientSlug) : undefined),
-    [clientSlug],
-  )
+  const client = useResolvedAgencyClient(clientSlug)
 
   const snapshot = useMemo(
     () => (clientSlug ? getClientSnapshot(clientSlug) : null),
@@ -104,6 +101,14 @@ export default function ClientOverviewPage() {
               className="text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] border border-[var(--border-subtle)] hover:border-[var(--border-default)] bg-[var(--surface-card)] px-3 py-1.5 rounded-lg transition-colors"
             >
               Projeto
+            </button>
+            <button
+              type="button"
+              onClick={() => navigate(`/c/${client.slug}/report`)}
+              className="inline-flex items-center gap-1.5 text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] border border-[var(--border-subtle)] hover:border-[var(--border-default)] bg-[var(--surface-card)] px-3 py-1.5 rounded-lg transition-colors"
+            >
+              <FileText className="w-3.5 h-3.5" />
+              Report
             </button>
           </div>
         }

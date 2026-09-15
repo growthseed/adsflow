@@ -572,7 +572,6 @@ const CLIENT_CONFIGS: ClientConfig[] = [
   // ativo, só saiu do modelo de projeto do ClickUp.
   { slug: 'homero-reis', name: 'Homero Reis', scope: 'sales_inside', tier: 'mid' },
   { slug: 'sindmpu', name: 'SINDMPU', scope: 'leads_b2b', tier: 'high' },
-  { slug: 'grupo-m3', name: 'Grupo M3', scope: 'sales_inside', tier: 'mid' },
   { slug: 'dra-diane-barranco', name: 'Dra. Diane Barranco', scope: 'leads_b2b', tier: 'low' },
   { slug: 'rharo', name: 'Rharo', scope: 'leads_b2b', tier: 'mid' },
   { slug: 'uniao-norte-nordeste', name: 'União Norte Nordeste', scope: 'leads_b2b', tier: 'low' },

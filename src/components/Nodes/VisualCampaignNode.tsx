@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import { Handle, Position, NodeResizer } from 'reactflow'
+import { Handle, Position } from 'reactflow'
 import type { NodeProps } from 'reactflow'
 import { Megaphone } from 'lucide-react'
 
@@ -7,11 +7,11 @@ export interface VisualCampaignNodeData {
   label?: string
 }
 
-const VisualCampaignNode = memo(({ data, selected }: NodeProps<VisualCampaignNodeData>) => {
+const VisualCampaignNode = memo(({ data }: NodeProps<VisualCampaignNodeData>) => {
   return (
     <>
-    <NodeResizer isVisible={selected} minWidth={150} minHeight={100} />
-    <div className="flex flex-col items-center gap-2 px-2 py-1">
+    {/* Badge circular de tamanho fixo — sem NodeResizer (mesmo motivo do BrandNode). */}
+    <div className="flex flex-col items-center gap-1 px-1 py-0.5">
       <div className="text-xs font-semibold text-gray-700 bg-white/80 backdrop-blur-sm px-2 py-0.5 rounded-full shadow-sm whitespace-nowrap">
         {data?.label || 'Campanha'}
       </div>
@@ -24,12 +24,12 @@ const VisualCampaignNode = memo(({ data, selected }: NodeProps<VisualCampaignNod
         />
 
         <div className="
-          w-20 h-20 rounded-full flex items-center justify-center
+          w-16 h-16 rounded-full flex items-center justify-center
           bg-green-500 text-white shadow-lg
           hover:scale-110 hover:shadow-xl
           transition-all duration-300 cursor-pointer
         ">
-          <Megaphone className="w-10 h-10" />
+          <Megaphone className="w-8 h-8" />
         </div>
 
         <Handle

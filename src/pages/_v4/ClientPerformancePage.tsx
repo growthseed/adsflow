@@ -21,11 +21,11 @@ import { subDays, format } from 'date-fns'
 import { PageHeader, ClientBrand } from '@/components/canonical'
 import { WidgetRenderer } from '@/components/canonical/widgets'
 import DateRangeSelector from '@/components/UI/DateRangeSelector'
-import { getClientBySlug } from '@/services/adapters/clickupAdapter'
 import { getClientSnapshot } from '@/data/clientDashboardSnapshots'
 import { getDashboardTemplate } from '@/data/dashboardTemplates'
 import { downloadClientReport } from '@/lib/generateClientReport'
 import { useAuth } from '@/contexts/AuthContext'
+import { useResolvedAgencyClient } from '@/hooks/useResolvedAgencyClient'
 
 interface DateRange {
   startDate: Date
@@ -42,10 +42,7 @@ export default function ClientPerformancePage() {
     endDate: new Date(),
   })
 
-  const client = useMemo(
-    () => (clientSlug ? getClientBySlug(clientSlug) : undefined),
-    [clientSlug],
-  )
+  const client = useResolvedAgencyClient(clientSlug)
 
   const rawSnapshot = useMemo(
     () => (clientSlug ? getClientSnapshot(clientSlug) : null),

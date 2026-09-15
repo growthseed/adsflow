@@ -107,6 +107,7 @@ function getClientSections(clientSlug: string): NavSection[] {
       items: [
         { path: `/c/${clientSlug}/planner`, label: 'Planner', icon: GitBranch },
         { path: `/c/${clientSlug}/projeto`, label: 'Demandas', icon: CheckSquare },
+        { path: `/c/${clientSlug}/report`, label: 'Report', icon: FileText },
       ],
     },
   ]

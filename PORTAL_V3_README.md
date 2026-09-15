@@ -59,11 +59,8 @@ Depois abre no navegador:
 - http://localhost:5173/portal-v3/dra-luciana
 - http://localhost:5173/portal-v3/isaac-newton
 - http://localhost:5173/portal-v3/blink-oftalmologia
-- http://localhost:5173/portal-v3/grupo-m3
 - http://localhost:5173/portal-v3/ze-umberto
-- http://localhost:5173/portal-v3/moai
-
-Todos 9 clientes ja tem snapshot enriquecido pronto.
+Todos os clientes ativos ja tem snapshot enriquecido pronto.
 
 ## Como aplicar a migration 029
 

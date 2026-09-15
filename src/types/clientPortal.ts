@@ -36,6 +36,8 @@ export interface ClientPortalAssignee {
   color: string
   /** First letter for the avatar placeholder */
   initial: string
+  /** ClickUp profile photo, when available */
+  avatar_url?: string | null
 }
 
 export interface ClientPortalTask {

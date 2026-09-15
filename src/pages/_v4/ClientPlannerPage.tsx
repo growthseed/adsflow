@@ -32,8 +32,8 @@ import { PageHeader, EmptyState } from '@/components/canonical'
 import { exportFlowToPdf } from '@/lib/exportFlowPdf'
 import { enrichNodesWithLiveData } from '@/lib/enrichFlowWithLiveData'
 import { LiveMetricsBadge } from '@/components/canonical/LiveMetricsBadge'
-import { getClientBySlug } from '@/services/adapters/clickupAdapter'
 import { getClientPerformance } from '@/services/adapters/performanceAdapter'
+import { useResolvedAgencyClient } from '@/hooks/useResolvedAgencyClient'
 import {
   listClientFlows,
   createFlow,
@@ -148,6 +148,23 @@ const edgeTypes = {
   conversionEdge: ConversionEdge,
 }
 
+const COMPACT_NODE_TYPES = new Set([
+  'brand', 'visualCampaign', 'visualAudience', 'visualCreative', 'channel', 'icon',
+])
+
+function compactNodeStyle(node: Node): Node {
+  if (!COMPACT_NODE_TYPES.has(node.type || '')) return node
+  // React Flow keeps measured dimensions on the node itself. Normalizing only
+  // `style` leaves old 440x240 nodes with a huge selection box around a small
+  // visual badge.
+  return {
+    ...node,
+    width: 112,
+    height: 112,
+    style: { ...node.style, width: 112, height: 112 },
+  }
+}
+
 type ViewState =
   | { mode: 'list' }
   | { mode: 'picker' }
@@ -162,10 +179,7 @@ export default function ClientPlannerPage({ clientSlugOverride, embedded = false
   const params = useParams<{ clientSlug: string }>()
   const clientSlug = clientSlugOverride ?? params.clientSlug
   void embedded
-  const client = useMemo(
-    () => (clientSlug ? getClientBySlug(clientSlug) : undefined),
-    [clientSlug],
-  )
+  const client = useResolvedAgencyClient(clientSlug)
 
   const [view, setView] = useState<ViewState>({ mode: 'list' })
   const [flows, setFlows] = useState<ClientFlow[]>([])
@@ -648,7 +662,7 @@ function FlowEditor({
       if (cancelled) return
       if (data) {
         setFlow(data)
-        setNodes(data.nodes || [])
+        setNodes((data.nodes || []).map(compactNodeStyle))
         setEdges(sanitizeEdges(data.edges || []))
         if (data.share_token && data.share_enabled) {
           setShareUrl(`${window.location.origin}/p/${data.share_token}`)
@@ -775,11 +789,17 @@ function FlowEditor({
         }
       }
 
+      if (COMPACT_NODE_TYPES.has(nodeType)) {
+        width = 112
+        height = 112
+      }
+
       const newNode: Node = {
         id: `${nodeType}-${Date.now()}`,
         type: nodeType,
         position,
         data: nodeData,
+        ...(COMPACT_NODE_TYPES.has(nodeType) ? { width: 112, height: 112 } : {}),
         style: { width, height },
       }
 
@@ -1089,9 +1109,9 @@ function FlowEditor({
             style: { stroke: '#94a3b8', strokeWidth: 2 },
           }}
           fitView
-          fitViewOptions={{ padding: 0.2 }}
+          fitViewOptions={{ padding: 0.08 }}
         >
-          <Background gap={16} size={1} />
+          <Background gap={12} size={1} />
           <Controls position="bottom-left" showInteractive={false} />
           <MiniMap pannable zoomable style={{ height: 100 }} />
         </ReactFlow>

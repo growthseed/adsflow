@@ -13,16 +13,16 @@
 
 import { useState, useMemo } from 'react'
 import { useParams, useNavigate, Navigate } from 'react-router-dom'
-import { RefreshCw } from 'lucide-react'
+import { ExternalLink, RefreshCw } from 'lucide-react'
 
 import { PageHeader, EmptyState } from '@/components/canonical'
-import { getClientBySlug } from '@/services/adapters/clickupAdapter'
 import type {
   ClickUpTask,
   ClickUpPriority,
   ClickUpAssignee,
 } from '@/services/adapters/clickupTypes'
 import { useLiveClickUpSnapshot } from '@/hooks/useLiveClickUpSnapshot'
+import { useResolvedAgencyClient } from '@/hooks/useResolvedAgencyClient'
 import { useToast } from '@/components/UI/Toast'
 
 type FilterKey = 'all' | 'mine' | 'urgent' | 'high'
@@ -32,13 +32,14 @@ export default function ClientProjectPage() {
   const navigate = useNavigate()
   const toast = useToastSafe()
   const { snapshot, capturedAt, refreshing, refresh, forceResync } = useLiveClickUpSnapshot()
+  const fallbackClient = useResolvedAgencyClient(clientSlug)
 
   // Cliente sempre do snapshot live (com fallback pro bundled via getClientBySlug)
   const client = useMemo(() => {
     if (!clientSlug) return undefined
     const fromLive = snapshot.clients.find((c) => c.slug === clientSlug)
-    return fromLive ?? getClientBySlug(clientSlug)
-  }, [clientSlug, snapshot])
+    return fromLive ?? fallbackClient
+  }, [clientSlug, fallbackClient, snapshot])
 
   const [filter, setFilter] = useState<FilterKey>('all')
   const [showDone, setShowDone] = useState(false)
@@ -514,14 +515,31 @@ function TaskRow({ task, isLast = false, dimmed = false }: TaskRowProps) {
       {/* Title + meta block */}
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2">
-          <span
-            className={`
-              text-sm font-medium text-neutral-900 truncate leading-snug
-              ${task.status === 'done' ? 'line-through text-neutral-500' : ''}
-            `}
-          >
-            {task.title}
-          </span>
+          {task.url ? (
+            <a
+              href={task.url}
+              target="_blank"
+              rel="noreferrer"
+              onClick={(event) => event.stopPropagation()}
+              className={`
+                inline-flex min-w-0 items-center gap-1 text-sm font-medium text-neutral-900 truncate leading-snug hover:text-brand-700
+                ${task.status === 'done' ? 'line-through text-neutral-500' : ''}
+              `}
+              title="Abrir demanda no ClickUp"
+            >
+              <span className="truncate">{task.title}</span>
+              <ExternalLink className="w-3 h-3 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity" />
+            </a>
+          ) : (
+            <span
+              className={`
+                text-sm font-medium text-neutral-900 truncate leading-snug
+                ${task.status === 'done' ? 'line-through text-neutral-500' : ''}
+              `}
+            >
+              {task.title}
+            </span>
+          )}
         </div>
 
         {/* Mobile meta row — due date + list + tags packed tight below title */}
@@ -610,12 +628,14 @@ function PriorityDot({ priority }: { priority: ClickUpPriority }) {
 function AssigneeAvatar({ assignee }: { assignee: ClickUpAssignee }) {
   return (
     <div
-      className="w-6 h-6 rounded-full border-2 border-white flex items-center justify-center text-2xs font-semibold text-white flex-shrink-0 shadow-sm"
+      className="w-6 h-6 rounded-full border-2 border-white overflow-hidden flex items-center justify-center text-2xs font-semibold text-white flex-shrink-0 shadow-sm"
       style={{ backgroundColor: assignee.color }}
       title={assignee.username}
       aria-label={assignee.username}
     >
-      {assignee.initial}
+      {assignee.avatar_url ? (
+        <img src={assignee.avatar_url} alt="" className="w-full h-full object-cover" />
+      ) : assignee.initial}
     </div>
   )
 }

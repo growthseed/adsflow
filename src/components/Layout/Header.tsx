@@ -23,10 +23,8 @@ import { ClientBrand } from '@/components/canonical'
 
 // ========== BREADCRUMB MAP ==========
 
-// Only includes routes that actually exist in App.tsx after the v4 cleanup.
-// Legacy entries (/dashboard, /editor, /bi, /campaigns, /funnels, /reports,
-// /conversion-truth, /insights, /goals, /google-ads, /dashboard-builder,
-// /report-builder, /overview) were removed when the pages were deleted.
+// Routes that actually exist in the current app shell. Client routes keep the
+// client identity in the header; these titles cover the agency workspace.
 const PAGE_TITLES: Record<string, string> = {
   '/clients': 'Clientes',
   '/playbook': 'Playbook',
@@ -36,6 +34,12 @@ const PAGE_TITLES: Record<string, string> = {
   '/settings': 'Configurações',
   '/admin': 'Admin Global',
   '/_v4/operations': 'Operações',
+  '/pacing': 'Pacing de mídia',
+  '/reports': 'Relatórios',
+  '/alerts': 'Alertas',
+  '/anomalies': 'Anomalias',
+  '/ai': 'Insights com IA',
+  '/onboarding': 'Onboarding',
 }
 
 // ========== COMPONENT ==========

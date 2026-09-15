@@ -14,8 +14,8 @@ import {
 } from 'recharts'
 import { Eye, Play, MoreHorizontal, AlertCircle, Clock, ExternalLink, Settings, Facebook } from 'lucide-react'
 import { PageHeader } from '@/components/canonical'
-import { getClientBySlug } from '@/services/adapters/clickupAdapter'
 import { getMetaAdsSnapshot, getMetaAdsPeriod } from '@/services/adapters/metaAdsAdapter'
+import { useResolvedAgencyClient } from '@/hooks/useResolvedAgencyClient'
 import { MetaCreativeModal } from './components/MetaCreativeModal'
 
 /** Builders de URLs da Meta — abrem em nova aba. */
@@ -232,7 +232,7 @@ export default function MetaAdsPage({ clientSlugOverride, embedded = false }: Me
   const params = useParams<{ clientSlug: string }>()
   const clientSlug = clientSlugOverride ?? params.clientSlug
   void embedded
-  const client = useMemo(() => clientSlug ? getClientBySlug(clientSlug) : undefined, [clientSlug])
+  const client = useResolvedAgencyClient(clientSlug)
   const data = useMemo(() => clientSlug ? getMetaAdsSnapshot(clientSlug) : null, [clientSlug])
   const period = getMetaAdsPeriod()
   const [selectedCreative, setSelectedCreative] =

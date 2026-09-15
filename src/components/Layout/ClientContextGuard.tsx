@@ -99,7 +99,10 @@ export default function ClientContextGuard({ children }: ClientContextGuardProps
   // Slug doesn't exist in the local AgencyClient snapshot — bail.
   // Staff can still navigate freely, so only bounce if the slug
   // is structurally invalid (no matching snapshot at all).
-  const knownClient = getClientBySlug(clientSlug)
+  // Clientes recém-criados podem existir no Supabase antes de entrarem no
+  // snapshot local do ClickUp. A membership já é uma fonte confiável para
+  // liberar a rota enquanto o primeiro sync ainda não chegou.
+  const knownClient = getClientBySlug(clientSlug) || matchingMembership?.client
   if (!knownClient) {
     return bounceOut()
   }

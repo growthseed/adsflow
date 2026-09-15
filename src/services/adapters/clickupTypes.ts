@@ -29,6 +29,8 @@ export interface ClickUpAssignee {
   username: string
   initial: string
   color: string
+  /** ClickUp profile photo, when the workspace exposes one. */
+  avatar_url?: string | null
 }
 
 export interface ClickUpTask {

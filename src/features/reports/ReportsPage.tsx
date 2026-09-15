@@ -1,7 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { Plus, Upload } from 'lucide-react'
+import { Link, useParams } from 'react-router-dom'
+import { ArrowLeft, ExternalLink, FilePenLine, Plus, Upload } from 'lucide-react'
 
 import { supabase } from '@/lib/supabase'
+import { useAuth } from '@/contexts/AuthContext'
+import { useResolvedAgencyClient } from '@/hooks/useResolvedAgencyClient'
 import { useToast } from '@/components/UI/Toast'
 import type { LibraryBlockDef, ReportBlock, ReportTemplate } from './types'
 import { findBlockDef } from './library'
@@ -9,6 +12,7 @@ import { BlockLibrary } from './components/BlockLibrary'
 import { BuilderCanvas } from './components/BuilderCanvas'
 import { PropsPanel } from './components/PropsPanel'
 import { TemplateGrid } from './components/TemplateGrid'
+import { ClientExecutiveReport } from './components/ClientExecutiveReport'
 
 interface TemplateRow {
   id: string
@@ -20,16 +24,55 @@ interface TemplateRow {
   blocks: ReportBlock[]
 }
 
+interface ClientHeaderRecord {
+  id: string
+  name: string
+  slug: string
+  portal_token: string | null
+}
+
 function nextId(): string {
   return `b_${Math.random().toString(36).slice(2, 9)}`
 }
 
 export default function ReportsPage() {
+  const { clientSlug } = useParams<{ clientSlug?: string }>()
+  const { clients } = useAuth()
   const toast = useToastSafe()
+  const membershipClient = useMemo(
+    () => clients.find((membership) => membership.client.slug === clientSlug)?.client ?? null,
+    [clientSlug, clients],
+  )
+  const snapshotClient = useResolvedAgencyClient(clientSlug)
+  const [clientRecord, setClientRecord] = useState<ClientHeaderRecord | null>(null)
   const [templates, setTemplates] = useState<ReportTemplate[]>([])
   const [docName, setDocName] = useState('Novo relatório')
   const [blocks, setBlocks] = useState<ReportBlock[]>([])
   const [selectedId, setSelectedId] = useState<string | null>(null)
+  const [showBuilder, setShowBuilder] = useState(!clientSlug)
+
+  useEffect(() => {
+    if (!clientSlug || membershipClient) {
+      setClientRecord(null)
+      return
+    }
+
+    let cancelled = false
+    supabase
+      .from('clients')
+      .select('id, name, slug, portal_token')
+      .eq('slug', clientSlug)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (!cancelled) setClientRecord((data as ClientHeaderRecord | null) ?? null)
+      })
+    return () => { cancelled = true }
+  }, [clientSlug, membershipClient])
+
+  const client = membershipClient ?? clientRecord ?? (snapshotClient
+    ? { id: '', name: snapshotClient.name, slug: snapshotClient.slug, portal_token: null }
+    : null)
+  const clientId = membershipClient?.id ?? clientRecord?.id ?? null
 
   useEffect(() => {
     supabase
@@ -59,6 +102,10 @@ export default function ReportsPage() {
     setDocName(t.name)
     setSelectedId(cloned[0]?.id ?? null)
   }, [])
+
+  useEffect(() => {
+    setShowBuilder(!clientSlug)
+  }, [clientSlug])
 
   const addBlock = useCallback((type: string, index: number) => {
     const def = findBlockDef(type)
@@ -97,6 +144,7 @@ export default function ReportsPage() {
     const { data, error } = await supabase
       .from('report_documents')
       .insert({
+        client_id: clientId,
         name: docName,
         status: 'draft',
         blocks,
@@ -111,7 +159,7 @@ export default function ReportsPage() {
     }
     toast?.success('Rascunho salvo')
     return (data as { id: string }).id
-  }, [blocks, docName, toast])
+  }, [blocks, clientId, docName, toast])
 
   const generatePdf = useCallback(async () => {
     if (blocks.length === 0) return
@@ -144,13 +192,43 @@ export default function ReportsPage() {
       <header className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 mb-5">
         <div>
           <h1 className="text-[24px] font-bold tracking-[-0.02em] text-neutral-900">
-            Central de relatórios
+            {client ? `Report · ${client.name}` : 'Central de relatórios'}
           </h1>
           <p className="text-sm text-neutral-500 mt-1">
-            Biblioteca de templates + builder drag-and-drop + agendamento
+            {client
+              ? 'Construa o report deste cliente com fontes, gráficos e entregas vinculadas.'
+              : 'Biblioteca de templates + builder drag-and-drop + agendamento'}
           </p>
         </div>
         <div className="flex items-center gap-2">
+          {client && (
+            <>
+              <Link
+                to={`/c/${client.slug}/projeto`}
+                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-md border border-neutral-200 hover:bg-neutral-50 text-sm font-medium text-neutral-700"
+              >
+                <ArrowLeft size={14} /> Demandas
+              </Link>
+              {client.portal_token && (
+                <a
+                  href={`/portal/${client.portal_token}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-2 rounded-md border border-neutral-200 hover:bg-neutral-50 text-sm font-medium text-neutral-700"
+                >
+                  <ExternalLink size={14} /> Portal
+                </a>
+              )}
+            </>
+          )}
+          {client && (
+            <button
+              onClick={() => setShowBuilder((current) => !current)}
+              className="inline-flex items-center gap-1.5 rounded-md border border-neutral-200 px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50"
+            >
+              <FilePenLine size={14} /> {showBuilder ? 'Fechar editor' : 'Editar PDF'}
+            </button>
+          )}
           <button
             onClick={saveDraft}
             className="inline-flex items-center gap-1.5 px-3 py-2 rounded-md border border-neutral-200 hover:bg-neutral-50 text-sm font-medium text-neutral-700"
@@ -170,15 +248,17 @@ export default function ReportsPage() {
         </div>
       </header>
 
-      <section className="mb-6">
+      {client && <ClientExecutiveReport clientSlug={client.slug} clientName={client.name} />}
+
+      {showBuilder && <section className="mb-6">
         <h2 className="eyebrow text-neutral-600 mb-2 flex items-center gap-2">
           <span>Templates · use como ponto de partida</span>
           <span className="flex-1 h-px bg-neutral-200" />
         </h2>
         <TemplateGrid templates={templates} onUse={applyTemplate} />
-      </section>
+      </section>}
 
-      <section>
+      {showBuilder && <section>
         <h2 className="eyebrow text-neutral-600 mb-2 flex items-center gap-2">
           <span>Builder · drag-and-drop</span>
           <span className="flex-1 h-px bg-neutral-200" />
@@ -207,7 +287,7 @@ export default function ReportsPage() {
             blockCount={blocks.length}
           />
         </div>
-      </section>
+      </section>}
     </div>
   )
 }

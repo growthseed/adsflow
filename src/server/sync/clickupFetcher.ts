@@ -8,7 +8,7 @@
  * ============================================
  */
 
-import { ENV, loadAgencyClients } from './config.js'
+import { ENV, loadAgencyClients } from './config.ts'
 
 const CLICKUP_API = 'https://api.clickup.com/api/v2'
 
@@ -17,7 +17,7 @@ interface ClickUpRawTask {
   name: string
   status?: { status?: string; type?: string }
   priority?: { priority?: string; orderindex?: string } | null
-  assignees?: Array<{ id: number; username?: string }>
+  assignees?: Array<{ id: number; username?: string; profilePicture?: string | null }>
   tags?: Array<{ name: string }>
   due_date?: string | null
   url?: string
@@ -34,19 +34,30 @@ interface ClickUpListTasksResponse {
 // =============================================================
 
 async function cuFetch<T>(path: string): Promise<T> {
-  const response = await fetch(`${CLICKUP_API}${path}`, {
-    headers: {
-      Authorization: ENV.CLICKUP_API_TOKEN,
-      'Content-Type': 'application/json',
-    },
-  })
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    const response = await fetch(`${CLICKUP_API}${path}`, {
+      headers: {
+        Authorization: ENV.CLICKUP_API_TOKEN,
+        'Content-Type': 'application/json',
+      },
+    })
 
-  if (!response.ok) {
+    if (response.ok) return (await response.json()) as T
+
     const text = await response.text().catch(() => 'Unknown')
+    if (response.status === 429 && attempt < 2) {
+      const retryAfter = Number(response.headers.get('retry-after'))
+      const waitMs = Number.isFinite(retryAfter)
+        ? Math.min(Math.max(retryAfter * 1000, 5_000), 60_000)
+        : 15_000
+      await new Promise((resolve) => setTimeout(resolve, waitMs))
+      continue
+    }
+
     throw new Error(`ClickUp API ${path} failed (${response.status}): ${text}`)
   }
 
-  return (await response.json()) as T
+  throw new Error(`ClickUp API ${path} failed after retries`)
 }
 
 /** Get all lists inside a folder */
@@ -55,6 +66,14 @@ async function getFolderLists(folderId: string): Promise<Array<{ id: string; nam
     `/folder/${folderId}/list`,
   )
   return data.lists || []
+}
+
+/** Get the current, non-archived folders visible in the operations space. */
+async function getSpaceFolders(): Promise<Array<{ id: string; name: string }>> {
+  const data = await cuFetch<{ folders: Array<{ id: string; name: string }> }>(
+    `/space/${ENV.CLICKUP_OPERATIONS_SPACE_ID}/folder?archived=false`,
+  )
+  return data.folders || []
 }
 
 /** Get all tasks in a list (paginated) */
@@ -172,7 +191,7 @@ interface NormalizedTask {
   due_date: string | null
   due_date_label: string | null
   days_late: number | null
-  assignees: Array<{ id: string; username: string; initial: string; color: string }>
+  assignees: Array<{ id: string; username: string; initial: string; color: string; avatar_url: string | null }>
   list_id: string
   list_name: string
   list_color: string
@@ -191,6 +210,7 @@ function normalizeTask(raw: ClickUpRawTask): NormalizedTask {
     username: a.username || 'Unknown',
     initial: (a.username || 'U').charAt(0).toUpperCase(),
     color: ASSIGNEE_PALETTE[i % ASSIGNEE_PALETTE.length],
+    avatar_url: a.profilePicture || null,
   }))
 
   return {
@@ -265,7 +285,14 @@ export async function fetchClickUpSnapshot(): Promise<ClickUpSnapshotResult> {
   let totalOverdue = 0
   let totalDone = 0
 
-  const agencyClients = await loadAgencyClients()
+  // The Space is the operational source of truth. Keep older clients in the
+  // database for history and other integrations, but do not publish them in
+  // the current ClickUp snapshot when their folder is no longer in this Space.
+  const currentFolders = await getSpaceFolders()
+  const currentFolderIds = new Set(currentFolders.map((folder) => folder.id))
+  const agencyClients = (await loadAgencyClients()).filter((client) =>
+    currentFolderIds.has(client.clickup_folder_id),
+  )
   for (const client of agencyClients) {
     // Skip clients without a configured ClickUp folder (DB rows without a
     // clickup integration). The fallback hardcoded array always has one.

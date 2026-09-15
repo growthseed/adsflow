@@ -6,14 +6,13 @@
  * Rota: /c/:clientSlug/crm/funil
  */
 
-import { useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 import {
   BarChart, Bar, CartesianGrid, ResponsiveContainer,
   Tooltip, XAxis, YAxis,
 } from 'recharts'
 import { PageHeader } from '@/components/canonical'
-import { getClientBySlug } from '@/services/adapters/clickupAdapter'
+import { useResolvedAgencyClient } from '@/hooks/useResolvedAgencyClient'
 
 // Mock — substituir por dados reais do Kommo via MCP
 const FUNNEL = [
@@ -62,7 +61,7 @@ function KpiSimple({ label, value, delta, primary }: {
 
 export default function CrmFunnelPage() {
   const { clientSlug } = useParams<{ clientSlug: string }>()
-  const client = useMemo(() => clientSlug ? getClientBySlug(clientSlug) : undefined, [clientSlug])
+  const client = useResolvedAgencyClient(clientSlug)
 
   const total = FUNNEL[0].count
   const won = FUNNEL[FUNNEL.length - 1].count

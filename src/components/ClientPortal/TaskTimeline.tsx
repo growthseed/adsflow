@@ -159,11 +159,13 @@ function TaskCard({ task }: TaskCardProps) {
             {task.assignees.slice(0, 3).map((a) => (
               <div
                 key={a.username}
-                className="w-6 h-6 rounded-full border-2 border-white flex items-center justify-center text-[10px] font-semibold text-white shadow-sm"
+                className="w-6 h-6 rounded-full border-2 border-white overflow-hidden flex items-center justify-center text-[10px] font-semibold text-white shadow-sm"
                 style={{ backgroundColor: a.color }}
                 title={a.username}
               >
-                {a.initial}
+                {a.avatar_url ? (
+                  <img src={a.avatar_url} alt="" className="w-full h-full object-cover" />
+                ) : a.initial}
               </div>
             ))}
           </div>

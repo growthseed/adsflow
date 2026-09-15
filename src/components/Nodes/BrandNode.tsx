@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import { Handle, Position, NodeResizer } from 'reactflow'
+import { Handle, Position } from 'reactflow'
 import type { NodeProps } from 'reactflow'
 import BrandIcon from '../BrandIcon'
 
@@ -230,13 +230,17 @@ const brandColors: Record<string, {
   }
 }
 
-const BrandNode = memo(({ data, selected }: NodeProps<BrandNodeData>) => {
+const BrandNode = memo(({ data }: NodeProps<BrandNodeData>) => {
   const brandConfig = brandColors[data.brand] || brandColors.whatsapp
 
   return (
     <>
-      <NodeResizer isVisible={selected} minWidth={60} minHeight={60} />
-      <div className="flex flex-col items-center gap-2 px-2 py-1">
+      {/* Badge circular de tamanho fixo — sem NodeResizer. Um icone de marca
+          nao tem por que esticar; o bug antigo deixava a alca de resize
+          arrastar a bounding box do node enquanto o circulo (w-20 h-20
+          fixo) ficava para tras no canto, com o restante da area vazia —
+          exatamente o "detalhe desconexo" reportado no planner. */}
+      <div className="flex flex-col items-center gap-1 px-1 py-0.5">
         {data.label && (
           <div className="text-xs font-semibold text-gray-700 bg-white/80 backdrop-blur-sm px-2 py-0.5 rounded-full shadow-sm whitespace-nowrap">
             {data.label}
@@ -254,7 +258,7 @@ const BrandNode = memo(({ data, selected }: NodeProps<BrandNodeData>) => {
           {/* Círculo com logo da marca — mesmo formato dos demais nós visuais */}
           <div
             className={`
-              w-20 h-20 rounded-full flex items-center justify-center
+              w-16 h-16 rounded-full flex items-center justify-center
               ${brandConfig.color} ${brandConfig.textColor}
               ${brandConfig.shadow}
               hover:scale-110 hover:shadow-xl
@@ -263,7 +267,7 @@ const BrandNode = memo(({ data, selected }: NodeProps<BrandNodeData>) => {
           >
             <BrandIcon
               name={data.brand}
-              size={40}
+              size={32}
               className={brandConfig.textColor}
             />
           </div>

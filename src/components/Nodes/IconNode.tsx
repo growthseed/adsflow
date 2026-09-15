@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import { Handle, Position, NodeResizer } from 'reactflow'
+import { Handle, Position } from 'reactflow'
 import type { NodeProps } from 'reactflow'
 import { BrandIcons } from '@/components/Icons/BrandIcons'
 
@@ -49,16 +49,18 @@ const platformConfig = {
   },
 }
 
-function IconNode({ data, selected }: NodeProps<IconNodeData>) {
+function IconNode({ data }: NodeProps<IconNodeData>) {
   const config = platformConfig[data.platform] || platformConfig.Instagram
   const BrandIcon = BrandIcons[data.platform]
 
   return (
     <>
-    <NodeResizer isVisible={selected} minWidth={80} minHeight={80} />
+    {/* Badge circular de tamanho fixo — sem NodeResizer (mesmo motivo do
+        BrandNode: esticar a bounding box sem esticar o circulo interno
+        deixava a alca de resize "flutuando" longe do icone). */}
     <div
       className={`
-        relative min-w-[160px] rounded-2xl border-3 
+        relative min-w-[112px] rounded-xl border-2
         ${config.bg} ${config.border}
         transition-all duration-200 hover:shadow-2xl ${config.glow}
         cursor-pointer group
@@ -78,20 +80,20 @@ function IconNode({ data, selected }: NodeProps<IconNodeData>) {
       />
 
       {/* Conteúdo */}
-      <div className="p-6 flex flex-col items-center gap-4">
+      <div className="p-2 flex flex-col items-center gap-1.5">
         {/* Ícone REAL da Marca com cores oficiais — círculo, mesmo padrão dos demais nós visuais */}
         <div className={`
-          w-20 h-20 rounded-full
+          w-16 h-16 rounded-full
           flex items-center justify-center
           shadow-lg group-hover:scale-110 transition-transform duration-200
-          bg-white p-4
+          bg-white p-3
         `}>
           {BrandIcon && <BrandIcon />}
         </div>
 
         {/* Nome da Plataforma */}
         <div className="text-center">
-          <div className="text-sm font-bold text-gray-800">
+          <div className="text-[11px] font-bold text-gray-800">
             {data.label}
           </div>
         </div>

@@ -18,9 +18,9 @@ export const PLANNER_LAYOUT = {
   /** X inicial da primeira coluna de Ads dentro de um Ad Set, Y inicial. */
   ad: { xStart: 100, yStart: 620 },
   /** Distância horizontal entre nós irmãos (ex: Ads lado a lado). */
-  colGap: 320,
+  colGap: 180,
   /** Distância vertical entre "linhas" da árvore (ex: Ad Sets, Ads). */
-  rowGap: 260,
+  rowGap: 150,
   /** Zoom inicial do viewport ao abrir um flow recém-importado. */
-  initialZoom: 0.75,
+  initialZoom: 0.9,
 } as const

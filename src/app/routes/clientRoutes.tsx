@@ -7,6 +7,7 @@ import {
   V4ClientRootRedirect,
   V4ClientOverviewPage,
   V4ClientPlannerPage,
+  ClientReportsPage,
   V4ClientPerformancePage,
   V4ClientProjectPage,
   V4MetaAdsPage,
@@ -43,6 +44,7 @@ export const clientRoutes = (
     {/* 3 pilares + metas-ads */}
     <Route path="/c/:clientSlug/overview" element={withClient(<V4ClientOverviewPage />)} />
     <Route path="/c/:clientSlug/planner" element={withClient(<V4ClientPlannerPage />)} />
+    <Route path="/c/:clientSlug/report" element={withClient(<ClientReportsPage />)} />
     <Route path="/c/:clientSlug/performance" element={withClient(<V4ClientPerformancePage />)} />
     <Route path="/c/:clientSlug/projeto" element={withClient(<V4ClientProjectPage />)} />
     <Route path="/c/:clientSlug/meta-ads" element={withClient(<V4MetaAdsPage />)} />

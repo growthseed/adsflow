@@ -37,7 +37,9 @@ export const ENV = {
   GOOGLE_ADS_API_VERSION: process.env.GOOGLE_ADS_API_VERSION || 'v21',
 
   // ClickUp
-  CLICKUP_API_TOKEN: process.env.CLICKUP_API_TOKEN || '',
+  // The existing deployment uses CLICKUP_API_KEY; accept both names so the
+  // daily sync and manual refresh use the same credential.
+  CLICKUP_API_TOKEN: process.env.CLICKUP_API_TOKEN || process.env.CLICKUP_API_KEY || '',
   CLICKUP_OPERATIONS_SPACE_ID: process.env.CLICKUP_OPERATIONS_SPACE_ID || '90113696605',
 } as const
 
@@ -273,17 +275,6 @@ export const AGENCY_CLIENTS: AgencyClientMap[] = [
     industry: 'Coaching / Consultoria',
     city: 'Brasília, DF',
     meta_account_id: 'act_720926888081448',
-  },
-  {
-    slug: 'grupo-m3',
-    name: 'Grupo M3',
-    short_name: 'M3',
-    clickup_folder_id: '90117264469',
-    clickup_folder_name: 'CL17 - Grupo M3',
-    avatar_gradient: 'from-slate-600 to-gray-800',
-    industry: 'Facilities / Terceirização B2B',
-    city: 'Brasília, DF',
-    google_ads_customer_id: '4989960017',
   },
   {
     slug: 'rharo',

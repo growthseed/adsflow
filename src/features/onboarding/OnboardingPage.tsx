@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 
 import { Card } from '@/components/primitives'
 import { supabase } from '@/lib/supabase'
+import { clientsService } from '@/services/clientsService'
 import { useToast } from '@/components/UI/Toast'
 import { indexOfStep, nextStep, prevStep, useOnboardingState } from './state'
 import { ONBOARDING_STEPS, type OnboardingIntegration } from './types'
@@ -34,17 +35,13 @@ export default function OnboardingPage() {
   }
 
   const handleConnect = (key: OnboardingIntegration['key']) => {
-    dispatch({ type: 'setIntegrationStatus', key, status: 'connecting' })
-    // Simula OAuth completion — no app real abre popup OAuth
-    setTimeout(() => {
-      dispatch({
-        type: 'setIntegrationStatus',
-        key,
-        status: 'connected',
-        accountsConnected: 1,
-        syncProgressLabel: 'sincronizando 90 dias',
-      })
-    }, 1500)
+    // The client has no id before onboarding is finalized. Starting OAuth
+    // here would lose the tenant association, so keep the state honest.
+    toast?.info(
+      key === 'google_ads' || key === 'meta_ads'
+        ? 'Finalize o cadastro e conecte esta conta em Integrações.'
+        : 'Finalize o cadastro para configurar esta integração.',
+    )
   }
 
   const handleFinish = async () => {
@@ -55,33 +52,17 @@ export default function OnboardingPage() {
     }
     setSubmitting(true)
     try {
-      const goalsPayload = goals.map((g) => ({
-        metric: g.metric,
-        label: g.label,
-        target_value: g.targetValue,
-        direction: g.metric === 'cpl' || g.metric === 'spend' ? 'cap' : 'maximize',
-        unit:
-          g.metric === 'cpl' || g.metric === 'spend'
-            ? 'currency'
-            : g.metric === 'roas'
-            ? 'ratio'
-            : g.metric === 'ctr'
-            ? 'percent'
-            : 'count',
-        horizon: 'quarterly',
-      }))
-      const viewerEmails = team.filter((t) => t.role === 'viewer').map((t) => t.email)
-      const { data, error } = await supabase.rpc('onboarding_finalize', {
-        p_name: basic.name,
-        p_slug: basic.clientSlug,
-        p_industry: basic.industry,
-        p_monthly_budget: basic.monthlyBudget,
-        p_manager_user_ids: [],
-        p_viewer_emails: viewerEmails,
-        p_goals: goalsPayload,
+      // Use the same service path as the Clients page. The previous
+      // onboarding_finalize RPC is absent from the repository migrations.
+      const { data: sessionData } = await supabase.auth.getSession()
+      const currentUserId = sessionData.session?.user.id
+      if (!currentUserId) throw new Error('Sessão expirada. Faça login novamente.')
+      const createdClient = await clientsService.create(currentUserId, {
+        name: basic.name,
+        slug: basic.clientSlug,
+        industry: basic.industry || undefined,
       })
-      if (error) throw error
-      const createdClientId = String(data)
+      const createdClientId = createdClient.id
       toast?.success(`Cliente ${basic.name} criado · id ${createdClientId.slice(0, 8)}`)
 
       // Cria folder no ClickUp (space Operações) e vincula em client_integrations

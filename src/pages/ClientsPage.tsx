@@ -617,7 +617,7 @@ function ClientCard({
 // =====================================================
 
 export default function ClientsPage() {
-  const { user, isSuperAdmin, hasClientRole } = useAuth()
+  const { user, isGlobalAdmin, hasClientRole } = useAuth()
   const toast = useToast()
   const confirmDialog = useConfirm()
   const [clients, setClients] = useState<ClientWithMeta[]>([])
@@ -629,7 +629,8 @@ export default function ClientsPage() {
   const [editingClient, setEditingClient] = useState<ClientWithMeta | null>(null)
   const [selectedClient, setSelectedClient] = useState<ClientWithMeta | null>(null)
 
-  const canCreate = isSuperAdmin || hasClientRole('admin')
+  // Global staff admins may create a client before any tenant is selected.
+  const canCreate = isGlobalAdmin || hasClientRole('admin')
 
   const loadClients = useCallback(async () => {
     if (!user) return
@@ -660,6 +661,7 @@ export default function ClientsPage() {
     if (!user) return
     await clientsService.create(user.id, data)
     await loadClients()
+    setShowForm(false)
     toast.success(`Cliente "${data.name}" criado com sucesso!`)
   }
 

@@ -11,11 +11,30 @@
  * PortalRoute, ClientContextGuard).
  */
 
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { AlertTriangle, RotateCw, LogOut } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 
 export default function NoAccessPage() {
-  const { signOut } = useAuth()
+  const { signOut, refreshSession } = useAuth()
+  const navigate = useNavigate()
+  const [retrying, setRetrying] = useState(false)
+  const [retryError, setRetryError] = useState<string | null>(null)
+
+  const retryAccess = async () => {
+    setRetrying(true)
+    setRetryError(null)
+    try {
+      await refreshSession()
+      navigate('/dashboard', { replace: true })
+    } catch (error) {
+      console.warn('[NoAccessPage] access retry failed:', error)
+      setRetryError('A sessão expirou ou o servidor ainda não respondeu. Entre novamente para continuar.')
+    } finally {
+      setRetrying(false)
+    }
+  }
 
   return (
     <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4">
@@ -29,13 +48,15 @@ export default function NoAccessPage() {
           servidor demorou para responder. Tente novamente ou fale com o administrador
           da agência.
         </p>
+        {retryError && <p role="alert" className="mb-4 text-sm text-red-600">{retryError}</p>}
         <div className="flex items-center justify-center gap-3">
           <button
-            onClick={() => window.location.reload()}
+            onClick={retryAccess}
+            disabled={retrying}
             className="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-[var(--color-brand-600)] rounded-lg hover:bg-[var(--color-brand-700)]"
           >
-            <RotateCw className="w-4 h-4" />
-            Tentar novamente
+            <RotateCw className={`w-4 h-4 ${retrying ? 'animate-spin' : ''}`} />
+            {retrying ? 'Consultando...' : 'Tentar novamente'}
           </button>
           <button
             onClick={() => signOut()}

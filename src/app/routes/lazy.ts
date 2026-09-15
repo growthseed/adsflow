@@ -58,6 +58,7 @@ export const V4ClientOverviewPage = lazyRetry(() => import('@/pages/_v4/ClientOv
 export const V4ClientProjectPage = lazyRetry(() => import('@/pages/_v4/ClientProjectPage'))
 export const V4ClientPerformancePage = lazyRetry(() => import('@/pages/_v4/ClientPerformancePage'))
 export const V4ClientPlannerPage = lazyRetry(() => import('@/pages/_v4/ClientPlannerPage'))
+export const ClientReportsPage = lazyRetry(() => import('@/features/reports/ReportsPage'))
 export const V4PublicFlowPage = lazyRetry(() => import('@/pages/_v4/PublicFlowPage'))
 export const V4PlaybookPage = lazyRetry(() => import('@/pages/_v4/PlaybookPage'))
 export const V4ClientPortalPage = lazyRetry(() => import('@/pages/_v4/ClientPortalPage'))

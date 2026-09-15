@@ -115,13 +115,14 @@ const ASSIGNEE_PALETTE = [
   '#EF4444', '#06B6D4', '#84CC16', '#F97316', '#A855F7',
 ]
 
-function normalizeAssignees(raw: Array<{ id: number | string; username: string }> | undefined): ClickUpAssignee[] {
+function normalizeAssignees(raw: Array<{ id: number | string; username: string; profilePicture?: string | null }> | undefined): ClickUpAssignee[] {
   if (!raw || !Array.isArray(raw)) return []
   return raw.map((a, i) => ({
     id: String(a.id),
     username: a.username || 'Unknown',
     initial: (a.username || 'U').charAt(0).toUpperCase(),
     color: ASSIGNEE_PALETTE[i % ASSIGNEE_PALETTE.length],
+    avatar_url: a.profilePicture || null,
   }))
 }
 
@@ -134,7 +135,7 @@ interface RawClickUpTask {
   name: string
   status?: string
   priority?: string | number | null
-  assignees?: Array<{ id: number | string; username: string }>
+  assignees?: Array<{ id: number | string; username: string; profilePicture?: string | null }>
   tags?: Array<{ name: string }>
   due_date?: string | number | null
   url?: string

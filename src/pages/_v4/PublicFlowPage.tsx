@@ -78,6 +78,22 @@ const nodeTypes = {
   leadJourney: LeadJourneyNode,
 }
 
+const COMPACT_NODE_TYPES = new Set([
+  'brand', 'visualCampaign', 'visualAudience', 'visualCreative', 'channel', 'icon',
+])
+
+function normalizeFlowNodes(nodes: Node[]): Node[] {
+  return nodes.map((node) => {
+    if (!COMPACT_NODE_TYPES.has(node.type || '')) return node
+    return {
+      ...node,
+      width: 112,
+      height: 112,
+      style: { ...node.style, width: 112, height: 112 },
+    }
+  })
+}
+
 interface SharedFlow {
   id: string
   client_slug: string
@@ -184,7 +200,7 @@ export default function PublicFlowPage() {
       <div className="flex-1 min-h-0">
         <ReactFlowProvider>
           <ReactFlow
-            nodes={flow.nodes}
+            nodes={normalizeFlowNodes(flow.nodes)}
             edges={flow.edges.map((e) => {
               const cleaned = { ...e }
               const bad = (v: unknown) => v === undefined || v === null || v === 'undefined' || v === ''

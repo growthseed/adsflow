@@ -187,6 +187,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // ---- Fetch profile + clients (PARALLEL with per-query timeout) ----
   const fetchUserData = useCallback(async (userId: string) => {
+    // Nunca reaproveitar um perfil/membership de outra sessao enquanto a
+    // consulta atual esta em andamento. Os guards continuam em loading ate
+    // o chamador concluir, entao a limpeza nao abre uma janela de acesso.
+    setProfile(null)
+    setClients([])
+
     // Wrap any Supabase query in a timeout race so one slow query doesn't
     // block the entire auth flow. On timeout, retry ONCE — a cold
     // connection (first request of the session: DNS + TLS handshake) can
@@ -550,9 +556,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const refreshSession = useCallback(async () => {
-    const { data: { session } } = await supabase.auth.refreshSession();
-    if (session?.user) {
-      await fetchUserData(session.user.id);
+    setLoading(true)
+    try {
+      const { data: { session }, error } = await supabase.auth.refreshSession()
+      if (error) throw error
+
+      setSupabaseUser(session?.user ?? null)
+      if (session?.user) {
+        await fetchUserData(session.user.id)
+      } else {
+        setProfile(null)
+        setClients([])
+      }
+    } finally {
+      setLoading(false)
     }
   }, [fetchUserData]);
 

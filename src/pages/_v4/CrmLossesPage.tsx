@@ -6,14 +6,13 @@
  * Rota: /c/:clientSlug/crm/perdas
  */
 
-import { useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 import {
   BarChart, Bar, CartesianGrid, ResponsiveContainer,
   Tooltip, XAxis, YAxis, Cell, Legend,
 } from 'recharts'
 import { PageHeader } from '@/components/canonical'
-import { getClientBySlug } from '@/services/adapters/clickupAdapter'
+import { useResolvedAgencyClient } from '@/hooks/useResolvedAgencyClient'
 
 const LOSS_REASONS = [
   { reason: 'Preço acima do orçamento', count: 142, pct: 28.4, value: 1240000 },
@@ -58,7 +57,7 @@ function KpiSimple({ label, value, delta, primary }: {
 
 export default function CrmLossesPage() {
   const { clientSlug } = useParams<{ clientSlug: string }>()
-  const client = useMemo(() => clientSlug ? getClientBySlug(clientSlug) : undefined, [clientSlug])
+  const client = useResolvedAgencyClient(clientSlug)
 
   const totalLost = LOSS_REASONS.reduce((s, r) => s + r.count, 0)
   const lostValue = LOSS_REASONS.reduce((s, r) => s + r.value, 0)

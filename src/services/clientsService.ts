@@ -148,11 +148,17 @@ export const clientsService = {
       logo_url?: string
     }
   ): Promise<Client> {
-    const slug = client.slug || client.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+    const slug = client.slug || client.name
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '')
 
     const { data, error } = await supabase
       .from('clients')
       .insert({
+        user_id: userId,
         name: client.name,
         slug,
         industry: client.industry || null,

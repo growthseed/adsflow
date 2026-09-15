@@ -85,6 +85,7 @@ function toPortalTask(task: ClickUpTask): ClientPortalTask {
       username: a.username,
       color: a.color,
       initial: a.initial,
+      avatar_url: a.avatar_url ?? null,
     })),
     url: task.url,
   }

@@ -61,7 +61,7 @@ const INITIAL_NOTIFICATIONS: Notification[] = [
     message: 'Orçamento diário atingido em "Leads Fev".',
     time: '1h atrás',
     read: false,
-    link: '/campaigns',
+    link: '/pacing',
   },
   {
     id: '3',
