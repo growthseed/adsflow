@@ -72,7 +72,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (error) return res.status(500).json({ error: error.message })
     if (!data) return res.status(404).json({ error: 'Nenhuma integração ClickUp para este cliente.' })
 
-    return res.status(200).json({ integration: sanitize(data) })
+    return res.status(200).json({ integration: sanitize(data as unknown as Record<string, unknown>) })
   }
 
   if (action !== 'exchange') {
