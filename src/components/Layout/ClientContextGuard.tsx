@@ -123,5 +123,9 @@ export default function ClientContextGuard({ children }: ClientContextGuardProps
     return nonStaffFallback()
   }
 
+  if (matchingMembership && matchingMembership.client_id !== activeClient?.client_id) {
+    return <div role="status" className="p-6 text-sm text-neutral-500">Carregando cliente...</div>
+  }
+
   return <>{children}</>
 }

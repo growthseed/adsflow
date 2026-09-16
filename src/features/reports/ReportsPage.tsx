@@ -6,7 +6,7 @@ import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/contexts/AuthContext'
 import { useResolvedAgencyClient } from '@/hooks/useResolvedAgencyClient'
 import { useToast } from '@/components/UI/Toast'
-import type { LibraryBlockDef, ReportBlock, ReportTemplate } from './types'
+import type { ReportBlock, ReportTemplate } from './types'
 import { findBlockDef } from './library'
 import { BlockLibrary } from './components/BlockLibrary'
 import { BuilderCanvas } from './components/BuilderCanvas'
@@ -191,16 +191,16 @@ export default function ReportsPage() {
     <div className="max-w-layout mx-auto">
       <header className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 mb-5">
         <div>
-          <h1 className="text-[24px] font-bold tracking-[-0.02em] text-neutral-900">
-            {client ? `Report · ${client.name}` : 'Central de relatórios'}
+          <h1 className="text-[24px] font-bold tracking-normal text-neutral-900">
+            {client ? client.name : 'Central de relatórios'}
           </h1>
           <p className="text-sm text-neutral-500 mt-1">
             {client
-              ? 'Construa o report deste cliente com fontes, gráficos e entregas vinculadas.'
-              : 'Biblioteca de templates + builder drag-and-drop + agendamento'}
+              ? 'Relatório executivo'
+              : 'Relatórios e documentos'}
           </p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           {client && (
             <>
               <Link
@@ -229,13 +229,13 @@ export default function ReportsPage() {
               <FilePenLine size={14} /> {showBuilder ? 'Fechar editor' : 'Editar PDF'}
             </button>
           )}
-          <button
+          {showBuilder && <button
             onClick={saveDraft}
             className="inline-flex items-center gap-1.5 px-3 py-2 rounded-md border border-neutral-200 hover:bg-neutral-50 text-sm font-medium text-neutral-700"
           >
             <Upload size={14} /> Salvar rascunho
-          </button>
-          <button
+          </button>}
+          {showBuilder && <button
             onClick={() => {
               setBlocks([])
               setDocName('Novo relatório')
@@ -244,7 +244,7 @@ export default function ReportsPage() {
             className="inline-flex items-center gap-1.5 px-3 py-2 rounded-md bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium"
           >
             <Plus size={14} /> Novo relatório
-          </button>
+          </button>}
         </div>
       </header>
 
@@ -271,7 +271,7 @@ export default function ReportsPage() {
           />
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-[220px_1fr_280px] gap-4">
-          <BlockLibrary onDragStart={(_def: LibraryBlockDef) => {}} />
+          <BlockLibrary onDragStart={() => {}} />
           <BuilderCanvas
             blocks={blocks}
             selectedId={selectedId}

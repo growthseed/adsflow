@@ -14,7 +14,7 @@ interface UseLiveSnapshot {
   refreshing: boolean
   /** Força re-fetch imediato (botão "Atualizar agora") */
   refresh: () => Promise<void>
-  /** Dispara /api/sync/clickup para puxar fresh do ClickUp direto (se CRON_SECRET setado em dev) */
+  /** Dispara /api/sync/clickup com a sessao de um administrador ativo. */
   forceResync: () => Promise<{ ok: boolean; detail?: string }>
 }
 
@@ -80,7 +80,7 @@ export function useLiveClickUpSnapshot(): UseLiveSnapshot {
 
   /**
    * Chama `/api/sync/clickup` para forçar sync imediato (gestor clica
-   * "Atualizar agora"). Requer CRON_SECRET em dev ou auth de admin em prod.
+   * "Atualizar agora"). Requer sessao de administrador ativo.
    */
   const forceResync = useCallback(async () => {
     try {

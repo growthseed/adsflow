@@ -246,16 +246,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         console.warn('Profile fetch failed:', profileResult.reason?.message);
       }
 
-      if (membershipsResult.status === 'fulfilled' && !membershipsResult.value.error && membershipsResult.value.data) {
+      const fetchedProfile = profileResult.status === 'fulfilled' && !profileResult.value.error
+        ? profileResult.value.data as UserProfile | null : null
+      const staffCatalog = fetchedProfile?.is_active === true &&
+        (fetchedProfile.role === 'super_admin' || fetchedProfile.role === 'admin')
+      if (staffCatalog || (membershipsResult.status === 'fulfilled' && !membershipsResult.value.error && membershipsResult.value.data)) {
         // Fetch client details in a second step only if needed (non-blocking)
-        const memberships = membershipsResult.value.data
-        if (memberships.length > 0) {
+        const memberships = membershipsResult.status === 'fulfilled' && !membershipsResult.value.error
+          ? membershipsResult.value.data ?? [] : []
+        if (staffCatalog || memberships.length > 0) {
           const clientIds = memberships.map((m: { client_id: string }) => m.client_id)
           const clientsResult = await withTimeout(
-            () => supabase
+            () => {
+              const query = supabase
               .from('clients')
               .select('id, name, slug, logo_url, status, industry, service_tier, active_scope, portal_token')
-              .in('id', clientIds),
+              .eq('status', 'active')
+              .order('name')
+              return staffCatalog ? query : query.in('id', clientIds)
+            },
             'fetchClients',
           )
 
@@ -289,7 +298,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 },
               ]),
             )
-            const mapped: ClientMembership[] = memberships
+            const visibleMemberships = staffCatalog
+              ? (clientsResult.data as RawClient[]).map((client) => ({
+                  client_id: client.id,
+                  role: memberships.find((m) => m.client_id === client.id)?.role ?? 'admin',
+                }))
+              : memberships
+            const mapped: ClientMembership[] = visibleMemberships
               .filter((m: { client_id: string }) => clientMap.has(m.client_id))
               .map((m: { client_id: string; role: ClientRole }) => ({
                 client_id: m.client_id,

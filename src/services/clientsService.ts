@@ -96,10 +96,12 @@ export const clientsService = {
 
       if (clientError) throw clientError
       clientIds = (clients || []).map((client) => client.id)
+      if (clientIds.length === 0) return []
 
       const { data: memberships, error: memError } = await supabase
         .from('client_members')
         .select('client_id, role')
+        .eq('user_id', userId)
         .in('client_id', clientIds)
 
       if (memError) throw memError
@@ -147,6 +149,7 @@ export const clientsService = {
     clientIds: string[],
     roleMap: Map<string, ClientRole>,
   ): Promise<(Client & { member_count: number; my_role: ClientRole })[]> {
+    if (clientIds.length === 0) return []
 
     // Buscar contagem de membros por cliente
     const { data: counts, error: countError } = await supabase
