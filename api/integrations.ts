@@ -18,7 +18,7 @@ import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { runAgencyCatalog } from '../src/server/integrations/agency-catalog.js'
 import { runPlannerAssets } from '../src/server/integrations/planner-assets.js'
 import { runPlannerScreenshot } from '../src/server/integrations/planner-screenshot.js'
-import { runPublicPortal } from '../src/server/integrations/public-portal.js'
+import { runEnsurePortalToken, runPublicPortal } from '../src/server/integrations/public-portal.js'
 
 import { runClickUpCreateFolder } from '../src/server/integrations/clickup-create-folder.js'
 import { runKommoFunnel }         from '../src/server/integrations/kommo-funnel.js'
@@ -43,6 +43,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return runPlannerScreenshot(req, res)
     case 'public-portal':
       return runPublicPortal(req, res)
+    case 'ensure-portal-token':
+      return runEnsurePortalToken(req, res)
     case 'agency-catalog':
       return runAgencyCatalog(req, res)
     case 'clickup-create-folder':
@@ -71,7 +73,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(400).json({
         error: `unknown op "${op}"`,
         valid: [
-          'agency-catalog', 'public-portal',
+          'agency-catalog', 'public-portal', 'ensure-portal-token',
           'planner-assets', 'planner-screenshot',
           'clickup-create-folder', 'kommo-funnel', 'meta-preview',
           'meta-ads-detail', 'meta-ads-compare', 'meta-ad-inspect',

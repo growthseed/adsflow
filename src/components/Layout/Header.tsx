@@ -20,6 +20,7 @@ import {
 } from 'lucide-react'
 import NotificationPanel from '@/components/UI/NotificationPanel'
 import { ClientBrand } from '@/components/canonical'
+import supabase from '@/lib/supabase'
 
 // ========== BREADCRUMB MAP ==========
 
@@ -61,12 +62,27 @@ export default function Header({ collapsed, onMobileMenuToggle }: HeaderProps) {
 
   const copyClientLink = async () => {
     if (!activeClient) return
-    // Prefer the public portal token link (no login required).
-    // Fall back to the slug-based link (requires login).
-    const portalToken = activeClient.client.portal_token
-    const url = portalToken
-      ? `${window.location.origin}/portal/${portalToken}`
-      : `${window.location.origin}/c/${activeClient.client.slug}`
+    let url = activeClient.client.portal_token
+      ? `${window.location.origin}/portal/${activeClient.client.portal_token}`
+      : ''
+    if (!url) {
+      try {
+        const { data: session } = await supabase.auth.getSession()
+        if (!session.session) throw new Error('Sessao indisponivel')
+        const response = await fetch(`/api/integrations?op=ensure-portal-token&client_slug=${encodeURIComponent(activeClient.client.slug)}`, {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${session.session.access_token}` },
+          cache: 'no-store',
+        })
+        const payload = await response.json().catch(() => null)
+        if (!response.ok || !payload?.url) throw new Error(payload?.error || 'Link indisponivel')
+        url = payload.url
+      } catch (error) {
+        console.error('[Header] ensure portal token failed:', error)
+        window.alert('Não foi possível gerar o link público deste cliente.')
+        return
+      }
+    }
     try {
       await navigator.clipboard.writeText(url)
       setLinkCopied(true)

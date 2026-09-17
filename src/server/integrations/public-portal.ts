@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any -- snapshots are untyped JSON from Supabase. */
 import type { VercelRequest, VercelResponse } from '@vercel/node'
+import { randomUUID } from 'node:crypto'
 import { createClient } from '@supabase/supabase-js'
-import { allowMethods, applyCors } from '../../../api/_lib/security.js'
+import { allowMethods, applyCors, requireUserAuth } from '../../../api/_lib/security.js'
 
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL || ''
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || ''
@@ -124,4 +125,25 @@ export async function runPublicPortal(req: VercelRequest, res: VercelResponse) {
     client: { slug: client.slug, name: client.name, logo_url: client.logo_url ?? null, industry: client.industry ?? null },
     data: buildPortalData(clickup, performance),
   })
+}
+
+/** Creates a stable public token on first use; existing links are never rotated. */
+export async function runEnsurePortalToken(req: VercelRequest, res: VercelResponse) {
+  res.setHeader('Cache-Control', 'private, no-store')
+  if (!applyCors(req, res) || !allowMethods(req, res, ['POST'])) return
+  const auth = await requireUserAuth(req, res)
+  if (!auth) return
+  if (auth.globalRole !== 'admin' && auth.globalRole !== 'super_admin') return res.status(403).json({ error: 'Somente administradores podem compartilhar clientes.' })
+  const slug = typeof req.query.client_slug === 'string' ? req.query.client_slug : req.body?.client_slug
+  if (typeof slug !== 'string' || !slug) return res.status(400).json({ error: 'Cliente obrigatorio.' })
+  const { data: profile } = await auth.serviceClient.from('users').select('is_active').eq('id', auth.user.id).maybeSingle()
+  if (profile?.is_active !== true) return res.status(403).json({ error: 'Conta sem acesso ativo.' })
+  const { data: client, error: clientError } = await auth.serviceClient.from('clients').select('id, slug, portal_token').eq('slug', slug).eq('status', 'active').maybeSingle()
+  if (clientError || !client) return res.status(404).json({ error: 'Cliente nao encontrado.' })
+  if (client.portal_token) return res.status(200).json({ url: `${req.headers.origin || 'https://adsflow.efeito.digital'}/portal/${client.portal_token}`, created: false })
+  const token = randomUUID()
+  const { data: updated, error: updateError } = await auth.serviceClient.from('clients').update({ portal_token: token }).eq('id', client.id).is('portal_token', null).select('portal_token').maybeSingle()
+  if (updateError) return res.status(500).json({ error: 'Nao foi possivel criar o link publico.' })
+  const finalToken = updated?.portal_token || token
+  return res.status(201).json({ url: `${req.headers.origin || 'https://adsflow.efeito.digital'}/portal/${finalToken}`, created: true })
 }

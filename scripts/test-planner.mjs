@@ -290,7 +290,7 @@ test('public portal reads the newest snapshots and returns only the token client
       return { data: { clients: { momma: { blended: { total_spend: 100, total_conversions: 2, total_clicks: 10, total_impressions: 1000 }, platforms: {}, period: { label: 'Últimos 30 dias' }, last_synced_at: '2026-09-17T14:00:00Z' } } }, error: null }
     },
   }
-  const api = load('src/server/integrations/public-portal.ts', { '@supabase/supabase-js': { createClient: () => client }, '../../../api/_lib/security.js': { applyCors: () => true, allowMethods: () => true } })
+  const api = load('src/server/integrations/public-portal.ts', { 'node:crypto': { randomUUID }, '@supabase/supabase-js': { createClient: () => client }, '../../../api/_lib/security.js': { applyCors: () => true, allowMethods: () => true } })
   const res = { statusCode: 200, body: null, headers: {}, setHeader(k, v) { this.headers[k] = v }, status(code) { this.statusCode = code; return this }, json(value) { this.body = value; return this } }
   await api.runPublicPortal({ method: 'GET', query: { token: 'portal-token-with-valid-length-123' } }, res)
   if (previousUrl === undefined) delete process.env.VITE_SUPABASE_URL; else process.env.VITE_SUPABASE_URL = previousUrl
@@ -302,4 +302,35 @@ test('public portal reads the newest snapshots and returns only the token client
   assert.equal(res.body.data.tasks[0].title, 'Atualização recém-criada')
   assert.equal(res.body.data.leads, 2)
   assert.deepEqual(calls.map(([name]) => name), ['resolve_portal_token', 'latest_agency_snapshot', 'latest_agency_snapshot'])
+})
+test('only an active agency admin can create a stable public portal link', async () => {
+  const previousUrl = process.env.VITE_SUPABASE_URL
+  const previousKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+  process.env.VITE_SUPABASE_URL = 'https://supabase.example'
+  process.env.SUPABASE_SERVICE_ROLE_KEY = 'test-service-role-only'
+  const calls = []
+  const serviceClient = { from(table) {
+    const call = { table, filters: [] }; calls.push(call)
+    const query = {
+      select() { return query }, eq(...args) { call.filters.push(args); return query }, is(...args) { call.filters.push(args); return query },
+      async maybeSingle() {
+        if (table === 'users') return { data: { is_active: true }, error: null }
+        if (table === 'clients') return call.updated ? { data: { portal_token: 'persisted-token' }, error: null } : { data: { id: 'client-a', slug: 'momma', portal_token: null }, error: null }
+        return { data: { portal_token: 'persisted-token' }, error: null }
+      },
+      update() { call.updated = true; return query },
+    }
+    return query
+  } }
+  const api = load('src/server/integrations/public-portal.ts', {
+    'node:crypto': { randomUUID: () => 'generated-token' }, '@supabase/supabase-js': { createClient: () => serviceClient },
+    '../../../api/_lib/security.js': { applyCors: () => true, allowMethods: () => true, requireUserAuth: async () => ({ user: { id: 'admin-a' }, serviceClient, globalRole: 'admin' }) },
+  })
+  const res = { statusCode: 200, body: null, headers: {}, setHeader(k, v) { this.headers[k] = v }, status(code) { this.statusCode = code; return this }, json(value) { this.body = value; return this } }
+  await api.runEnsurePortalToken({ method: 'POST', query: { client_slug: 'momma' }, body: {}, headers: { origin: 'https://adsflow.efeito.digital' } }, res)
+  if (previousUrl === undefined) delete process.env.VITE_SUPABASE_URL; else process.env.VITE_SUPABASE_URL = previousUrl
+  if (previousKey === undefined) delete process.env.SUPABASE_SERVICE_ROLE_KEY; else process.env.SUPABASE_SERVICE_ROLE_KEY = previousKey
+  assert.equal(res.statusCode, 201)
+  assert.equal(res.body.url, 'https://adsflow.efeito.digital/portal/persisted-token')
+  assert.ok(calls.find(call => call.table === 'clients' && call.updated))
 })
