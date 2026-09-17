@@ -108,8 +108,20 @@ export async function runPublicPortal(req: VercelRequest, res: VercelResponse) {
 
   const service = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false, autoRefreshToken: false } })
   const { data: resolved, error: resolveError } = await service.rpc('resolve_portal_token', { p_token: token })
-  if (resolveError) return res.status(500).json({ error: 'Nao foi possivel validar o link.' })
-  const client = snapshotValue(resolved)
+  let client = resolveError ? null : snapshotValue(resolved)
+
+  // Some production databases have the portal-token RPC from an older schema.
+  // Keep public links working while that function is being migrated by resolving
+  // the same active client directly with the service role.
+  if (!client?.slug) {
+    const { data: fallbackClient, error: fallbackError } = await service
+      .from('clients')
+      .select('slug, name, logo_url, industry')
+      .eq('portal_token', token)
+      .eq('status', 'active')
+      .maybeSingle()
+    if (!fallbackError) client = fallbackClient
+  }
   if (!client?.slug) return res.status(404).json({ error: 'Link expirado ou desativado.' })
 
   const [clickupResult, performanceResult] = await Promise.all([
