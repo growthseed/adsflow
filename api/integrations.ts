@@ -15,6 +15,7 @@
  */
 
 import type { VercelRequest, VercelResponse } from '@vercel/node'
+import { runAgencyCatalog } from '../src/server/integrations/agency-catalog.js'
 
 import { runClickUpCreateFolder } from '../src/server/integrations/clickup-create-folder.js'
 import { runKommoFunnel }         from '../src/server/integrations/kommo-funnel.js'
@@ -33,6 +34,8 @@ import {
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const op = String(req.query.op || '').trim()
   switch (op) {
+    case 'agency-catalog':
+      return runAgencyCatalog(req, res)
     case 'clickup-create-folder':
       return runClickUpCreateFolder(req, res)
     case 'kommo-funnel':
@@ -59,6 +62,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(400).json({
         error: `unknown op "${op}"`,
         valid: [
+          'agency-catalog',
           'clickup-create-folder', 'kommo-funnel', 'meta-preview',
           'meta-ads-detail', 'meta-ads-compare', 'meta-ad-inspect',
           'google-ads-detail', 'clint-funnel',

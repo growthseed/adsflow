@@ -83,9 +83,6 @@ export const clientsService = {
     userId: string,
     options: { includeAllActive?: boolean } = {},
   ): Promise<(Client & { member_count: number; my_role: ClientRole })[]> {
-    let clientIds: string[]
-    let roleMap: Map<string, ClientRole>
-
     if (options.includeAllActive) {
       return fetchAgencyCatalog()
     }
@@ -99,8 +96,8 @@ export const clientsService = {
     if (memError) throw memError
     if (!memberships || memberships.length === 0) return []
 
-    clientIds = memberships.map((m) => m.client_id)
-    roleMap = new Map(memberships.map((m) => [m.client_id, m.role as ClientRole]))
+    const clientIds = memberships.map((m) => m.client_id)
+    const roleMap = new Map(memberships.map((m) => [m.client_id, m.role as ClientRole]))
 
     const { data: clients, error: clientError } = await supabase
       .from('clients')

@@ -135,10 +135,10 @@ async function catalogueRequest(role = 'admin', active = true) {
     }
     return query
   } }
-  const handler = loadModule('api/clients/catalog.ts', { '../_lib/security.js': {
+  const handler = loadModule('src/server/integrations/agency-catalog.ts', { '../../../api/_lib/security.js': {
     applyCors: () => true, allowMethods: () => true,
     requireUserAuth: async () => ({ user: { id: 'staff' }, globalRole: role, serviceClient }),
-  } }).default
+  } }).runAgencyCatalog
   await handler({ method: 'GET' }, res)
   return { res, calls }
 }

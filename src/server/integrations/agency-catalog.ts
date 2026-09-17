@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { allowMethods, applyCors, requireUserAuth } from '../_lib/security.js'
+import { allowMethods, applyCors, requireUserAuth } from '../../../api/_lib/security.js'
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+export async function runAgencyCatalog(req: VercelRequest, res: VercelResponse) {
   res.setHeader('Cache-Control', 'private, no-store')
   if (!applyCors(req, res) || !allowMethods(req, res, ['GET'])) return
   const auth = await requireUserAuth(req, res)
