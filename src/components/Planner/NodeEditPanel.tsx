@@ -5,7 +5,7 @@
  * Opens as a slide-over panel on the right side of the Planner
  * when the user clicks on a node. Shows all editable fields for
  * the selected node type. Changes are applied to the React state
- * immediately (and auto-saved via the 2s debounce).
+ * on Apply (and auto-saved via the 2s debounce).
  *
  * Supports ALL node types — uses a generic key/value editor for
  * fields not explicitly handled. The gestor can edit labels,
@@ -13,8 +13,10 @@
  * ============================================
  */
 
-import { useState, useEffect, useCallback } from 'react'
-import type { Node } from 'reactflow'
+import { useState, useCallback } from 'react'
+import type { Node } from '@xyflow/react'
+import { X } from 'lucide-react'
+import { PLANNER_STAGES } from './plannerModel'
 
 interface NodeEditPanelProps {
   node: Node | null
@@ -23,13 +25,7 @@ interface NodeEditPanelProps {
 }
 
 export default function NodeEditPanel({ node, onClose, onUpdate }: NodeEditPanelProps) {
-  const [formData, setFormData] = useState<Record<string, unknown>>({})
-
-  useEffect(() => {
-    if (node?.data) {
-      setFormData({ ...node.data })
-    }
-  }, [node])
+  const [formData, setFormData] = useState<Record<string, unknown>>(() => ({ ...node?.data }))
 
   const handleChange = useCallback(
     (key: string, value: string | number | boolean) => {
@@ -52,7 +48,7 @@ export default function NodeEditPanel({ node, onClose, onUpdate }: NodeEditPanel
   const fields = getFieldsForType(nodeType, formData)
 
   return (
-    <div className="absolute top-0 right-0 h-full w-80 bg-white border-l border-slate-200 shadow-xl z-20 flex flex-col overflow-hidden">
+    <div className="planner-inspector absolute top-0 right-0 h-full w-80 bg-white border-l border-slate-200 shadow-xl z-20 flex flex-col overflow-hidden" role="dialog" aria-label="Editar node">
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-slate-200 bg-slate-50">
         <div>
@@ -61,24 +57,30 @@ export default function NodeEditPanel({ node, onClose, onUpdate }: NodeEditPanel
         </div>
         <button
           onClick={onClose}
+          aria-label="Fechar propriedades"
           className="text-slate-400 hover:text-slate-600 p-1.5 hover:bg-slate-100 rounded-md transition-colors"
         >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <line x1="18" y1="6" x2="6" y2="18" />
-            <line x1="6" y1="6" x2="18" y2="18" />
-          </svg>
+          <X size={16} />
         </button>
       </div>
 
       {/* Fields */}
       <div className="flex-1 overflow-y-auto px-4 py-3 space-y-3">
+        <label className="block text-xs">Etapa<select className="block w-full border rounded-md p-2 mt-1" value={String(formData.stage ?? '')} onChange={e => handleChange('stage', e.target.value)}><option value="">Sem etapa</option>{PLANNER_STAGES.map(stage => <option key={stage}>{stage}</option>)}</select></label>
+        {nodeType === 'clientLogo' && <>
+          <label className="block text-xs">Tamanho<select className="block w-full border rounded-md p-2 mt-1" value={String(formData.size ?? 'M')} onChange={e => handleChange('size', e.target.value)}><option value="S">Compacto</option><option value="M">Médio</option><option value="L">Destaque</option></select></label>
+          <label className="block text-xs">Enquadramento<select className="block w-full border rounded-md p-2 mt-1" value={String(formData.fit ?? 'contain')} onChange={e => handleChange('fit', e.target.value)}><option value="contain">Marca inteira</option><option value="cover">Preencher círculo</option></select></label>
+          <label className="flex items-center justify-between text-xs">Fundo<input aria-label="Cor de fundo" type="color" value={String(formData.background ?? '#ffffff')} onChange={e => handleChange('background', e.target.value)} /></label>
+          <label className="block text-xs">Margem interna<input className="w-full" aria-label="Margem interna" type="range" min="0" max="20" value={Number(formData.padding ?? 8)} onChange={e => handleChange('padding', Number(e.target.value))} /></label>
+        </>}
         {fields.map((field) => (
           <div key={field.key}>
-            <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wider mb-1">
+            <label htmlFor={`node-field-${field.key}`} className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wider mb-1">
               {field.label}
             </label>
             {field.type === 'textarea' ? (
               <textarea
+                id={`node-field-${field.key}`}
                 value={String(formData[field.key] ?? '')}
                 onChange={(e) => handleChange(field.key, e.target.value)}
                 rows={3}
@@ -87,6 +89,7 @@ export default function NodeEditPanel({ node, onClose, onUpdate }: NodeEditPanel
               />
             ) : field.type === 'number' ? (
               <input
+                id={`node-field-${field.key}`}
                 type="number"
                 value={String(formData[field.key] ?? '')}
                 onChange={(e) => handleChange(field.key, Number(e.target.value))}
@@ -96,6 +99,7 @@ export default function NodeEditPanel({ node, onClose, onUpdate }: NodeEditPanel
               />
             ) : field.type === 'select' ? (
               <select
+                id={`node-field-${field.key}`}
                 value={String(formData[field.key] ?? '')}
                 onChange={(e) => handleChange(field.key, e.target.value)}
                 className="w-full px-3 py-2 text-sm border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -106,6 +110,7 @@ export default function NodeEditPanel({ node, onClose, onUpdate }: NodeEditPanel
               </select>
             ) : (
               <input
+                id={`node-field-${field.key}`}
                 type="text"
                 value={String(formData[field.key] ?? '')}
                 onChange={(e) => handleChange(field.key, e.target.value)}
@@ -115,6 +120,8 @@ export default function NodeEditPanel({ node, onClose, onUpdate }: NodeEditPanel
             )}
           </div>
         ))}
+        <label className="block text-xs">Anotações<textarea className="w-full border rounded-md p-2 mt-1" rows={3} value={String(formData.notes ?? '')} onChange={e => handleChange('notes', e.target.value)} /></label>
+        <label className="block text-xs">Link da demanda<input type="url" className="w-full border rounded-md p-2 mt-1" value={String(formData.taskUrl ?? '')} onChange={e => handleChange('taskUrl', e.target.value)} /></label>
       </div>
 
       {/* Footer */}
@@ -153,6 +160,8 @@ interface FieldDef {
 
 function getFieldsForType(nodeType: string, data: Record<string, unknown>): FieldDef[] {
   switch (nodeType) {
+    case 'clientLogo':
+      return [{ key: 'label', label: 'Nome', type: 'text' }]
     case 'trafficSource':
     case 'traffic_source':
       return [
@@ -222,7 +231,32 @@ function getFieldsForType(nodeType: string, data: Record<string, unknown>): Fiel
     case 'landingPage':
       return [
         { key: 'label', label: 'Nome da página', type: 'text' },
-        { key: 'url', label: 'URL', type: 'text', placeholder: 'https://...' },
+        { key: 'url', label: 'URL (a miniatura real é capturada automaticamente)', type: 'text', placeholder: 'https://...' },
+      ]
+
+    case 'funnelPage':
+      return [
+        { key: 'label', label: 'Nome da página', type: 'text' },
+        { key: 'pageType', label: 'Tipo', type: 'select', options: ['landing', 'home', 'product', 'category', 'blog', 'checkout', 'cart', 'thank_you', 'confirmation', 'form', 'webinar', 'video'] },
+        { key: 'url', label: 'URL (a miniatura real é capturada automaticamente)', type: 'text', placeholder: 'https://...' },
+        { key: 'visitors', label: 'Visitantes', type: 'number' },
+        { key: 'bounceRate', label: 'Bounce (%)', type: 'number', step: '0.1' },
+        { key: 'avgTimeOnPage', label: 'Tempo médio (s)', type: 'number' },
+      ]
+
+    case 'funnelSource':
+      return [
+        { key: 'label', label: 'Nome da fonte', type: 'text' },
+        { key: 'sourceType', label: 'Tipo', type: 'select', options: ['google_ads', 'facebook', 'instagram', 'linkedin', 'tiktok', 'youtube', 'email', 'sms', 'organic', 'direct', 'referral', 'affiliate'] },
+        { key: 'visitors', label: 'Visitantes', type: 'number' },
+        { key: 'cost', label: 'Investimento (R$)', type: 'number', step: '0.01' },
+      ]
+
+    case 'funnelAction':
+      return [
+        { key: 'label', label: 'Nome da ação', type: 'text' },
+        { key: 'actionType', label: 'Tipo', type: 'select', options: ['click', 'view', 'scroll', 'submit', 'download', 'add_to_cart', 'remove_from_cart', 'begin_checkout', 'purchase', 'subscribe', 'unsubscribe'] },
+        { key: 'count', label: 'Ocorrências', type: 'number' },
       ]
 
     case 'brand':
@@ -268,7 +302,7 @@ function getFieldsForType(nodeType: string, data: Record<string, unknown>): Fiel
     default:
       // Generic: show all string/number fields from data
       return Object.entries(data)
-        .filter(([, v]) => typeof v === 'string' || typeof v === 'number')
+        .filter(([key, v]) => !['stage', 'notes', 'taskUrl'].includes(key) && !key.startsWith('thumbnail') && (typeof v === 'string' || typeof v === 'number'))
         .map(([key]) => ({
           key,
           label: key.replace(/([A-Z])/g, ' $1').replace(/^./, (s) => s.toUpperCase()),

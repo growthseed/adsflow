@@ -36,12 +36,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       0,
     )
 
+    // "partial" quando alguma plataforma/cliente falhou: o dashboard passa a
+    // mostrar o motivo em vez de exibir zeros como se fosse dado real.
     const result = await insertSnapshot({
       kind: 'performance',
       period_from: snapshot.period.from,
       period_to: snapshot.period.to,
       data: snapshot,
-      sync_status: 'ok',
+      sync_status: snapshot.errors.length ? 'partial' : 'ok',
+      error_log: snapshot.errors.length ? snapshot.errors.join('
+') : undefined,
       duration_ms: duration,
     })
 
@@ -61,6 +65,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       clients: clientCount,
       total_spend: totalSpend,
       total_conversions: totalConversions,
+      errors: snapshot.errors,
     })
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Unknown error'

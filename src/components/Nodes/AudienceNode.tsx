@@ -1,6 +1,6 @@
 import { memo } from "react";
-import { Handle, Position, NodeResizer } from "reactflow";
-import type { NodeProps } from "reactflow";
+import { Handle, Position, NodeResizer } from '@xyflow/react';
+import type { NodeProps } from '@xyflow/react';
 import { Users, Eye, TrendingUp, Target, Layers, type LucideIcon } from "lucide-react";
 
 export interface AudienceData {
@@ -33,7 +33,7 @@ const typeColors: Record<string, { gradient: string; border: string }> = {
   },
 };
 
-const AudienceNode = ({ data, selected }: NodeProps<AudienceData>) => {
+const AudienceNode = ({ data, selected }: NodeProps & { data: AudienceData }) => {
   const Icon = typeIcons[data.type || 'Personalizada'] || Users;
   const colors = typeColors[data.type || 'Personalizada'] || typeColors['Personalizada'];
   

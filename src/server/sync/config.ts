@@ -34,7 +34,7 @@ export const ENV = {
   GOOGLE_ADS_SYNC_CLIENT_SECRET: process.env.GOOGLE_ADS_SYNC_CLIENT_SECRET || '',
   GOOGLE_ADS_SYNC_REFRESH_TOKEN: process.env.GOOGLE_ADS_SYNC_REFRESH_TOKEN || '',
   GOOGLE_ADS_LOGIN_CUSTOMER_ID: process.env.GOOGLE_ADS_LOGIN_CUSTOMER_ID || '1011817676',
-  GOOGLE_ADS_API_VERSION: process.env.GOOGLE_ADS_API_VERSION || 'v21',
+  GOOGLE_ADS_API_VERSION: process.env.GOOGLE_ADS_API_VERSION || 'v25',
 
   // ClickUp
   // The existing deployment uses CLICKUP_API_KEY; accept both names so the

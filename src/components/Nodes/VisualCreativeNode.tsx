@@ -1,6 +1,6 @@
 import { memo } from 'react'
-import { Handle, Position } from 'reactflow'
-import type { NodeProps } from 'reactflow'
+import { Handle, Position } from '@xyflow/react'
+import type { NodeProps } from '@xyflow/react'
 import { Image as ImageIcon, Film, Palette, FileImage } from 'lucide-react'
 
 interface VisualCreativeNodeData {
@@ -15,7 +15,7 @@ const formatLabel: Record<VisualCreativeNodeData['format'], string> = {
   collection: 'Coleção',
 }
 
-const VisualCreativeNode = memo(({ data }: NodeProps<VisualCreativeNodeData>) => {
+const VisualCreativeNode = memo(({ data }: NodeProps & { data: VisualCreativeNodeData }) => {
   const formatConfig = {
     image: {
       icon: ImageIcon,

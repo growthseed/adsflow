@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
-import { Handle, Position, NodeResizer } from 'reactflow';
-import type { NodeProps } from 'reactflow';
+import { Handle, Position, NodeResizer } from '@xyflow/react';
+import type { NodeProps } from '@xyflow/react';
 import type { FunnelNodeData } from '../../../types/funnelytics';
 import { formatNumber, formatPercentage } from '../../../types/funnelytics';
 import { TrendingDown } from 'lucide-react';
@@ -15,7 +15,7 @@ const DEFAULT_COLORS = [
   '#EF4444', // red-500
 ];
 
-const FunnelNode: React.FC<NodeProps<FunnelNodeData>> = ({ data, selected }) => {
+const FunnelNode: React.FC<NodeProps & { data: FunnelNodeData }> = ({ data, selected }) => {
   const { stages, orientation = 'vertical', showPercentages = true, showCounts = true } = data;
 
   // Encontra o maior valor para calcular larguras proporcionais

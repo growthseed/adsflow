@@ -1,6 +1,6 @@
 import { memo } from 'react'
-import { Handle, Position } from 'reactflow'
-import type { NodeProps } from 'reactflow'
+import { Handle, Position } from '@xyflow/react'
+import type { NodeProps } from '@xyflow/react'
 import { BrandIcons } from '@/components/Icons/BrandIcons'
 
 export interface IconNodeData {
@@ -49,7 +49,7 @@ const platformConfig = {
   },
 }
 
-function IconNode({ data }: NodeProps<IconNodeData>) {
+function IconNode({ data }: NodeProps & { data: IconNodeData }) {
   const config = platformConfig[data.platform] || platformConfig.Instagram
   const BrandIcon = BrandIcons[data.platform]
 

@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
-import { Handle, Position, NodeResizer } from 'reactflow';
-import type { NodeProps } from 'reactflow';
+import { Handle, Position, NodeResizer } from '@xyflow/react';
+import type { NodeProps } from '@xyflow/react';
 import type { UTMTrackerNodeData } from '../../../types/funnelytics';
 import {
   formatNumber,
@@ -9,7 +9,7 @@ import {
 } from '../../../types/funnelytics';
 import { Link, Tag } from 'lucide-react';
 
-const UTMTrackerNode: React.FC<NodeProps<UTMTrackerNodeData>> = ({ data, selected }) => {
+const UTMTrackerNode: React.FC<NodeProps & { data: UTMTrackerNodeData }> = ({ data, selected }) => {
   // Calcula ROI color
   const getRoiColor = (roi?: number) => {
     if (roi === undefined) return 'text-gray-600';

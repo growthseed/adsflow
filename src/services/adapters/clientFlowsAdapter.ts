@@ -11,7 +11,7 @@
  * ============================================
  */
 
-import type { Node, Edge, Viewport } from 'reactflow'
+import type { Node, Edge, Viewport } from '@xyflow/react'
 import supabase from '@/lib/supabase'
 
 // =============================================================

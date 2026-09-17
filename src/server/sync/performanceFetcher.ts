@@ -88,6 +88,8 @@ export interface PerformanceSnapshotResult {
   captured_at: string
   period: { from: string; to: string; label: string }
   clients: Record<string, ClientPerformance>
+  /** Falhas por plataforma/cliente. Antes eram só logadas e o snapshot saía "ok" com tudo zerado. */
+  errors: string[]
 }
 
 // =============================================================
@@ -474,6 +476,8 @@ export async function fetchPerformanceSnapshot(): Promise<PerformanceSnapshotRes
   const period = getLastMonthRange()
   const capturedAt = new Date().toISOString()
   const clients: Record<string, ClientPerformance> = {}
+  const errors: string[] = []
+  const describe = (err: unknown) => (err instanceof Error ? err.message : String(err)).replace(/access_token=[^&\s]+/g, 'access_token=<redacted>').slice(0, 300)
 
   // Pre-fetch Google Ads access token once
   let googleToken: string | null = null
@@ -481,7 +485,9 @@ export async function fetchPerformanceSnapshot(): Promise<PerformanceSnapshotRes
     googleToken = await getGoogleAccessToken()
   } catch (err) {
     console.error('[performanceFetcher] Google OAuth failed:', err)
+    errors.push(`google_ads: OAuth falhou — ${describe(err)}`)
   }
+  if (!ENV.META_ACCESS_TOKEN) errors.push('meta_ads: META_ACCESS_TOKEN não configurado — nenhuma conta Meta será lida')
 
   const agencyClients = await loadAgencyClients()
   for (const client of agencyClients) {
@@ -501,6 +507,7 @@ export async function fetchPerformanceSnapshot(): Promise<PerformanceSnapshotRes
         }
       } catch (err) {
         console.error(`[performanceFetcher] Meta ${client.slug} failed:`, err)
+        errors.push(`meta_ads/${client.slug}: ${describe(err)}`)
       }
     }
 
@@ -519,6 +526,7 @@ export async function fetchPerformanceSnapshot(): Promise<PerformanceSnapshotRes
         }
       } catch (err) {
         console.error(`[performanceFetcher] Google ${client.slug} failed:`, err)
+        errors.push(`google_ads/${client.slug}: ${describe(err)}`)
       }
     }
 
@@ -552,5 +560,5 @@ export async function fetchPerformanceSnapshot(): Promise<PerformanceSnapshotRes
     }
   }
 
-  return { captured_at: capturedAt, period, clients }
+  return { captured_at: capturedAt, period, clients, errors }
 }

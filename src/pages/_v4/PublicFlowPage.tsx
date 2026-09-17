@@ -12,87 +12,19 @@
 
 import { useEffect, useState, useMemo } from 'react'
 import { useParams } from 'react-router-dom'
-import ReactFlow, {
+import {
+  ReactFlow,
   Background,
   Controls,
   ReactFlowProvider,
-} from 'reactflow'
-import type { Node, Edge, Viewport } from 'reactflow'
-import 'reactflow/dist/style.css'
+} from '@xyflow/react'
+import type { Node, Edge, Viewport } from '@xyflow/react'
+import '@xyflow/react/dist/style.css'
 
 import { getSharedFlow } from '@/services/adapters/clientFlowsAdapter'
-
-// Reuse the same node types
-import TrafficSourceNode from '@/components/Nodes/TrafficSourceNode'
-import CampaignNode from '@/components/Nodes/CampaignNode'
-import AdSetNode from '@/components/Nodes/AdSetNode'
-import AdNode from '@/components/Nodes/AdNode'
-import AudienceNode from '@/components/Nodes/AudienceNode'
-import ResultNode from '@/components/Nodes/ResultNode'
-import LandingPageNode from '@/components/Nodes/LandingPageNode'
-import PostitNode from '@/components/Nodes/PostitNode'
-import AdvancedTextNode from '@/components/Nodes/AdvancedTextNode'
-import {
-  SourceNode as FunnelSourceNode,
-  PageNode as FunnelPageNode,
-  ActionNode as FunnelActionNode,
-} from '@/components/Nodes/Funnelytics'
-import ConversionEdge from '@/components/Edges/ConversionEdge'
-// Faltavam aqui — um flow salvo com esses tipos quebrava visualmente na
-// visão pública, porque só ClientPlannerPage.tsx os registrava.
-import BrandNode from '@/components/Nodes/BrandNode'
-import VisualCampaignNode from '@/components/Nodes/VisualCampaignNode'
-import VisualAudienceNode from '@/components/Nodes/VisualAudienceNode'
-import VisualCreativeNode from '@/components/Nodes/VisualCreativeNode'
-import ChannelNode from '@/components/Nodes/ChannelNode'
-import IconNode from '@/components/Nodes/IconNode'
-import GoalNode from '@/components/Nodes/GoalNode'
-import LeadJourneyNode from '@/components/Nodes/LeadJourneyNode'
-
-const edgeTypes = {
-  conversionEdge: ConversionEdge,
-}
-
-const nodeTypes = {
-  trafficSource: TrafficSourceNode,
-  traffic_source: TrafficSourceNode,
-  campaign: CampaignNode,
-  adSet: AdSetNode,
-  ad_set: AdSetNode,
-  ad: AdNode,
-  audience: AudienceNode,
-  result: ResultNode,
-  landingPage: LandingPageNode,
-  postit: PostitNode,
-  advancedText: AdvancedTextNode,
-  funnelSource: FunnelSourceNode,
-  funnelPage: FunnelPageNode,
-  funnelAction: FunnelActionNode,
-  brand: BrandNode,
-  visualCampaign: VisualCampaignNode,
-  visualAudience: VisualAudienceNode,
-  visualCreative: VisualCreativeNode,
-  channel: ChannelNode,
-  icon: IconNode,
-  goal: GoalNode,
-  leadJourney: LeadJourneyNode,
-}
-
-const COMPACT_NODE_TYPES = new Set([
-  'brand', 'visualCampaign', 'visualAudience', 'visualCreative', 'channel', 'icon',
-])
-
-function normalizeFlowNodes(nodes: Node[]): Node[] {
-  return nodes.map((node) => {
-    if (!COMPACT_NODE_TYPES.has(node.type || '')) return node
-    return {
-      ...node,
-      width: 112,
-      height: 112,
-      style: { ...node.style, width: 112, height: 112 },
-    }
-  })
-}
+import { PLANNER_NODE_TYPES, PLANNER_EDGE_TYPES, compactNodeStyle, sanitizeEdges } from '@/components/Planner/plannerNodeTypes'
+import { decorateEdges } from '@/components/Planner/plannerModel'
+import '@/components/Planner/planner.css'
 
 interface SharedFlow {
   id: string
@@ -128,6 +60,12 @@ export default function PublicFlowPage() {
       cancelled = true
     }
   }, [token])
+
+  // Mesma normalização do editor: círculos compactos, logos com lado fixo,
+  // handles lixo removidos e conexões com ícone/seta colorida (as marcadas
+  // como animadas continuam em movimento na visão pública).
+  const nodes = useMemo(() => (flow?.nodes ?? []).map(compactNodeStyle), [flow])
+  const edges = useMemo(() => decorateEdges(sanitizeEdges(flow?.edges ?? []), nodes, { liveData: true }), [flow, nodes])
 
   const updatedLabel = useMemo(() => {
     if (!flow) return ''
@@ -197,22 +135,18 @@ export default function PublicFlowPage() {
       </header>
 
       {/* Canvas */}
-      <div className="flex-1 min-h-0">
+      {/* Altura definida, sem `flex-1`: um item flex com tamanho vindo de flex-grow dentro de um
+          container só com min-height é "indefinido" para o Chrome, e o React Flow (height:100%)
+          media 0px — canvas em branco na visão pública. */}
+      <div className="min-h-0" style={{ height: 'calc(100vh - 108px)' }}>
         <ReactFlowProvider>
           <ReactFlow
-            nodes={normalizeFlowNodes(flow.nodes)}
-            edges={flow.edges.map((e) => {
-              const cleaned = { ...e }
-              const bad = (v: unknown) => v === undefined || v === null || v === 'undefined' || v === ''
-              if (bad(cleaned.sourceHandle)) delete (cleaned as { sourceHandle?: unknown }).sourceHandle
-              if (bad(cleaned.targetHandle)) delete (cleaned as { targetHandle?: unknown }).targetHandle
-              return cleaned
-            })}
-            nodeTypes={nodeTypes}
-            edgeTypes={edgeTypes}
-            defaultViewport={flow.viewport || undefined}
-            fitView={!flow.viewport}
-            fitViewOptions={{ padding: 0.2 }}
+            nodes={nodes}
+            edges={edges}
+            nodeTypes={PLANNER_NODE_TYPES}
+            edgeTypes={PLANNER_EDGE_TYPES}
+            fitView
+            fitViewOptions={{ padding: 0.15 }}
             // Read-only: disable all interactions except pan/zoom
             nodesDraggable={false}
             nodesConnectable={false}
@@ -220,7 +154,6 @@ export default function PublicFlowPage() {
             panOnDrag
             zoomOnScroll
             zoomOnPinch
-            proOptions={{ hideAttribution: true }}
           >
             <Background gap={16} size={1} />
             <Controls

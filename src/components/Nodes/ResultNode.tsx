@@ -1,6 +1,6 @@
 import { memo } from "react";
-import { Handle, Position, NodeResizer } from "reactflow";
-import type { NodeProps } from "reactflow";
+import { Handle, Position, NodeResizer } from '@xyflow/react';
+import type { NodeProps } from '@xyflow/react';
 import { Target, TrendingUp, DollarSign, FileText, ShoppingCart, ArrowUp, ArrowDown, Minus, type LucideIcon } from "lucide-react";
 
 export interface ResultData {
@@ -21,7 +21,7 @@ const metricIcons: Record<string, LucideIcon> = {
   'ROI': DollarSign,
 };
 
-const ResultNode = ({ data, selected }: NodeProps<ResultData>) => {
+const ResultNode = ({ data, selected }: NodeProps & { data: ResultData }) => {
   const Icon = metricIcons[data.metric || 'Conversões'] || Target;
   
   // Calcular status baseado na porcentagem

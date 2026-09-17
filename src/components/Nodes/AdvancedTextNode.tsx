@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Handle, Position, NodeResizer } from 'reactflow';
-import type { NodeProps } from 'reactflow';
+import { Handle, Position, NodeResizer } from '@xyflow/react';
+import type { NodeProps } from '@xyflow/react';
 import { Type, Bold, Italic, Underline, Square, X } from 'lucide-react';
 
 export interface AdvancedTextData {
@@ -31,7 +31,7 @@ const PRESET_COLORS = [
   { name: 'Cinza', value: '#6B7280' },
 ];
 
-export default function AdvancedTextNode({ data, selected }: NodeProps<AdvancedTextData>) {
+export default function AdvancedTextNode({ data, selected }: NodeProps & { data: AdvancedTextData }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editText, setEditText] = useState(data.text || 'Digite seu texto...');
   const [fontSize, setFontSize] = useState(data.fontSize || 16);

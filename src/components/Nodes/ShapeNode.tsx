@@ -1,5 +1,5 @@
-import type { NodeProps } from 'reactflow'
-import { Handle, Position, NodeResizer } from 'reactflow'
+import type { NodeProps } from '@xyflow/react'
+import { Handle, Position, NodeResizer } from '@xyflow/react'
 import { useState } from 'react'
 
 export interface ShapeData {
@@ -10,7 +10,7 @@ export interface ShapeData {
   onEdit?: (data: ShapeData) => void
 }
 
-export default function ShapeNode({ data, selected }: NodeProps<ShapeData>) {
+export default function ShapeNode({ data, selected }: NodeProps & { data: ShapeData }) {
   const [label, setLabel] = useState(data.label || data.shapeType === 'circle' ? 'Círculo' : 'Quadrado')
   const [isEditing, setIsEditing] = useState(false)
   

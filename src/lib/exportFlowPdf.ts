@@ -14,8 +14,8 @@
 
 import { toPng } from 'html-to-image'
 import { jsPDF } from 'jspdf'
-import { getRectOfNodes, getTransformForBounds } from 'reactflow'
-import type { Node } from 'reactflow'
+import { getNodesBounds, getViewportForBounds } from '@xyflow/react'
+import type { Node } from '@xyflow/react'
 
 export interface ExportFlowPdfOptions {
   /** Flow name shown in the header */
@@ -60,8 +60,8 @@ export async function exportFlowToPdf(options: ExportFlowPdfOptions): Promise<vo
   const EXPORT_H = 900
 
   if (nodes.length > 0) {
-    const bounds = getRectOfNodes(nodes)
-    const [x, y, zoom] = getTransformForBounds(
+    const bounds = getNodesBounds(nodes)
+    const { x, y, zoom } = getViewportForBounds(
       bounds,
       EXPORT_W,
       EXPORT_H,

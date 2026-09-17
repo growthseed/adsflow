@@ -21,7 +21,7 @@
  * ============================================
  */
 
-import type { Node } from 'reactflow'
+import type { Node } from '@xyflow/react'
 import type { ClientPerformance } from '@/services/adapters/performanceTypes'
 
 export interface LiveMetrics {

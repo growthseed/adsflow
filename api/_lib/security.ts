@@ -40,7 +40,7 @@ const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || ''
  */
 const CORS_ALLOWED_ORIGINS = (
   process.env.CORS_ALLOWED_ORIGINS ||
-  'https://adsflow.efeito.digital,http://localhost:5173,http://localhost:4173'
+  'https://adsflow.efeito.digital,http://localhost:5173,http://localhost:5174,http://localhost:4173,http://127.0.0.1:5173,http://127.0.0.1:5174'
 )
   .split(',')
   .map((s) => s.trim())

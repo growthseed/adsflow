@@ -27,7 +27,7 @@ const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || ''
 const DEVELOPER_TOKEN = process.env.GOOGLE_ADS_DEVELOPER_TOKEN || ''
 const CLIENT_ID = process.env.GOOGLE_ADS_CLIENT_ID || ''
 const CLIENT_SECRET = process.env.GOOGLE_ADS_CLIENT_SECRET || ''
-const GADS_API = 'https://googleads.googleapis.com/v21'
+const GADS_API = 'https://googleads.googleapis.com/v25'
 const CACHE_TTL_MS = 5 * 60 * 1000
 
 interface GaqlRow {

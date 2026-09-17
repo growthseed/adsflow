@@ -1,5 +1,5 @@
-import type { NodeProps } from 'reactflow'
-import { Handle, Position, NodeResizer } from 'reactflow'
+import type { NodeProps } from '@xyflow/react'
+import { Handle, Position, NodeResizer } from '@xyflow/react'
 import { useState } from 'react'
 
 export interface TextboxData {
@@ -8,7 +8,7 @@ export interface TextboxData {
   onEdit?: (data: TextboxData) => void
 }
 
-export default function TextboxNode({ data, selected }: NodeProps<TextboxData>) {
+export default function TextboxNode({ data, selected }: NodeProps & { data: TextboxData }) {
   const [text, setText] = useState(data.text || 'Digite aqui...')
   const [isEditing, setIsEditing] = useState(false)
   

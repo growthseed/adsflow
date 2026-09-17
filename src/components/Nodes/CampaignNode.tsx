@@ -1,6 +1,6 @@
 import { memo, useState } from "react"
-import { Handle, Position, NodeResizer } from "reactflow"
-import type { NodeProps } from "reactflow"
+import { Handle, Position, NodeResizer } from '@xyflow/react'
+import type { NodeProps } from '@xyflow/react'
 import { Target, TrendingUp, Zap, ShoppingCart, Users, Award, Power, type LucideIcon } from "lucide-react"
 
 export interface CampaignData {
@@ -75,7 +75,7 @@ const statusColors = {
   draft: { badge: 'bg-gray-100 text-gray-700 border-gray-300', label: '📝 Rascunho' },
 }
 
-const CampaignNode = ({ data, selected }: NodeProps<CampaignData>) => {
+const CampaignNode = ({ data, selected }: NodeProps & { data: CampaignData }) => {
   const [isActive, setIsActive] = useState(data.isActive !== false)
 
   const Icon = objectiveIcons[data.objective || 'Tráfego'] || Target

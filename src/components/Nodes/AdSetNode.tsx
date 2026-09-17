@@ -1,6 +1,6 @@
 import { memo, useState } from "react";
-import { Handle, Position, NodeResizer } from "reactflow";
-import type { NodeProps } from "reactflow";
+import { Handle, Position, NodeResizer } from '@xyflow/react';
+import type { NodeProps } from '@xyflow/react';
 import { Users, MapPin, Calendar, DollarSign } from "lucide-react";
 import ToggleSwitch from "@/components/UI/ToggleSwitch";
 
@@ -16,7 +16,7 @@ export interface AdSetData {
   onEdit?: () => void;
 }
 
-const AdSetNode = ({ data, selected }: NodeProps<AdSetData>) => {
+const AdSetNode = ({ data, selected }: NodeProps & { data: AdSetData }) => {
   const [isActive, setIsActive] = useState(data.isActive !== false); // Default: true
 
   // ✅ Handler para toggle

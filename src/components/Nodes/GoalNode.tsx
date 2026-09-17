@@ -1,6 +1,6 @@
 import { memo, useMemo } from 'react'
-import { Handle, Position, NodeResizer } from 'reactflow'
-import type { NodeProps } from 'reactflow'
+import { Handle, Position, NodeResizer } from '@xyflow/react'
+import type { NodeProps } from '@xyflow/react'
 import { Target, TrendingUp, TrendingDown, Minus, RefreshCw, Pencil } from 'lucide-react'
 
 import type { GoalNodeData, GoalStatus } from '@/types/goalMetrics'
@@ -23,7 +23,7 @@ function formatValue(value: number | undefined, unit: string): string {
   return value.toLocaleString('pt-BR')
 }
 
-const GoalNode = ({ data, selected }: NodeProps<GoalNodeData>) => {
+const GoalNode = ({ data, selected }: NodeProps & { data: GoalNodeData }) => {
   const metric = useMemo(
     () => data.metric ?? getMetricByKey(data.metric_key),
     [data.metric, data.metric_key],

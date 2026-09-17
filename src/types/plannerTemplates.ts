@@ -12,7 +12,7 @@
  * ============================================
  */
 
-import type { Node, Edge } from 'reactflow'
+import type { Node, Edge } from '@xyflow/react'
 
 /** Category badges shown on the picker cards */
 export type TemplateCategory =

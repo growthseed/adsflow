@@ -14,7 +14,7 @@
  * estáticos. Suficiente para nossos endpoints.
  */
 
-import type { Plugin } from 'vite'
+import type { Plugin, ViteDevServer } from 'vite'
 import type { IncomingMessage, ServerResponse } from 'node:http'
 import { existsSync } from 'node:fs'
 import { pathToFileURL } from 'node:url'
@@ -102,7 +102,7 @@ function enhanceResponse(res: ServerResponse): ServerResponse & {
   return self
 }
 
-async function resolveHandler(apiDir: string, pathname: string): Promise<unknown> {
+async function resolveHandler(apiDir: string, pathname: string, server?: ViteDevServer): Promise<unknown> {
   const relative = pathname.replace(/^\/api\//, '').replace(/\/+$/, '')
   if (!relative) return null
 
@@ -115,7 +115,17 @@ async function resolveHandler(apiDir: string, pathname: string): Promise<unknown
   for (const file of candidates) {
     if (existsSync(file)) {
       const url = pathToFileURL(file).href + `?t=${Date.now()}`
-      const mod = await import(/* @vite-ignore */ url)
+      let mod: Record<string, unknown>
+      try {
+        mod = await import(/* @vite-ignore */ url)
+      } catch (err) {
+        // Handlers importam `../src/server/*.js` (convencao NodeNext, o
+        // Vercel compila TS). O import nativo do Node nao mapeia `.js` ->
+        // `.ts`; o resolver do Vite mapeia — usa ele como fallback.
+        const code = (err as { code?: string }).code
+        if (!server || (code !== 'ERR_MODULE_NOT_FOUND' && code !== 'ERR_UNKNOWN_FILE_EXTENSION')) throw err
+        mod = await server.ssrLoadModule(file)
+      }
       return mod.default ?? mod.handler ?? mod
     }
   }
@@ -138,7 +148,7 @@ export function devApiPlugin(options: { apiDir?: string } = {}): Plugin {
 
         try {
           const parsed = new URL(url, 'http://localhost')
-          const handler = (await resolveHandler(apiDir, parsed.pathname)) as
+          const handler = (await resolveHandler(apiDir, parsed.pathname, server)) as
             | ((req: VercelLikeRequest, res: ServerResponse) => unknown)
             | null
 

@@ -16,6 +16,8 @@
 
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { runAgencyCatalog } from '../src/server/integrations/agency-catalog.js'
+import { runPlannerAssets } from '../src/server/integrations/planner-assets.js'
+import { runPlannerScreenshot } from '../src/server/integrations/planner-screenshot.js'
 
 import { runClickUpCreateFolder } from '../src/server/integrations/clickup-create-folder.js'
 import { runKommoFunnel }         from '../src/server/integrations/kommo-funnel.js'
@@ -34,6 +36,10 @@ import {
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const op = String(req.query.op || '').trim()
   switch (op) {
+    case 'planner-assets':
+      return runPlannerAssets(req, res)
+    case 'planner-screenshot':
+      return runPlannerScreenshot(req, res)
     case 'agency-catalog':
       return runAgencyCatalog(req, res)
     case 'clickup-create-folder':
@@ -63,6 +69,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         error: `unknown op "${op}"`,
         valid: [
           'agency-catalog',
+          'planner-assets', 'planner-screenshot',
           'clickup-create-folder', 'kommo-funnel', 'meta-preview',
           'meta-ads-detail', 'meta-ads-compare', 'meta-ad-inspect',
           'google-ads-detail', 'clint-funnel',

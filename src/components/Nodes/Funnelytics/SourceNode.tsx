@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
-import { Handle, Position, NodeResizer } from 'reactflow';
-import type { NodeProps } from 'reactflow';
+import { Handle, Position, NodeResizer } from '@xyflow/react';
+import type { NodeProps } from '@xyflow/react';
 import type { SourceNodeData } from '../../../types/funnelytics';
 import {
   SOURCE_CONFIG,
@@ -8,7 +8,7 @@ import {
   formatCurrency
 } from '../../../types/funnelytics';
 
-const SourceNode: React.FC<NodeProps<SourceNodeData>> = ({ data, selected }) => {
+const SourceNode: React.FC<NodeProps & { data: SourceNodeData }> = ({ data, selected }) => {
   const config = SOURCE_CONFIG[data.source] || SOURCE_CONFIG.direct;
 
   return (

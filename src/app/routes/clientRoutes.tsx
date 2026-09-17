@@ -44,6 +44,8 @@ export const clientRoutes = (
     {/* 3 pilares + metas-ads */}
     <Route path="/c/:clientSlug/overview" element={withClient(<V4ClientOverviewPage />)} />
     <Route path="/c/:clientSlug/planner" element={withClient(<V4ClientPlannerPage />)} />
+    {/* Estado do planner na URL: "novo" = templates, id = editor (F5 e link direto voltam ao flow) */}
+    <Route path="/c/:clientSlug/planner/:flowId" element={withClient(<V4ClientPlannerPage />)} />
     <Route path="/c/:clientSlug/report" element={withClient(<ClientReportsPage />)} />
     <Route path="/c/:clientSlug/performance" element={withClient(<V4ClientPerformancePage />)} />
     <Route path="/c/:clientSlug/projeto" element={withClient(<V4ClientProjectPage />)} />

@@ -153,9 +153,10 @@ const SIZE_DIMENSIONS: Record<NodeSize, { width: number; height: number }> = {
 interface NodesSidebarProps {
   isOpen: boolean
   onClose: () => void
+  onAdd?: (type: string, size: NodeSize) => void
 }
 
-export default function NodesSidebar({ isOpen, onClose }: NodesSidebarProps) {
+export default function NodesSidebar({ isOpen, onClose, onAdd }: NodesSidebarProps) {
   const [activeSize, setActiveSize] = useState<NodeSize>('M')
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(
     new Set(NODE_GROUPS.map((g) => g.title)),
@@ -242,11 +243,13 @@ export default function NodesSidebar({ isOpen, onClose }: NodesSidebarProps) {
               {isExpanded && (
                 <div className="space-y-1 mb-2">
                   {group.nodes.map((node) => (
-                    <div
+                    <button
+                      type="button"
                       key={node.type}
                       draggable
+                      onClick={() => onAdd?.(node.type, activeSize)}
                       onDragStart={(e) => onDragStart(e, node.type)}
-                      className="flex items-center gap-2.5 px-2.5 py-2 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 hover:border-slate-300 cursor-grab active:cursor-grabbing transition-colors group"
+                      className="w-full text-left flex items-center gap-2.5 px-2.5 py-2 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 hover:border-slate-300 cursor-grab active:cursor-grabbing transition-colors group"
                       title={`Arraste para o canvas — ${node.description}`}
                     >
                       <div
@@ -263,7 +266,7 @@ export default function NodesSidebar({ isOpen, onClose }: NodesSidebarProps) {
                           {node.description}
                         </div>
                       </div>
-                    </div>
+                    </button>
                   ))}
                 </div>
               )}
@@ -272,15 +275,14 @@ export default function NodesSidebar({ isOpen, onClose }: NodesSidebarProps) {
         })}
       </div>
 
-      {/* Footer hint */}
-      <div className="px-4 py-2 border-t border-slate-100 bg-slate-50">
-        <p className="text-[10px] text-slate-500 leading-relaxed">
-          Arraste e solte no canvas. Clique duplo num node para editar. Use as
-          alças para redimensionar.
-        </p>
-      </div>
     </div>
   )
+}
+
+/** Rótulo humano do catálogo para um tipo (ou "brand:x"); cai no próprio tipo se não existir. */
+export function nodeLabelFor(type: string): string {
+  for (const group of NODE_GROUPS) for (const def of group.nodes) if (def.type === type) return def.label
+  return type.replace(/([A-Z])/g, ' $1').replace(/^./, s => s.toUpperCase()).trim()
 }
 
 export { NODE_GROUPS, SIZE_DIMENSIONS }

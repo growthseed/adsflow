@@ -1,6 +1,6 @@
 import { memo } from 'react'
-import { Handle, Position } from 'reactflow'
-import type { NodeProps } from 'reactflow'
+import { Handle, Position } from '@xyflow/react'
+import type { NodeProps } from '@xyflow/react'
 import BrandIcon from '../BrandIcon'
 
 export interface BrandNodeData {
@@ -230,7 +230,7 @@ const brandColors: Record<string, {
   }
 }
 
-const BrandNode = memo(({ data }: NodeProps<BrandNodeData>) => {
+const BrandNode = memo(({ data }: NodeProps & { data: BrandNodeData }) => {
   const brandConfig = brandColors[data.brand] || brandColors.whatsapp
 
   return (

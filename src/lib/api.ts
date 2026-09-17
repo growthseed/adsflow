@@ -6,7 +6,7 @@
 // ============================================
 
 import supabase from './supabase';
-import type { Node as ReactFlowNode, Edge as ReactFlowEdge } from 'reactflow';
+import type { Node as ReactFlowNode, Edge as ReactFlowEdge } from '@xyflow/react';
 
 // URLs
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api'

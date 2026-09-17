@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
-import { Handle, Position, NodeResizer } from 'reactflow';
-import type { NodeProps } from 'reactflow';
+import { Handle, Position, NodeResizer } from '@xyflow/react';
+import type { NodeProps } from '@xyflow/react';
 import type { ActionNodeData } from '../../../types/funnelytics';
 import {
   ACTION_CONFIG,
@@ -9,7 +9,7 @@ import {
   formatCurrency
 } from '../../../types/funnelytics';
 
-const ActionNode: React.FC<NodeProps<ActionNodeData>> = ({ data, selected }) => {
+const ActionNode: React.FC<NodeProps & { data: ActionNodeData }> = ({ data, selected }) => {
   const config = ACTION_CONFIG[data.actionType] || ACTION_CONFIG.click;
 
   // Determina status visual baseado na taxa de conversão

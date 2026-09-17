@@ -1,6 +1,6 @@
 import { memo } from "react"
-import { Handle, Position, NodeResizer } from "reactflow"
-import type { NodeProps } from "reactflow"
+import { Handle, Position, NodeResizer } from '@xyflow/react'
+import type { NodeProps } from '@xyflow/react'
 import { MessageCircle, Globe, FileText, Mail, Phone, MapPin } from "lucide-react"
 
 export interface ChannelNodeData {
@@ -62,7 +62,7 @@ const channelConfig = {
   },
 }
 
-const ChannelNode = ({ data, selected }: NodeProps<ChannelNodeData>) => {
+const ChannelNode = ({ data, selected }: NodeProps & { data: ChannelNodeData }) => {
   const config = channelConfig[data.channelType]
   const isActive = data.isActive !== false // Default true
 

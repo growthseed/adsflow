@@ -1,6 +1,6 @@
 import { memo } from "react"
-import { Handle, Position, NodeResizer } from "reactflow"
-import type { NodeProps } from "reactflow"
+import { Handle, Position, NodeResizer } from '@xyflow/react'
+import type { NodeProps } from '@xyflow/react'
 import { Facebook, Instagram, Globe, Linkedin, Mail, TrendingUp, type LucideIcon } from "lucide-react"
 
 export interface TrafficSourceData {
@@ -38,7 +38,7 @@ const platformColors: Record<string, { bg: string; border: string; text: string 
   'Email': { bg: 'bg-purple-50', border: 'border-purple-500', text: 'text-purple-700' },
 }
 
-const TrafficSourceNode = ({ data, selected }: NodeProps<TrafficSourceData>) => {
+const TrafficSourceNode = ({ data, selected }: NodeProps & { data: TrafficSourceData }) => {
   const Icon = platformIcons[data.platform] || TrendingUp
   const colors = platformColors[data.platform] || { bg: 'bg-gray-50', border: 'border-gray-500', text: 'text-gray-700' }
   const isActive = data.isActive !== false // Default true

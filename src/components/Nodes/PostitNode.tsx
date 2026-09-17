@@ -1,5 +1,5 @@
-import type { NodeProps } from 'reactflow'
-import { Handle, Position, NodeResizer } from 'reactflow'
+import type { NodeProps } from '@xyflow/react'
+import { Handle, Position, NodeResizer } from '@xyflow/react'
 import { useState } from 'react'
 
 export interface PostitData {
@@ -16,7 +16,7 @@ const colorMap = {
   purple: '#e9d5ff',
 }
 
-export default function PostitNode({ data, selected }: NodeProps<PostitData>) {
+export default function PostitNode({ data, selected }: NodeProps & { data: PostitData }) {
   const [text, setText] = useState(data.text || 'Nota importante...')
   const [isEditing, setIsEditing] = useState(false)
   

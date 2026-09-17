@@ -38,7 +38,7 @@ import {
 const DEVELOPER_TOKEN = process.env.GOOGLE_ADS_DEVELOPER_TOKEN || ''
 const CLIENT_ID = process.env.GOOGLE_ADS_CLIENT_ID || ''
 const CLIENT_SECRET = process.env.GOOGLE_ADS_CLIENT_SECRET || ''
-const GOOGLE_ADS_API_VERSION = 'v21'
+const GOOGLE_ADS_API_VERSION = 'v25'
 const GOOGLE_ADS_BASE = `https://googleads.googleapis.com/${GOOGLE_ADS_API_VERSION}`
 
 // Google/YouTube/GA4/Search Console REST responses are deeply nested and

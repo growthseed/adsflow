@@ -1,13 +1,13 @@
 import { memo } from 'react'
-import { Handle, Position } from 'reactflow'
-import type { NodeProps } from 'reactflow'
+import { Handle, Position } from '@xyflow/react'
+import type { NodeProps } from '@xyflow/react'
 import { Megaphone } from 'lucide-react'
 
 export interface VisualCampaignNodeData {
   label?: string
 }
 
-const VisualCampaignNode = memo(({ data }: NodeProps<VisualCampaignNodeData>) => {
+const VisualCampaignNode = memo(({ data }: NodeProps & { data: VisualCampaignNodeData }) => {
   return (
     <>
     {/* Badge circular de tamanho fixo — sem NodeResizer (mesmo motivo do BrandNode). */}

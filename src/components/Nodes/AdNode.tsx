@@ -1,6 +1,6 @@
 import { memo, useState } from "react";
-import { Handle, Position, NodeResizer } from "reactflow";
-import type { NodeProps } from "reactflow";
+import { Handle, Position, NodeResizer } from '@xyflow/react';
+import type { NodeProps } from '@xyflow/react';
 import { Image, Grid3x3, PlayCircle, Megaphone, Eye, MousePointer, type LucideIcon } from "lucide-react";
 import ToggleSwitch from "@/components/UI/ToggleSwitch";
 
@@ -23,7 +23,7 @@ const formatIcons: Record<string, LucideIcon> = {
   'Stories': Megaphone,
 };
 
-const AdNode = ({ data, selected }: NodeProps<AdData>) => {
+const AdNode = ({ data, selected }: NodeProps & { data: AdData }) => {
   const [isActive, setIsActive] = useState(data.isActive !== false); // Default: true
 
   const Icon = formatIcons[data.format || ''] || Image;

@@ -1,6 +1,6 @@
 import { memo } from 'react'
-import { Handle, Position, NodeResizer } from 'reactflow'
-import type { NodeProps } from 'reactflow'
+import { Handle, Position, NodeResizer } from '@xyflow/react'
+import type { NodeProps } from '@xyflow/react'
 import { Route, ArrowRight, TrendingUp, AlertTriangle } from 'lucide-react'
 
 export interface JourneyStage {
@@ -41,7 +41,7 @@ function convColor(pct: number): string {
   return 'text-red-600'
 }
 
-const LeadJourneyNode = ({ data, selected }: NodeProps<LeadJourneyData>) => {
+const LeadJourneyNode = ({ data, selected }: NodeProps & { data: LeadJourneyData }) => {
   const stages = data.stages ?? []
 
   const hasForecasting = data.forecast_end_of_period != null && data.forecast_target != null
