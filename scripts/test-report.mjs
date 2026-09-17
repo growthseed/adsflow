@@ -65,7 +65,7 @@ test('unavailable media and zero denominators are not invented metrics', () => {
   assert.equal(summarizeMedia({ platforms: { meta_ads: { ...performance.platforms.meta_ads, connected: false } } }, 'all').accounts.length, 0)
 })
 
-function clientService(responses) {
+function clientService(responses, catalogue = []) {
   const calls = []
   const supabase = { from(table) {
     const call = { table, filters: [] }; calls.push(call)
@@ -78,20 +78,18 @@ function clientService(responses) {
     }
     return query
   } }
-  return { calls, service: loadModule('src/services/clientsService.ts', { '@/lib/supabase': { default: supabase } }).clientsService }
+  return { calls, service: loadModule('src/services/clientsService.ts', { '@/lib/supabase': { default: supabase }, './agencyCatalog': { fetchAgencyCatalog: async () => catalogue } }).clientsService }
 }
-test('agency catalogue uses only the caller membership role, not another person role', async () => {
-  const { calls, service } = clientService([{ data: [{ id: 'dale' }, { id: 'momma' }] }, { data: [{ client_id: 'dale', role: 'manager' }] }, { data: [{ client_id: 'dale' }, { client_id: 'dale' }] }])
+test('agency listing uses the server-validated catalogue', async () => {
+  const { calls, service } = clientService([], [{ id: 'dale', my_role: 'manager' }, { id: 'momma', my_role: 'admin' }])
   const result = await service.list('staff-id', { includeAllActive: true })
-  assert.ok(calls[0].filters.some(x => x[1] === 'status' && x[2] === 'active'))
-  assert.ok(calls[1].filters.some(x => x[1] === 'user_id' && x[2] === 'staff-id'))
   assert.deepEqual(result.map(x => x.my_role), ['manager', 'admin'])
-  assert.deepEqual(result.map(x => x.member_count), [2, 0])
+  assert.equal(calls.length, 0)
 })
 test('empty catalogue does not issue an empty IN query', async () => {
   const { calls, service } = clientService([{ data: [] }])
   assert.deepEqual(await service.list('staff-id', { includeAllActive: true }), [])
-  assert.equal(calls.length, 1)
+  assert.equal(calls.length, 0)
 })
 test('regular users are limited to their client ids', async () => {
   const { calls, service } = clientService([{ data: [{ client_id: 'dale', role: 'viewer' }] }, { data: [{ id: 'dale' }] }, { data: [] }])
@@ -121,4 +119,40 @@ test('cron GET stays protected and unsupported methods fail', async () => {
   assert.deepEqual(await syncRequest({ method: 'GET' }), { fetched: false, status: 401 })
   assert.deepEqual(await syncRequest({ method: 'GET', cron: true }), { fetched: true, status: 200 })
   assert.deepEqual(await syncRequest({ method: 'DELETE' }), { fetched: false, status: 405 })
+})
+
+async function catalogueRequest(role = 'admin', active = true) {
+  const calls = []
+  const res = { statusCode: 200, setHeader() {}, status(code) { this.statusCode = code; return this }, json(body) { this.body = body; return this } }
+  const serviceClient = { from(table) {
+    calls.push(table)
+    const query = {
+      select() { return query },
+      eq(key, value) { if (table === 'clients') assert.deepEqual([key, value], ['status', 'active']); return query },
+      order() { return query }, in() { return query },
+      maybeSingle: async () => ({ data: { is_active: active } }),
+      then(resolve, reject) { return Promise.resolve({ data: table === 'clients' ? [{ id: 'dale' }, { id: 'momma' }] : [{ client_id: 'dale', user_id: 'other-person', role: 'owner' }, { client_id: 'dale', user_id: 'staff', role: 'manager' }] }).then(resolve, reject) },
+    }
+    return query
+  } }
+  const handler = loadModule('api/clients/catalog.ts', { '../_lib/security.js': {
+    applyCors: () => true, allowMethods: () => true,
+    requireUserAuth: async () => ({ user: { id: 'staff' }, globalRole: role, serviceClient }),
+  } }).default
+  await handler({ method: 'GET' }, res)
+  return { res, calls }
+}
+test('catalogue endpoint rejects regular or inactive users before reading clients', async () => {
+  for (const [role, active] of [['user', true], ['admin', false]]) {
+    const { res, calls } = await catalogueRequest(role, active)
+    assert.equal(res.statusCode, 403)
+    assert.equal(calls.includes('clients'), false)
+  }
+})
+test('catalogue roles belong to caller; member identities are not returned', async () => {
+  const { res } = await catalogueRequest()
+  assert.equal(res.statusCode, 200)
+  assert.deepEqual(res.body.clients.map(x => x.my_role), ['manager', 'admin'])
+  assert.deepEqual(res.body.clients.map(x => x.member_count), [2, 0])
+  assert.equal(JSON.stringify(res.body).includes('other-person'), false)
 })

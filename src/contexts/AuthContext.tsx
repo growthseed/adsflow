@@ -12,6 +12,7 @@ import type { ReactNode } from 'react';
 import type { User, AuthError } from '@supabase/supabase-js';
 import supabase, { isSupabaseConfigured } from '../lib/supabase';
 import { SERVICE_TIERS } from '@/data/serviceTiers';
+import { fetchAgencyCatalog } from '@/services/agencyCatalog';
 import type { ClientServiceTier, ClientServiceTierConfig } from '@/types/metrics';
 import {
   permKey,
@@ -257,13 +258,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         if (staffCatalog || memberships.length > 0) {
           const clientIds = memberships.map((m: { client_id: string }) => m.client_id)
           const clientsResult = await withTimeout(
-            () => {
-              const query = supabase
+            async () => {
+              if (staffCatalog) return { data: await fetchAgencyCatalog(), error: null }
+              return await supabase
               .from('clients')
               .select('id, name, slug, logo_url, status, industry, service_tier, active_scope, portal_token')
               .eq('status', 'active')
+              .in('id', clientIds)
               .order('name')
-              return staffCatalog ? query : query.in('id', clientIds)
             },
             'fetchClients',
           )

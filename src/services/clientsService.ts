@@ -8,6 +8,7 @@
 
 import supabase from '@/lib/supabase'
 import type { ClientRole } from '@/contexts/AuthContext'
+import { fetchAgencyCatalog } from './agencyCatalog'
 
 // =====================================================
 // TYPES
@@ -86,38 +87,7 @@ export const clientsService = {
     let roleMap: Map<string, ClientRole>
 
     if (options.includeAllActive) {
-      // Agency admins need the complete client catalog even when a newly
-      // created client has not received a client_members row yet.
-      const { data: clients, error: clientError } = await supabase
-        .from('clients')
-        .select('*')
-        .eq('status', 'active')
-        .order('name')
-
-      if (clientError) throw clientError
-      clientIds = (clients || []).map((client) => client.id)
-      if (clientIds.length === 0) return []
-
-      const { data: memberships, error: memError } = await supabase
-        .from('client_members')
-        .select('client_id, role')
-        .eq('user_id', userId)
-        .in('client_id', clientIds)
-
-      if (memError) throw memError
-      // Global admins are allowed to manage the catalog without being a
-      // tenant member. Existing memberships still preserve their real role.
-      roleMap = new Map(
-        (memberships || []).map((membership) => [
-          membership.client_id,
-          membership.role as ClientRole,
-        ]),
-      )
-      for (const clientId of clientIds) {
-        if (!roleMap.has(clientId)) roleMap.set(clientId, 'admin')
-      }
-
-      return this.withMemberCounts(clients || [], clientIds, roleMap)
+      return fetchAgencyCatalog()
     }
 
     // Client users only see the tenants they belong to.
