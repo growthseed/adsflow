@@ -3,8 +3,8 @@
  *
  * Layout single-scroll dedicado pro link compartilhado com o cliente.
  * Sem tabs, sem placeholders "em breve", sem chamadas a APIs internas
- * (Kommo, comments, etc). Renderiza apenas a partir dos snapshots já
- * existentes no bundle (ClickUp + Performance).
+ * (Kommo, comments, etc). Renderiza a partir do snapshot mais recente
+ * autorizado pelo token público do cliente.
  *
  * Estrutura:
  *   1. Sticky header (logo + nome cliente)
@@ -19,7 +19,7 @@
  *  10. Footer (última atualização + branding)
  */
 
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import {
   AlertCircle,
@@ -43,17 +43,8 @@ import {
   YAxis,
 } from 'recharts'
 
-import supabase from '@/lib/supabase'
 import { Avatar } from '@/components/primitives'
 import { formatMetric } from '@/lib/formatMetric'
-import { getClientPortalBundle } from '@/services/clientPortalService'
-import { getClientBySlug } from '@/services/adapters/clickupAdapter'
-import { getClientPerformance } from '@/services/adapters/performanceAdapter'
-import type {
-  Campaign,
-  PlatformAccount,
-} from '@/services/adapters/performanceTypes'
-import type { ClickUpTask, ClickUpTaskStatus } from '@/services/adapters/clickupTypes'
 
 interface ResolvedClient {
   slug: string
@@ -62,23 +53,6 @@ interface ResolvedClient {
   industry: string | null
 }
 
-const CHANNEL_LABEL: Record<string, string> = {
-  google_ads: 'Google Ads',
-  meta_ads: 'Meta Ads',
-}
-const CHANNEL_COLOR: Record<string, string> = {
-  google_ads: '#4285f4',
-  meta_ads: '#0866ff',
-}
-
-const STATUS_MAP: Record<ClickUpTaskStatus, 'todo' | 'in_progress' | 'review' | 'done' | 'blocked'> = {
-  urgent: 'blocked',
-  in_progress: 'in_progress',
-  review: 'review',
-  upcoming: 'todo',
-  backlog: 'todo',
-  done: 'done',
-}
 const STATUS_ICON = {
   todo: Circle,
   in_progress: Clock,
@@ -104,6 +78,7 @@ const STATUS_COLOR = {
 export default function PublicClientPortalPage() {
   const { token } = useParams<{ token: string }>()
   const [client, setClient] = useState<ResolvedClient | null>(null)
+  const [portalData, setPortalData] = useState<PortalContentData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -116,17 +91,12 @@ export default function PublicClientPortalPage() {
     let cancelled = false
     ;(async () => {
       try {
-        const { data, error: rpcError } = await supabase.rpc('resolve_portal_token', {
-          p_token: token,
-        })
+        const response = await fetch(`/api/integrations?op=public-portal&token=${encodeURIComponent(token)}`, { cache: 'no-store' })
+        const payload = await response.json().catch(() => null)
+        if (!response.ok) throw new Error(payload?.error || 'Link indisponível.')
         if (cancelled) return
-        if (rpcError) throw rpcError
-        if (!data || (Array.isArray(data) && data.length === 0)) {
-          setError('Link expirado ou desativado. Fale com a agência.')
-          return
-        }
-        const row = Array.isArray(data) ? data[0] : data
-        setClient(row as ResolvedClient)
+        setClient(payload.client as ResolvedClient)
+        setPortalData(payload.data as PortalContentData)
       } catch (err) {
         console.error('[PublicPortal] resolve_portal_token failed:', err)
         setError('Erro ao carregar o painel. Tente novamente.')
@@ -167,11 +137,10 @@ export default function PublicClientPortalPage() {
     )
   }
 
-  return <PortalContent slug={client.slug} clientName={client.name} />
+  return <PortalContent clientName={client.name} data={portalData} />
 }
 
-function PortalContent({ slug, clientName }: { slug: string; clientName: string }) {
-  const data = useMemo(() => buildPortalData(slug), [slug])
+function PortalContent({ clientName, data }: { clientName: string; data: PortalContentData | null }) {
 
   if (!data) {
     return (
@@ -761,135 +730,6 @@ interface PortalContentData {
     blocked: number
   }
   lastSyncedAt: string | null
-}
-
-function buildPortalData(slug: string): PortalContentData | null {
-  const bundle = getClientPortalBundle(slug)
-  if (!bundle) return null
-  const agency = getClientBySlug(slug)
-  const perf = getClientPerformance(slug)
-
-  const spend = perf?.blended.total_spend ?? null
-  const leads = perf?.blended.total_conversions ?? bundle.kpis?.leads ?? 0
-  const clicks = perf?.blended.total_clicks ?? 0
-  const impressions = perf?.blended.total_impressions ?? 0
-  const cpl = leads > 0 && spend != null ? spend / leads : null
-  const periodLabel = perf?.period.label ?? null
-
-  // Daily — derivada do snapshot dashboard (se existir no client snapshot)
-  // Para simplicidade pegamos do timeseries do dashboard via lookup separado.
-  // Quando não disponível, ficamos sem o gráfico.
-  const daily: PortalContentData['daily'] = []
-  // Use whatever live we get from performance.platforms.x.daily se houver
-  for (const p of Object.values(perf?.platforms ?? {})) {
-    if (p?.daily?.length) {
-      for (const d of p.daily) {
-        daily.push({
-          date: d.date,
-          dateLabel: formatDateShort(d.date),
-          spend: d.spend,
-          leads: 0, // daily não traz conv direta, ok deixar zero
-        })
-      }
-    }
-  }
-
-  const channels: PortalContentData['channels'] = []
-  for (const [key, account] of Object.entries(perf?.platforms ?? {})) {
-    const acc = account as PlatformAccount | undefined
-    if (!acc || acc.summary.spend <= 0) continue
-    channels.push({
-      label: CHANNEL_LABEL[key] ?? key,
-      spend: acc.summary.spend,
-      conversions: acc.summary.conversions,
-      color: CHANNEL_COLOR[key] ?? '#64748b',
-    })
-  }
-
-  const campaigns: PortalContentData['campaigns'] = []
-  for (const [key, account] of Object.entries(perf?.platforms ?? {})) {
-    const acc = account as PlatformAccount | undefined
-    if (!acc) continue
-    for (const c of acc.campaigns as Campaign[]) {
-      const m = c.metrics
-      campaigns.push({
-        name: c.name,
-        channel: CHANNEL_LABEL[key] ?? key,
-        spend: m.spend,
-        impressions: m.impressions,
-        clicks: m.clicks,
-        conversions: m.conversions,
-        cpl: m.conversions > 0 ? m.spend / m.conversions : null,
-        isActive:
-          c.status === 'enabled' ||
-          c.status_raw === 'ENABLED' ||
-          c.status_raw === 'ACTIVE',
-      })
-    }
-  }
-  campaigns.sort((a, b) => {
-    if (a.isActive !== b.isActive) return a.isActive ? -1 : 1
-    return b.spend - a.spend
-  })
-
-  const monthly = (perf?.monthly_history ?? []).map((m) => ({
-    month: m.month,
-    label: m.label,
-    spend: m.spend,
-    clicks: m.clicks,
-    impressions: m.impressions,
-    conversions: m.conversions,
-    partial: m.partial,
-  }))
-
-  const notes = perf?.notes ?? []
-
-  const allTasks = agency?.all_tasks ?? []
-  const tasks = allTasks.map((t: ClickUpTask) => ({
-    id: t.id,
-    title: t.title,
-    status: STATUS_MAP[t.status] ?? 'todo',
-    list_name: t.list_name,
-    url: t.url,
-  }))
-
-  const taskStats = {
-    total: agency?.task_count ?? tasks.length,
-    done: agency?.stats?.done ?? tasks.filter((t) => t.status === 'done').length,
-    in_progress:
-      agency?.stats?.in_progress ?? tasks.filter((t) => t.status === 'in_progress').length,
-    review: agency?.stats?.review ?? tasks.filter((t) => t.status === 'review').length,
-    todo:
-      (agency?.stats?.upcoming ?? 0) +
-        (agency?.stats?.backlog ?? 0) ||
-      tasks.filter((t) => t.status === 'todo').length,
-    blocked: agency?.stats?.urgent ?? tasks.filter((t) => t.status === 'blocked').length,
-  }
-
-  const lastSyncedAt =
-    agency?.last_synced_at ?? perf?.last_synced_at ?? null
-
-  return {
-    periodLabel,
-    spend,
-    leads,
-    clicks,
-    impressions,
-    cpl,
-    daily,
-    channels,
-    campaigns,
-    monthly,
-    notes,
-    tasks,
-    taskStats,
-    lastSyncedAt,
-  }
-}
-
-function formatDateShort(iso: string): string {
-  const [, m, d] = iso.split('-')
-  return `${d}/${m}`
 }
 
 function formatDateTime(iso: string): string {

@@ -271,3 +271,35 @@ test('refreshing a screenshot requires write permission; plain reads only need r
   assert.equal(res.statusCode, 200); assert.equal(res.body.cached, false); assert.equal(writer.lists.length, 0)
   assert.ok(writer.calls.find(c => c.table === 'permissions').filters.some(f => f[0] === 'action' && f[1] === 'write'))
 })
+
+// --------------------------------------------------------- public portal
+test('public portal reads the newest snapshots and returns only the token client', async () => {
+  const previousUrl = process.env.VITE_SUPABASE_URL
+  const previousKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+  process.env.VITE_SUPABASE_URL = 'https://supabase.example'
+  process.env.SUPABASE_SERVICE_ROLE_KEY = 'test-service-role-only'
+  const calls = []
+  const client = {
+    rpc: async (name, args) => {
+      calls.push([name, args])
+      if (name === 'resolve_portal_token') return { data: { slug: 'momma', name: 'Momma', logo_url: null, industry: null }, error: null }
+      if (args.snapshot_kind === 'clickup') return { data: { clients: [
+        { slug: 'momma', task_count: 1, last_synced_at: '2026-09-17T14:37:29Z', stats: { done: 0, in_progress: 1, review: 0, upcoming: 0, backlog: 0, urgent: 0 }, all_tasks: [{ id: 'new-task', title: 'Atualização recém-criada', status: 'in_progress', list_name: 'Momma', url: 'https://app.clickup.com/t/new-task' }] },
+        { slug: 'other-client', task_count: 99, all_tasks: [] },
+      ] }, error: null }
+      return { data: { clients: { momma: { blended: { total_spend: 100, total_conversions: 2, total_clicks: 10, total_impressions: 1000 }, platforms: {}, period: { label: 'Últimos 30 dias' }, last_synced_at: '2026-09-17T14:00:00Z' } } }, error: null }
+    },
+  }
+  const api = load('src/server/integrations/public-portal.ts', { '@supabase/supabase-js': { createClient: () => client }, '../../../api/_lib/security.js': { applyCors: () => true, allowMethods: () => true } })
+  const res = { statusCode: 200, body: null, headers: {}, setHeader(k, v) { this.headers[k] = v }, status(code) { this.statusCode = code; return this }, json(value) { this.body = value; return this } }
+  await api.runPublicPortal({ method: 'GET', query: { token: 'portal-token-with-valid-length-123' } }, res)
+  if (previousUrl === undefined) delete process.env.VITE_SUPABASE_URL; else process.env.VITE_SUPABASE_URL = previousUrl
+  if (previousKey === undefined) delete process.env.SUPABASE_SERVICE_ROLE_KEY; else process.env.SUPABASE_SERVICE_ROLE_KEY = previousKey
+  assert.equal(res.statusCode, 200, JSON.stringify(res.body))
+  assert.equal(res.headers['Cache-Control'], 'no-store, no-cache, must-revalidate')
+  assert.equal(res.body.client.slug, 'momma')
+  assert.deepEqual(res.body.data.tasks.map(task => task.id), ['new-task'])
+  assert.equal(res.body.data.tasks[0].title, 'Atualização recém-criada')
+  assert.equal(res.body.data.leads, 2)
+  assert.deepEqual(calls.map(([name]) => name), ['resolve_portal_token', 'latest_agency_snapshot', 'latest_agency_snapshot'])
+})
